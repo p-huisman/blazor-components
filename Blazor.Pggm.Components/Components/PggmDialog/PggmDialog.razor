@@ -1,0 +1,235 @@
+@using System.Linq
+@inherits PggmComponentBase
+@namespace Blazor.Pggm.Components
+
+<pggm-dialog @ref="ElementRef" @attributes="GetAttributes()">
+  @if (!string.IsNullOrEmpty(HeaderContent))
+  {
+    <span slot="header">@HeaderContent</span>
+  }
+  @if (HeaderTemplate != null)
+  {
+    <span slot="header">@HeaderTemplate</span>
+  }
+
+  @if (ChildContent != null)
+  {
+    @ChildContent
+  }
+
+</pggm-dialog>
+
+@code {
+  protected override string TagName => "pggm-dialog";
+
+  /// <summary>
+  /// Whether the dialog is open/visible
+  /// </summary>
+  [Parameter] public bool Open { get; set; }
+
+  /// <summary>
+  /// Whether the dialog should be modal (blocks interaction with background)
+  /// </summary>
+  [Parameter] public bool Modal { get; set; }
+
+  /// <summary>
+  /// The label text for the close button (for accessibility)
+  /// </summary>
+  [Parameter] public string? CloseLabel { get; set; } = "Close";
+
+  /// <summary>
+  /// Simple text content for the dialog header
+  /// </summary>
+  [Parameter] public string? HeaderContent { get; set; }
+
+  /// <summary>
+  /// Template for the dialog header content
+  /// </summary>
+  [Parameter] public RenderFragment? HeaderTemplate { get; set; }
+
+  /// <summary>
+  /// Collection of action buttons to display in the dialog
+  /// </summary>
+  [Parameter] public List<DialogAction>? Actions { get; set; }
+
+  /// <summary>
+  /// Event callback for when the dialog is opened
+  /// </summary>
+  [Parameter] public EventCallback OnOpen { get; set; }
+
+  /// <summary>
+  /// Event callback for when the dialog is closed
+  /// </summary>
+  [Parameter] public EventCallback OnClose { get; set; }
+
+  /// <summary>
+  /// Event callback for when the dialog is cancelled (usually ESC key or backdrop click)
+  /// </summary>
+  [Parameter] public EventCallback OnCancel { get; set; }
+
+  /// <summary>
+  /// Event callback for when the Open property changes (two-way binding)
+  /// </summary>
+  [Parameter] public EventCallback<bool> OpenChanged { get; set; }
+
+  private DotNetObjectReference<PggmDialog>? _dotNetRef;
+
+  protected override async Task InitializeWebComponentAsync()
+  {
+    _dotNetRef = DotNetObjectReference.Create(this);
+    await JSRuntime.InvokeVoidAsync("PggmComponents.setupDialogEventHandlers", ElementRef, _dotNetRef);
+  }
+
+  [JSInvokable]
+  public async Task HandleDialogOpen()
+  {
+    if (!Open)
+    {
+      await InvokeAsync(async () =>
+      {
+        Open = true;
+
+        if (OpenChanged.HasDelegate)
+        {
+          await OpenChanged.InvokeAsync(Open);
+        }
+
+        if (OnOpen.HasDelegate)
+        {
+          await OnOpen.InvokeAsync();
+        }
+
+        StateHasChanged();
+      });
+    }
+  }
+
+  [JSInvokable]
+  public async Task HandleDialogClose()
+  {
+    if (Open)
+    {
+      await InvokeAsync(async () =>
+      {
+        Open = false;
+
+        if (OpenChanged.HasDelegate)
+        {
+          await OpenChanged.InvokeAsync(Open);
+        }
+
+        if (OnClose.HasDelegate)
+        {
+          await OnClose.InvokeAsync();
+        }
+
+        StateHasChanged();
+      });
+    }
+  }
+
+  [JSInvokable]
+  public async Task HandleDialogCancel()
+  {
+    await InvokeAsync(async () =>
+    {
+      Open = false;
+
+      if (OpenChanged.HasDelegate)
+      {
+        await OpenChanged.InvokeAsync(Open);
+      }
+
+      if (OnCancel.HasDelegate)
+      {
+        await OnCancel.InvokeAsync();
+      }
+
+      StateHasChanged();
+    });
+  }
+
+  /// <summary>
+  /// Programmatically open the dialog
+  /// </summary>
+  public async Task OpenDialog()
+  {
+    Open = true;
+    await JSRuntime.InvokeVoidAsync("PggmComponents.openDialog", ElementRef);
+  }
+
+  /// <summary>
+  /// Programmatically close the dialog
+  /// </summary>
+  public async Task CloseDialog()
+  {
+    Open = false;
+    await JSRuntime.InvokeVoidAsync("PggmComponents.closeDialog", ElementRef);
+  }
+
+  protected override Dictionary<string, object> GetAttributes()
+  {
+    var attributes = base.GetAttributes();
+
+    if (Open)
+    {
+      attributes["open"] = true;
+    }
+
+    if (Modal)
+    {
+      attributes["modal"] = true;
+    }
+
+    if (!string.IsNullOrEmpty(CloseLabel))
+    {
+      attributes["close-label"] = CloseLabel;
+    }
+
+    return attributes;
+  }
+
+  public override async ValueTask DisposeAsync()
+  {
+    if (_dotNetRef != null)
+    {
+      await JSRuntime.InvokeVoidAsync("PggmComponents.cleanupDialogEventHandlers", ElementRef);
+      _dotNetRef.Dispose();
+    }
+    await base.DisposeAsync();
+  }
+}
+
+<pggm-dialog @ref="ElementRef" @attributes="GetAttributes()">
+  @if (HeaderTemplate != null || !string.IsNullOrEmpty(HeaderContent))
+  {
+    <span slot="header">
+      @if (HeaderTemplate != null)
+      {
+        @HeaderTemplate
+      }
+      else
+      {
+        @HeaderContent
+      }
+    </span>
+  }
+
+  @ChildContent
+
+  @if (Actions != null && Actions.Any())
+  {
+    @foreach (var action in Actions)
+    {
+      <button slot="action" 
+              is="pggm-button"
+              type="@action.Type"
+              disabled="@action.Disabled"
+              appearance="@action.Appearance"
+              class="@action.CssClass"
+              @onclick="action.OnClick">
+        @action.Text
+      </button>
+    }
+  }
+</pggm-dialog>

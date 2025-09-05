@@ -82,6 +82,73 @@ let bundleLoaded = false;
       checkboxChangeListeners.delete(element);
     }
   };
+
+  // Dialog event handlers
+  const dialogEventListeners = new Map();
+
+  window.PggmComponents.setupDialogEventHandlers = function(element, dotNetRef) {
+    if (element) {
+      const handlers = {
+        open: (event) => {
+          setTimeout(async () => {
+            try {
+              await dotNetRef.invokeMethodAsync('HandleDialogOpen');
+            } catch (error) {
+              console.error('Error invoking HandleDialogOpen:', error);
+            }
+          }, 0);
+        },
+        close: (event) => {
+          setTimeout(async () => {
+            try {
+              await dotNetRef.invokeMethodAsync('HandleDialogClose');
+            } catch (error) {
+              console.error('Error invoking HandleDialogClose:', error);
+            }
+          }, 0);
+        },
+        cancel: (event) => {
+          setTimeout(async () => {
+            try {
+              await dotNetRef.invokeMethodAsync('HandleDialogCancel');
+            } catch (error) {
+              console.error('Error invoking HandleDialogCancel:', error);
+            }
+          }, 0);
+        }
+      };
+      
+      // Listen for dialog events
+      element.addEventListener('openDialog', handlers.open);
+      element.addEventListener('closeDialog', handlers.close);
+      element.addEventListener('cancelDialog', handlers.cancel);
+      
+      dialogEventListeners.set(element, handlers);
+    }
+  };
+
+  window.PggmComponents.cleanupDialogEventHandlers = function(element) {
+    if (element && dialogEventListeners.has(element)) {
+      const handlers = dialogEventListeners.get(element);
+      element.removeEventListener('openDialog', handlers.open);
+      element.removeEventListener('closeDialog', handlers.close);
+      element.removeEventListener('cancelDialog', handlers.cancel);
+      dialogEventListeners.delete(element);
+    }
+  };
+
+  // Helper functions for programmatic dialog control
+  window.PggmComponents.openDialog = function(element) {
+    if (element && element.open !== undefined) {
+      element.open = true;
+    }
+  };
+
+  window.PggmComponents.closeDialog = function(element) {
+    if (element && element.open !== undefined) {
+      element.open = false;
+    }
+  };
 })();
 
 // Initialize the PGGM design system

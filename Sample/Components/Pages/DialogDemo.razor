@@ -1,0 +1,417 @@
+@page "/pggm-dialog-demo"
+
+@using Blazor.Pggm.Components
+@using Microsoft.AspNetCore.Components.Web
+@using System.ComponentModel.DataAnnotations
+
+<PageTitle>PGGM PggmDialog Demo</PageTitle>
+
+<h1>PGGM PggmDialog Component Demo</h1>
+
+<p>This page demonstrates the PggmDialog component with various configurations and interactions.</p>
+
+<section class="demo-section">
+    <h2>Basic Dialog</h2>
+    <p>A simple dialog with content:</p>
+
+    <div class="demo-controls">
+        <PggmButton Appearance="primary" @onclick="OpenBasicDialog">
+            Open Basic Dialog
+        </PggmButton>
+    </div>
+
+    <PggmDialog @bind-Open="isBasicDialogOpen" HeaderContent="Basic Dialog" OnClose="OnBasicDialogClose">
+        <p>This is a basic dialog with some simple content.</p>
+        <p>You can close it by clicking the X button or pressing the Escape key.</p>
+    </PggmDialog>
+
+    <p><strong>Dialog State:</strong> @(isBasicDialogOpen ? "Open" : "Closed")</p>
+</section>
+
+<section class="demo-section">
+    <h2>Modal Dialog</h2>
+    <p>A modal dialog that blocks interaction with the background:</p>
+
+    <div class="demo-controls">
+        <PggmButton Appearance="primary" @onclick="OpenModalDialog">
+            Open Modal Dialog
+        </PggmButton>
+    </div>
+
+    <PggmDialog @bind-Open="isModalDialogOpen" Modal="true" HeaderContent="Modal Dialog" CloseLabel="Close Modal">
+        <div>
+            <p><strong>This is a modal dialog.</strong></p>
+            <p>It blocks interaction with the background content until closed.</p>
+            <p>Try clicking outside the dialog or pressing Escape to close it.</p>
+        </div>
+    </PggmDialog>
+
+    <p><strong>Modal State:</strong> @(isModalDialogOpen ? "Open" : "Closed")</p>
+</section>
+
+<section class="demo-section">
+    <h2>Dialog with Custom Header Template</h2>
+    <p>Dialog with a custom header using RenderFragment:</p>
+
+    <div class="demo-controls">
+        <PggmButton Appearance="primary" @onclick="OpenTemplateDialog">
+            Open Dialog with Template Header
+        </PggmButton>
+    </div>
+
+    <PggmDialog @bind-Open="isTemplateDialogOpen" Modal="true">
+        <HeaderTemplate>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="color: #007acc;">ℹ️</span>
+                <strong>Custom Header with Icon</strong>
+            </div>
+        </HeaderTemplate>
+
+        <ChildContent>
+            <p>This dialog uses a custom header template with an icon and styled text.</p>
+            <p>The header is defined using the HeaderTemplate parameter.</p>
+        </ChildContent>
+    </PggmDialog>
+
+    <p><strong>Template Dialog State:</strong> @(isTemplateDialogOpen ? "Open" : "Closed")</p>
+</section>
+
+<section class="demo-section">
+    <h2>Dialog with Action Buttons</h2>
+    <p>Dialog with custom action buttons in the footer:</p>
+
+    <div class="demo-controls">
+        <PggmButton Appearance="primary" @onclick="OpenActionDialog">
+            Open Dialog with Actions
+        </PggmButton>
+    </div>
+
+    <PggmDialog @bind-Open="isActionDialogOpen" Modal="true" HeaderContent="Confirm Action"
+        OnCancel="OnActionDialogCancel" Actions="@actionDialogActions">
+        <ChildContent>
+            <p>Are you sure you want to proceed with this action?</p>
+            <p>This action cannot be undone.</p>
+        </ChildContent>
+    </PggmDialog>
+
+    <p><strong>Action Dialog State:</strong> @(isActionDialogOpen ? "Open" : "Closed")</p>
+    @if (!string.IsNullOrEmpty(actionResult))
+    {
+        <p><strong>Last Action:</strong> @actionResult</p>
+    }
+</section>
+
+<section class="demo-section">
+    <h2>Form Dialog</h2>
+    <p>Dialog containing a form for user input:</p>
+
+    <div class="demo-controls">
+        <PggmButton Appearance="primary" @onclick="OpenFormDialog">
+            Open Form Dialog
+        </PggmButton>
+    </div>
+
+    <PggmDialog @bind-Open="isFormDialogOpen" Modal="true" HeaderContent="User Information" OnClose="OnFormDialogClose" Actions="@formDialogActions">
+        <ChildContent>
+            <EditForm Model="formModel" OnValidSubmit="SubmitForm">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="form-field">
+                    <label for="name">Name:</label>
+                    <InputText id="name" @bind-Value="formModel.Name" class="form-control" />
+                </div>
+
+                <div class="form-field">
+                    <label for="email">Email:</label>
+                    <InputText id="email" @bind-Value="formModel.Email" class="form-control" type="email" />
+                </div>
+
+                <div class="form-field">
+                    <PggmCheckbox @bind-Checked="formModel.Subscribe">
+                        Subscribe to newsletter
+                    </PggmCheckbox>
+                </div>
+            </EditForm>
+        </ChildContent>
+    </PggmDialog>
+
+    <p><strong>Form Dialog State:</strong> @(isFormDialogOpen ? "Open" : "Closed")</p>
+    @if (!string.IsNullOrEmpty(formResult))
+    {
+        <p><strong>Form Result:</strong> @formResult</p>
+    }
+</section>
+
+<section class="demo-section">
+    <h2>Programmatic Control</h2>
+    <p>Control dialogs programmatically using component methods:</p>
+
+    <div class="demo-controls">
+        <PggmButton Appearance="primary" @onclick="OpenProgrammatically">
+            Open Programmatically
+        </PggmButton>
+        <PggmButton Appearance="secondary" @onclick="CloseProgrammatically">
+            Close Programmatically
+        </PggmButton>
+    </div>
+
+    <PggmDialog @ref="programmaticDialog" Modal="true" HeaderContent="Programmatic Control" OnOpen="OnProgrammaticOpen"
+        OnClose="OnProgrammaticClose" Actions="@programmaticDialogActions">
+        <ChildContent>
+            <p>This dialog is controlled programmatically using the component's methods.</p>
+            <p>Check the console or the status below to see when events are triggered.</p>
+        </ChildContent>
+    </PggmDialog>
+
+    @if (programmaticEvents.Any())
+    {
+        <div class="event-log">
+            <h4>Event Log:</h4>
+            <ul>
+                @foreach (var evt in programmaticEvents.TakeLast(5))
+                {
+                    <li>@evt</li>
+                }
+            </ul>
+        </div>
+    }
+</section>
+
+<style>
+    .demo-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+    }
+
+    .demo-controls {
+        margin: 1rem 0;
+    }
+
+    .demo-controls>* {
+        margin-right: 0.5rem;
+    }
+
+    .form-field {
+        margin-bottom: 1rem;
+    }
+
+    .form-field label {
+        display: block;
+        margin-bottom: 0.25rem;
+        font-weight: bold;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .event-log {
+        margin-top: 1rem;
+        padding: 1rem;
+        background-color: #f8f9fa;
+        border-radius: 4px;
+    }
+
+    .event-log ul {
+        margin: 0;
+        padding-left: 1.5rem;
+    }
+
+    .event-log li {
+        margin-bottom: 0.25rem;
+    }
+</style>
+
+@code {
+    // Dialog states
+    private bool isBasicDialogOpen = false;
+    private bool isModalDialogOpen = false;
+    private bool isTemplateDialogOpen = false;
+    private bool isActionDialogOpen = false;
+    private bool isFormDialogOpen = false;
+
+    // Action results
+    private string actionResult = "";
+    private string formResult = "";
+
+    // Programmatic control
+    private PggmDialog? programmaticDialog;
+    private List<string> programmaticEvents = new();
+
+    // Form model
+    private FormModel formModel = new();
+
+    // Action dialog actions
+    private List<DialogAction> actionDialogActions = new();
+    private List<DialogAction> formDialogActions = new();
+    private List<DialogAction> programmaticDialogActions = new();
+
+    public class FormModel
+    {
+        [Required(ErrorMessage = "Name is required")]
+        public string Name { get; set; } = "";
+
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Please enter a valid email address")]
+        public string Email { get; set; } = "";
+
+        public bool Subscribe { get; set; } = false;
+    }
+
+    protected override void OnInitialized()
+    {
+        // Initialize action dialog actions
+        actionDialogActions = new List<DialogAction>
+        {
+            new DialogAction
+            {
+                Text = "Cancel",
+                Appearance = "secondary",
+                OnClick = EventCallback.Factory.Create(this, CancelAction)
+            },
+            new DialogAction
+            {
+                Text = "Confirm",
+                Appearance = "primary",
+                OnClick = EventCallback.Factory.Create(this, ConfirmAction)
+            }
+        };
+
+        // Initialize form dialog actions
+        formDialogActions = new List<DialogAction>
+        {
+            new DialogAction
+            {
+                Text = "Cancel",
+                Appearance = "secondary",
+                OnClick = EventCallback.Factory.Create(this, CloseFormDialog)
+            },
+            new DialogAction
+            {
+                Text = "Save",
+                Appearance = "primary",
+                OnClick = EventCallback.Factory.Create(this, SubmitForm)
+            }
+        };
+
+        // Initialize programmatic dialog actions
+        programmaticDialogActions = new List<DialogAction>
+        {
+            new DialogAction
+            {
+                Text = "Close",
+                Appearance = "primary",
+                OnClick = EventCallback.Factory.Create(this, CloseProgrammatically)
+            }
+        };
+    }
+
+    // Basic dialog methods
+    private void OpenBasicDialog()
+    {
+        isBasicDialogOpen = true;
+    }
+
+    private void OnBasicDialogClose()
+    {
+        Console.WriteLine("Basic dialog closed");
+    }
+
+    // Modal dialog methods
+    private void OpenModalDialog()
+    {
+        isModalDialogOpen = true;
+    }
+
+    // Template dialog methods
+    private void OpenTemplateDialog()
+    {
+        isTemplateDialogOpen = true;
+    }
+
+    // Action dialog methods
+    private void OpenActionDialog()
+    {
+        isActionDialogOpen = true;
+        actionResult = "";
+    }
+
+    private void OnActionDialogCancel()
+    {
+        actionResult = "Action was cancelled";
+    }
+
+    private void CancelAction()
+    {
+        actionResult = "User clicked Cancel";
+        isActionDialogOpen = false;
+    }
+
+    private void ConfirmAction()
+    {
+        actionResult = "User clicked Confirm";
+        isActionDialogOpen = false;
+    }
+
+    // Form dialog methods
+    private void OpenFormDialog()
+    {
+        isFormDialogOpen = true;
+        formResult = "";
+        formModel = new FormModel(); // Reset form
+    }
+
+    private void OnFormDialogClose()
+    {
+        Console.WriteLine("Form dialog closed");
+    }
+
+    private void CloseFormDialog()
+    {
+        isFormDialogOpen = false;
+    }
+
+    private void SubmitForm()
+    {
+        if (!string.IsNullOrEmpty(formModel.Name) && !string.IsNullOrEmpty(formModel.Email))
+        {
+            formResult = $"Saved: {formModel.Name} ({formModel.Email}) - Newsletter: {(formModel.Subscribe ? "Yes" : "No")}";
+            isFormDialogOpen = false;
+        }
+    }
+
+    // Programmatic control methods
+    private async Task OpenProgrammatically()
+    {
+        if (programmaticDialog != null)
+        {
+            await programmaticDialog.OpenDialog();
+        }
+    }
+
+    private async Task CloseProgrammatically()
+    {
+        if (programmaticDialog != null)
+        {
+            await programmaticDialog.CloseDialog();
+        }
+    }
+
+    private void OnProgrammaticOpen()
+    {
+        programmaticEvents.Add($"{DateTime.Now:HH:mm:ss} - Dialog opened programmatically");
+        StateHasChanged();
+    }
+
+    private void OnProgrammaticClose()
+    {
+        programmaticEvents.Add($"{DateTime.Now:HH:mm:ss} - Dialog closed programmatically");
+        StateHasChanged();
+    }
+}
