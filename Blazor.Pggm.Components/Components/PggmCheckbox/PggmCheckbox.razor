@@ -1,0 +1,146 @@
+@inherits PggmComponentBase
+@namespace Blazor.Pggm.Components
+
+<pggm-checkbox @ref="ElementRef" @attributes="GetAttributes()">
+  @ChildContent
+  @if (!string.IsNullOrEmpty(Description))
+  {
+    <span slot="description">@Description</span>
+  }
+</pggm-checkbox>
+
+@code {
+  protected override string TagName => "pggm-checkbox";
+
+  /// <summary>
+  /// Whether the checkbox is checked
+  /// </summary>
+  [Parameter] public bool Checked { get; set; }
+
+  /// <summary>
+  /// Whether the checkbox is disabled
+  /// </summary>
+  [Parameter] public bool Disabled { get; set; }
+
+  /// <summary>
+  /// Whether the checkbox is required
+  /// </summary>
+  [Parameter] public bool Required { get; set; }
+
+  /// <summary>
+  /// Whether the checkbox is in an indeterminate state
+  /// </summary>
+  [Parameter] public bool Indeterminate { get; set; }
+
+  /// <summary>
+  /// The name attribute for the checkbox input
+  /// </summary>
+  [Parameter] public string? Name { get; set; }
+
+  /// <summary>
+  /// The value attribute for the checkbox input
+  /// </summary>
+  [Parameter] public string? Value { get; set; }
+
+  /// <summary>
+  /// Description text to show below the checkbox label
+  /// </summary>
+  [Parameter] public string? Description { get; set; }
+
+  /// <summary>
+  /// Event callback for when the checkbox state changes
+  /// </summary>
+  [Parameter] public EventCallback<bool> CheckedChanged { get; set; }
+
+  /// <summary>
+  /// Event callback for the change event
+  /// </summary>
+  [Parameter] public EventCallback<ChangeEventArgs> OnChange { get; set; }
+
+  private DotNetObjectReference<PggmCheckbox>? _dotNetRef;
+
+  protected override async Task InitializeWebComponentAsync()
+  {
+    _dotNetRef = DotNetObjectReference.Create(this);
+    await JSRuntime.InvokeVoidAsync("PggmComponents.setupCheckboxChangeHandler", ElementRef, _dotNetRef);
+  }
+
+  [JSInvokable]
+  public async Task HandleCheckboxChange(bool isChecked)
+  {
+    var oldValue = Checked;
+    
+    // Only proceed if the value actually changed
+    if (oldValue != isChecked)
+    {
+      Checked = isChecked;
+      
+      // Use InvokeAsync to ensure we're on the proper thread
+      await InvokeAsync(async () =>
+      {
+        if (CheckedChanged.HasDelegate)
+        {
+          await CheckedChanged.InvokeAsync(Checked);
+        }
+        
+        if (OnChange.HasDelegate)
+        {
+          var changeArgs = new ChangeEventArgs
+          {
+            Value = isChecked
+          };
+          await OnChange.InvokeAsync(changeArgs);
+        }
+        
+        StateHasChanged();
+      });
+    }
+  }
+
+  protected override Dictionary<string, object> GetAttributes()
+  {
+    var attributes = base.GetAttributes();
+
+    if (Checked)
+    {
+      attributes["checked"] = true;
+    }
+
+    if (Disabled)
+    {
+      attributes["disabled"] = true;
+    }
+
+    if (Required)
+    {
+      attributes["required"] = true;
+    }
+
+    if (Indeterminate)
+    {
+      attributes["indeterminate"] = true;
+    }
+
+    if (!string.IsNullOrEmpty(Name))
+    {
+      attributes["name"] = Name;
+    }
+
+    if (!string.IsNullOrEmpty(Value))
+    {
+      attributes["value"] = Value;
+    }
+
+    return attributes;
+  }
+
+  public override async ValueTask DisposeAsync()
+  {
+    if (_dotNetRef != null)
+    {
+      await JSRuntime.InvokeVoidAsync("PggmComponents.cleanupCheckboxChangeHandler", ElementRef);
+      _dotNetRef.Dispose();
+    }
+    await base.DisposeAsync();
+  }
+}

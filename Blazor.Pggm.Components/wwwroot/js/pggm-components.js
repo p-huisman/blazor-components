@@ -49,6 +49,39 @@ let bundleLoaded = false;
       accordionItemToggleListeners.delete(element);
     }
   };
+
+  // Checkbox change event handlers
+  const checkboxChangeListeners = new Map();
+
+  window.PggmComponents.setupCheckboxChangeHandler = function(element, dotNetRef) {
+    if (element) {
+      const handler = (event) => {
+        // Get the checked state from the web component
+        const isChecked = element.checked || false;
+        
+        // Use setTimeout to defer the callback and avoid heap lock issues
+        setTimeout(async () => {
+          try {
+            await dotNetRef.invokeMethodAsync('HandleCheckboxChange', isChecked);
+          } catch (error) {
+            console.error('Error invoking HandleCheckboxChange:', error);
+          }
+        }, 0);
+      };
+      
+      // Listen for change events on the checkbox web component
+      element.addEventListener('change', handler);
+      checkboxChangeListeners.set(element, handler);
+    }
+  };
+
+  window.PggmComponents.cleanupCheckboxChangeHandler = function(element) {
+    if (element && checkboxChangeListeners.has(element)) {
+      const handler = checkboxChangeListeners.get(element);
+      element.removeEventListener('change', handler);
+      checkboxChangeListeners.delete(element);
+    }
+  };
 })();
 
 // Initialize the PGGM design system
