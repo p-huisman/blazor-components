@@ -1,0 +1,10 @@
+@inherits PggmComponentBase
+@namespace Blazor.Pggm.Components
+
+<span slot="header" @ref="ElementRef">
+  @ChildContent
+</span>
+
+@code {
+  protected override string TagName => "span";
+}

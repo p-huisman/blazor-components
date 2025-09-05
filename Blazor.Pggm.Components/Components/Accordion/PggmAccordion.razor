@@ -1,0 +1,27 @@
+@inherits PggmComponentBase
+@namespace Blazor.Pggm.Components
+
+<pggm-accordion @ref="ElementRef" @attributes="GetAttributes()">
+  @ChildContent
+</pggm-accordion>
+
+@code {
+  protected override string TagName => "pggm-accordion";
+
+  /// <summary>
+  /// Whether multiple accordion items can be open at the same time
+  /// </summary>
+  [Parameter] public bool AllowMultiple { get; set; }
+
+  protected override Dictionary<string, object> GetAttributes()
+  {
+    var attributes = base.GetAttributes();
+
+    if (AllowMultiple)
+    {
+      attributes["allow-multiple"] = true;
+    }
+
+    return attributes;
+  }
+}

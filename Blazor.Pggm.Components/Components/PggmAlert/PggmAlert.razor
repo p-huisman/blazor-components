@@ -1,0 +1,97 @@
+@inherits PggmComponentBase
+@namespace Blazor.Pggm.Components
+
+<pggm-alert @ref="ElementRef" @attributes="GetAttributes()">
+  @ChildContent
+</pggm-alert>
+
+@code {
+  protected override string TagName => "pggm-alert";
+
+  /// <summary>
+  /// The alert type (informative, warning, error, success)
+  /// </summary>
+  [Parameter] public string Type { get; set; } = "informative";
+
+  /// <summary>
+  /// Whether the alert is closeable
+  /// </summary>
+  [Parameter] public bool Closeable { get; set; }
+
+  /// <summary>
+  /// The alert type (informative, warning, error, success)
+  /// </summary>
+  [Parameter] public string CloseLabel { get; set; } = "";
+
+  /// <summary>
+  /// Whether the alert is open/visible
+  /// </summary>
+  [Parameter] public bool Open { get; set; } = true;
+
+  
+  /// <summary>
+  /// Event callback for when the alert is dismissed
+  /// </summary>
+  [Parameter] public EventCallback OnDismiss { get; set; }
+
+  private DotNetObjectReference<PggmAlert>? dotNetRef;
+
+  protected override async Task OnAfterRenderAsync(bool firstRender)
+  {
+    if (firstRender)
+    {
+      dotNetRef = DotNetObjectReference.Create(this);
+      await JSRuntime.InvokeVoidAsync("PggmComponents.addCloseAlertListener", ElementRef, dotNetRef);
+    }
+    await base.OnAfterRenderAsync(firstRender);
+  }
+
+  [JSInvokable]
+  public async Task HandleCloseAlert()
+  {
+    await OnDismiss.InvokeAsync();
+  }
+
+  public override async ValueTask DisposeAsync()
+  {
+    if (dotNetRef != null)
+    {
+      await JSRuntime.InvokeVoidAsync("PggmComponents.removeCloseAlertListener", ElementRef);
+      dotNetRef.Dispose();
+    }
+    await base.DisposeAsync();
+  }
+
+  /// <summary>
+  /// Gets the combined attributes for the component
+  /// </summary>
+  protected override Dictionary<string, object> GetAttributes()
+  {
+    var attributes = base.GetAttributes();
+    
+    if (!string.IsNullOrEmpty(Type))
+      attributes["type"] = Type;
+      
+    if (Closeable)
+      attributes["closeable"] = true;
+
+    if (!string.IsNullOrEmpty(CloseLabel))
+      attributes["close-label"] = CloseLabel;
+      
+    if (Open)
+      attributes["open"] = true;
+    
+    return attributes;
+  }
+
+  /// <summary>
+  /// Alert type constants for better IntelliSense
+  /// </summary>
+  public static class AlertTypes
+  {
+    public const string Informative = "informative";
+    public const string Negative = "negative";
+    public const string Positive = "positive";
+    public const string Warning = "warning";
+  }
+}

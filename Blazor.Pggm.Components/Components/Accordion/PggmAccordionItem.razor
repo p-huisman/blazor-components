@@ -1,0 +1,74 @@
+@inherits PggmComponentBase
+@namespace Blazor.Pggm.Components
+@using Microsoft.AspNetCore.Components.Web
+
+<pggm-accordion-item @ref="ElementRef" @attributes="GetAttributes()">
+  @ChildContent
+</pggm-accordion-item>
+
+@code {
+  protected override string TagName => "pggm-accordion-item";
+
+  /// <summary>
+  /// Whether the accordion item is open/expanded
+  /// </summary>
+  [Parameter] public bool Open { get; set; }
+
+  /// <summary>
+  /// Whether the accordion item is disabled
+  /// </summary>
+  [Parameter] public bool Disabled { get; set; }
+
+  /// <summary>
+  /// Event callback fired when the accordion item is toggled (opened or closed)
+  /// </summary>
+  [Parameter] public EventCallback<EventArgs> OnAccordionItemToggle { get; set; }
+
+  private DotNetObjectReference<PggmAccordionItem>? dotNetRef;
+
+  protected override async Task OnAfterRenderAsync(bool firstRender)
+  {
+    if (firstRender && OnAccordionItemToggle.HasDelegate)
+    {
+      dotNetRef = DotNetObjectReference.Create(this);
+      await JSRuntime.InvokeVoidAsync("PggmComponents.addAccordionItemToggleListener", ElementRef, dotNetRef);
+    }
+    await base.OnAfterRenderAsync(firstRender);
+  }
+
+  [JSInvokable]
+  public async Task HandleAccordionItemToggle()
+  {
+    if (OnAccordionItemToggle.HasDelegate)
+    {
+      await OnAccordionItemToggle.InvokeAsync(EventArgs.Empty);
+    }
+  }
+
+  protected override Dictionary<string, object> GetAttributes()
+  {
+    var attributes = base.GetAttributes();
+
+    if (Open)
+    {
+      attributes["open"] = true;
+    }
+
+    if (Disabled)
+    {
+      attributes["disabled"] = true;
+    }
+
+    return attributes;
+  }
+
+  public override async ValueTask DisposeAsync()
+  {
+    if (dotNetRef != null)
+    {
+      await JSRuntime.InvokeVoidAsync("PggmComponents.removeAccordionItemToggleListener", ElementRef);
+      dotNetRef.Dispose();
+    }
+    await base.DisposeAsync();
+  }
+}

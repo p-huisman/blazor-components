@@ -1,0 +1,282 @@
+@page "/pggm-button-demo"
+
+@using Blazor.Pggm.Components
+@using Microsoft.AspNetCore.Components.Web
+
+<PageTitle>PGGM PggmButton Demo</PageTitle>
+
+<h1>PGGM PggmButton Component Demo</h1>
+
+<p>This page demonstrates the PggmButton component with various configurations and interactions.</p>
+
+<section class="demo-section">
+    <h2>Basic PggmButton Variants</h2>
+    <p>Different PggmButton appearances available in the PGGM design system:</p>
+
+    <div class="PggmButton-group">
+        <PggmButton Appearance="primary" OnClick="@(() => HandlePggmButtonClick("Primary"))">
+            Primary
+        </PggmButton>
+        <PggmButton Appearance="secondary" OnClick="@(() => HandlePggmButtonClick("Secondary"))">
+            Secondary
+        </PggmButton>
+        <PggmButton Appearance="tertiary" OnClick="@(() => HandlePggmButtonClick("Tertiary"))">
+            Tertiary
+        </PggmButton>
+        <PggmButton Appearance="sign-in" OnClick="@(() => HandlePggmButtonClick("Sign In"))">
+            Sign In
+        </PggmButton>
+    </div>
+</section>
+
+<section class="demo-section">
+    <h2>PggmButton States</h2>
+    <p>PggmButtons in different states:</p>
+
+    <div class="PggmButton-group">
+        <PggmButton Appearance="primary" OnClick="@(() => HandlePggmButtonClick("Enabled"))">
+            Enabled
+        </PggmButton>
+        <PggmButton Appearance="primary" Disabled="true">
+            Disabled
+        </PggmButton>
+        <PggmButton Appearance="secondary" Disabled="true">
+            Disabled Secondary
+        </PggmButton>
+    </div>
+</section>
+
+<section class="demo-section">
+    <h2>PggmButton Types</h2>
+    <p>Different PggmButton types for forms:</p>
+
+    <div class="form-example">
+        <div class="PggmButton-group">
+            <PggmButton Type="PggmButton" Appearance="primary" OnClick="@(() => HandlePggmButtonClick("Regular"))">
+                Regular
+            </PggmButton>
+            <PggmButton Type="submit" Appearance="primary" OnClick="@(() => HandlePggmButtonClick("Submit"))">
+                Submit
+            </PggmButton>
+            <PggmButton Type="reset" Appearance="secondary" OnClick="@(() => HandlePggmButtonClick("Reset"))">
+                Reset
+            </PggmButton>
+        </div>
+    </div>
+</section>
+
+<section class="demo-section">
+    <h2>Interactive Examples</h2>
+    <p>PggmButtons with various interactive behaviors:</p>
+
+    <div class="interactive-section">
+        <div class="counter-example">
+            <h3>Counter Example</h3>
+            <p>Current count: <strong>@counter</strong></p>
+            <div class="PggmButton-group">
+                <PggmButton Appearance="primary" OnClick="IncrementCounter">
+                    Increment (+1)
+                </PggmButton>
+                <PggmButton Appearance="secondary" OnClick="DecrementCounter">
+                    Decrement (-1)
+                </PggmButton>
+                <PggmButton Appearance="tertiary" OnClick="ResetCounter">
+                    Reset
+                </PggmButton>
+            </div>
+        </div>
+
+        <div class="toggle-example">
+            <h3>Toggle Example</h3>
+            <p>Toggle state: <strong>@(isToggled ? "ON" : "OFF")</strong></p>
+            <PggmButton Appearance="@(isToggled ? "primary" : "secondary")" OnClick="ToggleState">
+                @(isToggled ? "Turn OFF" : "Turn ON")
+            </PggmButton>
+        </div>
+
+        <div class="async-example">
+            <h3>Async Operation Example</h3>
+            <p>Simulate async operations with loading states:</p>
+            <PggmButton Appearance="primary" Disabled="@isLoading" OnClick="SimulateAsyncOperation">
+                @(isLoading ? "Loading..." : "Start Async Operation")
+            </PggmButton>
+            @if (asyncMessage != null)
+            {
+                <div class="message @(asyncMessage.Contains("completed") ? "success" : "info")">
+                    @asyncMessage
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+
+@if (!string.IsNullOrEmpty(lastClickedPggmButton))
+{
+    <div class="click-feedback">
+        <strong>Last clicked:</strong> @lastClickedPggmButton at @lastClickTime.ToString("HH:mm:ss")
+    </div>
+}
+
+@code {
+    private string lastClickedPggmButton = string.Empty;
+    private DateTime lastClickTime;
+    private int counter = 0;
+    private bool isToggled = false;
+    private bool isLoading = false;
+    private string? asyncMessage = null;
+
+    private void HandlePggmButtonClick(string PggmButtonName)
+    {
+        lastClickedPggmButton = PggmButtonName;
+        lastClickTime = DateTime.Now;
+        StateHasChanged();
+    }
+
+    private void IncrementCounter()
+    {
+        counter++;
+        HandlePggmButtonClick($"Increment (Counter: {counter})");
+    }
+
+    private void DecrementCounter()
+    {
+        counter--;
+        HandlePggmButtonClick($"Decrement (Counter: {counter})");
+    }
+
+    private void ResetCounter()
+    {
+        counter = 0;
+        HandlePggmButtonClick("Reset Counter");
+    }
+
+    private void ToggleState()
+    {
+        isToggled = !isToggled;
+        HandlePggmButtonClick($"Toggle ({(isToggled ? "ON" : "OFF")})");
+    }
+
+    private async Task SimulateAsyncOperation()
+    {
+        isLoading = true;
+        asyncMessage = "Operation started...";
+        StateHasChanged();
+
+        // Simulate async work
+        await Task.Delay(2000);
+
+        isLoading = false;
+        asyncMessage = "Operation completed successfully!";
+        HandlePggmButtonClick("Async Operation");
+        StateHasChanged();
+
+        // Clear message after 3 seconds
+        await Task.Delay(3000);
+        asyncMessage = null;
+        StateHasChanged();
+    }
+}
+
+<style>
+    .demo-section {
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .PggmButton-group {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+    }
+
+    .interactive-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .counter-example,
+    .toggle-example,
+    .async-example {
+        padding: 1.5rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
+
+    .counter-example h3,
+    .toggle-example h3,
+    .async-example h3 {
+        margin-top: 0;
+        color: #333;
+    }
+
+    .click-feedback {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #007bff;
+        color: white;
+        padding: 0.75rem 1rem;
+        border-radius: 4px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+    }
+
+    .message {
+        margin-top: 0.5rem;
+        padding: 0.5rem;
+        border-radius: 4px;
+    }
+
+    .message.info {
+        background-color: #d1ecf1;
+        border: 1px solid #bee5eb;
+        color: #0c5460;
+    }
+
+    .message.success {
+        background-color: #d4edda;
+        border: 1px solid #c3e6cb;
+        color: #155724;
+    }
+
+    /* Custom PggmButton styles */
+    .large-PggmButton {
+        padding: 1rem 2rem !important;
+        font-size: 1.1rem !important;
+    }
+
+    .rounded-PggmButton {
+        border-radius: 25px !important;
+    }
+
+    .shadow-PggmButton {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    .form-example {
+        background-color: #f8f9fa;
+        padding: 1rem;
+        border-radius: 4px;
+        border: 1px solid #dee2e6;
+    }
+
+    @@media (max-width: 768px) {
+        .PggmButton-group {
+            flex-direction: column;
+        }
+
+        .interactive-section {
+            grid-template-columns: 1fr;
+        }
+
+        .click-feedback {
+            position: static;
+            margin-top: 1rem;
+        }
+    }
+</style>

@@ -1,0 +1,181 @@
+@page "/accordion"
+
+@using Blazor.Pggm.Components
+@using Microsoft.AspNetCore.Components.Web
+
+<PageTitle>Accordion Demo</PageTitle>
+
+<h1>PGGM Accordion Components</h1>
+
+<p>This page demonstrates the PGGM Accordion and Accordion Item components.</p>
+
+<h2>Accordion</h2>
+
+<div class="demo-section">
+    <h3>Basic Accordion (Single Expand)</h3>
+    <p>Only one item can be open at a time (default behavior):</p>
+    <PggmAccordion>
+        <PggmAccordionItem>
+            <PggmAccordionItemTitle>Section 1</PggmAccordionItemTitle>
+            <p>This is the content of the first section. Only one section can be open at a time.</p>
+        </PggmAccordionItem>
+        <PggmAccordionItem>
+            <PggmAccordionItemTitle>Section 2</PggmAccordionItemTitle>
+            <p>This is the content of the second section. Opening this will close other sections.</p>
+        </PggmAccordionItem>
+        <PggmAccordionItem>
+            <PggmAccordionItemTitle>Section 3</PggmAccordionItemTitle>
+            <p>This is the content of the third section.</p>
+        </PggmAccordionItem>
+    </PggmAccordion>
+</div>
+
+<div class="demo-section">
+    <h3>Multi-Expand Accordion</h3>
+    <p>Multiple items can be open simultaneously:</p>
+    <PggmAccordion AllowMultiple="true">
+        <PggmAccordionItem>
+            <PggmAccordionItemTitle>Section A</PggmAccordionItemTitle>
+            <p>This accordion allows multiple sections to be open at the same time.</p>
+        </PggmAccordionItem>
+        <PggmAccordionItem Open="true">
+            <PggmAccordionItemTitle>Section B (Open by default)</PggmAccordionItemTitle>
+            <p>This section starts open, and others can be opened without closing this one.</p>
+        </PggmAccordionItem>
+        <PggmAccordionItem>
+            <PggmAccordionItemTitle>Section C</PggmAccordionItemTitle>
+            <p>You can have multiple sections open simultaneously in this accordion.</p>
+        </PggmAccordionItem>
+        <PggmAccordionItem Disabled="true">
+            <PggmAccordionItemTitle>Section D (Disabled)</PggmAccordionItemTitle>
+            <p>This section is disabled and cannot be interacted with.</p>
+        </PggmAccordionItem>
+    </PggmAccordion>
+</div>
+
+<div class="demo-section">
+    <h3>Interactive Accordion Demo</h3>
+    <p>
+        <label>
+            <input type="checkbox" @bind="allowMultiple" />
+            Allow Multiple Open
+        </label>
+    </p>
+    
+    <PggmAccordion AllowMultiple="allowMultiple">
+        <PggmAccordionItem>
+            <PggmAccordionItemTitle>Dynamic Section 1</PggmAccordionItemTitle>
+            <p>Allow Multiple is currently: @allowMultiple</p>
+            <p>Toggle the checkbox above to change the accordion behavior.</p>
+        </PggmAccordionItem>
+        <PggmAccordionItem>
+            <PggmAccordionItemTitle>Dynamic Section 2</PggmAccordionItemTitle>
+            <p>When AllowMultiple is false, only one section can be open.</p>
+            <p>When AllowMultiple is true, multiple sections can be open simultaneously.</p>
+        </PggmAccordionItem>
+        <PggmAccordionItem>
+            <PggmAccordionItemTitle>Dynamic Section 3</PggmAccordionItemTitle>
+            <p>Test the behavior by opening multiple sections and then toggling the AllowMultiple setting.</p>
+        </PggmAccordionItem>
+    </PggmAccordion>
+</div>
+
+<h2>Accordion Item</h2>
+
+<div class="demo-section">
+    <h3>Default Accordion Item</h3>
+    <PggmAccordionItem>
+        <PggmAccordionItemTitle>Accordion Item 1</PggmAccordionItemTitle>
+        <p>This is the content of the first accordion item.</p>
+    </PggmAccordionItem>
+</div>
+
+<div class="demo-section">
+    <h3>Open Accordion Item</h3>
+    <PggmAccordionItem Open="true">
+        <PggmAccordionItemTitle>Accordion Item 2 (Open by default)</PggmAccordionItemTitle>
+        <p>This accordion item is open by default using the Open parameter.</p>
+    </PggmAccordionItem>
+</div>
+
+<div class="demo-section">
+    <h3>Disabled Accordion Item</h3>
+    <PggmAccordionItem Disabled="true">
+        <PggmAccordionItemTitle>Accordion Item 3 (Disabled)</PggmAccordionItemTitle>
+        <p>This accordion item is disabled and cannot be interacted with.</p>
+    </PggmAccordionItem>
+</div>
+
+<div class="demo-section">
+    <h3>Event Handling Demo</h3>
+    <p>This accordion item demonstrates the OnAccordionItemToggle event:</p>
+    <p><strong>Toggle Count:</strong> @toggleCount</p>
+    <p><strong>Last Event Time:</strong> @lastToggleTime</p>
+    
+    <PggmAccordionItem OnAccordionItemToggle="HandleAccordionToggle">
+        <PggmAccordionItemTitle>Event Demo Accordion Item</PggmAccordionItemTitle>
+        <p>Click the title to toggle this accordion item and trigger the event.</p>
+        <p>The toggle count and timestamp will be updated above when you toggle this item.</p>
+    </PggmAccordionItem>
+</div>
+
+<div class="demo-section">
+    <h3>Interactive Demo</h3>
+    <p>
+        <label>
+            <input type="checkbox" @bind="isOpen" />
+            Open
+        </label>
+    </p>
+    <p>
+        <label>
+            <input type="checkbox" @bind="isDisabled" />
+            Disabled
+        </label>
+    </p>
+    
+    <PggmAccordionItem Open="isOpen" Disabled="isDisabled">
+        <PggmAccordionItemTitle>Interactive Accordion Item</PggmAccordionItemTitle>
+        <p>Use the checkboxes above to control this accordion item's state.</p>
+        <p>Open: @isOpen, Disabled: @isDisabled</p>
+    </PggmAccordionItem>
+</div>
+
+@code {
+    private bool isOpen = false;
+    private bool isDisabled = false;
+    private bool allowMultiple = false;
+    private int toggleCount = 0;
+    private string lastToggleTime = "Never";
+
+    private void HandleAccordionToggle(EventArgs args)
+    {
+        toggleCount++;
+        lastToggleTime = DateTime.Now.ToString("HH:mm:ss");
+        StateHasChanged();
+    }
+}
+
+<style>
+    .demo-section {
+        margin: 2rem 0;
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    
+    .demo-section h3 {
+        margin-top: 0;
+        color: #333;
+    }
+    
+    label {
+        display: inline-block;
+        margin-right: 1rem;
+        cursor: pointer;
+    }
+    
+    input[type="checkbox"] {
+        margin-right: 0.5rem;
+    }
+</style>

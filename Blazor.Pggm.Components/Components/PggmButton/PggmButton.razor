@@ -1,0 +1,58 @@
+@inherits PggmComponentBase
+@namespace Blazor.Pggm.Components
+
+<button is="pggm-button" @ref="ElementRef" @attributes="GetAttributes()" @onclick="OnClickHandler">
+  @ChildContent
+</button>
+
+@code {
+  protected override string TagName => "button";
+
+  /// <summary>
+  /// The button variant (primary, secondary, etc.)
+  /// </summary>
+  [Parameter] public string? Appearance { get; set; }
+
+  /// <summary>
+  /// Whether the button is disabled
+  /// </summary>
+  [Parameter] public bool Disabled { get; set; }
+
+  /// <summary>
+  /// The button type (button, submit, reset)
+  /// </summary>
+  [Parameter] public string Type { get; set; } = "button";
+
+  /// <summary>
+  /// Event callback for button click
+  /// </summary>
+  [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+  protected override Dictionary<string, object> GetAttributes()
+  {
+    var attributes = base.GetAttributes();
+
+    if (!string.IsNullOrEmpty(Appearance))
+    {
+      attributes["appearance"] = Appearance;
+    }
+
+
+    if (Disabled)
+    {
+      attributes["disabled"] = true;
+    }
+
+    attributes["type"] = Type;
+
+    return attributes;
+  }
+
+  private async Task OnClickHandler(MouseEventArgs args)
+  {
+    if (!Disabled && OnClick.HasDelegate)
+    {
+      await OnClick.InvokeAsync(args);
+    }
+  }
+}
