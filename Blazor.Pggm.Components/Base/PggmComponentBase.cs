@@ -64,11 +64,17 @@ public abstract class PggmComponentBase : ComponentBase, IAsyncDisposable
     {
         var attributes = new Dictionary<string, object>();
         
-        if (!string.IsNullOrEmpty(CssClass))
+        // Add CSS classes
+        var cssClasses = AttributeHelper.MergeCssClasses(CssClass, GetDefaultCssClasses());
+        if (!string.IsNullOrEmpty(cssClasses))
         {
-            attributes["class"] = CssClass;
+            attributes["class"] = cssClasses;
         }
+
+        // Add component-specific attributes
+        AddComponentAttributes(attributes);
         
+        // Add additional attributes (these take precedence)
         if (AdditionalAttributes != null)
         {
             foreach (var attr in AdditionalAttributes)
@@ -76,8 +82,24 @@ public abstract class PggmComponentBase : ComponentBase, IAsyncDisposable
                 attributes[attr.Key] = attr.Value;
             }
         }
-        
+
         return attributes;
+    }
+
+    /// <summary>
+    /// Override in derived classes to add component-specific attributes
+    /// </summary>
+    protected virtual void AddComponentAttributes(Dictionary<string, object> attributes)
+    {
+        // Default implementation does nothing
+    }
+
+    /// <summary>
+    /// Override in derived classes to provide default CSS classes
+    /// </summary>
+    protected virtual string? GetDefaultCssClasses()
+    {
+        return null;
     }
     
     public virtual ValueTask DisposeAsync()

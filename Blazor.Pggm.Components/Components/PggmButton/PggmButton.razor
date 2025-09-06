@@ -28,24 +28,11 @@
   /// </summary>
   [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
 
-  protected override Dictionary<string, object> GetAttributes()
+  protected override void AddComponentAttributes(Dictionary<string, object> attributes)
   {
-    var attributes = base.GetAttributes();
-
-    if (!string.IsNullOrEmpty(Appearance))
-    {
-      attributes["appearance"] = Appearance;
-    }
-
-
-    if (Disabled)
-    {
-      attributes["disabled"] = true;
-    }
-
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "appearance", Appearance);
+    AttributeHelper.SetBooleanAttribute(attributes, "disabled", Disabled);
     attributes["type"] = Type;
-
-    return attributes;
   }
 
   private async Task OnClickHandler(MouseEventArgs args)

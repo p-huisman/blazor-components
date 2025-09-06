@@ -13,15 +13,8 @@
   /// </summary>
   [Parameter] public bool AllowMultiple { get; set; }
 
-  protected override Dictionary<string, object> GetAttributes()
+  protected override void AddComponentAttributes(Dictionary<string, object> attributes)
   {
-    var attributes = base.GetAttributes();
-
-    if (AllowMultiple)
-    {
-      attributes["allow-multiple"] = true;
-    }
-
-    return attributes;
+    AttributeHelper.SetBooleanAttribute(attributes, "allow-multiple", AllowMultiple);
   }
 }

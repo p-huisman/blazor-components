@@ -97,41 +97,14 @@
     }
   }
 
-  protected override Dictionary<string, object> GetAttributes()
+  protected override void AddComponentAttributes(Dictionary<string, object> attributes)
   {
-    var attributes = base.GetAttributes();
-
-    if (Checked)
-    {
-      attributes["checked"] = true;
-    }
-
-    if (Disabled)
-    {
-      attributes["disabled"] = true;
-    }
-
-    if (Required)
-    {
-      attributes["required"] = true;
-    }
-
-    if (Indeterminate)
-    {
-      attributes["indeterminate"] = true;
-    }
-
-    if (!string.IsNullOrEmpty(Name))
-    {
-      attributes["name"] = Name;
-    }
-
-    if (!string.IsNullOrEmpty(Value))
-    {
-      attributes["value"] = Value;
-    }
-
-    return attributes;
+    AttributeHelper.SetBooleanAttribute(attributes, Constants.AttributeNames.Disabled, Disabled);
+    AttributeHelper.SetBooleanAttribute(attributes, Constants.AttributeNames.Required, Required);
+    AttributeHelper.SetBooleanAttribute(attributes, "checked", Checked);
+    AttributeHelper.SetBooleanAttribute(attributes, "indeterminate", Indeterminate);
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, Constants.AttributeNames.Name, Name);
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, Constants.AttributeNames.Value, Value);
   }
 
   public override async ValueTask DisposeAsync()
