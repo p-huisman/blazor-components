@@ -1,0 +1,74 @@
+@page "/fieldset-demo"
+@using Blazor.Pggm.Components
+
+<PageTitle>PGGM Fieldset Demo</PageTitle>
+
+<h1>PGGM Fieldset Component Demo</h1>
+
+<div class="demo-section">
+    <h3>Basic Fieldset with Label, Description and Error Messages</h3>
+    
+    <PggmFieldset>
+        <Label>
+            <label is="pggm-label" for="TextInput1">Naam</label>
+        </Label>
+        <Description>
+            <p>Vul uw naam in.</p>
+        </Description>
+        <Error>
+            <pggm-error-message slot="error" for="TextInput1" validity="valueMissing">
+                Naam is een verplicht veld. Vul uw naam in.
+            </pggm-error-message>
+            <pggm-error-message slot="error" for="TextInput1" validity="tooShort">
+                De naam is te kort. De naam moet tenminste 2 tekens lang zijn. Vul uw naam in.
+            </pggm-error-message>
+        </Error>
+        <ChildContent>
+            <input is="pggm-input" type="text" id="TextInput1" required minlength="2" />
+        </ChildContent>
+    </PggmFieldset>
+</div>
+
+<div class="demo-section">
+    <h3>Simple Fieldset with Only Label</h3>
+    
+    <PggmFieldset>
+        <Label>
+            <label is="pggm-label" for="TextInput2">Email</label>
+        </Label>
+        <ChildContent>
+            <input is="pggm-input" type="email" id="TextInput2" />
+        </ChildContent>
+    </PggmFieldset>
+</div>
+
+<div class="demo-section">
+    <h3>Fieldset with Description Only</h3>
+    
+    <PggmFieldset>
+        <Description>
+            <p>Vul een geldig telefoonnummer in (optioneel).</p>
+        </Description>
+        <ChildContent>
+            <input is="pggm-input" type="tel" id="TextInput3" placeholder="06-12345678" />
+        </ChildContent>
+    </PggmFieldset>
+</div>
+
+@code {
+    // You can add interactive demo logic here if needed
+}
+
+<style>
+    .demo-section {
+        margin: 2rem 0;
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    
+    .demo-section h3 {
+        margin-top: 0;
+        color: #333;
+    }
+</style>

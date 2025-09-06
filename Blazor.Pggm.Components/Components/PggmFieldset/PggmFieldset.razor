@@ -1,0 +1,45 @@
+@inherits PggmComponentBase
+@namespace Blazor.Pggm.Components
+
+<pggm-fieldset @ref="ElementRef" @attributes="GetAttributes()">
+    @if (Label != null)
+    {
+        <div slot="label">
+            @Label
+        </div>
+    }
+    @if (Description != null)
+    {
+        <div slot="description">
+            @Description
+        </div>
+    }
+    @if (Error != null)
+    {
+        <div slot="error">
+            @Error
+        </div>
+    }
+    @ChildContent
+</pggm-fieldset>
+
+@code {
+    protected override string TagName => "pggm-fieldset";
+
+    /// <summary>
+    /// Content for the label slot
+    /// </summary>
+    [Parameter] public RenderFragment? Label { get; set; }
+
+    /// <summary>
+    /// Content for the description slot
+    /// </summary>
+    [Parameter] public RenderFragment? Description { get; set; }
+
+    /// <summary>
+    /// Content for the error slot
+    /// </summary>
+    [Parameter] public RenderFragment? Error { get; set; }
+
+    // Note: ChildContent is inherited from PggmComponentBase, so we don't redeclare it here
+}
