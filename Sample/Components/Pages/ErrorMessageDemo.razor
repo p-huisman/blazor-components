@@ -3,328 +3,300 @@
 <h1>PGGM Error Message Component Demo</h1>
 
 <div class="demo-section">
-    <h2>Basic Error Messages</h2>
-    
-    <div class="demo-item">
-        <h3>Error Message Associated with Input Field</h3>
-        <label for="sample-input">Sample Input:</label>
-        <input id="sample-input" class="form-control" />
-        <PggmErrorMessage For="sample-input" Validity="@PggmErrorMessage.ValidityStates.ValueMissing">
-            This field is required.
-        </PggmErrorMessage>
-    </div>
+  <h2>Basic Error Messages</h2>
 
-    <div class="demo-item">
-        <h3>Multiple Validity States</h3>
-        <label for="multi-input">Multi-validation Input:</label>
-        <input id="multi-input" class="form-control" />
-        <PggmErrorMessage For="multi-input" Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.PatternMismatch}")">
-            This field is required and must match the specified pattern.
-        </PggmErrorMessage>
-    </div>
+  <div class="demo-item">
+    <h3>Error Message Associated with Input Field</h3>
+    <label for="sample-input">Sample Input:</label>
+    <input required id="sample-input" class="form-control" />
+    <PggmErrorMessage For="sample-input" Validity="@PggmErrorMessage.ValidityStates.ValueMissing">
+      This field is required.
+    </PggmErrorMessage>
+  </div>
+
+  <div class="demo-item">
+    <h3>Multiple Validity States</h3>
+    <label for="multi-input">Multi-validation Input:</label>
+    <input required pattern="^P.*" id="multi-input" class="form-control" />
+    <PggmErrorMessage For="multi-input"
+      Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.PatternMismatch}")">
+      This field is required and must match the specified pattern. (Starts with 'P')
+    </PggmErrorMessage>
+  </div>
 </div>
 
 <div class="demo-section">
-    <h2>Form Validation Examples</h2>
-    
-    <div class="demo-item">
-        <h3>Email Validation</h3>
-        <label for="email-input">Email Address:</label>
-        <input @bind="formModel.Email" 
-               @onblur="ValidateEmail"
-               id="email-input" 
-               type="email" 
-               class="form-control" 
-               placeholder="Enter your email" />
-        @if (!string.IsNullOrEmpty(emailValidityState))
-        {
-            <PggmErrorMessage For="email-input" Validity="@emailValidityState">
-                @GetEmailErrorMessage()
-            </PggmErrorMessage>
-        }
-    </div>
+  <h2>Form Validation Examples</h2>
 
-    <div class="demo-item">
-        <h3>Password Validation</h3>
-        <label for="password-input">Password (min 8 characters):</label>
-        <input @bind="formModel.Password" 
-               @onblur="ValidatePassword"
-               id="password-input" 
-               type="password" 
-               class="form-control" 
-               minlength="8"
-               placeholder="Enter password" />
-        @if (!string.IsNullOrEmpty(passwordValidityState))
-        {
-            <PggmErrorMessage For="password-input" Validity="@passwordValidityState">
-                @GetPasswordErrorMessage()
-            </PggmErrorMessage>
-        }
-    </div>
+  <div class="demo-item">
+    <h3>Email Validation</h3>
+    <label for="email-input">Email Address:</label>
+    <input @bind="formModel.Email" @onblur="ValidateEmail" id="email-input" type="email" class="form-control"
+      placeholder="Enter your email" />
+    @if (!string.IsNullOrEmpty(emailValidityState))
+    {
+      <PggmErrorMessage For="email-input" Validity="@emailValidityState">
+        @GetEmailErrorMessage()
+      </PggmErrorMessage>
+    }
+  </div>
 
-    <div class="demo-item">
-        <h3>Number Range Validation</h3>
-        <label for="age-input">Age (18-100):</label>
-        <input @bind="formModel.Age" 
-               @onblur="ValidateAge"
-               id="age-input" 
-               type="number" 
-               min="18" 
-               max="100"
-               class="form-control" 
-               placeholder="Enter your age" />
-        @if (!string.IsNullOrEmpty(ageValidityState))
-        {
-            <PggmErrorMessage For="age-input" Validity="@ageValidityState">
-                @GetAgeErrorMessage()
-            </PggmErrorMessage>
-        }
-    </div>
+  <div class="demo-item">
+    <h3>Password Validation</h3>
+    <label for="password-input">Password (min 8 characters):</label>
+    <input @bind="formModel.Password" @onblur="ValidatePassword" id="password-input" type="password"
+      class="form-control" minlength="8" placeholder="Enter password" />
+    @if (!string.IsNullOrEmpty(passwordValidityState))
+    {
+      <PggmErrorMessage For="password-input" Validity="@passwordValidityState">
+        @GetPasswordErrorMessage()
+      </PggmErrorMessage>
+    }
+  </div>
+
+  <div class="demo-item">
+    <h3>Number Range Validation</h3>
+    <label for="age-input">Age (18-100):</label>
+    <input @bind="formModel.Age" @onblur="ValidateAge" id="age-input" type="number" min="18" max="100"
+      class="form-control" placeholder="Enter your age" />
+    @if (!string.IsNullOrEmpty(ageValidityState))
+    {
+      <PggmErrorMessage For="age-input" Validity="@ageValidityState">
+        @GetAgeErrorMessage()
+      </PggmErrorMessage>
+    }
+  </div>
 </div>
 
 <div class="demo-section">
-    <h2>All Validity States Examples</h2>
-    
-    <div class="demo-item">
-        <h3>Pattern Mismatch</h3>
-        <label for="pattern-input">Phone Number (format: 123-456-7890):</label>
-        <input id="pattern-input" 
-               pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-               class="form-control" 
-               placeholder="123-456-7890" />
-        <PggmErrorMessage For="pattern-input" Validity="@PggmErrorMessage.ValidityStates.PatternMismatch">
-            Please enter a valid phone number in the format 123-456-7890.
-        </PggmErrorMessage>
-    </div>
+  <h2>All Validity States Examples</h2>
 
-    <div class="demo-item">
-        <h3>Too Long / Too Short</h3>
-        <label for="length-input">Username (5-15 characters):</label>
-        <input id="length-input" 
-               minlength="5" 
-               maxlength="15"
-               class="form-control" 
-               placeholder="Enter username" />
-        <PggmErrorMessage For="length-input" Validity="@PggmErrorMessage.ValidityStates.TooShort">
-            Username must be at least 5 characters long.
-        </PggmErrorMessage>
-        <PggmErrorMessage For="length-input" Validity="@PggmErrorMessage.ValidityStates.TooLong">
-            Username cannot be longer than 15 characters.
-        </PggmErrorMessage>
-    </div>
+  <div class="demo-item">
+    <h3>Pattern Mismatch</h3>
+    <label for="pattern-input">Phone Number (format: 123-456-7890):</label>
+    <input id="pattern-input" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" class="form-control" placeholder="123-456-7890" />
+    <PggmErrorMessage For="pattern-input" Validity="@PggmErrorMessage.ValidityStates.PatternMismatch">
+      Please enter a valid phone number in the format 123-456-7890.
+    </PggmErrorMessage>
+  </div>
 
-    <div class="demo-item">
-        <h3>Step Mismatch</h3>
-        <label for="step-input">Price (increments of 0.50):</label>
-        <input id="step-input" 
-               type="number" 
-               step="0.5"
-               class="form-control" 
-               placeholder="0.00" />
-        <PggmErrorMessage For="step-input" Validity="@PggmErrorMessage.ValidityStates.StepMismatch">
-            Price must be in increments of $0.50.
-        </PggmErrorMessage>
-    </div>
+  <div class="demo-item">
+    <h3>Too Long / Too Short</h3>
+    <label for="length-input">Username (5-15 characters):</label>
+    <input id="length-input" minlength="5" maxlength="15" class="form-control" placeholder="Enter username" />
+    <PggmErrorMessage For="length-input" Validity="@PggmErrorMessage.ValidityStates.TooShort">
+      Username must be at least 5 characters long.
+    </PggmErrorMessage>
+    <PggmErrorMessage For="length-input" Validity="@PggmErrorMessage.ValidityStates.TooLong">
+      Username cannot be longer than 15 characters.
+    </PggmErrorMessage>
+  </div>
 
-    <div class="demo-item">
-        <h3>Custom Error</h3>
-        <label for="custom-input">Custom Validation:</label>
-        <input @bind="customValue" 
-               @onblur="ValidateCustom"
-               id="custom-input" 
-               class="form-control" 
-               placeholder="Type 'forbidden' to see custom error" />
-        @if (showCustomError)
-        {
-            <PggmErrorMessage For="custom-input" Validity="@PggmErrorMessage.ValidityStates.CustomError">
-                This value is not allowed by our business rules.
-            </PggmErrorMessage>
-        }
-    </div>
+  <div class="demo-item">
+    <h3>Step Mismatch</h3>
+    <label for="step-input">Price (increments of 0.50):</label>
+    <input id="step-input" type="number" step="0.5" class="form-control" placeholder="0.00" />
+    <PggmErrorMessage For="step-input" Validity="@PggmErrorMessage.ValidityStates.StepMismatch">
+      Price must be in increments of $0.50.
+    </PggmErrorMessage>
+  </div>
+
+  <div class="demo-item">
+    <h3>Custom Error</h3>
+    <label for="custom-input">Custom Validation:</label>
+    <input @bind="customValue" @onblur="ValidateCustom" id="custom-input" class="form-control"
+      placeholder="Type 'forbidden' to see custom error" />
+    @if (showCustomError)
+    {
+      <PggmErrorMessage For="custom-input" Validity="@PggmErrorMessage.ValidityStates.CustomError">
+        This value is not allowed by our business rules.
+      </PggmErrorMessage>
+    }
+  </div>
 </div>
 
 <div class="demo-section">
-    <h2>Interactive Controls</h2>
-    
-    <div class="demo-item">
-        <button type="button" class="btn btn-primary" @onclick="ClearAllErrors">Clear All Errors</button>
-        <button type="button" class="btn btn-secondary" @onclick="ShowAllErrors">Show All Errors</button>
-    </div>
+  <h2>Interactive Controls</h2>
+
+  <div class="demo-item">
+    <button type="button" class="btn btn-primary" @onclick="ClearAllErrors">Clear All Errors</button>
+    <button type="button" class="btn btn-secondary" @onclick="ShowAllErrors">Show All Errors</button>
+  </div>
 </div>
 
 @code {
-    private FormModel formModel = new();
-    private string emailValidityState = "";
-    private string passwordValidityState = "";
-    private string ageValidityState = "";
-    private string customValue = "";
-    private bool showCustomError = false;
+  private FormModel formModel = new();
+  private string emailValidityState = "";
+  private string passwordValidityState = "";
+  private string ageValidityState = "";
+  private string customValue = "";
+  private bool showCustomError = false;
 
-    private void ValidateEmail()
-    {
-        emailValidityState = "";
-        
-        if (string.IsNullOrEmpty(formModel.Email))
-        {
-            emailValidityState = PggmErrorMessage.ValidityStates.ValueMissing;
-        }
-        else if (!formModel.Email.Contains("@"))
-        {
-            emailValidityState = PggmErrorMessage.ValidityStates.TypeMismatch;
-        }
-    }
+  private void ValidateEmail()
+  {
+    emailValidityState = "";
 
-    private void ValidatePassword()
+    if (string.IsNullOrEmpty(formModel.Email))
     {
-        passwordValidityState = "";
-        
-        if (string.IsNullOrEmpty(formModel.Password))
-        {
-            passwordValidityState = PggmErrorMessage.ValidityStates.ValueMissing;
-        }
-        else if (formModel.Password.Length < 8)
-        {
-            passwordValidityState = PggmErrorMessage.ValidityStates.TooShort;
-        }
+      emailValidityState = PggmErrorMessage.ValidityStates.ValueMissing;
     }
+    else if (!formModel.Email.Contains("@"))
+    {
+      emailValidityState = PggmErrorMessage.ValidityStates.TypeMismatch;
+    }
+  }
 
-    private void ValidateAge()
-    {
-        ageValidityState = "";
-        
-        if (formModel.Age == null)
-        {
-            ageValidityState = PggmErrorMessage.ValidityStates.ValueMissing;
-        }
-        else if (formModel.Age < 18)
-        {
-            ageValidityState = PggmErrorMessage.ValidityStates.RangeUnderflow;
-        }
-        else if (formModel.Age > 100)
-        {
-            ageValidityState = PggmErrorMessage.ValidityStates.RangeOverflow;
-        }
-    }
+  private void ValidatePassword()
+  {
+    passwordValidityState = "";
 
-    private void ValidateCustom()
+    if (string.IsNullOrEmpty(formModel.Password))
     {
-        showCustomError = customValue?.ToLower() == "forbidden";
+      passwordValidityState = PggmErrorMessage.ValidityStates.ValueMissing;
     }
+    else if (formModel.Password.Length < 8)
+    {
+      passwordValidityState = PggmErrorMessage.ValidityStates.TooShort;
+    }
+  }
 
-    private string GetEmailErrorMessage()
-    {
-        return emailValidityState switch
-        {
-            var state when state == PggmErrorMessage.ValidityStates.ValueMissing => "Email address is required.",
-            var state when state == PggmErrorMessage.ValidityStates.TypeMismatch => "Please enter a valid email address.",
-            _ => ""
-        };
-    }
+  private void ValidateAge()
+  {
+    ageValidityState = "";
 
-    private string GetPasswordErrorMessage()
+    if (formModel.Age == null)
     {
-        return passwordValidityState switch
-        {
-            var state when state == PggmErrorMessage.ValidityStates.ValueMissing => "Password is required.",
-            var state when state == PggmErrorMessage.ValidityStates.TooShort => "Password must be at least 8 characters long.",
-            _ => ""
-        };
+      ageValidityState = PggmErrorMessage.ValidityStates.ValueMissing;
     }
+    else if (formModel.Age < 18)
+    {
+      ageValidityState = PggmErrorMessage.ValidityStates.RangeUnderflow;
+    }
+    else if (formModel.Age > 100)
+    {
+      ageValidityState = PggmErrorMessage.ValidityStates.RangeOverflow;
+    }
+  }
 
-    private string GetAgeErrorMessage()
-    {
-        return ageValidityState switch
-        {
-            var state when state == PggmErrorMessage.ValidityStates.ValueMissing => "Age is required.",
-            var state when state == PggmErrorMessage.ValidityStates.RangeUnderflow => "You must be at least 18 years old.",
-            var state when state == PggmErrorMessage.ValidityStates.RangeOverflow => "Please enter a valid age.",
-            _ => ""
-        };
-    }
+  private void ValidateCustom()
+  {
+    showCustomError = customValue?.ToLower() == "forbidden";
+  }
 
-    private void ClearAllErrors()
+  private string GetEmailErrorMessage()
+  {
+    return emailValidityState switch
     {
-        emailValidityState = "";
-        passwordValidityState = "";
-        ageValidityState = "";
-        showCustomError = false;
-    }
+      var state when state == PggmErrorMessage.ValidityStates.ValueMissing => "Email address is required.",
+      var state when state == PggmErrorMessage.ValidityStates.TypeMismatch => "Please enter a valid email address.",
+      _ => ""
+    };
+  }
 
-    private void ShowAllErrors()
+  private string GetPasswordErrorMessage()
+  {
+    return passwordValidityState switch
     {
-        emailValidityState = PggmErrorMessage.ValidityStates.ValueMissing;
-        passwordValidityState = PggmErrorMessage.ValidityStates.TooShort;
-        ageValidityState = PggmErrorMessage.ValidityStates.RangeUnderflow;
-        showCustomError = true;
-    }
+      var state when state == PggmErrorMessage.ValidityStates.ValueMissing => "Password is required.",
+      var state when state == PggmErrorMessage.ValidityStates.TooShort => "Password must be at least 8 characters long.",
+      _ => ""
+    };
+  }
 
-    public class FormModel
+  private string GetAgeErrorMessage()
+  {
+    return ageValidityState switch
     {
-        public string Email { get; set; } = "";
-        public string Password { get; set; } = "";
-        public int? Age { get; set; }
-    }
+      var state when state == PggmErrorMessage.ValidityStates.ValueMissing => "Age is required.",
+      var state when state == PggmErrorMessage.ValidityStates.RangeUnderflow => "You must be at least 18 years old.",
+      var state when state == PggmErrorMessage.ValidityStates.RangeOverflow => "Please enter a valid age.",
+      _ => ""
+    };
+  }
+
+  private void ClearAllErrors()
+  {
+    emailValidityState = "";
+    passwordValidityState = "";
+    ageValidityState = "";
+    showCustomError = false;
+  }
+
+  private void ShowAllErrors()
+  {
+    emailValidityState = PggmErrorMessage.ValidityStates.ValueMissing;
+    passwordValidityState = PggmErrorMessage.ValidityStates.TooShort;
+    ageValidityState = PggmErrorMessage.ValidityStates.RangeUnderflow;
+    showCustomError = true;
+  }
+
+  public class FormModel
+  {
+    public string Email { get; set; } = "";
+    public string Password { get; set; } = "";
+    public int? Age { get; set; }
+  }
 }
 
 <style>
-    .demo-section {
-        margin-bottom: 2rem;
-        padding: 1rem;
-        border: 1px solid #e0e0e0;
-        border-radius: 4px;
-    }
+  .demo-section {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+  }
 
-    .demo-item {
-        margin-bottom: 1.5rem;
-        padding: 1rem;
-        background-color: #f9f9f9;
-        border-radius: 4px;
-    }
+  .demo-item {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+  }
 
-    .demo-item h3 {
-        margin-top: 0;
-        color: #333;
-        font-size: 1.1rem;
-    }
+  .demo-item h3 {
+    margin-top: 0;
+    color: #333;
+    font-size: 1.1rem;
+  }
 
-    .form-group {
-        margin-bottom: 1rem;
-    }
+  .form-group {
+    margin-bottom: 1rem;
+  }
 
-    label {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-weight: bold;
-    }
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+  }
 
-    .form-control {
-        width: 100%;
-        max-width: 400px;
-        padding: 0.5rem;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        margin-bottom: 0.5rem;
-    }
+  .form-control {
+    width: 100%;
+    max-width: 400px;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+  }
 
-    .btn {
-        padding: 0.5rem 1rem;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        margin-right: 0.5rem;
-    }
+  .btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 0.5rem;
+  }
 
-    .btn-primary {
-        background-color: #007bff;
-        color: white;
-    }
+  .btn-primary {
+    background-color: #007bff;
+    color: white;
+  }
 
-    .btn-secondary {
-        background-color: #6c757d;
-        color: white;
-    }
+  .btn-secondary {
+    background-color: #6c757d;
+    color: white;
+  }
 
-    .btn:hover {
-        opacity: 0.9;
-    }
+  .btn:hover {
+    opacity: 0.9;
+  }
 </style>
