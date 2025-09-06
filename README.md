@@ -15,8 +15,14 @@ A Blazor component library that wraps web components from the PGGM Design System
 ### Available Components
 
 - **Accordion**: Expandable/collapsible content sections
+- **Alert**: Informational messages and notifications with dismissal support
 - **Button**: Interactive buttons with various styles and sizes
-- **Card**: Content containers with elevation and styling options
+- **Checkbox**: Form input controls with validation support
+- **Dialog**: Modal dialogs with customizable actions and content
+- **Error Message**: Validation error display components
+- **Fieldset**: Form grouping containers with labels and descriptions
+- **Input**: Text input controls with comprehensive validation and event handling
+- **Slider**: Range input controls for numeric value selection
 
 ### Component Features
 
@@ -85,37 +91,42 @@ In your `_Imports.razor` file:
 }
 ```
 
-### Card Component
+### Input Component
 
 ```razor
-<Card Elevation="2" Variant="highlighted">
-    <h3>Card Title</h3>
-    <p>Card content goes here.</p>
-</Card>
+<!-- Basic text input with two-way binding -->
+<PggmInput @bind-Value="userInput" 
+           Type="@PggmInput.InputTypes.Text"
+           Placeholder="Enter your name..."
+           Required="true" />
+
+<!-- Email input with validation -->
+<PggmInput @bind-Value="emailAddress" 
+           Type="@PggmInput.InputTypes.Email"
+           Placeholder="Enter your email..."
+           OnChange="HandleEmailChange" />
+
+<!-- Number input with constraints -->
+<PggmInput @bind-Value="ageValue" 
+           Type="@PggmInput.InputTypes.Number"
+           Min="18"
+           Max="120"
+           Placeholder="Enter your age..." />
+
+@code {
+    private string? userInput = "";
+    private string? emailAddress = "";
+    private string? ageValue = "";
+    
+    private void HandleEmailChange(ChangeEventArgs args)
+    {
+        // Handle email validation or formatting
+    }
+}
 ```
 
 ### Nested Components
 
-```razor
-<Card Elevation="1">
-    <h3>User Profile</h3>
-    
-    <Accordion Title="Personal Information" Expanded="true">
-        <p><strong>Name:</strong> John Doe</p>
-        <p><strong>Email:</strong> john.doe@example.com</p>
-    </Accordion>
-    
-    <Accordion Title="Preferences">
-        <p><strong>Language:</strong> Dutch</p>
-        <p><strong>Notifications:</strong> Email</p>
-    </Accordion>
-    
-    <div style="margin-top: 1rem;">
-        <Button Variant="primary" OnClick="SaveProfile">Save</Button>
-        <Button Variant="secondary" OnClick="Cancel">Cancel</Button>
-    </div>
-</Card>
-```
 
 ## Component API Reference
 
@@ -141,15 +152,7 @@ In your `_Imports.razor` file:
 | CssClass | string? | null | Additional CSS classes |
 | ChildContent | RenderFragment? | null | Button content |
 
-### Card
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| Elevation | string? | null | Card elevation level |
-| Variant | string? | null | Card style variant |
-| Padded | bool | true | Whether the card has default padding |
-| CssClass | string? | null | Additional CSS classes |
-| ChildContent | RenderFragment? | null | Card content |
 
 ## Development
 

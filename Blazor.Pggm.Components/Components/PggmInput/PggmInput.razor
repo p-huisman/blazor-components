@@ -1,0 +1,207 @@
+@inherits PggmComponentBase
+@namespace Blazor.Pggm.Components
+
+<input is="pggm-input" @ref="ElementRef" @attributes="GetAttributes()" 
+       @onchange="OnChangeHandler" 
+       @oninput="OnInputHandler"
+       @onfocus="OnFocusHandler"
+       @onblur="OnBlurHandler" />
+
+@code {
+    protected override string TagName => "input";
+
+    /// <summary>
+    /// The current value of the input
+    /// </summary>
+    [Parameter] public string? Value { get; set; }
+
+    /// <summary>
+    /// Event callback for when the input value changes (two-way binding)
+    /// </summary>
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+
+    /// <summary>
+    /// The input type (text, email, password, etc.)
+    /// </summary>
+    [Parameter] public string Type { get; set; } = "text";
+
+    /// <summary>
+    /// Placeholder text for the input
+    /// </summary>
+    [Parameter] public string? Placeholder { get; set; }
+
+    /// <summary>
+    /// Whether the input is disabled
+    /// </summary>
+    [Parameter] public bool Disabled { get; set; }
+
+    /// <summary>
+    /// Whether the input is required
+    /// </summary>
+    [Parameter] public bool Required { get; set; }
+
+    /// <summary>
+    /// Whether the input is readonly
+    /// </summary>
+    [Parameter] public bool ReadOnly { get; set; }
+
+    /// <summary>
+    /// The name attribute for the input
+    /// </summary>
+    [Parameter] public string? Name { get; set; }
+
+    /// <summary>
+    /// Maximum length for the input value
+    /// </summary>
+    [Parameter] public int? MaxLength { get; set; }
+
+    /// <summary>
+    /// Minimum length for the input value
+    /// </summary>
+    [Parameter] public int? MinLength { get; set; }
+
+    /// <summary>
+    /// Pattern for input validation (regex)
+    /// </summary>
+    [Parameter] public string? Pattern { get; set; }
+
+    /// <summary>
+    /// Minimum value for number inputs
+    /// </summary>
+    [Parameter] public string? Min { get; set; }
+
+    /// <summary>
+    /// Maximum value for number inputs
+    /// </summary>
+    [Parameter] public string? Max { get; set; }
+
+    /// <summary>
+    /// Step value for number inputs
+    /// </summary>
+    [Parameter] public string? Step { get; set; }
+
+    /// <summary>
+    /// Event callback for the change event (when input loses focus)
+    /// </summary>
+    [Parameter] public EventCallback<ChangeEventArgs> OnChange { get; set; }
+
+    /// <summary>
+    /// Event callback for the input event (on every keystroke)
+    /// </summary>
+    [Parameter] public EventCallback<ChangeEventArgs> OnInput { get; set; }
+
+    /// <summary>
+    /// Event callback for when the input gains focus
+    /// </summary>
+    [Parameter] public EventCallback<FocusEventArgs> OnFocus { get; set; }
+
+    /// <summary>
+    /// Event callback for when the input loses focus
+    /// </summary>
+    [Parameter] public EventCallback<FocusEventArgs> OnBlur { get; set; }
+
+    protected override void AddComponentAttributes(Dictionary<string, object> attributes)
+    {
+        AttributeHelper.SetAttributeIfNotEmpty(attributes, "type", Type);
+        AttributeHelper.SetAttributeIfNotEmpty(attributes, Constants.AttributeNames.Value, Value);
+        AttributeHelper.SetAttributeIfNotEmpty(attributes, Constants.AttributeNames.Placeholder, Placeholder);
+        AttributeHelper.SetAttributeIfNotEmpty(attributes, Constants.AttributeNames.Name, Name);
+        AttributeHelper.SetAttributeIfNotEmpty(attributes, "pattern", Pattern);
+        AttributeHelper.SetAttributeIfNotEmpty(attributes, "min", Min);
+        AttributeHelper.SetAttributeIfNotEmpty(attributes, "max", Max);
+        AttributeHelper.SetAttributeIfNotEmpty(attributes, "step", Step);
+        
+        AttributeHelper.SetBooleanAttribute(attributes, Constants.AttributeNames.Disabled, Disabled);
+        AttributeHelper.SetBooleanAttribute(attributes, Constants.AttributeNames.Required, Required);
+        AttributeHelper.SetBooleanAttribute(attributes, Constants.AttributeNames.ReadOnly, ReadOnly);
+
+        if (MaxLength.HasValue)
+        {
+            attributes["maxlength"] = MaxLength.Value;
+        }
+
+        if (MinLength.HasValue)
+        {
+            attributes["minlength"] = MinLength.Value;
+        }
+    }
+
+    private async Task OnChangeHandler(ChangeEventArgs args)
+    {
+        var newValue = args.Value?.ToString();
+        
+        if (Value != newValue)
+        {
+            Value = newValue;
+            
+            if (ValueChanged.HasDelegate)
+            {
+                await ValueChanged.InvokeAsync(Value);
+            }
+        }
+
+        if (OnChange.HasDelegate)
+        {
+            await OnChange.InvokeAsync(args);
+        }
+    }
+
+    private async Task OnInputHandler(ChangeEventArgs args)
+    {
+        var newValue = args.Value?.ToString();
+        
+        if (Value != newValue)
+        {
+            Value = newValue;
+            
+            if (ValueChanged.HasDelegate)
+            {
+                await ValueChanged.InvokeAsync(Value);
+            }
+        }
+
+        if (OnInput.HasDelegate)
+        {
+            await OnInput.InvokeAsync(args);
+        }
+    }
+
+    private async Task OnFocusHandler(FocusEventArgs args)
+    {
+        if (OnFocus.HasDelegate)
+        {
+            await OnFocus.InvokeAsync(args);
+        }
+    }
+
+    private async Task OnBlurHandler(FocusEventArgs args)
+    {
+        if (OnBlur.HasDelegate)
+        {
+            await OnBlur.InvokeAsync(args);
+        }
+    }
+
+    /// <summary>
+    /// Input type constants for better IntelliSense
+    /// </summary>
+    public static class InputTypes
+    {
+        public const string Text = "text";
+        public const string Email = "email";
+        public const string Password = "password";
+        public const string Number = "number";
+        public const string Tel = "tel";
+        public const string Url = "url";
+        public const string Search = "search";
+        public const string Date = "date";
+        public const string Time = "time";
+        public const string DateTime = "datetime-local";
+        public const string Month = "month";
+        public const string Week = "week";
+        public const string Color = "color";
+        public const string Range = "range";
+        public const string File = "file";
+        public const string Hidden = "hidden";
+    }
+}

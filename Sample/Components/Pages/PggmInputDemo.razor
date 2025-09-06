@@ -1,0 +1,271 @@
+@page "/pggm-input-demo"
+@using Blazor.Pggm.Components
+
+<PageTitle>PGGM Input Component Demo</PageTitle>
+
+<h1>PGGM Input Component Demo</h1>
+
+<p class="lead">
+    This page demonstrates the PggmInput component, which is a wrapper for the pggm-input web component
+    using the custom built-in element pattern <code>&lt;input is="pggm-input" /&gt;</code>.
+</p>
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>Basic Input Examples</h2>
+        
+        <div class="mb-3">
+            <label for="text-input" class="form-label">Text Input</label>
+            <PggmInput @bind-Value="_textValue" 
+                       Type="@PggmInput.InputTypes.Text"
+                       Name="text-input"
+                       Placeholder="Enter some text..."
+                       OnChange="OnTextChanged" />
+            <small class="form-text text-muted">Current value: @_textValue</small>
+        </div>
+
+        <div class="mb-3">
+            <label for="email-input" class="form-label">Email Input</label>
+            <PggmInput @bind-Value="_emailValue" 
+                       Type="@PggmInput.InputTypes.Email"
+                       Name="email-input"
+                       Placeholder="Enter your email..."
+                       Required="true" />
+            <small class="form-text text-muted">Current value: @_emailValue</small>
+        </div>
+
+        <div class="mb-3">
+            <label for="password-input" class="form-label">Password Input</label>
+            <PggmInput @bind-Value="_passwordValue" 
+                       Type="@PggmInput.InputTypes.Password"
+                       Name="password-input"
+                       Placeholder="Enter password..."
+                       MinLength="8" />
+            <small class="form-text text-muted">Minimum 8 characters</small>
+        </div>
+
+        <div class="mb-3">
+            <label for="number-input" class="form-label">Number Input</label>
+            <PggmInput @bind-Value="_numberValue" 
+                       Type="@PggmInput.InputTypes.Number"
+                       Name="number-input"
+                       Min="0"
+                       Max="100"
+                       Step="1"
+                       Placeholder="Enter a number..." />
+            <small class="form-text text-muted">Range: 0-100, Current value: @_numberValue</small>
+        </div>
+
+        <div class="mb-3">
+            <label for="tel-input" class="form-label">Telephone Input</label>
+            <PggmInput @bind-Value="_telValue" 
+                       Type="@PggmInput.InputTypes.Tel"
+                       Name="tel-input"
+                       Pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                       Placeholder="123-456-7890" />
+            <small class="form-text text-muted">Format: 123-456-7890</small>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <h2>Advanced Input Examples</h2>
+        
+        <div class="mb-3">
+            <label for="search-input" class="form-label">Search Input</label>
+            <PggmInput @bind-Value="_searchValue" 
+                       Type="@PggmInput.InputTypes.Search"
+                       Name="search-input"
+                       Placeholder="Search..."
+                       OnInput="OnSearchInput" />
+            <small class="form-text text-muted">Live search: @_searchValue</small>
+        </div>
+
+        <div class="mb-3">
+            <label for="url-input" class="form-label">URL Input</label>
+            <PggmInput @bind-Value="_urlValue" 
+                       Type="@PggmInput.InputTypes.Url"
+                       Name="url-input"
+                       Placeholder="https://example.com" />
+            <small class="form-text text-muted">Current URL: @_urlValue</small>
+        </div>
+
+        <div class="mb-3">
+            <label for="date-input" class="form-label">Date Input</label>
+            <PggmInput @bind-Value="_dateValue" 
+                       Type="@PggmInput.InputTypes.Date"
+                       Name="date-input" />
+            <small class="form-text text-muted">Selected date: @_dateValue</small>
+        </div>
+
+        <div class="mb-3">
+            <label for="time-input" class="form-label">Time Input</label>
+            <PggmInput @bind-Value="_timeValue" 
+                       Type="@PggmInput.InputTypes.Time"
+                       Name="time-input" />
+            <small class="form-text text-muted">Selected time: @_timeValue</small>
+        </div>
+
+        <div class="mb-3">
+            <label for="color-input" class="form-label">Color Input</label>
+            <PggmInput @bind-Value="_colorValue" 
+                       Type="@PggmInput.InputTypes.Color"
+                       Name="color-input" />
+            <small class="form-text text-muted">Selected color: @_colorValue</small>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <h2>Input States</h2>
+        
+        <div class="row">
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label class="form-label">Disabled Input</label>
+                    <PggmInput Value="This input is disabled" 
+                               Disabled="true"
+                               Placeholder="Disabled input" />
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label class="form-label">Required Input</label>
+                    <PggmInput @bind-Value="_requiredValue" 
+                               Required="true"
+                               Placeholder="This field is required" />
+                    @if (string.IsNullOrEmpty(_requiredValue))
+                    {
+                        <small class="text-danger">This field is required</small>
+                    }
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label class="form-label">Read-only Input</label>
+                    <PggmInput Value="This input is read-only" 
+                               ReadOnly="true" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <h2>Event Handling Example</h2>
+        
+        <div class="mb-3">
+            <label for="event-input" class="form-label">Event Demo Input</label>
+            <PggmInput @bind-Value="_eventValue" 
+                       Name="event-input"
+                       Placeholder="Type here to see events..."
+                       OnChange="OnEventChange"
+                       OnInput="OnEventInput"
+                       OnFocus="OnEventFocus"
+                       OnBlur="OnEventBlur" />
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5>Event Log</h5>
+            </div>
+            <div class="card-body">
+                <div style="height: 200px; overflow-y: auto; font-family: monospace; font-size: 0.875rem;">
+                    @foreach (var logEntry in _eventLog.AsEnumerable().Reverse().Take(20))
+                    {
+                        <div class="mb-1">
+                            <span class="text-muted">[@logEntry.Timestamp.ToString("HH:mm:ss.fff")]</span>
+                            <span class="fw-bold text-primary">@logEntry.Event:</span>
+                            @logEntry.Details
+                        </div>
+                    }
+                </div>
+                @if (_eventLog.Count > 20)
+                {
+                    <small class="text-muted">Showing last 20 of @_eventLog.Count events</small>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    // Basic input values
+    private string? _textValue = "";
+    private string? _emailValue = "";
+    private string? _passwordValue = "";
+    private string? _numberValue = "";
+    private string? _telValue = "";
+    
+    // Advanced input values
+    private string? _searchValue = "";
+    private string? _urlValue = "";
+    private string? _dateValue = "";
+    private string? _timeValue = "";
+    private string? _colorValue = "#ff0000";
+    
+    // State examples
+    private string? _requiredValue = "";
+    
+    // Event demo
+    private string? _eventValue = "";
+    private readonly List<EventLogEntry> _eventLog = new();
+
+    private void OnTextChanged(ChangeEventArgs args)
+    {
+        LogEvent("Text Change", $"New value: '{args.Value}'");
+    }
+
+    private void OnSearchInput(ChangeEventArgs args)
+    {
+        LogEvent("Search Input", $"Live search: '{args.Value}'");
+    }
+
+    private void OnEventChange(ChangeEventArgs args)
+    {
+        LogEvent("Change Event", $"Value changed to: '{args.Value}'");
+    }
+
+    private void OnEventInput(ChangeEventArgs args)
+    {
+        LogEvent("Input Event", $"Input value: '{args.Value}'");
+    }
+
+    private void OnEventFocus(FocusEventArgs args)
+    {
+        LogEvent("Focus Event", "Input gained focus");
+    }
+
+    private void OnEventBlur(FocusEventArgs args)
+    {
+        LogEvent("Blur Event", "Input lost focus");
+    }
+
+    private void LogEvent(string eventName, string details)
+    {
+        _eventLog.Add(new EventLogEntry
+        {
+            Timestamp = DateTime.Now,
+            Event = eventName,
+            Details = details
+        });
+        
+        // Keep only last 100 events to prevent memory issues
+        if (_eventLog.Count > 100)
+        {
+            _eventLog.RemoveAt(0);
+        }
+        
+        StateHasChanged();
+    }
+
+    public class EventLogEntry
+    {
+        public DateTime Timestamp { get; set; }
+        public string Event { get; set; } = string.Empty;
+        public string Details { get; set; } = string.Empty;
+    }
+}
