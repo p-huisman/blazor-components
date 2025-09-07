@@ -1,0 +1,99 @@
+@page "/components/link"
+
+<h3>PggmLink Component Demo</h3>
+
+<div class="demo-section">
+    <h4>Basic Link (Inline)</h4>
+    <p>
+        This is a paragraph with an 
+        <PggmLink Href="https://www.pggm.nl" Target="_blank">inline link</PggmLink>
+        that doesn't use the standalone attribute.
+    </p>
+</div>
+
+<div class="demo-section">
+    <h4>Standalone Link (With Chevron Icon)</h4>
+    <PggmLink Href="https://www.pggm.nl" Target="_blank" Standalone="true">
+        Visit PGGM Website
+    </PggmLink>
+</div>
+
+<div class="demo-section">
+    <h4>Links with Different Targets</h4>
+    
+    <div class="link-group">
+        <PggmLink Href="https://www.pggm.nl" Target="_blank" Standalone="true">
+            External Link (New Tab)
+        </PggmLink>
+        
+        <PggmLink Href="/components" Standalone="true">
+            Internal Link (Same Tab)
+        </PggmLink>
+        
+        <PggmLink Href="mailto:contact@pggm.nl" Standalone="true">
+            Email Link
+        </PggmLink>
+        
+        <PggmLink Href="tel:+31123456789" Standalone="true">
+            Phone Link
+        </PggmLink>
+    </div>
+</div>
+
+<div class="demo-section">
+    <h4>Links with Additional Attributes</h4>
+    
+    <div class="link-group">
+        <PggmLink Href="https://www.pggm.nl" 
+                  Target="_blank" 
+                  Rel="noopener noreferrer"
+                  Standalone="true">
+            Secure External Link
+        </PggmLink>
+        
+        <PggmLink Href="/downloads/document.pdf" 
+                  Type="application/pdf"
+                  Standalone="true">
+            PDF Download
+        </PggmLink>
+    </div>
+</div>
+
+<div class="demo-section">
+    <h4>Mixed Content Example</h4>
+    <p>
+        You can use both inline links like <PggmLink Href="/components">this one</PggmLink> 
+        and standalone links in the same content area:
+    </p>
+    
+    <PggmLink Href="https://docs.microsoft.com/en-us/aspnet/core/blazor/" 
+              Target="_blank" 
+              Rel="noopener noreferrer"
+              Standalone="true">
+        Learn More About Blazor
+    </PggmLink>
+</div>
+
+<style>
+    .demo-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+    }
+    
+    .demo-section h4 {
+        margin-top: 0;
+        color: #333;
+    }
+    
+    .link-group {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .link-group > * {
+        align-self: flex-start;
+    }
+</style>

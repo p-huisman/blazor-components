@@ -1,0 +1,60 @@
+@inherits PggmComponentBase
+@namespace Blazor.Pggm.Components
+
+<a is="pggm-link" @ref="ElementRef" @attributes="GetAttributes()">
+  @ChildContent
+</a>
+
+@code {
+  protected override string TagName => "a";
+
+  /// <summary>
+  /// The URL that the link points to
+  /// </summary>
+  [Parameter] public string? Href { get; set; }
+
+  /// <summary>
+  /// The target window or frame for the link
+  /// </summary>
+  [Parameter] public string? Target { get; set; }
+
+  /// <summary>
+  /// Whether the link is rendered as a standalone element with chevron icon
+  /// If set, the link is rendered with a chevron icon
+  /// If not set, the link is just an inline href element with styles applied
+  /// </summary>
+  [Parameter] public bool Standalone { get; set; }
+
+  /// <summary>
+  /// The relationship between the current document and the linked document
+  /// </summary>
+  [Parameter] public string? Rel { get; set; }
+
+  /// <summary>
+  /// Specifies what media/device the linked document is optimized for
+  /// </summary>
+  [Parameter] public string? Media { get; set; }
+
+  /// <summary>
+  /// Specifies the MIME type of the linked document
+  /// </summary>
+  [Parameter] public string? Type { get; set; }
+
+  /// <summary>
+  /// Provides a hint about the linked document's language
+  /// </summary>
+  [Parameter] public string? HrefLang { get; set; }
+
+  protected override void AddComponentAttributes(Dictionary<string, object> attributes)
+  {
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "href", Href);
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "target", Target);
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "rel", Rel);
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "media", Media);
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "type", Type);
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "hreflang", HrefLang);
+    
+    // Set standalone attribute as a boolean attribute
+    AttributeHelper.SetBooleanAttribute(attributes, "standalone", Standalone);
+  }
+}
