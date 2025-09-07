@@ -1,0 +1,119 @@
+@page "/header"
+
+@using Blazor.Pggm.Components
+
+<PageTitle>Header Demo</PageTitle>
+
+<h1>Header Demo</h1>
+
+<div class="demo-section">
+    <h2>Different Heading Levels</h2>
+    
+    <div class="demo-item">
+        <h3>Level 1 (H1)</h3>
+        <PggmHeader Level="1">This is a Level 1 Heading</PggmHeader>
+    </div>
+    
+    <div class="demo-item">
+        <h3>Level 2 (H2)</h3>
+        <PggmHeader Level="2">This is a Level 2 Heading</PggmHeader>
+    </div>
+    
+    <div class="demo-item">
+        <h3>Level 3 (H3)</h3>
+        <PggmHeader Level="3">This is a Level 3 Heading</PggmHeader>
+    </div>
+    
+    <div class="demo-item">
+        <h3>Level 4 (H4)</h3>
+        <PggmHeader Level="4">This is a Level 4 Heading</PggmHeader>
+    </div>
+    
+    <div class="demo-item">
+        <h3>Level 5 (H5)</h3>
+        <PggmHeader Level="5">This is a Level 5 Heading</PggmHeader>
+    </div>
+</div>
+
+<div class="demo-section">
+    <h2>Different Sizes</h2>
+    
+    <div class="demo-item">
+        <h3>Size: 2xl</h3>
+        <PggmHeader Level="1" Size="2xl">Extra Large Header</PggmHeader>
+    </div>
+    
+    <div class="demo-item">
+        <h3>Size: xl</h3>
+        <PggmHeader Level="2" Size="xl">Large Header</PggmHeader>
+    </div>
+    
+    <div class="demo-item">
+        <h3>Size: lg</h3>
+        <PggmHeader Level="3" Size="lg">Medium Large Header</PggmHeader>
+    </div>
+    
+    <div class="demo-item">
+        <h3>Size: md</h3>
+        <PggmHeader Level="4" Size="md">Medium Header</PggmHeader>
+    </div>
+    
+    <div class="demo-item">
+        <h3>Size: sm</h3>
+        <PggmHeader Level="5" Size="sm">Small Header</PggmHeader>
+    </div>
+</div>
+
+<div class="demo-section">
+    <h2>Mixed Combinations</h2>
+    
+    <div class="demo-item">
+        <h3>H1 with Small Size</h3>
+        <PggmHeader Level="1" Size="sm">Large Heading Tag with Small Size</PggmHeader>
+    </div>
+    
+    <div class="demo-item">
+        <h3>H5 with Extra Large Size</h3>
+        <PggmHeader Level="5" Size="2xl">Small Heading Tag with Extra Large Size</PggmHeader>
+    </div>
+    
+    <div class="demo-item">
+        <h3>Default (No Size Specified)</h3>
+        <PggmHeader Level="2">Header with Default Styling</PggmHeader>
+    </div>
+</div>
+
+<style>
+    .demo-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+    }
+
+    .demo-section h2 {
+        margin-top: 0;
+        color: #333;
+        font-size: 1.2rem;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 0.5rem;
+    }
+
+    .demo-item {
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        background-color: #f9f9f9;
+        border-radius: 4px;
+    }
+
+    .demo-item h3 {
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+        color: #666;
+    }
+
+    .demo-item:last-child {
+        margin-bottom: 0;
+    }
+</style>

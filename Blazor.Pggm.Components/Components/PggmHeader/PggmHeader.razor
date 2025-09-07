@@ -1,0 +1,66 @@
+@using Microsoft.AspNetCore.Components
+@inherits PggmComponentBase
+@namespace Blazor.Pggm.Components
+
+@{
+    var headingTag = GetHeadingTag();
+    var attributes = GetAttributes();
+    if (!string.IsNullOrEmpty(Size))
+    {
+        attributes["size"] = Size;
+    }
+}
+
+@if (headingTag == "h1")
+{
+    <h1 is="pggm-heading-1" @attributes="attributes">@ChildContent</h1>
+}
+else if (headingTag == "h2")
+{
+    <h2 is="pggm-heading-2" @attributes="attributes">@ChildContent</h2>
+}
+else if (headingTag == "h3")
+{
+    <h3 is="pggm-heading-3" @attributes="attributes">@ChildContent</h3>
+}
+else if (headingTag == "h4")
+{
+    <h4 is="pggm-heading-4" @attributes="attributes">@ChildContent</h4>
+}
+else if (headingTag == "h5")
+{
+    <h5 is="pggm-heading-5" @attributes="attributes">@ChildContent</h5>
+}
+
+@code {
+    /// <summary>
+    /// The HTML tag name for the web component
+    /// </summary>
+    protected override string TagName => GetHeadingTag();
+
+    /// <summary>
+    /// The heading level (1-5)
+    /// </summary>
+    [Parameter] public int Level { get; set; } = 1;
+
+    /// <summary>
+    /// The size of the heading: "2xl", "xl", "lg", "md", "sm"
+    /// </summary>
+    [Parameter] public string? Size { get; set; }
+
+    /// <summary>
+    /// Gets the appropriate heading tag based on the Level parameter
+    /// </summary>
+    private string GetHeadingTag()
+    {
+        return Level switch
+        {
+            1 => "h1",
+            2 => "h2",
+            3 => "h3",
+            4 => "h4",
+            5 => "h5",
+            _ => "h1" // Default to h1 if invalid level
+        };
+    }
+}
