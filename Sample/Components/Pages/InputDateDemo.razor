@@ -1,0 +1,166 @@
+@page "/inputdate-demo"
+@using Blazor.Pggm.Components
+
+<PageTitle>Input Date Demo</PageTitle>
+
+<h1>PGGM Input Date Component Demo</h1>
+
+<div class="demo-section">
+    <h2>Basic Date Input</h2>
+    <p>Basic date input with dd-mm-yyyy format</p>
+    
+    <PggmInputDate @bind-Value="basicDate" 
+                   Format="@PggmInputDate.DateFormats.DayMonthYear"
+                   Name="basic-date"
+                   Required="true" />
+    
+    <p><strong>Current Value:</strong> @basicDate</p>
+</div>
+
+<div class="demo-section">
+    <h2>Date Range (Period) Input</h2>
+    <p>Date input with period enabled for date ranges</p>
+    
+    <PggmInputDate @bind-Value="periodDate" 
+                   Format="@PggmInputDate.DateFormats.DayMonthYear"
+                   Name="period-date"
+                   Period="true"
+                   Required="true" />
+    
+    <p><strong>Current Value:</strong> @periodDate</p>
+</div>
+
+<div class="demo-section">
+    <h2>Date Input with Min/Max</h2>
+    <p>Date input with minimum and maximum date restrictions</p>
+    
+    <PggmInputDate @bind-Value="restrictedDate" 
+                   Format="@PggmInputDate.DateFormats.DayMonthYear"
+                   Name="restricted-date"
+                   Min="01-01-2024"
+                   Max="31-12-2024"
+                   Required="true" />
+    
+    <p><strong>Current Value:</strong> @restrictedDate</p>
+    <p><em>Only dates between 01-01-2024 and 31-12-2024 are allowed</em></p>
+</div>
+
+<div class="demo-section">
+    <h2>Different Date Formats</h2>
+    
+    <h3>US Format (mm-dd-yyyy)</h3>
+    <PggmInputDate @bind-Value="usDate" 
+                   Format="@PggmInputDate.DateFormats.MonthDayYear"
+                   Name="us-date" />
+    <p><strong>Current Value:</strong> @usDate</p>
+    
+    <h3>ISO Format (yyyy-mm-dd)</h3>
+    <PggmInputDate @bind-Value="isoDate" 
+                   Format="@PggmInputDate.DateFormats.YearMonthDay"
+                   Name="iso-date" />
+    <p><strong>Current Value:</strong> @isoDate</p>
+</div>
+
+<div class="demo-section">
+    <h2>Disabled and ReadOnly States</h2>
+    
+    <h3>Disabled</h3>
+    <PggmInputDate Value="15-03-2024" 
+                   Format="@PggmInputDate.DateFormats.DayMonthYear"
+                   Name="disabled-date"
+                   Disabled="true" />
+    
+    <h3>ReadOnly</h3>
+    <PggmInputDate Value="20-03-2024" 
+                   Format="@PggmInputDate.DateFormats.DayMonthYear"
+                   Name="readonly-date"
+                   ReadOnly="true" />
+</div>
+
+<div class="demo-section">
+    <h2>Event Handling</h2>
+    <p>Date input with event handlers</p>
+    
+    <PggmInputDate @bind-Value="eventDate" 
+                   Format="@PggmInputDate.DateFormats.DayMonthYear"
+                   Name="event-date"
+                   OnChange="OnDateChange"
+                   OnFocus="OnDateFocus"
+                   OnBlur="OnDateBlur" />
+    
+    <p><strong>Current Value:</strong> @eventDate</p>
+    
+    <h3>Event Log:</h3>
+    <div class="event-log">
+        @foreach (var logEntry in eventLog)
+        {
+            <div>@logEntry</div>
+        }
+    </div>
+</div>
+
+@code {
+    private string? basicDate = "";
+    private string? periodDate = "";
+    private string? restrictedDate = "";
+    private string? usDate = "";
+    private string? isoDate = "";
+    private string? eventDate = "";
+    
+    private List<string> eventLog = new();
+
+    private void OnDateChange(ChangeEventArgs args)
+    {
+        eventLog.Insert(0, $"[{DateTime.Now:HH:mm:ss}] Change: {args.Value}");
+        if (eventLog.Count > 10) eventLog.RemoveAt(10);
+    }
+
+    private void OnDateFocus(FocusEventArgs args)
+    {
+        eventLog.Insert(0, $"[{DateTime.Now:HH:mm:ss}] Focus gained");
+        if (eventLog.Count > 10) eventLog.RemoveAt(10);
+    }
+
+    private void OnDateBlur(FocusEventArgs args)
+    {
+        eventLog.Insert(0, $"[{DateTime.Now:HH:mm:ss}] Focus lost");
+        if (eventLog.Count > 10) eventLog.RemoveAt(10);
+    }
+}
+
+<style>
+    .demo-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+    }
+    
+    .demo-section h2 {
+        margin-top: 0;
+        color: #333;
+        border-bottom: 1px solid #e0e0e0;
+        padding-bottom: 0.5rem;
+    }
+    
+    .demo-section h3 {
+        margin-top: 1.5rem;
+        color: #666;
+    }
+    
+    .event-log {
+        background-color: #f5f5f5;
+        padding: 1rem;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 0.9rem;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+    
+    .event-log div {
+        margin-bottom: 0.25rem;
+    }
+    
+   
+</style>

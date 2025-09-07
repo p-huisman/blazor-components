@@ -1,0 +1,173 @@
+@inherits PggmComponentBase
+@namespace Blazor.Pggm.Components
+
+<pggm-input-date @ref="ElementRef" @attributes="GetAttributes()" 
+                 @onchange="OnChangeHandler" 
+                 @oninput="OnInputHandler"
+                 @onfocus="OnFocusHandler"
+                 @onblur="OnBlurHandler">
+    @ChildContent
+</pggm-input-date>
+
+@code {
+    protected override string TagName => "pggm-input-date";
+
+    /// <summary>
+    /// The current value of the date input
+    /// </summary>
+    [Parameter] public string? Value { get; set; }
+
+    /// <summary>
+    /// Event callback for when the input value changes (two-way binding)
+    /// </summary>
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+
+    /// <summary>
+    /// The name attribute for the input
+    /// </summary>
+    [Parameter] public string? Name { get; set; }
+
+    /// <summary>
+    /// Whether the input is required
+    /// </summary>
+    [Parameter] public bool Required { get; set; }
+
+    /// <summary>
+    /// Whether the input is readonly
+    /// </summary>
+    [Parameter] public bool ReadOnly { get; set; }
+
+    /// <summary>
+    /// Whether the input is disabled
+    /// </summary>
+    [Parameter] public bool Disabled { get; set; }
+
+    /// <summary>
+    /// The date format the user must use to input a date (e.g., dd-mm-yyyy)
+    /// </summary>
+    [Parameter] public string? Format { get; set; }
+
+    /// <summary>
+    /// If true, a second input is visible so the user can input or select a begin and end date
+    /// </summary>
+    [Parameter] public bool Period { get; set; }
+
+    /// <summary>
+    /// Minimum allowed date value
+    /// </summary>
+    [Parameter] public string? Min { get; set; }
+
+    /// <summary>
+    /// Maximum allowed date value
+    /// </summary>
+    [Parameter] public string? Max { get; set; }
+
+    /// <summary>
+    /// Language for the date input
+    /// </summary>
+    [Parameter] public string? Lang { get; set; }
+
+    /// <summary>
+    /// Event callback for the change event (when input loses focus)
+    /// </summary>
+    [Parameter] public EventCallback<ChangeEventArgs> OnChange { get; set; }
+
+    /// <summary>
+    /// Event callback for the input event (on every keystroke)
+    /// </summary>
+    [Parameter] public EventCallback<ChangeEventArgs> OnInput { get; set; }
+
+    /// <summary>
+    /// Event callback for when the input gains focus
+    /// </summary>
+    [Parameter] public EventCallback<FocusEventArgs> OnFocus { get; set; }
+
+    /// <summary>
+    /// Event callback for when the input loses focus
+    /// </summary>
+    [Parameter] public EventCallback<FocusEventArgs> OnBlur { get; set; }
+
+    protected override void AddComponentAttributes(Dictionary<string, object> attributes)
+    {
+        AttributeHelper.SetAttributeIfNotEmpty(attributes, Constants.AttributeNames.Name, Name);
+        AttributeHelper.SetAttributeIfNotEmpty(attributes, Constants.AttributeNames.Value, Value);
+        AttributeHelper.SetAttributeIfNotEmpty(attributes, "format", Format);
+        AttributeHelper.SetAttributeIfNotEmpty(attributes, "min", Min);
+        AttributeHelper.SetAttributeIfNotEmpty(attributes, "max", Max);
+        AttributeHelper.SetAttributeIfNotEmpty(attributes, "lang", Lang);
+        
+        AttributeHelper.SetBooleanAttribute(attributes, Constants.AttributeNames.Required, Required);
+        AttributeHelper.SetBooleanAttribute(attributes, Constants.AttributeNames.ReadOnly, ReadOnly);
+        AttributeHelper.SetBooleanAttribute(attributes, Constants.AttributeNames.Disabled, Disabled);
+        AttributeHelper.SetBooleanAttribute(attributes, "period", Period);
+    }
+
+    private async Task OnChangeHandler(ChangeEventArgs args)
+    {
+        var newValue = args.Value?.ToString();
+        
+        if (Value != newValue)
+        {
+            Value = newValue;
+            
+            if (ValueChanged.HasDelegate)
+            {
+                await ValueChanged.InvokeAsync(Value);
+            }
+        }
+
+        if (OnChange.HasDelegate)
+        {
+            await OnChange.InvokeAsync(args);
+        }
+    }
+
+    private async Task OnInputHandler(ChangeEventArgs args)
+    {
+        var newValue = args.Value?.ToString();
+        
+        if (Value != newValue)
+        {
+            Value = newValue;
+            
+            if (ValueChanged.HasDelegate)
+            {
+                await ValueChanged.InvokeAsync(Value);
+            }
+        }
+
+        if (OnInput.HasDelegate)
+        {
+            await OnInput.InvokeAsync(args);
+        }
+    }
+
+    private async Task OnFocusHandler(FocusEventArgs args)
+    {
+        if (OnFocus.HasDelegate)
+        {
+            await OnFocus.InvokeAsync(args);
+        }
+    }
+
+    private async Task OnBlurHandler(FocusEventArgs args)
+    {
+        if (OnBlur.HasDelegate)
+        {
+            await OnBlur.InvokeAsync(args);
+        }
+    }
+
+    /// <summary>
+    /// Common date format constants for better IntelliSense
+    /// </summary>
+    public static class DateFormats
+    {
+        public const string DayMonthYear = "dd-mm-yyyy";
+        public const string MonthDayYear = "mm-dd-yyyy";
+        public const string YearMonthDay = "yyyy-mm-dd";
+        public const string DayMonthYearSlashes = "dd/mm/yyyy";
+        public const string MonthDayYearSlashes = "mm/dd/yyyy";
+        public const string YearMonthDaySlashes = "yyyy/mm/dd";
+    }
+}
