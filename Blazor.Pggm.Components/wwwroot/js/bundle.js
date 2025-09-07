@@ -152,7 +152,7 @@ var Mi = i => Maquette.h("svg", {
     d: "M5.293 8.293a1 1 0 0 1 1.414 0L12 13.586l5.293-5.293a1 1 0 1 1 1.414 1.414l-6 6a1 1 0 0 1-1.414 0l-6-6a1 1 0 0 1 0-1.414Z",
     "clip-rule": "evenodd"
 }));
-var no, N0, ro, Ze = class extends CustomElement {
+var no, N0, ro, Qe = class extends CustomElement {
     constructor() {
         super(...arguments);
         p(this, no);
@@ -221,26 +221,26 @@ N0 = function() {
 }
 ,
 ro = new WeakMap,
-Ze.style = Dt + I0,
-Ze.delegatesFocus = !0,
+Qe.style = Dt + I0,
+Qe.delegatesFocus = !0,
 m([Property({
     type: "boolean",
     attribute: "disabled",
     reflect: !0
-})], Ze.prototype, "disabled", 2),
+})], Qe.prototype, "disabled", 2),
 m([Property({
     type: "boolean",
     attribute: "open",
     reflect: !0
-})], Ze.prototype, "open", 2),
+})], Qe.prototype, "open", 2),
 m([Property({
     type: "string",
     attribute: "size"
-})], Ze.prototype, "size", 2),
-m([Query("button")], Ze.prototype, "buttonElement", 2),
-Ze = m([CustomElementConfig({
+})], Qe.prototype, "size", 2),
+m([Query("button")], Qe.prototype, "buttonElement", 2),
+Qe = m([CustomElementConfig({
     tagName: "pggm-accordion-item"
-})], Ze);
+})], Qe);
 var B0 = `:host{display:block}
 `;
 var pe, le, $1, R, F0, R0, Di, ao, J1, X1, so, Si, Ti, zi, ue = class extends CustomElementController {
@@ -440,44 +440,44 @@ St = m([CustomElementConfig({
 })], St);
 var H0 = `:host(:not([open])){display:none}.alert{display:grid;grid-template-areas:"icon header close-button" "icon content content";grid-template-columns:var(--pggm-alert-icon-size) 1fr 48px;grid-template-rows:auto auto;grid-gap:var(--pggm-alert-content-row-gap) var(--pggm-alert-column-gap);border-style:solid;border-width:var(--pggm-alert-border-width);gap:var(--pggm-alert-content-row-gap) var(--pggm-alert-column-gap);padding:var(--pggm-alert-padding-block-start) var(--pggm-alert-padding-inline-start) var(--pggm-alert-padding-block-end) var(--pggm-alert-padding-inline-end)}.alert-action{display:none;visibility:hidden}.alert-has-action{grid-template-areas:"icon header close-button" "icon content content" "icon action action";grid-template-rows:auto auto auto}.alert-has-action .alert-action{display:-webkit-box;display:-ms-flexbox;display:flex;gap:var(--pggm-alert-column-gap);grid-area:action;visibility:visible}.alert-close-button{all:unset;-webkit-appearance:none;-moz-appearance:none;appearance:none;-webkit-box-sizing:border-box;box-sizing:border-box;display:-webkit-box;display:-ms-flexbox;display:flex;grid-area:close-button;text-align:center;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;-ms-flex-line-pack:center;align-content:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;border-radius:var(--pggm-focus-outline-offset);cursor:pointer;min-height:48px;min-width:48px;position:relative}.alert-close-button>svg{-webkit-box-flex:1;-ms-flex:1;flex:1}.alert-icon--close{height:24px;width:24px}.alert-informative{background-color:var(--pggm-alert-informative-background-color);border-color:var(--pggm-alert-informative-border-color);color:var(--pggm-alert-informative-color)}.alert-informative .alert-icon--close{fill:var(--pggm-alert-informative-color)}.alert-negative{background-color:var(--pggm-alert-negative-background-color);border-color:var(--pggm-alert-negative-border-color);color:var(--pggm-alert-negative-color)}.alert-negative .alert-icon--close{fill:var(--pggm-alert-negative-color)}.alert-positive{background-color:var(--pggm-alert-positive-background-color);border-color:var(--pggm-alert-positive-border-color);color:var(--pggm-alert-positive-color)}.alert-positive .alert-icon--close{fill:var(--pggm-alert-positive-color)}.alert-warning{background-color:var(--pggm-alert-warning-background-color);border-color:var(--pggm-alert-warning-border-color);color:var(--pggm-alert-warning-color)}.alert-warning .alert-icon--close{fill:var(--pggm-alert-warning-color)}div.alert-icon{grid-area:icon;height:24px;padding:var(--pggm-alert-icon-padding-block-start) var(--pggm-alert-icon-padding-inline-start) var(--pggm-alert-icon-padding-block-end) var(--pggm-alert-icon-padding-inline-end);width:24px}.alert-icon--informative{fill:var(--pggm-alert-icon-informative-color)}.alert-icon--positive{fill:var(--pggm-alert-icon-positive-color)}.alert-icon--negative{fill:var(--pggm-alert-icon-negative-color)}.alert-icon--warning{fill:var(--pggm-alert-icon-warning-color)}.alert-header{grid-area:header;min-height:calc(var(--pggm-alert-icon-padding-block-start) + var(--pggm-alert-icon-size));-ms-flex-line-pack:end;align-content:end}#AlertHeader ::slotted(*){font-family:var(--pggm-alert-heading-font-family);font-size:var(--pggm-alert-heading-font-size);font-weight:var(--pggm-alert-heading-font-weight);line-height:var(--pggm-alert-heading-line-height);margin:0;padding:0}.alert-content{grid-area:content}#AlertAction ::slotted(:not(a):not(button)){display:none;visibility:hidden}#AlertAction ::slotted(*){margin:0;padding:0}#AlertAction ::slotted(a),#AlertAction ::slotted(button){--transition-duration:var(--pggm-motion-duration-xs,0s);all:unset;-webkit-appearance:none;-moz-appearance:none;appearance:none;-webkit-box-sizing:border-box;box-sizing:border-box;display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;text-align:center;text-align:var(--pggm-button-text-align,center);-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;-ms-flex-line-pack:center;align-content:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;background-color:var(--pggm-alert-icon-informative-color);border-color:var(--pggm-button-primary-border-color);border-radius:var(--pggm-button-border-radius);border-style:solid;border-style:var(--pggm-button-border-style,solid);border-width:var(--pggm-button-border-width);color:var(--pggm-button-primary-color);cursor:pointer;font-family:var(--pggm-button-font-family);font-size:var(--pggm-button-font-size);font-weight:var(--pggm-button-font-weight);gap:var(--pggm-button-column-gap);line-height:var(--pggm-button-line-height);max-width:-webkit-max-content;max-width:-moz-max-content;max-width:max-content;min-height:var(--pggm-button-min-block-size);min-width:var(--pggm-button-min-inline-size);padding:var(--pggm-button-padding-block-start) var(--pggm-button-padding-inline-end) var(--pggm-button-padding-block-end) var(--pggm-button-padding-inline-start);position:relative;-webkit-transition:background-color 0s;transition:background-color 0s;-webkit-transition:background-color var(--transition-duration);transition:background-color var(--transition-duration)}.alert-informative #AlertAction ::slotted(a),.alert-informative #AlertAction ::slotted(button){background-color:var(--pggm-alert-icon-informative-color)}.alert-negative #AlertAction ::slotted(a),.alert-negative #AlertAction ::slotted(button){background-color:var(--pggm-alert-icon-negative-color)}.alert-positive #AlertAction ::slotted(a),.alert-positive #AlertAction ::slotted(button){background-color:var(--pggm-alert-icon-positive-color)}.alert-warning #AlertAction ::slotted(a),.alert-warning #AlertAction ::slotted(button){background-color:var(--pggm-alert-icon-warning-color)}#AlertAction ::slotted(:not([disabled]):focus-visible){outline:var(--pggm-focus-outline-width) solid blue;outline:var(--pggm-focus-outline-width) var(--pggm-focus-outline-style,solid) var(--pggm-focus-outline-color,blue);outline-offset:var(--pggm-focus-outline-offset)}
 `;
-var Qe = "alert-icon"
+var Ge = "alert-icon"
   , Y0 = Maquette.h("svg", {
     viewBox: "0 0 24 24",
-    class: Qe
+    class: Ge
 }, Maquette.h("path", {
-    class: `${Qe}--informative`,
+    class: `${Ge}--informative`,
     "fill-rule": "evenodd",
     d: "M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16ZM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Z",
     "clip-rule": "evenodd"
 }), Maquette.h("path", {
-    class: `${Qe}--informative`,
+    class: `${Ge}--informative`,
     "fill-rule": "evenodd",
     d: "M11 8a1 1 0 0 1 1-1h.01a1 1 0 1 1 0 2H12a1 1 0 0 1-1-1ZM10 12a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v3a1 1 0 1 1 0 2h-1a1 1 0 0 1-1-1v-3a1 1 0 0 1-1-1Z",
     "clip-rule": "evenodd"
 }))
   , P0 = Maquette.h("svg", {
     viewBox: "0 0 24 24",
-    class: Qe
+    class: Ge
 }, Maquette.h("path", {
-    class: `${Qe}--negative`,
+    class: `${Ge}--negative`,
     "fill-rule": "evenodd",
     d: "M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16ZM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm10-5a1 1 0 0 1 1 1v4a1 1 0 1 1-2 0V8a1 1 0 0 1 1-1Zm-1 9a1 1 0 0 1 1-1h.01a1 1 0 1 1 0 2H12a1 1 0 0 1-1-1Z",
     "clip-rule": "evenodd"
 }))
   , V0 = Maquette.h("svg", {
     viewBox: "0 0 24 24",
-    class: Qe
+    class: Ge
 }, Maquette.h("path", {
-    class: `${Qe}--positive`,
+    class: `${Ge}--positive`,
     "fill-rule": "evenodd",
     d: "M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16ZM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm13.707-2.707a1 1 0 0 1 0 1.414l-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 1 1 1.414-1.414L11 12.586l3.293-3.293a1 1 0 0 1 1.414 0Z",
     "clip-rule": "evenodd"
 }))
   , j0 = Maquette.h("svg", {
     viewBox: "0 0 24 24",
-    class: Qe
+    class: Ge
 }, Maquette.h("path", {
-    class: `${Qe}--warning`,
+    class: `${Ge}--warning`,
     "fill-rule": "evenodd",
     d: "M9.37 3.506a3 3 0 0 1 5.24 0l7.095 12.242c.024.04.044.083.062.126A3 3 0 0 1 19.007 20H5l-.055-.001a1.005 1.005 0 0 1-.107 0 3 3 0 0 1-2.625-4.125c.018-.043.038-.085.062-.125L9.37 3.506ZM4.945 18 5 17.999h13.996a1 1 0 0 0 .937-1.32L12.875 4.501l-.01-.017a1 1 0 0 0-1.75 0l-.01.017-7.059 12.18A1 1 0 0 0 4.941 18h.004ZM12 7.999a1 1 0 0 1 1 1v2a1 1 0 0 1-2 0V9a1 1 0 0 1 1-1Zm-1 7a1 1 0 0 1 1-1h.01a1 1 0 0 1 0 2H12a1 1 0 0 1-1-1Z",
     "clip-rule": "evenodd"
@@ -487,7 +487,7 @@ var Qe = "alert-icon"
     height: "24",
     viewBox: "0 0 24 24"
 }, Maquette.h("path", {
-    class: `${Qe}--close`,
+    class: `${Ge}--close`,
     "fill-rule": "evenodd",
     d: "M5.293 5.293a1 1 0 0 1 1.414 0L12 10.586l5.293-5.293a1 1 0 1 1 1.414 1.414L13.414 12l5.293 5.293a1 1 0 0 1-1.414 1.414L12 13.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L10.586 12 5.293 6.707a1 1 0 0 1 0-1.414Z",
     "clip-rule": "evenodd"
@@ -1267,11 +1267,11 @@ var _0 = ["date", "period"], en = ["day", "month"], Fa = {
     fill: "none"
 }, Maquette.h("path", {
     d: "M7.647 13.62A1.29 1.29 0 0 0 8 12.729a1.29 1.29 0 0 0-.353-.891L2.938 6.935l4.71-4.954A1.304 1.304 0 0 0 7.49.354 1.18 1.18 0 0 0 5.923.25L.354 6.05A1.29 1.29 0 0 0 0 6.941c0 .334.127.654.353.89l5.57 5.801c.114.118.25.211.397.274a1.173 1.173 0 0 0 1.327-.286Z"
-})), Ie, dd, Ge, mt, dn, on, od, S = class extends CustomElement {
+})), Ie, dd, Je, mt, dn, on, od, S = class extends CustomElement {
     constructor() {
         super(...arguments);
         p(this, Ie);
-        p(this, Ge, null);
+        p(this, Je, null);
         p(this, mt, null);
         this.displayDate = new Date;
         this.type = "date";
@@ -1356,11 +1356,11 @@ var _0 = ["date", "period"], en = ["day", "month"], Fa = {
         return `${d}-${o}-${s}`
     }
     get startDate() {
-        return r(this, Ge)
+        return r(this, Je)
     }
     set startDate(e) {
-        (r(this, Ge) ? r(this, Ge).valueOf() : null) !== e.valueOf() && (v(this, Ge, e),
-        this.value = S.dateToYYYY_MM_DD(r(this, Ge)))
+        (r(this, Je) ? r(this, Je).valueOf() : null) !== e.valueOf() && (v(this, Je, e),
+        this.value = S.dateToYYYY_MM_DD(r(this, Je)))
     }
     get endDate() {
         return r(this, mt)
@@ -1368,8 +1368,8 @@ var _0 = ["date", "period"], en = ["day", "month"], Fa = {
     set endDate(e) {
         let d = r(this, mt) ? r(this, mt).valueOf() : null;
         e ? d !== e.valueOf() && (v(this, mt, e),
-        this.value = [S.dateToYYYY_MM_DD(r(this, Ge)), S.dateToYYYY_MM_DD(r(this, mt))]) : (v(this, mt, e),
-        this.value = S.dateToYYYY_MM_DD(r(this, Ge)))
+        this.value = [S.dateToYYYY_MM_DD(r(this, Je)), S.dateToYYYY_MM_DD(r(this, mt))]) : (v(this, mt, e),
+        this.value = S.dateToYYYY_MM_DD(r(this, Je)))
     }
     inRange(e, d) {
         d || (d = 0);
@@ -1432,7 +1432,7 @@ dd = function() {
     e || "nl")
 }
 ,
-Ge = new WeakMap,
+Je = new WeakMap,
 mt = new WeakMap,
 dn = function() {
     let e = new Date(this.displayDate);
@@ -2054,17 +2054,17 @@ var mn = `<svg
 var ja = ["badInput", "customError", "patternMismatch", "rangeOverflow", "rangeUnderflow", "stepMismatch", "tooLong", "tooShort", "typeMismatch", "valueMissing"], Wa = {
     fromAttribute: i => i ? i.split(" ").map(a => a.trim()).filter(a => ja.includes(a)) : null,
     toAttribute: i => !i || !i.join ? null : i.join(" ")
-}, V, Je, hn, fn, E1, A1, ko, Eo, me = class extends CustomElement {
+}, V, Xe, hn, fn, E1, A1, ko, Eo, me = class extends CustomElement {
     constructor() {
         super(...arguments);
-        p(this, Je);
+        p(this, Xe);
         this.visible = !1;
         this.validity = [];
         p(this, V);
         p(this, E1, e => {
             e.preventDefault(),
             r(this, V).setAttribute("aria-invalid", r(this, V).validity.valid ? "false" : "true");
-            let d = $(this, Je, fn).call(this);
+            let d = $(this, Xe, fn).call(this);
             this.visible = d,
             d && e.preventDefault()
         }
@@ -2113,7 +2113,7 @@ var ja = ["badInput", "customError", "patternMismatch", "rangeOverflow", "rangeU
     updated(e, d, o) {
         e === "visible" && o === !0 ? this.hasAttribute("visible") || this.setAttribute("visible", "") : e === "visible" && o === !1 && this.hasAttribute("visible") && this.removeAttribute("visible");
         let s = this.getRootNode();
-        e === "for" && s && o && $(this, Je, ko).call(this)
+        e === "for" && s && o && $(this, Xe, ko).call(this)
     }
     render() {
         return Maquette.h("div", {
@@ -2134,7 +2134,7 @@ var ja = ["badInput", "customError", "patternMismatch", "rangeOverflow", "rangeU
     }
     connectedCallback() {
         super.connectedCallback(),
-        $(this, Je, ko).call(this)
+        $(this, Xe, ko).call(this)
     }
     disconnectedCallback() {
         super.disconnectedCallback(),
@@ -2148,7 +2148,7 @@ var ja = ["badInput", "customError", "patternMismatch", "rangeOverflow", "rangeU
 }
 ;
 V = new WeakMap,
-Je = new WeakSet,
+Xe = new WeakSet,
 hn = function(e) {
     r(this, V) && (r(this, V).removeEventListener("invalid", r(this, E1)),
     me.allUpdateEvents.forEach(d => {
@@ -2179,8 +2179,8 @@ ko = function() {
     let e = this.getRootNode();
     if (e && !r(this, V)) {
         let d = e.querySelector(`#${this.for}`);
-        d ? $(this, Je, hn).call(this, d) : setTimeout( () => {
-            $(this, Je, ko).call(this)
+        d ? $(this, Xe, hn).call(this, d) : setTimeout( () => {
+            $(this, Xe, ko).call(this)
         }
         , 500)
     }
@@ -2591,34 +2591,34 @@ var zn = function(i) {
                   , E = ((o = c.flip) == null ? void 0 : o.overflows) || [];
                 if (x && nt.push(j[ge]),
                 C) {
-                    let Ve = En(s, h, F);
-                    nt.push(j[Ve[0]], j[Ve[1]])
+                    let je = En(s, h, F);
+                    nt.push(j[je[0]], j[je[1]])
                 }
                 if (E = [...E, {
                     placement: s,
                     overflows: nt
                 }],
-                !nt.every(Ve => Ve <= 0)) {
+                !nt.every(je => je <= 0)) {
                     var z, X;
-                    let Ve = (((z = c.flip) == null ? void 0 : z.index) || 0) + 1
-                      , Et = Gd[Ve];
+                    let je = (((z = c.flip) == null ? void 0 : z.index) || 0) + 1
+                      , Et = Gd[je];
                     if (Et && (!(C === "alignment" ? K !== Nt(Et) : !1) || E.every(ae => Nt(ae.placement) === K ? ae.overflows[0] > 0 : !0)))
                         return {
                             data: {
-                                index: Ve,
+                                index: je,
                                 overflows: E
                             },
                             reset: {
                                 placement: Et
                             }
                         };
-                    let je = (X = E.filter(We => We.overflows[0] <= 0).sort( (We, ae) => We.overflows[1] - ae.overflows[1])[0]) == null ? void 0 : X.placement;
-                    if (!je)
+                    let We = (X = E.filter(qe => qe.overflows[0] <= 0).sort( (qe, ae) => qe.overflows[1] - ae.overflows[1])[0]) == null ? void 0 : X.placement;
+                    if (!We)
                         switch (D) {
                         case "bestFit":
                             {
                                 var rt;
-                                let We = (rt = E.filter(ae => {
+                                let qe = (rt = E.filter(ae => {
                                     if (W) {
                                         let se = Nt(ae.placement);
                                         return se === K || se === "y"
@@ -2626,17 +2626,17 @@ var zn = function(i) {
                                     return !0
                                 }
                                 ).map(ae => [ae.placement, ae.overflows.filter(se => se > 0).reduce( (se, U) => se + U, 0)]).sort( (ae, se) => ae[1] - se[1])[0]) == null ? void 0 : rt[0];
-                                We && (je = We);
+                                qe && (We = qe);
                                 break
                             }
                         case "initialPlacement":
-                            je = b;
+                            We = b;
                             break
                         }
-                    if (s !== je)
+                    if (s !== We)
                         return {
                             reset: {
-                                placement: je
+                                placement: We
                             }
                         }
                 }
@@ -2706,7 +2706,7 @@ function he(i) {
     var a;
     return (i == null || (a = i.ownerDocument) == null ? void 0 : a.defaultView) || window
 }
-function Xe(i) {
+function _e(i) {
     var a;
     return (a = (Nn(i) ? i.ownerDocument : i.document) || window.document) == null ? void 0 : a.documentElement
 }
@@ -2783,7 +2783,7 @@ function pd(i) {
 function ft(i) {
     if (Xt(i) === "html")
         return i;
-    let a = i.assignedSlot || i.parentNode || In(i) && i.host || Xe(i);
+    let a = i.assignedSlot || i.parentNode || In(i) && i.host || _e(i);
     return In(a) ? a.host : a
 }
 function Rn(i) {
@@ -2894,7 +2894,7 @@ function ud(i, a, e, d) {
 }
 function No(i, a) {
     let e = pd(i).scrollLeft;
-    return a ? a.left + e : ud(Xe(i)).left + e
+    return a ? a.left + e : ud(_e(i)).left + e
 }
 function Wn(i, a) {
     let e = i.getBoundingClientRect()
@@ -2908,7 +2908,7 @@ function Wn(i, a) {
 function g2(i) {
     let {elements: a, rect: e, offsetParent: d, strategy: o} = i
       , s = o === "fixed"
-      , c = Xe(d)
+      , c = _e(d)
       , h = a ? gd(a.floating) : !1;
     if (d === c || h && s)
         return e;
@@ -2938,7 +2938,7 @@ function p2(i) {
     return Array.from(i.getClientRects())
 }
 function u2(i) {
-    let a = Xe(i)
+    let a = _e(i)
       , e = pd(i)
       , d = i.ownerDocument.body
       , o = Qt(a.scrollWidth, a.clientWidth, d.scrollWidth, d.clientWidth)
@@ -2956,7 +2956,7 @@ function u2(i) {
 var On = 25;
 function m2(i, a) {
     let e = he(i)
-      , d = Xe(i)
+      , d = _e(i)
       , o = e.visualViewport
       , s = d.clientWidth
       , c = d.clientHeight
@@ -3008,7 +3008,7 @@ function Hn(i, a, e) {
     if (a === "viewport")
         d = m2(i, e);
     else if (a === "document")
-        d = u2(Xe(i));
+        d = u2(_e(i));
     else if (Ae(a))
         d = f2(a, e);
     else {
@@ -3073,7 +3073,7 @@ function $2(i) {
 }
 function y2(i, a, e) {
     let d = Fe(a)
-      , o = Xe(a)
+      , o = _e(a)
       , s = e === "fixed"
       , c = ud(i, !0, s, a)
       , h = {
@@ -3112,7 +3112,7 @@ function Yn(i, a) {
     if (a)
         return a(i);
     let e = i.offsetParent;
-    return Xe(i) === e && (e = e.ownerDocument.body),
+    return _e(i) === e && (e = e.ownerDocument.body),
     e
 }
 function Kn(i, a) {
@@ -3154,7 +3154,7 @@ function w2(i) {
 }
 var k2 = {
     convertOffsetParentRelativeRectToViewportRelativeRect: g2,
-    getDocumentElement: Xe,
+    getDocumentElement: _e,
     getClippingRect: v2,
     getOffsetParent: Kn,
     getElementRects: x2,
@@ -3188,7 +3188,7 @@ function E2() {
 var A2 = {
     fromAttribute: i => i ? i.split(",").map(a => a.trim()).filter(a => a) : [],
     toAttribute: i => !i || !i.join ? "" : i.join(", ")
-}, G, xe, L, Gn, Jn, Xn, e1, _n, er, Bo, D1, Rt, Fo, Ro, Oo, _e, Ho, Yo, md, Po, Vo, S1, Y = class extends CustomElement {
+}, G, xe, L, Gn, Jn, Xn, e1, _n, er, Bo, D1, Rt, Fo, Ro, Oo, et, Ho, Yo, md, Po, Vo, S1, Y = class extends CustomElement {
     constructor() {
         var e;
         super();
@@ -3215,7 +3215,7 @@ var A2 = {
             is: "pggm-button",
             id: "AddFileButton",
             appearance: this.butonAppearance,
-            afterCreate: () => $(this, L, _e).call(this)
+            afterCreate: () => $(this, L, et).call(this)
         }, this.button ? this.button : "Bestand toevoegen")));
         p(this, Ro, () => this.mode === "button" ? null : Maquette.h("div", {
             id: "Dropzone",
@@ -3229,7 +3229,7 @@ var A2 = {
         }, Maquette.h("button", {
             id: "DropzoneButton",
             afterCreate: () => {
-                $(this, L, _e).call(this)
+                $(this, L, et).call(this)
             }
             ,
             disabled: this.disabled ? "disabled" : void 0,
@@ -3242,8 +3242,8 @@ var A2 = {
             key: d
         }, e.error ? Maquette.h("pggm-error-message", {
             visible: "visible",
-            afterCreate: () => $(this, L, _e).call(this),
-            afterRemoved: () => $(this, L, _e).call(this)
+            afterCreate: () => $(this, L, et).call(this),
+            afterRemoved: () => $(this, L, et).call(this)
         }, e.error) : null, Maquette.h("div", {
             "data-index": `${d}`,
             classes: {
@@ -3276,7 +3276,7 @@ var A2 = {
             }
             ),
             this.internals.setFormValue(r(this, L, e1)),
-            $(this, L, _e).call(this),
+            $(this, L, et).call(this),
             this.scheduleRender())
         }
         );
@@ -3285,7 +3285,7 @@ var A2 = {
                 let d = parseInt(e.target.dataset.index, 10);
                 r(this, xe).splice(d, 1),
                 this.internals.setFormValue(r(this, L, e1)),
-                $(this, L, _e).call(this),
+                $(this, L, et).call(this),
                 this.scheduleRender()
             }
         }
@@ -3331,7 +3331,7 @@ var A2 = {
             }
             ),
             this.internals.setFormValue(r(this, L, e1)),
-            $(this, L, _e).call(this),
+            $(this, L, et).call(this),
             this.scheduleRender(),
             r(this, G).value = "",
             v(this, D1, !1),
@@ -3377,7 +3377,7 @@ var A2 = {
             removed: !1
         }),
         this.internals.setFormValue(r(this, L, e1)),
-        $(this, L, _e).call(this),
+        $(this, L, et).call(this),
         this.scheduleRender()
     }
     get files() {
@@ -3430,7 +3430,7 @@ var A2 = {
             o ? this.internals.setFormValue(r(this, L, e1)) : this.internals.setFormValue(null)
         }
         ) : e === "required" && o === !0 && this.addFileButton && requestAnimationFrame( () => {
-            $(this, L, _e).call(this)
+            $(this, L, et).call(this)
         }
         )
     }
@@ -3562,7 +3562,7 @@ Rt = new WeakMap,
 Fo = new WeakMap,
 Ro = new WeakMap,
 Oo = new WeakMap,
-_e = function() {
+et = function() {
     let e = this.validity
       , d = this.mode === "button" ? this.addFileButton : this.dropzoneButton;
     if (e.valid)
@@ -3989,7 +3989,7 @@ function T2() {
             }
             ,
             W.prototype.add = function(t, n) {
-                Ve(this, t.g, n)
+                je(this, t.g, n)
             }
             ;
             function Gd(t, n) {
@@ -4002,7 +4002,7 @@ function T2() {
                         if (u.l) {
                             u = X(n, f);
                             for (var M = 0; M < u.length; M++)
-                                Ve(t, f, y ? u[M].clone() : u[M])
+                                je(t, f, y ? u[M].clone() : u[M])
                         } else
                             u = nt(n, f),
                             y ? (y = nt(t, f)) ? Gd(y, u) : re(t, f, u.clone()) : re(t, f, u)
@@ -4077,7 +4077,7 @@ function T2() {
                 t.h[n] = l,
                 t.g && (t.g[n] = l)
             }
-            function Ve(t, n, l) {
+            function je(t, n, l) {
                 t.h[n] || (t.h[n] = []),
                 t.h[n].push(l),
                 t.g && delete t.g[n]
@@ -4088,17 +4088,17 @@ function T2() {
                     g != 0 && l.push(new I(g,n[g]));
                 return new A(t,l)
             }
-            function je() {}
-            je.prototype.g = function(t) {
+            function We() {}
+            We.prototype.g = function(t) {
                 throw new t.h,
                 Error("Unimplemented")
             }
             ,
-            je.prototype.h = function(t, n) {
+            We.prototype.h = function(t, n) {
                 if (t.h == 11 || t.h == 10)
                     return n instanceof W ? n : this.g(t.s.prototype.m(), n);
                 if (t.h == 14)
-                    return typeof n == "string" && We.test(n) && (t = Number(n),
+                    return typeof n == "string" && qe.test(n) && (t = Number(n),
                     0 < t) ? t : n;
                 if (!t.o)
                     return n;
@@ -4106,14 +4106,14 @@ function T2() {
                 t === String) {
                     if (typeof n == "number")
                         return String(n)
-                } else if (t === Number && typeof n == "string" && (n === "Infinity" || n === "-Infinity" || n === "NaN" || We.test(n)))
+                } else if (t === Number && typeof n == "string" && (n === "Infinity" || n === "-Infinity" || n === "NaN" || qe.test(n)))
                     return Number(n);
                 return n
             }
             ;
-            var We = /^-?[0-9]+$/;
+            var qe = /^-?[0-9]+$/;
             function ae() {}
-            d(ae, je),
+            d(ae, We),
             ae.prototype.g = function(t, n) {
                 return t = new t.h,
                 t.l = this,
@@ -4125,7 +4125,7 @@ function T2() {
             function se() {}
             d(se, ae),
             se.prototype.h = function(t, n) {
-                return t.h == 8 ? !!n : je.prototype.h.apply(this, arguments)
+                return t.h == 8 ? !!n : We.prototype.h.apply(this, arguments)
             }
             ,
             se.prototype.g = function(t, n) {
@@ -5177,7 +5177,7 @@ function T2() {
             }
             ;
             function b1(t, n, l) {
-                return l == "001" ? qe(t, "" + n) : qe(t, l)
+                return l == "001" ? Ke(t, "" + n) : Ke(t, l)
             }
             function oa(t, n) {
                 var l = J;
@@ -5192,7 +5192,7 @@ function T2() {
                         return g + " " + l.format(t, 2)
                 } else if (g == Q1(l, n))
                     return l.format(t, 2);
-                var f = qe(l, n)
+                var f = Ke(l, n)
                   , y = z(f, 11);
                 return n = "",
                 j(f, 17) ? n = z(f, 17) : Se(jr, y) && (n = y),
@@ -5248,7 +5248,7 @@ function T2() {
                 var l = J;
                 if (!f1(t))
                     return null;
-                n = a0(qe(l, t), n);
+                n = a0(Ke(l, t), n);
                 try {
                     if (j(n, 6)) {
                         var g = E(n, 6);
@@ -5290,7 +5290,7 @@ function T2() {
             function pi(t, n) {
                 return ve(t, E(n, 1)) ? ve(t, E(n, 5)) ? 4 : ve(t, E(n, 4)) ? 3 : ve(t, E(n, 6)) ? 5 : ve(t, E(n, 8)) ? 6 : ve(t, E(n, 7)) ? 7 : ve(t, E(n, 21)) ? 8 : ve(t, E(n, 25)) ? 9 : ve(t, E(n, 28)) ? 10 : ve(t, E(n, 2)) ? E(n, 18) || ve(t, E(n, 3)) ? 2 : 0 : !E(n, 18) && ve(t, E(n, 3)) ? 1 : -1 : -1
             }
-            function qe(t, n) {
+            function Ke(t, n) {
                 if (n == null)
                     return null;
                 n = n.toUpperCase();
@@ -5331,7 +5331,7 @@ function T2() {
                         n = At(n);
                         for (var g, u = l.length, f = 0; f < u; f++) {
                             g = l[f];
-                            var y = qe(t, g);
+                            var y = Ke(t, g);
                             if (j(y, 23)) {
                                 if (n.search(E(y, 23)) == 0) {
                                     t = g;
@@ -5351,7 +5351,7 @@ function T2() {
                 t == null ? "ZZ" : t[0]
             }
             function Q1(t, n) {
-                if (t = qe(t, n),
+                if (t = Ke(t, n),
                 t == null)
                     throw Error("Invalid region code: " + n);
                 return z(t, 10)
@@ -5511,7 +5511,7 @@ function T2() {
                     u = ""
                 }
                 0 < u.length && re(n, 3, u),
-                f = qe(t, l),
+                f = Ke(t, l),
                 u = new U,
                 y = 0,
                 M = g.toString();
@@ -5551,7 +5551,7 @@ function T2() {
                 n
             }
             K1.prototype.ia = function(t) {
-                var n = qe(this, Z1(this, t));
+                var n = Ke(this, Z1(this, t));
                 return n == null ? !0 : (t = At(t),
                 !ve(t, E(n, 24)))
             }
@@ -5584,7 +5584,7 @@ function T2() {
               , h0 = /[- ]/;
             function hi(t, n) {
                 return n = f1(n) ? Q1(t.pa, n) : 0,
-                t = qe(t.pa, Ct(n)),
+                t = Ke(t.pa, Ct(n)),
                 t != null ? t : m0
             }
             function f0(t) {
@@ -5755,7 +5755,7 @@ function T2() {
                 return l == 0 ? !1 : (Z(t.g),
                 t.g.g(n.toString()),
                 n = Ct(l),
-                n == "001" ? t.l = qe(t.pa, "" + l) : n != t.la && (t.l = hi(t, n)),
+                n == "001" ? t.l = Ke(t.pa, "" + l) : n != t.la && (t.l = hi(t, n)),
                 t.h.g("" + l).g(" "),
                 t.o = "",
                 !0)
@@ -6197,10 +6197,10 @@ function T2() {
                 throw Error("Internal error")
             }
             var G1 = ["PhoneNumber$$module$src$index"]
-              , Ke = a;
-            G1[0]in Ke || typeof Ke.execScript == "undefined" || Ke.execScript("var " + G1[0]);
+              , Ue = a;
+            G1[0]in Ue || typeof Ue.execScript == "undefined" || Ue.execScript("var " + G1[0]);
             for (var qt; G1.length && (qt = G1.shift()); )
-                G1.length || T === void 0 ? Ke[qt] && Ke[qt] !== Object.prototype[qt] ? Ke = Ke[qt] : Ke = Ke[qt] = {} : Ke[qt] = T;
+                G1.length || T === void 0 ? Ue[qt] && Ue[qt] !== Object.prototype[qt] ? Ue = Ue[qt] : Ue = Ue[qt] = {} : Ue[qt] = T;
             var ki = Object.freeze({
                 valid: !1,
                 possible: !1,
@@ -6255,7 +6255,7 @@ function T2() {
                     v: l
                 }
             }
-            function Ue(t) {
+            function Ze(t) {
                 return function() {
                     let n;
                     return n || (n = t()),
@@ -6277,27 +6277,27 @@ function T2() {
                     international: {
                         configurable: !1,
                         enumerable: !0,
-                        get: Ue( () => J.format(g, 1))
+                        get: Ze( () => J.format(g, 1))
                     },
                     national: {
                         configurable: !1,
                         enumerable: !0,
-                        get: Ue( () => J.format(g, 2))
+                        get: Ze( () => J.format(g, 2))
                     },
                     e164: {
                         configurable: !1,
                         enumerable: !0,
-                        get: Ue( () => J.format(g, 0))
+                        get: Ze( () => J.format(g, 0))
                     },
                     rfc3966: {
                         configurable: !1,
                         enumerable: !0,
-                        get: Ue( () => J.format(g, 3))
+                        get: Ze( () => J.format(g, 3))
                     },
                     significant: {
                         configurable: !1,
                         enumerable: !0,
-                        get: Ue( () => At(g))
+                        get: Ze( () => At(g))
                     }
                 }),
                 n = ca(g);
@@ -6328,12 +6328,12 @@ function T2() {
                     possibility: {
                         configurable: !0,
                         enumerable: !0,
-                        get: Ue( () => pa(g))
+                        get: Ze( () => pa(g))
                     },
                     shortValid: {
                         configurable: !1,
                         enumerable: !0,
-                        get: Ue( () => {
+                        get: Ze( () => {
                             var M = g
                               , N = bi(z(M, 1))
                               , ee = la(M, N);
@@ -6344,7 +6344,7 @@ function T2() {
                     shortPossible: {
                         configurable: !1,
                         enumerable: !0,
-                        get: Ue( () => {
+                        get: Ze( () => {
                             e: {
                                 var M = g
                                   , N = bi(z(M, 1));
@@ -6380,12 +6380,12 @@ function T2() {
                     canBeInternationallyDialled: {
                         configurable: !1,
                         enumerable: !0,
-                        get: Ue( () => J.ia(g))
+                        get: Ze( () => J.ia(g))
                     },
                     countryCode: {
                         configurable: !1,
                         enumerable: !0,
-                        get: Ue( () => {
+                        get: Ze( () => {
                             let M;
                             return (M = u) != null ? M : f1(l) ? Q1(J, l) : 0
                         }
@@ -6787,7 +6787,7 @@ customElements.whenDefined("pggm-input-phone").then( () => {
     customElements.get("pggm-input-phone").parsePhoneNumber = Ht
 }
 );
-var kd, de, be, o1, N1, B1, i1, Ed, Ad, B, Hi, Yi, gr, pr, et, Pi, ur, Cd, Md, Dd, wd = class extends Ot {
+var kd, de, be, o1, N1, B1, i1, Ed, Ad, B, Hi, Yi, gr, pr, Re, Pi, ur, Cd, Md, Dd, wd = class extends Ot {
     constructor(e) {
         super(e);
         p(this, B);
@@ -6802,20 +6802,24 @@ var kd, de, be, o1, N1, B1, i1, Ed, Ad, B, Hi, Yi, gr, pr, et, Pi, ur, Cd, Md, D
         p(this, Ad);
         p(this, Cd, e => {
             this.value = this.inputElement.value,
-            $(this, B, et).call(this)
+            $(this, B, Re).call(this)
         }
         );
         p(this, Md, e => {
             if (this.inputElement.value === "") {
-                $(this, B, et).call(this);
+                $(this, B, Re).call(this);
                 return
             }
             let d = Ht(this.inputElement.value);
+            if (d.possible === !1) {
+                $(this, B, Re).call(this);
+                return
+            }
             if (d.regionCode) {
                 this.selectedCountry = d.regionCode,
                 this.inputElement.value = d.number.national,
                 this.internals.setFormValue(d.number.e164 || this.inputElement.value),
-                $(this, B, et).call(this);
+                $(this, B, Re).call(this);
                 return
             }
             d = Ht(this.inputElement.value, {
@@ -6825,7 +6829,7 @@ var kd, de, be, o1, N1, B1, i1, Ed, Ad, B, Hi, Yi, gr, pr, et, Pi, ur, Cd, Md, D
             this.inputElement.value = d.number.national ? d.number.national : this.inputElement.value,
             this.value = d.number.e164 || this.inputElement.value,
             this.internals.setFormValue(this.value),
-            $(this, B, et).call(this)
+            $(this, B, Re).call(this)
         }
         );
         p(this, Dd, e => {
@@ -6845,7 +6849,7 @@ var kd, de, be, o1, N1, B1, i1, Ed, Ad, B, Hi, Yi, gr, pr, et, Pi, ur, Cd, Md, D
             if (!(["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab", "Shift", "Escape", "Home", "End", " ", "+", "(", ")", "-"].indexOf(e.key) > -1)) {
                 if (e.key === "Enter") {
                     this.value = this.inputElement.value,
-                    $(this, B, et).call(this),
+                    $(this, B, Re).call(this),
                     this.internals.form && this.internals.form.checkValidity() ? this.internals.form.dispatchEvent(new Event("submit",{
                         cancelable: !0
                     })) : this.internals.form && !this.internals.form.checkValidity() && this.internals.form.reportValidity();
@@ -6872,7 +6876,7 @@ var kd, de, be, o1, N1, B1, i1, Ed, Ad, B, Hi, Yi, gr, pr, et, Pi, ur, Cd, Md, D
     }
     set required(e) {
         r(this, B1) !== e && v(this, B1, typeof e == "string"),
-        $(this, B, et).call(this)
+        $(this, B, Re).call(this)
     }
     get disabled() {
         return r(this, kd)
@@ -6882,7 +6886,7 @@ var kd, de, be, o1, N1, B1, i1, Ed, Ad, B, Hi, Yi, gr, pr, et, Pi, ur, Cd, Md, D
         v(this, kd, e),
         this.inputElement.disabled = e,
         this.internals.setFormValue(null),
-        $(this, B, et).call(this)
+        $(this, B, Re).call(this)
     }
     get topCountries() {
         return r(this, Ed)
@@ -6918,7 +6922,7 @@ var kd, de, be, o1, N1, B1, i1, Ed, Ad, B, Hi, Yi, gr, pr, et, Pi, ur, Cd, Md, D
         d.indexOf(e) === -1 && console.error(`Invalid value for phone-number-type attribute. Allowed values are ${d.join(", ")}`),
         r(this, N1) !== e && (v(this, N1, e),
         $(this, B, Yi).call(this),
-        $(this, B, et).call(this))
+        $(this, B, Re).call(this))
     }
     get value() {
         var d;
@@ -6937,7 +6941,7 @@ var kd, de, be, o1, N1, B1, i1, Ed, Ad, B, Hi, Yi, gr, pr, et, Pi, ur, Cd, Md, D
         });
         let o = ((c = d.number) == null ? void 0 : c.e164) || e;
         this.internals.setFormValue(o),
-        $(this, B, et).call(this)
+        $(this, B, Re).call(this)
     }
     get countryLabel() {
         return r(this, Ad) || "Select your country"
@@ -7000,7 +7004,7 @@ pr = function() {
     this.inputElement.removeEventListener("change", r(this, Md))
 }
 ,
-et = function() {
+Re = function() {
     let e = () => {
         this.internals.setValidity({}),
         this.internals.setFormValue(this.value),
@@ -7598,11 +7602,11 @@ for (let i in Go)
 var $r, A4 = ($r = Jo.find(i => i.formater === "iban")) == null ? void 0 : $r.cls, yr, C4 = (yr = Jo.find(i => i.formater === "phone")) == null ? void 0 : yr.cls, xr, M4 = (xr = Jo.find(i => i.formater === "date")) == null ? void 0 : xr.cls;
 var wr = `:host{display:-webkit-box;display:-ms-flexbox;display:flex}.inline-content-block{display:none;margin:16px 0;position:relative;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column}.inline-content-block:before{background:#9c9fa3;background:var(--Manatee,#9c9fa3);content:"";height:100%;left:-14px;position:absolute;width:2px}.inline-content-block--open{display:-webkit-box;display:-ms-flexbox;display:flex}
 `;
-var Re, Xo, kr, Fd, r1, Rd, Vt = class extends CustomElement {
+var Oe, Xo, kr, Fd, r1, Rd, Vt = class extends CustomElement {
     constructor() {
         super(...arguments);
         p(this, Xo);
-        p(this, Re, null);
+        p(this, Oe, null);
         this.render = () => Maquette.h("article", {
             classes: {
                 "inline-content-block": !0,
@@ -7629,21 +7633,21 @@ var Re, Xo, kr, Fd, r1, Rd, Vt = class extends CustomElement {
         )
     }
     get for() {
-        return r(this, Re)
+        return r(this, Oe)
     }
     set for(e) {
         var s;
         let d = e;
         if (typeof d == "string" && (d = $(this, Xo, kr).call(this, d)),
         this.id || (this.id = `ICB${Math.random().toString(36).slice(-6)}`),
-        r(this, Re) === d)
+        r(this, Oe) === d)
             return;
-        let o = r(this, Re);
+        let o = r(this, Oe);
         o && this.removeEventHandlers(o),
-        v(this, Re, d),
-        d && ((s = r(this, Re)) == null || s.setAttribute("aria-describedby", this.id),
-        r(this, Re).setAttribute("tabindex", "0"),
-        r(this, Re) && this.addEventHandlers(r(this, Re)))
+        v(this, Oe, d),
+        d && ((s = r(this, Oe)) == null || s.setAttribute("aria-describedby", this.id),
+        r(this, Oe).setAttribute("tabindex", "0"),
+        r(this, Oe) && this.addEventHandlers(r(this, Oe)))
     }
     addEventHandlers(e) {
         e.addEventListener("focus", r(this, Fd)),
@@ -7673,7 +7677,7 @@ var Re, Xo, kr, Fd, r1, Rd, Vt = class extends CustomElement {
     }
 }
 ;
-Re = new WeakMap,
+Oe = new WeakMap,
 Xo = new WeakSet,
 kr = function(e) {
     let d = this.getRootNode();
@@ -7866,7 +7870,7 @@ oe = m([CustomElementConfig({
 })], oe);
 var Mr = `.pggm-radio-group,.pggm-radio-group__options{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;gap:var(--pggm-radio-group-row-gap)}:host([horizontal]) .pggm-radio-group__options{-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row;-ms-flex-wrap:wrap;flex-wrap:wrap;gap:calc(var(--pggm-radio-group-row-gap)*2)}#GroupOptions ::slotted(:not(pggm-radio)){display:none;visibility:hidden}
 `;
-var _o, ei, Oe = class extends CustomElement {
+var _o, ei, He = class extends CustomElement {
     constructor() {
         super(...arguments);
         p(this, _o, e => {
@@ -7922,35 +7926,35 @@ var _o, ei, Oe = class extends CustomElement {
 ;
 _o = new WeakMap,
 ei = new WeakMap,
-Oe.style = Mr,
+He.style = Mr,
 m([Property({
     type: "string",
     attribute: "error-message",
     reflect: !0
-})], Oe.prototype, "errorMessage", 2),
+})], He.prototype, "errorMessage", 2),
 m([Property({
     type: "string",
     attribute: "label",
     reflect: !0
-})], Oe.prototype, "label", 2),
+})], He.prototype, "label", 2),
 m([Property({
     type: "boolean",
     attribute: "readonly",
     reflect: !0
-})], Oe.prototype, "readonly", 2),
+})], He.prototype, "readonly", 2),
 m([Property({
     type: "boolean",
     attribute: "disabled",
     reflect: !0
-})], Oe.prototype, "disabled", 2),
+})], He.prototype, "disabled", 2),
 m([Property({
     type: "boolean",
     attribute: "required",
     reflect: !0
-})], Oe.prototype, "required", 2),
-Oe = m([CustomElementConfig({
+})], He.prototype, "required", 2),
+He = m([CustomElementConfig({
     tagName: "pggm-radio-group"
-})], Oe);
+})], He);
 var Dr = `[is=pggm-select]{--transition-duration:var(--pggm-motion-duration-xs,0s);-webkit-appearance:none;-moz-appearance:none;appearance:none;--padding-inline:calc(var(--pggm-select-padding-inline-start) + var(--pggm-select-padding-inline-end));--border-difference:calc(var(--pggm-select-border-width) - var(--pggm-select-active-border-width));background-color:var(--pggm-select-background-color);background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIyIiBjbGFzcz0iaWNvbiBpY29uLXRhYmxlciBpY29ucy10YWJsZXItb3V0bGluZSBpY29uLXRhYmxlci1jaGV2cm9uLWRvd24iIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggc3Ryb2tlPSJub25lIiBkPSJNMCAwaDI0djI0SDB6Ii8+PHBhdGggZD0ibTYgOSA2IDYgNi02Ii8+PC9zdmc+);background-position:right var(--pggm-select-padding-inline-end) center;background-repeat:no-repeat;background-size:var(--pggm-select-icon-size);border-color:var(--pggm-select-border-color);border-radius:var(--pggm-select-border-radius);border-width:var(--pggm-select-border-width);-webkit-box-sizing:border-box;box-sizing:border-box;color:var(--pggm-select-color);cursor:pointer;cursor:var(--pggm-select-cursor,pointer);display:block;font-family:var(--pggm-select-font-family);font-size:var(--pggm-select-font-size);line-height:var(--pggm-select-line-height);margin:0;max-width:var(--pggm-select-max-inline-size);outline:none;padding:var(--pggm-select-padding-block-start) calc(var(--pggm-select-icon-size) + var(--pggm-select-padding-inline-end)) var(--pggm-select-padding-block-end) var(--pggm-select-padding-inline-start);-webkit-transition:background-color 0s,border-color 0s,color 0s;transition:background-color 0s,border-color 0s,color 0s;-webkit-transition:background-color var(--transition-duration),border-color var(--transition-duration),color var(--transition-duration);transition:background-color var(--transition-duration),border-color var(--transition-duration),color var(--transition-duration);width:100%}[is=pggm-select]:hover{background-color:var(--pggm-select-hover-background-color);border-color:var(--pggm-select-hover-border-color);color:var(--pggm-select-hover-color)}[is=pggm-select]:focus,[is=pggm-select]:focus-visible,[is=pggm-select]:focus-within{background-color:var(--pggm-select-active-background-color);background-position:right calc(var(--pggm-select-padding-inline-end) + var(--border-difference)) center;border-color:var(--pggm-select-active-border-color);border-width:var(--pggm-select-active-border-width);color:var(--pggm-select-active-color);padding:calc(var(--pggm-select-padding-block-start) + var(--border-difference)) calc(var(--pggm-select-icon-size) + var(--pggm-select-padding-inline-end) + var(--border-difference)) calc(var(--pggm-select-padding-block-end) + var(--border-difference)) calc(var(--pggm-select-padding-inline-start) + var(--border-difference))}[is=pggm-select]:user-invalid{background-color:var(--pggm-select-invalid-background-color);border-color:var(--pggm-select-invalid-border-color);border-width:var(--pggm-select-invalid-border-width);color:var(--pggm-select-invalid-color);margin:0}[is=pggm-select][multiple]{background-image:none;padding-right:var(--pggm-select-padding-inline-end)}[is=pggm-select]:disabled{background-color:var(--pggm-select-disabled-background-color);border-color:var(--pggm-select-disabled-border-color);color:var(--pggm-select-disabled-color);cursor:not-allowed}
 `;
 var yt = class extends HTMLSelectElement {
@@ -7968,7 +7972,7 @@ yt = m([CustomElementConfig({
 })], yt);
 var Sr = `:host{display:inline-block;-webkit-tap-highlight-color:rgba(255,255,255,0);cursor:pointer}:host([disabled]){cursor:not-allowed}:host(:focus){outline:0}.pggm-switch--container{background-color:#969696;background-color:var(--pggm-switch-background-color,#969696);border-radius:54px;height:28px;outline:none;-webkit-transition:background-color .2s;transition:background-color .2s;width:56px}.pggm-switch--knob{background-color:#fff9;background-color:var( --pggm-switch-unchecked-color,hsla(0,0%,100%,.6) );border-radius:48px;display:inline-block;height:24px;position:absolute;-webkit-transform:translate(2px,2px);transform:translate(2px,2px);-webkit-transition:background-color .4s,-webkit-transform .2s;transition:background-color .4s,-webkit-transform .2s;transition:transform .2s,background-color .4s;transition:transform .2s,background-color .4s,-webkit-transform .2s;width:24px}.pggm-switch--container__checked .pggm-switch--knob{background-color:#fff;background-color:var(--pggm-switch-checked-color,#fff);-webkit-transform:translate(30px,2px);transform:translate(30px,2px)}.pggm-switch--container__checked{background-color:#00a870;background-color:var( --pggm-switch-checked-background-color,#00a870 )}:host(:not([disabled])) .pggm-switch--container:focus .pggm-switch--knob{background-color:#fff;background-color:var( --pggm-switch-unchecked-focus-color,#fff )}.pggm-switch--container__checked:focus{background-color:#007a52;background-color:var( --pggm-switch-checked-focus-background-color,#007a52 )}
 `;
-var ti, di, He = class extends CustomElement {
+var ti, di, Ye = class extends CustomElement {
     constructor() {
         super(...arguments);
         this.checked = !1;
@@ -8015,25 +8019,25 @@ var ti, di, He = class extends CustomElement {
 ;
 ti = new WeakMap,
 di = new WeakMap,
-He.style = Sr,
-He.TAG_NAME = "pggm-switch",
+Ye.style = Sr,
+Ye.TAG_NAME = "pggm-switch",
 m([Property({
     type: "boolean",
     attribute: "checked",
     reflect: !0
-})], He.prototype, "checked", 2),
+})], Ye.prototype, "checked", 2),
 m([Property({
     type: "boolean",
     attribute: "disabled",
     reflect: !0
-})], He.prototype, "disabled", 2),
+})], Ye.prototype, "disabled", 2),
 m([Property({
     type: "string",
     attribute: "label"
-})], He.prototype, "label", 2),
-He = m([CustomElementConfig({
-    tagName: He.TAG_NAME
-})], He);
+})], Ye.prototype, "label", 2),
+Ye = m([CustomElementConfig({
+    tagName: Ye.TAG_NAME
+})], Ye);
 function ji(i, a, e=3e3) {
     return Q(this, null, function*() {
         return new Promise(d => {
@@ -8210,12 +8214,12 @@ var Nr = 0, G2 = i => {
         lower: !0
     })}` : "TabPanel" + Nr
 }
-, a1, s1, Ye, xt, Pd, ii, ni, ri, ai, l1, Vd, si, jd, Wd, c1, qd, g1, Kd, Ud, li, Yd = class extends CustomElement {
+, a1, s1, Pe, xt, Pd, ii, ni, ri, ai, l1, Vd, si, jd, Wd, c1, qd, g1, Kd, Ud, li, Yd = class extends CustomElement {
     constructor() {
         super();
         p(this, a1);
         p(this, s1, !1);
-        p(this, Ye, 0);
+        p(this, Pe, 0);
         p(this, xt, "tab");
         p(this, Pd, e => {
             let d = this.currentHashValue;
@@ -8240,14 +8244,14 @@ var Nr = 0, G2 = i => {
         );
         p(this, ri, () => {
             let e = this.tabsProperties
-              , d = r(this, Ye) + e.width;
+              , d = r(this, Pe) + e.width;
             r(this, g1).call(this, d),
             r(this, Vd).call(this)
         }
         );
         p(this, ai, () => {
             let e = this.tabsProperties
-              , d = r(this, Ye) - e.width;
+              , d = r(this, Pe) - e.width;
             r(this, g1).call(this, d),
             r(this, Vd).call(this)
         }
@@ -8258,7 +8262,7 @@ var Nr = 0, G2 = i => {
         }
         );
         p(this, si, () => {
-            r(this, g1).call(this, r(this, Ye))
+            r(this, g1).call(this, r(this, Pe))
         }
         );
         p(this, jd, () => {
@@ -8285,9 +8289,9 @@ var Nr = 0, G2 = i => {
               , d = this.shadowRoot.querySelector(".tabs--tabstrip-button--next");
             if (e && d) {
                 d.hidden = !0,
-                r(this, Ye) < 0 ? e.hidden = !1 : e.hidden = !0;
+                r(this, Pe) < 0 ? e.hidden = !1 : e.hidden = !0;
                 let o = this.tabsProperties;
-                if (o.totalWidth > o.width && r(this, Ye) > o.maxOffset)
+                if (o.totalWidth > o.width && r(this, Pe) > o.maxOffset)
                     d.hidden = !1;
                 else {
                     d.hidden = !0;
@@ -8301,7 +8305,7 @@ var Nr = 0, G2 = i => {
             if (!e)
                 return;
             let o = this.tabsProperties
-              , c = -1 * (e.getBoundingClientRect().left - o.left - r(this, Ye));
+              , c = -1 * (e.getBoundingClientRect().left - o.left - r(this, Pe));
             r(this, g1).call(this, c, d)
         }
         );
@@ -8309,10 +8313,10 @@ var Nr = 0, G2 = i => {
             let o = this.tabsProperties
               , s = e > 0 ? 0 : e;
             s < o.maxOffset && (s = o.maxOffset),
-            v(this, Ye, Math.floor(s));
+            v(this, Pe, Math.floor(s));
             let c = this.shadowRoot.querySelector("#TabStrip");
             d === !1 ? c.classList.add("tabs--tabstrip-tabs-inner--no-animation") : c.classList.remove("tabs--tabstrip-tabs-inner--no-animation"),
-            c.style.transform = `translateX(${r(this, Ye)}px)`,
+            c.style.transform = `translateX(${r(this, Pe)}px)`,
             r(this, c1).call(this)
         }
         );
@@ -8498,7 +8502,7 @@ var Nr = 0, G2 = i => {
 ;
 a1 = new WeakMap,
 s1 = new WeakMap,
-Ye = new WeakMap,
+Pe = new WeakMap,
 xt = new WeakMap,
 Pd = new WeakMap,
 ii = new WeakMap,
@@ -8536,7 +8540,7 @@ wt = m([CustomElementConfig({
 })], wt);
 var Rr = `:host{display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;position:fixed;--_max-width:var(--pggm-tooltip-max-width,364px)}.tooltip{--tooltip-offset:var(--pggm-tooltip-offset,16px);background-color:var(--pggm-tooltip-background-color);border:0;border-radius:var(--pggm-tooltip-border-radius);-webkit-box-shadow:var(--pggm-tooltip-box-shadow-offset-x) var(--pggm-tooltip-box-shadow-offset-y) var(--pggm-tooltip-box-shadow-blur) var(--pggm-tooltip-box-shadow-spread) var(--pggm-tooltip-box-shadow-color);box-shadow:var(--pggm-tooltip-box-shadow-offset-x) var(--pggm-tooltip-box-shadow-offset-y) var(--pggm-tooltip-box-shadow-blur) var(--pggm-tooltip-box-shadow-spread) var(--pggm-tooltip-box-shadow-color);color:var(--pggm-tooltip-color);font-family:var(--pggm-tooltip-font-family);font-size:var(--pggm-tooltip-font-size);font-weight:var(--pggm-tooltip-font-weight);left:var(--x);line-height:var(--pggm-tooltip-line-height);margin:0;max-width:min(calc(100vw - 32px),var(--_max-width));opacity:0;padding:var(--pggm-tooltip-padding-block-start) var(--pggm-tooltip-padding-inline-start) var(--pggm-tooltip-padding-block-end) var(--pggm-tooltip-padding-inline-end);position:fixed;top:var(--y);width:-webkit-fit-content;width:-moz-fit-content;width:fit-content}[popover]{display:none}[popover].\\:popover-open{display:block}[popover]:popover-open{display:block}::slotted(*){font-size:var(--pggm-tooltip-font-size);line-height:var(--pggm-tooltip-line-height)}::slotted(:first-child){margin-top:0}::slotted(:last-child){margin-bottom:0}
 `;
-var ot, jt, u1, ke, Pe, m1, Or, Ki, V1, j1, W1, q1, Zd, Qd, p1 = class extends CustomElement {
+var ot, jt, u1, ke, Ve, m1, Or, Ki, V1, j1, W1, q1, Zd, Qd, p1 = class extends CustomElement {
     constructor() {
         super(...arguments);
         p(this, m1);
@@ -8544,7 +8548,7 @@ var ot, jt, u1, ke, Pe, m1, Or, Ki, V1, j1, W1, q1, Zd, Qd, p1 = class extends C
         p(this, jt, !1);
         p(this, u1, !1);
         p(this, ke, null);
-        p(this, Pe, null);
+        p(this, Ve, null);
         p(this, V1, () => {
             v(this, jt, !0),
             setTimeout( () => {
@@ -8590,13 +8594,13 @@ var ot, jt, u1, ke, Pe, m1, Or, Ki, V1, j1, W1, q1, Zd, Qd, p1 = class extends C
         }
         );
         this.show = () => Q(this, null, function*() {
-            r(this, Pe) || v(this, Pe, yield r(this, m1, Ki)),
-            r(this, Pe).showPopover(),
+            r(this, Ve) || v(this, Ve, yield r(this, m1, Ki)),
+            r(this, Ve).showPopover(),
             this.open || (this.open = !0,
             r(this, Qd).call(this))
         });
         p(this, Qd, () => {
-            let e = r(this, Pe)
+            let e = r(this, Ve)
               , d = parseInt(getComputedStyle(e).getPropertyValue("--tooltip-offset"), 10);
             Ft(r(this, ke), e, {
                 placement: "top",
@@ -8623,9 +8627,9 @@ var ot, jt, u1, ke, Pe, m1, Or, Ki, V1, j1, W1, q1, Zd, Qd, p1 = class extends C
         );
         this.hide = () => Q(this, null, function*() {
             v(this, u1, !1),
-            r(this, Pe) || v(this, Pe, yield r(this, m1, Ki)),
-            r(this, Pe).style.opacity = "0",
-            r(this, Pe).hidePopover(),
+            r(this, Ve) || v(this, Ve, yield r(this, m1, Ki)),
+            r(this, Ve).style.opacity = "0",
+            r(this, Ve).hidePopover(),
             this.open && (this.open = !1)
         });
         this.onTooltipCreate = e => {
@@ -8705,7 +8709,7 @@ ot = new WeakMap,
 jt = new WeakMap,
 u1 = new WeakMap,
 ke = new WeakMap,
-Pe = new WeakMap,
+Ve = new WeakMap,
 m1 = new WeakSet,
 Or = function(e) {
     let d = this.getRootNode();
@@ -8754,4 +8758,4 @@ kt = m([CustomElementConfig({
         extends: "ul"
     }
 })], kt);
-export {St as PGGMAccordion, ze as PGGMAlert, ct as PGGMAnchorButton, gt as PGGMButton, S as PGGMCalendar, te as PGGMCheckbox, Ne as PGGMCheckboxGroup, ye as PGGMDialog, me as PGGMErrorMessage, It as PGGMFieldset, Y as PGGMFileUpload, ce as PGGMHeading, pt as PGGMIcon, Vt as PGGMInlineContentBlock, De as PGGMInput, $t as PGGMLabel, dt as PGGMLink, oe as PGGMRadio, Oe as PGGMRadioGroup, yt as PGGMSelect, He as PGGMSwitch, Yd as PGGMTab, wt as PGGMTextArea, p1 as PGGMTooltip, kt as PGGMUnorderedList};
+export {St as PGGMAccordion, ze as PGGMAlert, ct as PGGMAnchorButton, gt as PGGMButton, S as PGGMCalendar, te as PGGMCheckbox, Ne as PGGMCheckboxGroup, ye as PGGMDialog, me as PGGMErrorMessage, It as PGGMFieldset, Y as PGGMFileUpload, ce as PGGMHeading, pt as PGGMIcon, Vt as PGGMInlineContentBlock, De as PGGMInput, $t as PGGMLabel, dt as PGGMLink, oe as PGGMRadio, He as PGGMRadioGroup, yt as PGGMSelect, Ye as PGGMSwitch, Yd as PGGMTab, wt as PGGMTextArea, p1 as PGGMTooltip, kt as PGGMUnorderedList};
