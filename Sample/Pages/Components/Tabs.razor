@@ -1,0 +1,123 @@
+@page "/tabs"
+@using Blazor.Pggm.Components
+
+<PageTitle>Tabs</PageTitle>
+
+<h1>PGGM Tabs</h1>
+
+<h2>Basic Tabs</h2>
+<PggmTab OnTabChange="OnTabChanged">
+  <PggmTabPanel Label="Tab 1" Active="true">
+    <h3>Content for Tab 1</h3>
+    <p>This is the content for the first tab. It can contain any HTML or Blazor components.</p>
+  </PggmTabPanel>
+  
+  <PggmTabPanel Label="Tab 2">
+    <h3>Content for Tab 2</h3>
+    <p>This is the content for the second tab with different information.</p>
+    <ul>
+      <li>List item 1</li>
+      <li>List item 2</li>
+      <li>List item 3</li>
+    </ul>
+  </PggmTabPanel>
+  
+  <PggmTabPanel Label="Tab 3">
+    <h3>Content for Tab 3</h3>
+    <p>The third tab contains yet another set of content.</p>
+    <button class="btn btn-primary">Sample Button</button>
+  </PggmTabPanel>
+</PggmTab>
+
+<h2>Scrollable Tabs</h2>
+<PggmTab Scrollable="true" OnTabChange="OnScrollableTabChanged">
+  <PggmTabPanel Label="First Tab" Active="true">
+    <p>Content for the first scrollable tab.</p>
+  </PggmTabPanel>
+  
+  <PggmTabPanel Label="Second Tab">
+    <p>Content for the second scrollable tab.</p>
+  </PggmTabPanel>
+  
+  <PggmTabPanel Label="Third Tab">
+    <p>Content for the third scrollable tab.</p>
+  </PggmTabPanel>
+  
+  <PggmTabPanel Label="Fourth Tab">
+    <p>Content for the fourth scrollable tab.</p>
+  </PggmTabPanel>
+  
+  <PggmTabPanel Label="Fifth Tab">
+    <p>Content for the fifth scrollable tab.</p>
+  </PggmTabPanel>
+  
+  <PggmTabPanel Label="Sixth Tab">
+    <p>Content for the sixth scrollable tab.</p>
+  </PggmTabPanel>
+</PggmTab>
+
+<h2>Tabs with Different Sizes</h2>
+<PggmTab Size="small" OnTabChange="OnSmallTabChanged">
+  <PggmTabPanel Label="Small 1" Active="true">
+    <p>Small size tab content 1.</p>
+  </PggmTabPanel>
+  
+  <PggmTabPanel Label="Small 2">
+    <p>Small size tab content 2.</p>
+  </PggmTabPanel>
+</PggmTab>
+
+<h2>Tabs with Disabled Panel</h2>
+<PggmTab OnTabChange="OnDisabledTabChanged">
+  <PggmTabPanel Label="Enabled Tab" Active="true">
+    <p>This tab is enabled and functional.</p>
+  </PggmTabPanel>
+  
+  <PggmTabPanel Label="Disabled Tab" Disabled="true">
+    <p>This tab is disabled and should not be selectable.</p>
+  </PggmTabPanel>
+  
+  <PggmTabPanel Label="Another Enabled Tab">
+    <p>This is another enabled tab.</p>
+  </PggmTabPanel>
+</PggmTab>
+
+<h2>Event Information</h2>
+<div class="alert alert-info">
+  <h4>Tab Events</h4>
+  <p><strong>Last Basic Tab Changed:</strong> @lastBasicTabIndex</p>
+  <p><strong>Last Scrollable Tab Changed:</strong> @lastScrollableTabIndex</p>
+  <p><strong>Last Small Tab Changed:</strong> @lastSmallTabIndex</p>
+  <p><strong>Last Disabled Example Tab Changed:</strong> @lastDisabledTabIndex</p>
+</div>
+
+@code {
+  private int lastBasicTabIndex = 0;
+  private int lastScrollableTabIndex = 0;
+  private int lastSmallTabIndex = 0;
+  private int lastDisabledTabIndex = 0;
+
+  private void OnTabChanged(int tabIndex)
+  {
+    lastBasicTabIndex = tabIndex;
+    StateHasChanged();
+  }
+
+  private void OnScrollableTabChanged(int tabIndex)
+  {
+    lastScrollableTabIndex = tabIndex;
+    StateHasChanged();
+  }
+
+  private void OnSmallTabChanged(int tabIndex)
+  {
+    lastSmallTabIndex = tabIndex;
+    StateHasChanged();
+  }
+
+  private void OnDisabledTabChanged(int tabIndex)
+  {
+    lastDisabledTabIndex = tabIndex;
+    StateHasChanged();
+  }
+}

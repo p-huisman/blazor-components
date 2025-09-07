@@ -16,6 +16,10 @@ public static class EventNames
     public const string CloseDialog = "closeDialog";
     public const string CancelDialog = "cancelDialog";
     
+    // Tab events
+    public const string TabChange = "tabChange";
+    public const string TabClick = "tabClick";
+    
     // Form events
     public const string Change = "change";
     public const string Input = "input";

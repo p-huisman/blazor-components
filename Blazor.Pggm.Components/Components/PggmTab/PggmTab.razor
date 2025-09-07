@@ -1,0 +1,132 @@
+@inherits PggmEventComponentBase
+@namespace Blazor.Pggm.Components
+@using System.Text.Json
+
+<pggm-tab @ref="ElementRef" @attributes="GetAttributes()">
+  @ChildContent
+</pggm-tab>
+
+@code {
+  protected override string TagName => "pggm-tab";
+
+  /// <summary>
+  /// The currently active tab index
+  /// </summary>
+  [Parameter] public int? ActiveTabIndex { get; set; }
+
+  /// <summary>
+  /// Whether the tabs are scrollable
+  /// </summary>
+  [Parameter] public bool Scrollable { get; set; }
+
+  /// <summary>
+  /// The size variant of the tabs (small, medium, large)
+  /// </summary>
+  [Parameter] public string? Size { get; set; }
+
+  /// <summary>
+  /// The appearance variant of the tabs
+  /// </summary>
+  [Parameter] public string? Appearance { get; set; }
+
+  /// <summary>
+  /// Whether the tabs are disabled
+  /// </summary>
+  [Parameter] public bool Disabled { get; set; }
+
+  /// <summary>
+  /// Event callback fired when a tab is selected
+  /// </summary>
+  [Parameter] public EventCallback<int> OnTabChange { get; set; }
+
+  /// <summary>
+  /// Event callback fired when a tab is clicked
+  /// </summary>
+  [Parameter] public EventCallback<int> OnTabClick { get; set; }
+
+  protected override IEnumerable<string> GetEventNames()
+  {
+    return new[] { "tabChange", "tabClick" };
+  }
+
+  protected override Dictionary<string, Func<object?, Task>> EventHandlers => new()
+  {
+    ["tabChange"] = async (eventData) => await HandleTabChange(eventData),
+    ["tabClick"] = async (eventData) => await HandleTabClick(eventData)
+  };
+
+  protected override void AddComponentAttributes(Dictionary<string, object> attributes)
+  {
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, Constants.AttributeNames.Size, Size);
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, Constants.AttributeNames.Appearance, Appearance);
+    AttributeHelper.SetBooleanAttribute(attributes, Constants.AttributeNames.Disabled, Disabled);
+    AttributeHelper.SetBooleanAttribute(attributes, "scrollable", Scrollable);
+    
+    if (ActiveTabIndex.HasValue)
+    {
+      AttributeHelper.SetAttributeIfNotEmpty(attributes, "active-tab-index", ActiveTabIndex.Value.ToString());
+    }
+  }
+
+  private async Task HandleTabChange(object? eventData)
+  {
+    if (eventData != null && OnTabChange.HasDelegate)
+    {
+      // Try to extract tab index from event data
+      if (eventData is JsonElement element && element.TryGetProperty("detail", out var detail))
+      {
+        if (detail.TryGetProperty("activeTabIndex", out var indexProperty) && 
+            indexProperty.TryGetInt32(out var tabIndex))
+        {
+          ActiveTabIndex = tabIndex;
+          await OnTabChange.InvokeAsync(tabIndex);
+        }
+      }
+      // Fallback: try to parse directly as int
+      else if (int.TryParse(eventData.ToString(), out var index))
+      {
+        ActiveTabIndex = index;
+        await OnTabChange.InvokeAsync(index);
+      }
+    }
+  }
+
+  private async Task HandleTabClick(object? eventData)
+  {
+    if (eventData != null && OnTabClick.HasDelegate)
+    {
+      // Try to extract tab index from event data
+      if (eventData is JsonElement element && element.TryGetProperty("detail", out var detail))
+      {
+        if (detail.TryGetProperty("tabIndex", out var indexProperty) && 
+            indexProperty.TryGetInt32(out var tabIndex))
+        {
+          await OnTabClick.InvokeAsync(tabIndex);
+        }
+      }
+      // Fallback: try to parse directly as int
+      else if (int.TryParse(eventData.ToString(), out var index))
+      {
+        await OnTabClick.InvokeAsync(index);
+      }
+    }
+  }
+
+  protected override async Task OnParametersSetAsync()
+  {
+    await base.OnParametersSetAsync();
+    
+    // Update the active tab index if it was changed externally
+    if (ElementRef.Id != null && ActiveTabIndex.HasValue)
+    {
+      try
+      {
+        await JSRuntime.InvokeVoidAsync("PggmComponents.setProperty", ElementRef, "activeTabIndex", ActiveTabIndex.Value);
+      }
+      catch
+      {
+        // Element might not be ready yet, ignore
+      }
+    }
+  }
+}

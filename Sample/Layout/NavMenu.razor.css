@@ -81,3 +81,8 @@
         overflow-y: auto;
     }
 }
+
+.hidden {
+    display: none;
+    visibility: hidden;
+}

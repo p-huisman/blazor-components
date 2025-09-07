@@ -1,0 +1,53 @@
+@inherits PggmComponentBase
+@namespace Blazor.Pggm.Components
+
+<pggm-tab-panel @ref="ElementRef" @attributes="GetAttributes()">
+  @ChildContent
+</pggm-tab-panel>
+
+@code {
+  protected override string TagName => "pggm-tab-panel";
+
+  /// <summary>
+  /// The tab label/header text
+  /// </summary>
+  [Parameter] public string? Label { get; set; }
+
+  /// <summary>
+  /// Whether this tab panel is active/selected
+  /// </summary>
+  [Parameter] public bool Active { get; set; }
+
+  /// <summary>
+  /// Whether this tab panel is disabled
+  /// </summary>
+  [Parameter] public bool Disabled { get; set; }
+
+  /// <summary>
+  /// The tab index for this panel
+  /// </summary>
+  [Parameter] public int? TabIndex { get; set; }
+
+  /// <summary>
+  /// Icon to display in the tab header (optional)
+  /// </summary>
+  [Parameter] public string? Icon { get; set; }
+
+  /// <summary>
+  /// Custom content for the tab header (alternative to Label)
+  /// </summary>
+  [Parameter] public RenderFragment? HeaderContent { get; set; }
+
+  protected override void AddComponentAttributes(Dictionary<string, object> attributes)
+  {
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "label", Label);
+    AttributeHelper.SetBooleanAttribute(attributes, "active", Active);
+    AttributeHelper.SetBooleanAttribute(attributes, Constants.AttributeNames.Disabled, Disabled);
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "icon", Icon);
+    
+    if (TabIndex.HasValue)
+    {
+      AttributeHelper.SetAttributeIfNotEmpty(attributes, "tab-index", TabIndex.Value.ToString());
+    }
+  }
+}
