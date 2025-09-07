@@ -1,0 +1,92 @@
+@using Microsoft.AspNetCore.Components
+@inherits PggmComponentBase
+@namespace Blazor.Pggm.Components
+
+<pggm-file-upload @attributes="AdditionalAttributes"
+                  accept="@Accept"
+                  button="@Button"
+                  button-appearance="@ButtonAppearance"
+                  disabled="@Disabled"
+                  dropzone-label="@DropzoneLabel"
+                  max-file-size="@MaxFileSize"
+                  max-files="@MaxFiles"
+                  max-size="@MaxSize"
+                  menu-capture="@MenuCapture"
+                  menu-file="@MenuFile"
+                  mode="@Mode"
+                  multiple="@Multiple"
+                  required="@Required">
+    @ChildContent
+</pggm-file-upload>
+
+@code {
+    /// <summary>
+    /// The HTML tag name for the web component
+    /// </summary>
+    protected override string TagName => "pggm-file-upload";
+
+    /// <summary>
+    /// Accepted file types
+    /// </summary>
+    [Parameter] public object? Accept { get; set; }
+
+    /// <summary>
+    /// Button text
+    /// </summary>
+    [Parameter] public string? Button { get; set; }
+
+    /// <summary>
+    /// Button appearance
+    /// </summary>
+    [Parameter] public string? ButtonAppearance { get; set; }
+
+    /// <summary>
+    /// Whether the file upload is disabled
+    /// </summary>
+    [Parameter] public bool? Disabled { get; set; }
+
+    /// <summary>
+    /// Dropzone label text
+    /// </summary>
+    [Parameter] public string? DropzoneLabel { get; set; }
+
+    /// <summary>
+    /// Maximum file size allowed
+    /// </summary>
+    [Parameter] public int? MaxFileSize { get; set; }
+
+    /// <summary>
+    /// Maximum number of files allowed
+    /// </summary>
+    [Parameter] public int? MaxFiles { get; set; }
+
+    /// <summary>
+    /// Maximum total size allowed
+    /// </summary>
+    [Parameter] public int? MaxSize { get; set; }
+
+    /// <summary>
+    /// Menu capture text
+    /// </summary>
+    [Parameter] public string? MenuCapture { get; set; }
+
+    /// <summary>
+    /// Menu file text
+    /// </summary>
+    [Parameter] public string? MenuFile { get; set; }
+
+    /// <summary>
+    /// Upload mode
+    /// </summary>
+    [Parameter] public string? Mode { get; set; }
+
+    /// <summary>
+    /// Whether multiple files are allowed
+    /// </summary>
+    [Parameter] public bool? Multiple { get; set; }
+
+    /// <summary>
+    /// Whether the file upload is required
+    /// </summary>
+    [Parameter] public bool? Required { get; set; }
+}

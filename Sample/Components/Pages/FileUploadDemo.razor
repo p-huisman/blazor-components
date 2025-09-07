@@ -1,0 +1,64 @@
+@page "/file-upload"
+
+@using Blazor.Pggm.Components
+
+<PageTitle>File Upload Demo</PageTitle>
+
+<h1>File Upload Demo</h1>
+
+<div class="demo-section">
+    <h2>Basic File Upload</h2>
+    <PggmFileUpload Button="Choose File" 
+                    DropzoneLabel="Drag and drop a file here or click to browse" />
+</div>
+
+<div class="demo-section">
+    <h2>Multiple Files with Size Limits</h2>
+    <PggmFileUpload Button="Choose Files"
+                    Multiple="true"
+                    MaxFiles="5"
+                    MaxFileSize="10485760"
+                    DropzoneLabel="Upload up to 5 files (max 10MB each)" />
+</div>
+
+<div class="demo-section">
+    <h2>Image Files Only</h2>
+    <PggmFileUpload Button="Choose Images"
+                    Accept='"image/*"'
+                    Multiple="true"
+                    DropzoneLabel="Upload image files only"
+                    ButtonAppearance="primary" />
+</div>
+
+<div class="demo-section">
+    <h2>Document Upload with Custom Labels</h2>
+    <PggmFileUpload Button="Upload Document"
+                    Accept='".pdf,.doc,.docx,.txt"'
+                    MenuFile="Select Document"
+                    MenuCapture="Scan Document"
+                    DropzoneLabel="Drop your document here"
+                    MaxSize="52428800"
+                    Required="true" />
+</div>
+
+<div class="demo-section">
+    <h2>Disabled File Upload</h2>
+    <PggmFileUpload Button="Upload"
+                    Disabled="true"
+                    DropzoneLabel="File upload is disabled" />
+</div>
+
+<style>
+    .demo-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+    }
+
+    .demo-section h2 {
+        margin-top: 0;
+        color: #333;
+        font-size: 1.2rem;
+    }
+</style>
