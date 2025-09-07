@@ -1,0 +1,122 @@
+@page "/components/radio"
+
+<h3>PggmRadio Component Demo</h3>
+
+<div class="demo-section">
+    <h4>Basic Radio Button Group</h4>
+    <p>Selected Option: <strong>@selectedOption1</strong></p>
+    
+    <div class="radio-group">
+        <PggmRadio Name="option1" Value="option-a" Checked="@(selectedOption1 == "option-a")" ValueChanged="@(value => HandleOptionChange(value, 1))">
+            Option A
+        </PggmRadio>
+        
+        <PggmRadio Name="option1" Value="option-b" Checked="@(selectedOption1 == "option-b")" ValueChanged="@(value => HandleOptionChange(value, 1))">
+            Option B
+        </PggmRadio>
+        
+        <PggmRadio Name="option1" Value="option-c" Checked="@(selectedOption1 == "option-c")" ValueChanged="@(value => HandleOptionChange(value, 1))">
+            Option C
+        </PggmRadio>
+    </div>
+</div>
+
+<div class="demo-section">
+    <h4>Radio Buttons with Descriptions</h4>
+    <p>Selected Plan: <strong>@selectedPlan</strong></p>
+    
+    <div class="radio-group">
+        <PggmRadio Name="plan" Value="basic" Checked="@(selectedPlan == "basic")" ValueChanged="@(value => selectedPlan = value)" Description="Perfect for small projects">
+            Basic Plan
+        </PggmRadio>
+        
+        <PggmRadio Name="plan" Value="professional" Checked="@(selectedPlan == "professional")" ValueChanged="@(value => selectedPlan = value)" Description="Best for growing businesses">
+            Professional Plan
+        </PggmRadio>
+        
+        <PggmRadio Name="plan" Value="enterprise" Checked="@(selectedPlan == "enterprise")" ValueChanged="@(value => selectedPlan = value)" Description="Advanced features for large organizations">
+            Enterprise Plan
+        </PggmRadio>
+    </div>
+</div>
+
+<div class="demo-section">
+    <h4>Disabled Radio Buttons</h4>
+    <p>Selected Theme: <strong>@selectedTheme</strong></p>
+    
+    <div class="radio-group">
+        <PggmRadio Name="theme" Value="light" Checked="@(selectedTheme == "light")" ValueChanged="@(value => selectedTheme = value)">
+            Light Theme
+        </PggmRadio>
+        
+        <PggmRadio Name="theme" Value="dark" Checked="@(selectedTheme == "dark")" ValueChanged="@(value => selectedTheme = value)">
+            Dark Theme
+        </PggmRadio>
+        
+        <PggmRadio Name="theme" Value="auto" Checked="@(selectedTheme == "auto")" ValueChanged="@(value => selectedTheme = value)" Disabled="true">
+            Auto Theme (Coming Soon)
+        </PggmRadio>
+    </div>
+</div>
+
+<div class="demo-section">
+    <h4>Required Radio Button Group</h4>
+    <p>Selected Priority: <strong>@selectedPriority</strong></p>
+    
+    <div class="radio-group">
+        <PggmRadio Name="priority" Value="low" Required="true" Checked="@(selectedPriority == "low")" ValueChanged="@(value => selectedPriority = value)">
+            Low Priority
+        </PggmRadio>
+        
+        <PggmRadio Name="priority" Value="medium" Required="true" Checked="@(selectedPriority == "medium")" ValueChanged="@(value => selectedPriority = value)">
+            Medium Priority
+        </PggmRadio>
+        
+        <PggmRadio Name="priority" Value="high" Required="true" Checked="@(selectedPriority == "high")" ValueChanged="@(value => selectedPriority = value)">
+            High Priority
+        </PggmRadio>
+    </div>
+</div>
+
+@code {
+    private string? selectedOption1 = "option-a";
+    private string? selectedPlan = "basic";
+    private string? selectedTheme = "light";
+    private string? selectedPriority;
+
+    private void HandleOptionChange(string? value, int group)
+    {
+        if (group == 1)
+        {
+            selectedOption1 = value;
+        }
+    }
+}
+
+<style>
+    .demo-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+    }
+    
+    .demo-section h4 {
+        margin-top: 0;
+        color: #333;
+    }
+    
+    .radio-group {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .demo-section p {
+        margin-bottom: 1rem;
+    }
+    
+    .demo-section p strong {
+        color: #0066cc;
+    }
+</style>
