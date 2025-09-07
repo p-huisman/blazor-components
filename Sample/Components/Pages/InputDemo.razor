@@ -15,8 +15,9 @@
         <h2>Basic Input Examples</h2>
         
         <div class="mb-3">
-            <label for="text-input" class="form-label">Text Input</label>
+            <PggmLabel For="text-input" class="form-label">Text Input</PggmLabel>
             <PggmInput @bind-Value="_textValue" 
+                          id="text-input"
                        Type="@PggmInput.InputTypes.Text"
                        Name="text-input"
                        Placeholder="Enter some text..."
@@ -25,8 +26,9 @@
         </div>
 
         <div class="mb-3">
-            <label for="email-input" class="form-label">Email Input</label>
+            <PggmLabel For="email-input" class="form-label">Email Input</PggmLabel>
             <PggmInput @bind-Value="_emailValue" 
+                          id="email-input"
                        Type="@PggmInput.InputTypes.Email"
                        Name="email-input"
                        Placeholder="Enter your email..."
@@ -35,8 +37,9 @@
         </div>
 
         <div class="mb-3">
-            <label for="password-input" class="form-label">Password Input</label>
+            <PggmLabel For="password-input" class="form-label">Password Input</PggmLabel>
             <PggmInput @bind-Value="_passwordValue" 
+                          id="password-input"
                        Type="@PggmInput.InputTypes.Password"
                        Name="password-input"
                        Placeholder="Enter password..."
@@ -45,8 +48,9 @@
         </div>
 
         <div class="mb-3">
-            <label for="number-input" class="form-label">Number Input</label>
+            <PggmLabel For="number-input" class="form-label">Number Input</PggmLabel>
             <PggmInput @bind-Value="_numberValue" 
+                          id="number-input"
                        Type="@PggmInput.InputTypes.Number"
                        Name="number-input"
                        Min="0"
@@ -57,8 +61,9 @@
         </div>
 
         <div class="mb-3">
-            <label for="tel-input" class="form-label">Telephone Input</label>
+            <PggmLabel For="tel-input" class="form-label">Telephone Input</PggmLabel>
             <PggmInput @bind-Value="_telValue" 
+                          id="tel-input"
                        Type="@PggmInput.InputTypes.Tel"
                        Name="tel-input"
                        Pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
@@ -71,8 +76,9 @@
         <h2>Advanced Input Examples</h2>
         
         <div class="mb-3">
-            <label for="search-input" class="form-label">Search Input</label>
+            <PggmLabel For="search-input" class="form-label">Search Input</PggmLabel>
             <PggmInput @bind-Value="_searchValue" 
+                          id="search-input"
                        Type="@PggmInput.InputTypes.Search"
                        Name="search-input"
                        Placeholder="Search..."
@@ -81,8 +87,9 @@
         </div>
 
         <div class="mb-3">
-            <label for="url-input" class="form-label">URL Input</label>
+            <PggmLabel For="url-input" class="form-label">URL Input</PggmLabel>
             <PggmInput @bind-Value="_urlValue" 
+                          id="url-input"
                        Type="@PggmInput.InputTypes.Url"
                        Name="url-input"
                        Placeholder="https://example.com" />
@@ -90,24 +97,27 @@
         </div>
 
         <div class="mb-3">
-            <label for="date-input" class="form-label">Date Input</label>
+            <PggmLabel For="date-input" class="form-label">Date Input</PggmLabel>
             <PggmInput @bind-Value="_dateValue" 
+                       id="date-input"
                        Type="@PggmInput.InputTypes.Date"
                        Name="date-input" />
             <small class="form-text text-muted">Selected date: @_dateValue</small>
         </div>
 
         <div class="mb-3">
-            <label for="time-input" class="form-label">Time Input</label>
+            <PggmLabel For="time-input" class="form-label">Time Input</PggmLabel>
             <PggmInput @bind-Value="_timeValue" 
-                       Type="@PggmInput.InputTypes.Time" id="time-input"
+                       id="time-input"
+                       Type="@PggmInput.InputTypes.Time"
                        Name="time-input" />
             <small class="form-text text-muted">Selected time: @_timeValue</small>
         </div>
 
         <div class="mb-3">
-            <label for="color-input" class="form-label">Color Input</label>
+            <PggmLabel For="color-input" class="form-label">Color Input</PggmLabel>
             <PggmInput @bind-Value="_colorValue" 
+                        id="color-input"
                        Type="@PggmInput.InputTypes.Color"
                        Name="color-input" />
             <small class="form-text text-muted">Selected color: @_colorValue</small>
@@ -122,7 +132,7 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="mb-3">
-                    <label class="form-label">Disabled Input</label>
+                    <PggmLabel class="form-label">Disabled Input</PggmLabel>
                     <PggmInput Value="This input is disabled" 
                                Disabled="true"
                                Placeholder="Disabled input" />
@@ -131,8 +141,9 @@
 
             <div class="col-md-4">
                 <div class="mb-3">
-                    <label class="form-label">Required Input</label>
+                    <PggmLabel class="form-label">Required Input</PggmLabel>
                     <PggmInput @bind-Value="_requiredValue" 
+                                 Name="required-input"
                                Required="true"
                                Placeholder="This field is required" />
                     @if (string.IsNullOrEmpty(_requiredValue))
@@ -144,7 +155,7 @@
 
             <div class="col-md-4">
                 <div class="mb-3">
-                    <label class="form-label">Read-only Input</label>
+                    <PggmLabel class="form-label">Read-only Input</PggmLabel>
                     <PggmInput Value="This input is read-only" 
                                ReadOnly="true" />
                 </div>
@@ -158,9 +169,10 @@
         <h2>Event Handling Example</h2>
         
         <div class="mb-3">
-            <label for="event-input" class="form-label">Event Demo Input</label>
+            <PggmLabel For="event-input" class="form-label">Event Demo Input</PggmLabel>
             <PggmInput @bind-Value="_eventValue" 
                        Name="event-input"
+                          id="event-input"
                        Placeholder="Type here to see events..."
                        OnChange="OnEventChange"
                        OnInput="OnEventInput"

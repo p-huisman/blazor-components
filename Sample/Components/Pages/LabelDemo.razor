@@ -17,17 +17,17 @@
     <div class="form-example">
         <div class="form-group">
             <PggmLabel For="basic-text-input">Basic Text Input:</PggmLabel>
-            <input id="basic-text-input" type="text" @bind="basicText" class="form-control" placeholder="Enter some text..." />
+            <PggmInput id="basic-text-input" Type="text" @bind-Value="basicText" Placeholder="Enter some text..." />
         </div>
 
         <div class="form-group">
             <PggmLabel For="basic-email-input">Email Address:</PggmLabel>
-            <input id="basic-email-input" type="email" @bind="emailValue" class="form-control" placeholder="user@example.com" />
+            <PggmInput id="basic-email-input" Type="email" @bind-Value="emailValue" Placeholder="user@example.com" />
         </div>
 
         <div class="form-group">
             <PggmLabel For="basic-number-input">Number Input:</PggmLabel>
-            <input id="basic-number-input" type="number" @bind="numberValue" class="form-control" min="0" max="100" />
+            <PggmInput id="basic-number-input" Type="number" @bind-Value="numberValue" Min="0" Max="100" />
         </div>
     </div>
 </section>
@@ -39,12 +39,12 @@
     <div class="form-example">
         <div class="form-group">
             <PggmLabel For="password-input">Password:</PggmLabel>
-            <input id="password-input" type="password" @bind="passwordValue" class="form-control" />
+            <PggmInput id="password-input" Type="password" @bind-Value="passwordValue" />
         </div>
 
         <div class="form-group">
             <PggmLabel For="date-input">Date:</PggmLabel>
-            <input id="date-input" type="date" @bind="dateValue" class="form-control" />
+            <PggmInput id="date-input" Type="date" @bind-Value="dateValue" />
         </div>
 
         <div class="form-group">
@@ -127,8 +127,8 @@
             <ul>
                 <li>Basic Text: @(string.IsNullOrEmpty(basicText) ? "Not set" : basicText)</li>
                 <li>Email: @(string.IsNullOrEmpty(emailValue) ? "Not set" : emailValue)</li>
-                <li>Number: @numberValue</li>
-                <li>Date: @(dateValue?.ToString("yyyy-MM-dd") ?? "Not set")</li>
+                <li>Number: @(string.IsNullOrEmpty(numberValue) ? "Not set" : numberValue)</li>
+                <li>Date: @(string.IsNullOrEmpty(dateValue) ? "Not set" : dateValue)</li>
                 <li>Selected Option: @(string.IsNullOrEmpty(selectValue) ? "Not selected" : selectValue)</li>
                 <li>Radio Selection: @(string.IsNullOrEmpty(radioValue) ? "Not selected" : radioValue)</li>
             </ul>
@@ -145,13 +145,13 @@
             <PggmLabel For="accessible-input" AdditionalAttributes="@(new Dictionary<string, object> { {"aria-describedby", "accessible-help"} })">
                 Accessible Input with Description:
             </PggmLabel>
-            <input id="accessible-input" type="text" @bind="accessibleText" class="form-control" aria-describedby="accessible-help" />
+            <PggmInput id="accessible-input" Type="text" @bind-Value="accessibleText" aria-describedby="accessible-help" />
             <small id="accessible-help" class="form-text text-muted">This input has additional accessibility information.</small>
         </div>
 
         <div class="form-group">
             <PggmLabel For="required-input">Required Field <span style="color: red;">*</span>:</PggmLabel>
-            <input id="required-input" type="text" @bind="requiredText" class="form-control" required />
+            <PggmInput id="required-input" Type="text" @bind-Value="requiredText" Required="true" />
         </div>
     </div>
 </section>
@@ -160,13 +160,13 @@
     // Basic form values
     private string basicText = "";
     private string emailValue = "";
-    private int numberValue = 0;
+    private string numberValue = "";
     private string passwordValue = "";
-    private DateTime? dateValue;
+    private string dateValue = "";
     private string textareaValue = "";
     private string selectValue = "";
 
-    // Checkbox values
+    // Checkbox values (kept as bool for standard HTML checkboxes)
     private bool checkbox1 = false;
     private bool checkbox2 = false;
     private bool checkbox3 = false;
