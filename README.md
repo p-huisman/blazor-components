@@ -1,6 +1,29 @@
 # Blazor PGGM Components
 
-A Blazor component library that wraps web components from the PGGM Design System, making them available as native Blazor components.
+A Blazor component library that wraps web components from the PGGM Design System, making them available as native B<!-- Phone input without validation -->
+<PggmInputPhone @bind-Value="@simplePhone" 
+                Placeholder="Phone number only..."
+                Name="simple-phone" />
+
+<!-- Mobile numbers only validation -->
+<PggmInputPhone @bind-Value="@mobilePhone" 
+                PhoneNumberType="@PggmInputPhone.PhoneNumberTypes.Mobile"
+                CountryCode="@PggmInputPhone.CountryCodes.Netherlands"
+                Placeholder="Enter mobile number..."
+                Name="mobile-phone" />
+
+<!-- Fixed line numbers only validation -->
+<PggmInputPhone @bind-Value="@fixedLinePhone" 
+                PhoneNumberType="@PggmInputPhone.PhoneNumberTypes.FixedLine"
+                Placeholder="Enter fixed line number..."
+                Name="fixed-line-phone" />
+
+<!-- European countries priority -->
+<PggmInputPhone @bind-Value="@europeanPhone" 
+                TopCountries="NL,BE,DE,FR,ES,IT"
+                CountryLabel="Select your country..."
+                Placeholder="Enter European phone number..."
+                Name="european-phone" /> components.
 
 ## Features
 
@@ -22,6 +45,7 @@ A Blazor component library that wraps web components from the PGGM Design System
 - **Error Message**: Validation error display components
 - **Fieldset**: Form grouping containers with labels and descriptions
 - **Input**: Text input controls with comprehensive validation and event handling
+- **Input Phone**: Specialized phone number input with country selection and formatting
 - **Slider**: Range input controls for numeric value selection
 
 ### Component Features
@@ -124,6 +148,59 @@ In your `_Imports.razor` file:
     }
 }
 ```
+
+### Input Phone Component
+
+```razor
+<!-- Basic phone input with top countries -->
+<PggmInputPhone @bind-Value="phoneNumber" 
+                TopCountries="NL,BE,DE,FR"
+                InitialCountry="NL"
+                Required="true" />
+
+<!-- Phone input with events -->
+<PggmInputPhone @bind-Value="phoneWithEvents" 
+                InitialCountry="NL"
+                OnChange="HandlePhoneChange" />
+
+<!-- Mobile numbers only validation -->
+<PggmInputPhone @bind-Value="mobilePhone" 
+                PhoneNumberType="@PggmInputPhone.PhoneNumberTypes.Mobile"
+                InitialCountry="NL"
+                Name="mobile-phone" />
+
+<!-- Fixed line numbers only validation -->
+<PggmInputPhone @bind-Value="fixedLinePhone" 
+                PhoneNumberType="@PggmInputPhone.PhoneNumberTypes.FixedLine"
+                Name="fixed-line-phone" />
+
+<!-- European countries priority -->
+<PggmInputPhone @bind-Value="europeanPhone" 
+                TopCountries="NL,BE,DE,FR,ES,IT"
+                CountryLabel="Select your country..."
+                InitialCountry="NL"
+                Name="european-phone" />
+
+@code {
+    private string? phoneNumber = "";
+    private string? internationalPhone = "";
+    private string? simplePhone = "";
+    private string? mobilePhone = "";
+    private string? fixedLinePhone = "";
+    private string? europeanPhone = "";
+    
+    private void HandlePhoneChange(ChangeEventArgs args)
+    {
+        // Handle phone number validation or formatting
+    }
+}
+```
+
+**Key Parameters:**
+- `InitialCountry`: Sets the initial country selection (e.g., "NL", "BE", "DE")
+- `TopCountries`: Comma-separated list of countries to show at the top of the dropdown
+- `CountryLabel`: Placeholder text for the country selector
+- `PhoneNumberType`: Validates specific phone number types (Mobile, FixedLine, etc.)
 
 ### Nested Components
 

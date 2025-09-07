@@ -1,0 +1,198 @@
+@page "/input-phone-demo"
+
+<PageTitle>Input Phone Demo</PageTitle>
+
+<h1>PGGM Input Phone Component Demo</h1>
+
+<div class="demo-section">
+    <h2>Basic Phone Input</h2>
+    <PggmInputPhone @bind-Value="@basicPhoneValue" 
+                    InitialCountry="NL"
+                    Name="basic-phone" />
+    <p><strong>Current Value:</strong> @basicPhoneValue</p>
+</div>
+
+<div class="demo-section">
+    <h2>Phone Input with Top Countries</h2>
+    <PggmInputPhone @bind-Value="@countryPhoneValue" 
+                    TopCountries="NL,BE,DE,FR"
+                    CountryLabel="Choose country..."
+                    InitialCountry="NL"
+                    Name="country-phone" />
+    <p><strong>Current Value:</strong> @countryPhoneValue</p>
+    <small>Top countries with custom country selector placeholder</small>
+</div>
+
+<div class="demo-section">
+    <h2>Basic Phone Input</h2>
+    <PggmInputPhone @bind-Value="@internationalPhoneValue" 
+                    InitialCountry="NL"
+                    Name="international-phone" />
+    <p><strong>Current Value:</strong> @internationalPhoneValue</p>
+</div>
+
+<div class="demo-section">
+    <h2>Disabled Phone Input</h2>
+    <PggmInputPhone Value="+31 6 12345678" 
+                    InitialCountry="NL"
+                    Disabled="true"
+                    Name="disabled-phone" />
+</div>
+
+<div class="demo-section">
+    <h2>Required Phone Input</h2>
+    <PggmInputPhone @bind-Value="@requiredPhoneValue" 
+                    InitialCountry="NL"
+                    Required="true"
+                    Name="required-phone" />
+    <p><strong>Current Value:</strong> @requiredPhoneValue</p>
+</div>
+
+<div class="demo-section">
+    <h2>Simple Phone Input</h2>
+    <PggmInputPhone @bind-Value="@noCountryPhoneValue" 
+                    InitialCountry="NL"
+                    Name="no-country-phone" />
+    <p><strong>Current Value:</strong> @noCountryPhoneValue</p>
+</div>
+
+<div class="demo-section">
+    <h2>Mobile Numbers Only</h2>
+    <PggmInputPhone @bind-Value="@mobilePhoneValue" 
+                    PhoneNumberType="@PggmInputPhone.PhoneNumberTypes.Mobile"
+                    InitialCountry="NL"
+                    Name="mobile-phone" />
+    <p><strong>Current Value:</strong> @mobilePhoneValue</p>
+    <small>Only mobile numbers are valid for this input</small>
+</div>
+
+<div class="demo-section">
+    <h2>Fixed Line Numbers Only</h2>
+    <PggmInputPhone @bind-Value="@fixedLinePhoneValue" 
+                    PhoneNumberType="@PggmInputPhone.PhoneNumberTypes.FixedLine"
+                    InitialCountry="NL"
+                    Name="fixed-line-phone" />
+    <p><strong>Current Value:</strong> @fixedLinePhoneValue</p>
+    <small>Only fixed line numbers are valid for this input</small>
+</div>
+
+<div class="demo-section">
+    <h2>Fixed Line or Mobile</h2>
+    <PggmInputPhone @bind-Value="@anyPhoneValue" 
+                    PhoneNumberType="@PggmInputPhone.PhoneNumberTypes.FixedLineOrMobile"
+                    InitialCountry="NL"
+                    Name="any-phone" />
+    <p><strong>Current Value:</strong> @anyPhoneValue</p>
+    <small>Both fixed line and mobile numbers are valid</small>
+</div>
+
+<div class="demo-section">
+    <h2>European Countries Priority</h2>
+    <PggmInputPhone @bind-Value="@europeanPhoneValue" 
+                    TopCountries="NL,BE,DE,FR,ES,IT,LU"
+                    CountryLabel="Select country..."
+                    InitialCountry="NL"
+                    Name="european-phone" />
+    <p><strong>Current Value:</strong> @europeanPhoneValue</p>
+    <small>European countries shown at top with custom country selector placeholder</small>
+</div>
+
+<div class="demo-section">
+    <h2>Phone Input with Events</h2>
+    <PggmInputPhone @bind-Value="@eventPhoneValue" 
+                    OnChange="@OnPhoneChanged"
+                    OnInput="@OnPhoneInput"
+                    OnFocus="@OnPhoneFocus"
+                    OnBlur="@OnPhoneBlur"
+                    InitialCountry="NL"
+                    Name="event-phone" />
+    <p><strong>Current Value:</strong> @eventPhoneValue</p>
+    <div class="event-log">
+        <h4>Event Log:</h4>
+        <ul>
+            @foreach (var logEntry in eventLog)
+            {
+                <li>@logEntry</li>
+            }
+        </ul>
+    </div>
+</div>
+
+<style>
+    .demo-section {
+        margin: 2rem 0;
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .demo-section h2 {
+        margin-top: 0;
+        color: #333;
+    }
+
+    .event-log {
+        background-color: #f5f5f5;
+        padding: 1rem;
+        border-radius: 4px;
+        margin-top: 1rem;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    .event-log ul {
+        margin: 0;
+        padding-left: 1rem;
+    }
+
+    .event-log li {
+        font-family: monospace;
+        font-size: 0.9em;
+        margin: 0.25rem 0;
+    }
+</style>
+
+@code {
+    private string? basicPhoneValue = "";
+    private string? countryPhoneValue = "";
+    private string? internationalPhoneValue = "";
+    private string? requiredPhoneValue = "";
+    private string? noCountryPhoneValue = "";
+    private string? mobilePhoneValue = "";
+    private string? fixedLinePhoneValue = "";
+    private string? anyPhoneValue = "";
+    private string? europeanPhoneValue = "";
+    private string? eventPhoneValue = "";
+    
+    private List<string> eventLog = new();
+
+    private void OnPhoneChanged(ChangeEventArgs args)
+    {
+        AddEventLog($"OnChange: {args.Value}");
+    }
+
+    private void OnPhoneInput(ChangeEventArgs args)
+    {
+        AddEventLog($"OnInput: {args.Value}");
+    }
+
+    private void OnPhoneFocus(FocusEventArgs args)
+    {
+        AddEventLog("OnFocus: Input gained focus");
+    }
+
+    private void OnPhoneBlur(FocusEventArgs args)
+    {
+        AddEventLog("OnBlur: Input lost focus");
+    }
+
+    private void AddEventLog(string message)
+    {
+        eventLog.Insert(0, $"{DateTime.Now:HH:mm:ss} - {message}");
+        if (eventLog.Count > 10)
+        {
+            eventLog.RemoveAt(eventLog.Count - 1);
+        }
+        StateHasChanged();
+    }
+}

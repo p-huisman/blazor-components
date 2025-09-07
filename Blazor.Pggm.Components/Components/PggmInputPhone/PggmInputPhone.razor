@@ -1,0 +1,187 @@
+@inherits PggmComponentBase
+@namespace Blazor.Pggm.Components
+
+<pggm-input-phone @ref="ElementRef" @attributes="GetAttributes()" 
+                  @onchange="OnChangeHandler" 
+                  @oninput="OnInputHandler"
+                  @onfocus="OnFocusHandler"
+                  @onblur="OnBlurHandler" />
+
+@code {
+    protected override string TagName => "pggm-input-phone";
+
+    /// <summary>
+    /// The current phone number value
+    /// </summary>
+    [Parameter] public string? Value { get; set; }
+
+    /// <summary>
+    /// Event callback for when the phone number value changes (two-way binding)
+    /// </summary>
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+
+    /// <summary>
+    /// Whether the input is disabled
+    /// </summary>
+    [Parameter] public bool Disabled { get; set; }
+
+    /// <summary>
+    /// Whether the input is required
+    /// </summary>
+    [Parameter] public bool Required { get; set; }
+
+    /// <summary>
+    /// Whether the input is readonly
+    /// </summary>
+    [Parameter] public bool ReadOnly { get; set; }
+
+    /// <summary>
+    /// The name attribute for the input
+    /// </summary>
+    [Parameter] public string? Name { get; set; }
+
+    /// <summary>
+    /// The phone number type for validation (fixed-line, mobile, fixed-line-or-mobile)
+    /// If the value is not a valid number type for the selected country, the input will be invalid (ValidityState: typeMismatch)
+    /// </summary>
+    [Parameter] public string? PhoneNumberType { get; set; }
+
+    /// <summary>
+    /// Comma-separated list of country codes to show at the top of the country selector (e.g., "NL,BE,DE")
+    /// Maps to the 'top-countries' attribute of the web component
+    /// </summary>
+    [Parameter] public string? TopCountries { get; set; }
+
+    /// <summary>
+    /// Placeholder text for the country select dropdown
+    /// Maps to the 'country-label' attribute of the web component
+    /// </summary>
+    [Parameter] public string? CountryLabel { get; set; }
+
+    /// <summary>
+    /// The initial country code to select (e.g., "NL", "BE", "DE")
+    /// Maps to the 'initial-country' attribute of the web component
+    /// </summary>
+    [Parameter] public string? InitialCountry { get; set; }
+
+    /// <summary>
+    /// Event callback for the change event (when input loses focus)
+    /// </summary>
+    [Parameter] public EventCallback<ChangeEventArgs> OnChange { get; set; }
+
+    /// <summary>
+    /// Event callback for the input event (on every keystroke)
+    /// </summary>
+    [Parameter] public EventCallback<ChangeEventArgs> OnInput { get; set; }
+
+    /// <summary>
+    /// Event callback for when the input gains focus
+    /// </summary>
+    [Parameter] public EventCallback<FocusEventArgs> OnFocus { get; set; }
+
+    /// <summary>
+    /// Event callback for when the input loses focus
+    /// </summary>
+    [Parameter] public EventCallback<FocusEventArgs> OnBlur { get; set; }
+
+    /// <summary>
+    /// Event callback for when the country selection changes
+    /// </summary>
+    [Parameter] public EventCallback<string> OnCountryChanged { get; set; }
+
+    /// <summary>
+    /// Event callback for phone number validation result
+    /// </summary>
+    [Parameter] public EventCallback<bool> OnValidationChanged { get; set; }
+
+    protected override void AddComponentAttributes(Dictionary<string, object> attributes)
+    {
+        AttributeHelper.SetAttributeIfNotEmpty(attributes, Constants.AttributeNames.Value, Value);
+        AttributeHelper.SetAttributeIfNotEmpty(attributes, Constants.AttributeNames.Name, Name);
+        AttributeHelper.SetAttributeIfNotEmpty(attributes, "phone-number-type", PhoneNumberType);
+        AttributeHelper.SetAttributeIfNotEmpty(attributes, "top-countries", TopCountries);
+        AttributeHelper.SetAttributeIfNotEmpty(attributes, "country-label", CountryLabel);
+        AttributeHelper.SetAttributeIfNotEmpty(attributes, "initial-country", InitialCountry);
+        
+        AttributeHelper.SetBooleanAttribute(attributes, Constants.AttributeNames.Disabled, Disabled);
+        AttributeHelper.SetBooleanAttribute(attributes, Constants.AttributeNames.Required, Required);
+        AttributeHelper.SetBooleanAttribute(attributes, Constants.AttributeNames.ReadOnly, ReadOnly);
+    }
+
+    private async Task OnChangeHandler(ChangeEventArgs args)
+    {
+        var newValue = args.Value?.ToString();
+        
+        if (Value != newValue)
+        {
+            Value = newValue;
+            
+            if (ValueChanged.HasDelegate)
+            {
+                await ValueChanged.InvokeAsync(Value);
+            }
+        }
+
+        if (OnChange.HasDelegate)
+        {
+            await OnChange.InvokeAsync(args);
+        }
+    }
+
+    private async Task OnInputHandler(ChangeEventArgs args)
+    {
+        var newValue = args.Value?.ToString();
+        
+        if (Value != newValue)
+        {
+            Value = newValue;
+            
+            if (ValueChanged.HasDelegate)
+            {
+                await ValueChanged.InvokeAsync(Value);
+            }
+        }
+
+        if (OnInput.HasDelegate)
+        {
+            await OnInput.InvokeAsync(args);
+        }
+    }
+
+    private async Task OnFocusHandler(FocusEventArgs args)
+    {
+        if (OnFocus.HasDelegate)
+        {
+            await OnFocus.InvokeAsync(args);
+        }
+    }
+
+    private async Task OnBlurHandler(FocusEventArgs args)
+    {
+        if (OnBlur.HasDelegate)
+        {
+            await OnBlur.InvokeAsync(args);
+        }
+    }
+
+    /// <summary>
+    /// Phone number type constants for validation
+    /// </summary>
+    public static class PhoneNumberTypes
+    {
+        /// <summary>
+        /// Fixed-line phone numbers only. If the value is not a valid fixed line number for the selected country, the input will be invalid (ValidityState: typeMismatch).
+        /// </summary>
+        public const string FixedLine = "fixed-line";
+        
+        /// <summary>
+        /// Fixed-line or mobile phone numbers. If the value is not a valid fixed line or mobile number for the selected country, the input will be invalid (ValidityState: typeMismatch).
+        /// </summary>
+        public const string FixedLineOrMobile = "fixed-line-or-mobile";
+        
+        /// <summary>
+        /// Mobile phone numbers only. If the value is not a valid mobile number for the selected country, the input will be invalid (ValidityState: typeMismatch).
+        /// </summary>
+        public const string Mobile = "mobile";
+    }
+}
