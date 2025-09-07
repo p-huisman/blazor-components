@@ -1,0 +1,125 @@
+@page "/components/switch"
+
+<h3>PggmSwitch Component Demo</h3>
+
+<div class="demo-section">
+    <h4>Basic Switch</h4>
+    <p>Notifications Enabled: <strong>@(notificationsEnabled ? "On" : "Off")</strong></p>
+    
+    <PggmSwitch Checked="@notificationsEnabled" CheckedChanged="@(value => notificationsEnabled = value)">
+    </PggmSwitch>
+</div>
+
+<div class="demo-section">
+    <h4>Switch with Name and Value</h4>
+    <p>Marketing Emails: <strong>@(marketingEmailsEnabled ? "Subscribed" : "Unsubscribed")</strong></p>
+    
+    <PggmSwitch Name="marketing" 
+                Value="enabled" 
+                Checked="@marketingEmailsEnabled" 
+                CheckedChanged="@(value => marketingEmailsEnabled = value)">
+    </PggmSwitch>
+</div>
+
+<div class="demo-section">
+    <h4>Disabled Switch</h4>
+    <p>This switch is disabled and cannot be toggled.</p>
+    
+    <PggmSwitch Checked="true" Disabled="true">
+    </PggmSwitch>
+    
+    <br /><br />
+    
+    <PggmSwitch Checked="false" Disabled="true">
+    </PggmSwitch>
+</div>
+
+<div class="demo-section">
+    <h4>Switch with Variants (if supported)</h4>
+    
+    <div class="switch-group">
+        <PggmSwitch Variant="primary" 
+                    Checked="@primarySwitchValue" 
+                    CheckedChanged="@(value => primarySwitchValue = value)">
+        </PggmSwitch>
+        
+        <PggmSwitch Variant="secondary" 
+                    Checked="@secondarySwitchValue" 
+                    CheckedChanged="@(value => secondarySwitchValue = value)">
+        </PggmSwitch>
+        
+        <PggmSwitch Variant="success" 
+                    Checked="@successSwitchValue" 
+                    CheckedChanged="@(value => successSwitchValue = value)">
+        </PggmSwitch>
+    </div>
+</div>
+
+<div class="demo-section">
+    <h4>Event Handling</h4>
+    <p>Last Event: <strong>@lastEvent</strong></p>
+    
+    <PggmSwitch Checked="@eventTestValue" 
+                CheckedChanged="@HandleValueChange"
+                OnFocus="@HandleFocus"
+                OnBlur="@HandleBlur">
+    </PggmSwitch>
+</div>
+
+@code {
+    private bool notificationsEnabled = true;
+    private bool marketingEmailsEnabled = false;
+    private bool primarySwitchValue = true;
+    private bool secondarySwitchValue = false;
+    private bool successSwitchValue = true;
+    private bool eventTestValue = false;
+    private string lastEvent = "None";
+
+    private void HandleValueChange(bool value)
+    {
+        eventTestValue = value;
+        lastEvent = $"Value changed to: {(value ? "On" : "Off")} at {DateTime.Now:HH:mm:ss}";
+    }
+
+    private void HandleFocus(FocusEventArgs args)
+    {
+        lastEvent = $"Switch focused at {DateTime.Now:HH:mm:ss}";
+    }
+
+    private void HandleBlur(FocusEventArgs args)
+    {
+        lastEvent = $"Switch blurred at {DateTime.Now:HH:mm:ss}";
+    }
+}
+
+<style>
+    .demo-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+    }
+    
+    .demo-section h4 {
+        margin-top: 0;
+        color: #333;
+    }
+    
+    .demo-section p {
+        margin-bottom: 1rem;
+    }
+    
+    .demo-section p strong {
+        color: #0066cc;
+    }
+    
+    .switch-group {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .switch-group > * {
+        align-self: flex-start;
+    }
+</style>
