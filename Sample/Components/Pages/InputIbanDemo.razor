@@ -1,0 +1,116 @@
+@page "/pggm-input-iban-demo"
+@using Microsoft.AspNetCore.Components
+@using Blazor.Pggm.Components
+
+<PageTitle>Input IBAN Demo</PageTitle>
+
+<h1>Input IBAN Demo</h1>
+
+<p>This page demonstrates the PGGM IBAN input component with various configurations and features.</p>
+
+<div class="demo-section">
+    <h2>IBAN Input Examples</h2>
+    
+    <div class="form-group">
+        <label for="iban1">Basic IBAN Input:</label>
+        <PggmInputIban @bind-Value="@ibanValue1" 
+                       Placeholder="Enter your IBAN" 
+                       Name="iban1" />
+        <p>Current value: @ibanValue1</p>
+    </div>
+
+    <div class="form-group">
+        <label for="iban2">Required IBAN Input:</label>
+        <PggmInputIban @bind-Value="@ibanValue2" 
+                       Placeholder="NL91 ABNA 0417 1643 00" 
+                       Name="iban2"
+                       Required="true"
+                       ErrorMessage="Please enter a valid IBAN" />
+        <p>Current value: @ibanValue2</p>
+    </div>
+
+    <div class="form-group">
+        <label for="iban3">Disabled IBAN Input:</label>
+        <PggmInputIban @bind-Value="@ibanValue3" 
+                       Placeholder="Disabled input" 
+                       Name="iban3"
+                       Disabled="true" />
+    </div>
+
+    <div class="form-group">
+        <label for="iban4">IBAN with Event Handling:</label>
+        <PggmInputIban @bind-Value="@ibanValue4" 
+                       Placeholder="Enter IBAN with validation" 
+                       Name="iban4"
+                       OnInput="@OnIbanInput"
+                       OnChange="@OnIbanChange"
+                       OnFocus="@OnIbanFocus"
+                       OnBlur="@OnIbanBlur"
+                       OnInvalid="@OnIbanInvalid" />
+        <p>Current value: @ibanValue4</p>
+        @if (!string.IsNullOrEmpty(eventMessage))
+        {
+            <p class="event-message">@eventMessage</p>
+        }
+    </div>
+</div>
+
+<style>
+    .demo-section {
+        max-width: 600px;
+        margin: 20px 0;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    .event-message {
+        color: #0066cc;
+        font-style: italic;
+        margin-top: 5px;
+    }
+</style>
+
+@code {
+    private string? ibanValue1;
+    private string? ibanValue2;
+    private string? ibanValue3 = "NL91 ABNA 0417 1643 00"; // Pre-filled for disabled demo
+    private string? ibanValue4;
+    private string eventMessage = "";
+    private void OnIbanInput(ChangeEventArgs args)
+    {
+        eventMessage = $"Input event fired: {args.Value}";
+        StateHasChanged();
+    }
+
+    private void OnIbanChange(ChangeEventArgs args)
+    {
+        eventMessage = $"Change event fired: {args.Value}";
+        StateHasChanged();
+    }
+
+    private void OnIbanFocus(FocusEventArgs args)
+    {
+        eventMessage = "IBAN input focused";
+        StateHasChanged();
+    }
+
+    private void OnIbanBlur(FocusEventArgs args)
+    {
+        eventMessage = "IBAN input blurred";
+        StateHasChanged();
+    }
+
+    private void OnIbanInvalid(EventArgs args)
+    {
+        eventMessage = "Invalid IBAN detected!";
+        StateHasChanged();
+    }
+}

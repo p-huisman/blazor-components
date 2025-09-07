@@ -1,0 +1,222 @@
+@inherits PggmComponentBase
+@namespace Blazor.Pggm.Components
+
+<pggm-input-iban @ref="ElementRef" @attributes="GetAttributes()" 
+                 @onchange="OnChangeHandler"
+                 @oninput="OnInputHandler"
+                 @onfocus="OnFocusHandler"
+                 @onblur="OnBlurHandler"
+                 @oninvalid="OnInvalidHandler">
+  @ChildContent
+</pggm-input-iban>
+
+@code {
+    protected override string TagName => "pggm-input-iban";
+
+    /// <summary>
+    /// The current IBAN value
+    /// </summary>
+    [Parameter] public string? Value { get; set; }
+
+    /// <summary>
+    /// Event callback for when the IBAN value changes (two-way binding)
+    /// </summary>
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+
+    /// <summary>
+    /// Placeholder text for the IBAN input
+    /// </summary>
+    [Parameter] public string? Placeholder { get; set; }
+
+    /// <summary>
+    /// Whether the input is disabled
+    /// </summary>
+    [Parameter] public bool Disabled { get; set; }
+
+    /// <summary>
+    /// Whether the input is required
+    /// </summary>
+    [Parameter] public bool Required { get; set; }
+
+    /// <summary>
+    /// Whether the input is readonly
+    /// </summary>
+    [Parameter] public bool ReadOnly { get; set; }
+
+    /// <summary>
+    /// The name attribute for the input
+    /// </summary>
+    [Parameter] public string? Name { get; set; }
+
+    /// <summary>
+    /// The form ID this input belongs to
+    /// </summary>
+    [Parameter] public string? Form { get; set; }
+
+    /// <summary>
+    /// The autocomplete attribute for the input
+    /// </summary>
+    [Parameter] public string? AutoComplete { get; set; }
+
+    /// <summary>
+    /// Whether to auto-format the IBAN as the user types
+    /// </summary>
+    [Parameter] public bool AutoFormat { get; set; } = true;
+
+    /// <summary>
+    /// Whether to validate the IBAN in real-time
+    /// </summary>
+    [Parameter] public bool ValidateOnInput { get; set; } = true;
+
+    /// <summary>
+    /// Custom error message for invalid IBAN
+    /// </summary>
+    [Parameter] public string? ErrorMessage { get; set; }
+
+    /// <summary>
+    /// Event callback for the change event (when input loses focus)
+    /// </summary>
+    [Parameter] public EventCallback<ChangeEventArgs> OnChange { get; set; }
+
+    /// <summary>
+    /// Event callback for the input event (on every keystroke)
+    /// </summary>
+    [Parameter] public EventCallback<ChangeEventArgs> OnInput { get; set; }
+
+    /// <summary>
+    /// Event callback for when the input gains focus
+    /// </summary>
+    [Parameter] public EventCallback<FocusEventArgs> OnFocus { get; set; }
+
+    /// <summary>
+    /// Event callback for when the input loses focus
+    /// </summary>
+    [Parameter] public EventCallback<FocusEventArgs> OnBlur { get; set; }
+
+    /// <summary>
+    /// Event callback for when the IBAN validation fails
+    /// </summary>
+    [Parameter] public EventCallback<EventArgs> OnInvalid { get; set; }
+
+    protected override void AddComponentAttributes(Dictionary<string, object> attributes)
+    {
+        AttributeHelper.SetAttributeIfNotEmpty(attributes, Constants.AttributeNames.Value, Value);
+        AttributeHelper.SetAttributeIfNotEmpty(attributes, Constants.AttributeNames.Placeholder, Placeholder);
+        AttributeHelper.SetAttributeIfNotEmpty(attributes, Constants.AttributeNames.Name, Name);
+        AttributeHelper.SetAttributeIfNotEmpty(attributes, "form", Form);
+        AttributeHelper.SetAttributeIfNotEmpty(attributes, "autocomplete", AutoComplete);
+        AttributeHelper.SetAttributeIfNotEmpty(attributes, "error-message", ErrorMessage);
+        
+        AttributeHelper.SetBooleanAttribute(attributes, Constants.AttributeNames.Disabled, Disabled);
+        AttributeHelper.SetBooleanAttribute(attributes, Constants.AttributeNames.Required, Required);
+        AttributeHelper.SetBooleanAttribute(attributes, Constants.AttributeNames.ReadOnly, ReadOnly);
+        AttributeHelper.SetBooleanAttribute(attributes, "auto-format", AutoFormat);
+        AttributeHelper.SetBooleanAttribute(attributes, "validate-on-input", ValidateOnInput);
+    }
+
+    private async Task OnChangeHandler(ChangeEventArgs args)
+    {
+        var newValue = args.Value?.ToString();
+        
+        if (Value != newValue)
+        {
+            Value = newValue;
+            
+            if (ValueChanged.HasDelegate)
+            {
+                await ValueChanged.InvokeAsync(Value);
+            }
+        }
+
+        if (OnChange.HasDelegate)
+        {
+            await OnChange.InvokeAsync(args);
+        }
+    }
+
+    private async Task OnInputHandler(ChangeEventArgs args)
+    {
+        var newValue = args.Value?.ToString();
+        
+        if (Value != newValue)
+        {
+            Value = newValue;
+            
+            if (ValueChanged.HasDelegate)
+            {
+                await ValueChanged.InvokeAsync(Value);
+            }
+        }
+
+        if (OnInput.HasDelegate)
+        {
+            await OnInput.InvokeAsync(args);
+        }
+    }
+
+    private async Task OnFocusHandler(FocusEventArgs args)
+    {
+        if (OnFocus.HasDelegate)
+        {
+            await OnFocus.InvokeAsync(args);
+        }
+    }
+
+    private async Task OnBlurHandler(FocusEventArgs args)
+    {
+        if (OnBlur.HasDelegate)
+        {
+            await OnBlur.InvokeAsync(args);
+        }
+    }
+
+    private async Task OnInvalidHandler(EventArgs args)
+    {
+        if (OnInvalid.HasDelegate)
+        {
+            await OnInvalid.InvokeAsync(args);
+        }
+    }
+
+    /// <summary>
+    /// Validates the current IBAN value
+    /// </summary>
+    /// <returns>True if the IBAN is valid, false otherwise</returns>
+    public async Task<bool> ValidateAsync()
+    {
+        if (ElementRef.Id != null)
+        {
+            return await JSRuntime.InvokeAsync<bool>("blazorPggm.validateIban", ElementRef);
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Gets the formatted IBAN value
+    /// </summary>
+    /// <returns>The formatted IBAN string</returns>
+    public async Task<string?> GetFormattedValueAsync()
+    {
+        if (ElementRef.Id != null)
+        {
+            return await JSRuntime.InvokeAsync<string?>("blazorPggm.getFormattedIban", ElementRef);
+        }
+        return Value;
+    }
+
+    /// <summary>
+    /// Clears the IBAN input
+    /// </summary>
+    public async Task ClearAsync()
+    {
+        if (ElementRef.Id != null)
+        {
+            await JSRuntime.InvokeVoidAsync("blazorPggm.clearInput", ElementRef);
+            Value = null;
+            if (ValueChanged.HasDelegate)
+            {
+                await ValueChanged.InvokeAsync(Value);
+            }
+        }
+    }
+}
