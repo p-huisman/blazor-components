@@ -8,20 +8,20 @@
   <div class="demo-item">
     <h3>Error Message Associated with Input Field</h3>
     <label for="sample-input">Sample Input:</label>
-    <PggmInput required id="sample-input" />
     <PggmErrorMessage For="sample-input" Validity="@PggmErrorMessage.ValidityStates.ValueMissing">
       This field is required.
     </PggmErrorMessage>
+    <PggmInput required id="sample-input" />
   </div>
 
   <div class="demo-item">
     <h3>Multiple Validity States</h3>
     <label for="multi-input">Multi-validation Input:</label>
-    <PggmInput Required="true" Pattern="^P.*" id="multi-input" />
     <PggmErrorMessage For="multi-input"
       Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.PatternMismatch}")">
       This field is required and must match the specified pattern. (Starts with 'P')
     </PggmErrorMessage>
+    <PggmInput Required="true" Pattern="^P.*" id="multi-input" />
   </div>
 </div>
 
@@ -31,40 +31,40 @@
   <div class="demo-item">
     <h3>Email Validation</h3>
     <label for="email-input">Email Address:</label>
-    <PggmInput @bind-Value="formModel.Email" OnBlur="ValidateEmail" id="email-input" Type="email"
-      Placeholder="Enter your email" />
     @if (!string.IsNullOrEmpty(emailValidityState))
     {
       <PggmErrorMessage For="email-input" Validity="@emailValidityState">
         @GetEmailErrorMessage()
       </PggmErrorMessage>
     }
+    <PggmInput @bind-Value="formModel.Email" OnBlur="ValidateEmail" id="email-input" Type="email"
+      Placeholder="Enter your email" />
   </div>
 
   <div class="demo-item">
     <h3>Password Validation</h3>
     <label for="password-input">Password (min 8 characters):</label>
-    <PggmInput @bind-Value="formModel.Password" OnBlur="ValidatePassword" id="password-input" Type="password"
-      MinLength="8" Placeholder="Enter password" />
     @if (!string.IsNullOrEmpty(passwordValidityState))
     {
       <PggmErrorMessage For="password-input" Validity="@passwordValidityState">
         @GetPasswordErrorMessage()
       </PggmErrorMessage>
     }
+    <PggmInput @bind-Value="formModel.Password" OnBlur="ValidatePassword" id="password-input" Type="password"
+      MinLength="8" Placeholder="Enter password" />
   </div>
 
   <div class="demo-item">
     <h3>Number Range Validation</h3>
     <label for="age-input">Age (18-100):</label>
-    <PggmInput @bind-Value="ageValue" OnBlur="ValidateAge" id="age-input" Type="number" Min="18" Max="100"
-      Placeholder="Enter your age" />
     @if (!string.IsNullOrEmpty(ageValidityState))
     {
       <PggmErrorMessage For="age-input" Validity="@ageValidityState">
         @GetAgeErrorMessage()
       </PggmErrorMessage>
     }
+    <PggmInput @bind-Value="ageValue" OnBlur="ValidateAge" id="age-input" Type="number" Min="18" Max="100"
+      Placeholder="Enter your age" />
   </div>
 </div>
 
@@ -74,44 +74,44 @@
   <div class="demo-item">
     <h3>Pattern Mismatch</h3>
     <label for="pattern-input">Phone Number (format: 123-456-7890):</label>
-    <PggmInput id="pattern-input" Pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" Placeholder="123-456-7890" />
     <PggmErrorMessage For="pattern-input" Validity="@PggmErrorMessage.ValidityStates.PatternMismatch">
       Please enter a valid phone number in the format 123-456-7890.
     </PggmErrorMessage>
+    <PggmInput id="pattern-input" Pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" Placeholder="123-456-7890" />
   </div>
 
   <div class="demo-item">
     <h3>Too Long / Too Short</h3>
     <label for="length-input">Username (5-15 characters):</label>
-    <PggmInput id="length-input" MinLength="5" MaxLength="15" Placeholder="Enter username" />
     <PggmErrorMessage For="length-input" Validity="@PggmErrorMessage.ValidityStates.TooShort">
       Username must be at least 5 characters long.
     </PggmErrorMessage>
     <PggmErrorMessage For="length-input" Validity="@PggmErrorMessage.ValidityStates.TooLong">
       Username cannot be longer than 15 characters.
     </PggmErrorMessage>
+    <PggmInput id="length-input" MinLength="5" MaxLength="15" Placeholder="Enter username" />
   </div>
 
   <div class="demo-item">
     <h3>Step Mismatch</h3>
     <label for="step-input">Price (increments of 0.50):</label>
-    <PggmInput id="step-input" Type="number" Step="0.5" Placeholder="0.00" />
     <PggmErrorMessage For="step-input" Validity="@PggmErrorMessage.ValidityStates.StepMismatch">
       Price must be in increments of $0.50.
     </PggmErrorMessage>
+    <PggmInput id="step-input" Type="number" Step="0.5" Placeholder="0.00" />
   </div>
 
   <div class="demo-item">
     <h3>Custom Error</h3>
     <label for="custom-input">Custom Validation:</label>
-    <PggmInput @bind-Value="customValue" OnBlur="ValidateCustom" id="custom-input"
-      Placeholder="Type 'forbidden' to see custom error" />
     @if (showCustomError)
     {
       <PggmErrorMessage For="custom-input" Validity="@PggmErrorMessage.ValidityStates.CustomError">
         This value is not allowed by our business rules.
       </PggmErrorMessage>
     }
+    <PggmInput @bind-Value="customValue" OnBlur="ValidateCustom" id="custom-input"
+      Placeholder="Type 'forbidden' to see custom error" />
   </div>
 </div>
 
@@ -280,15 +280,10 @@
     font-weight: bold;
   }
 
-  .form-control {
-    width: 100%;
-    max-width: 400px;
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: 0.5rem;
+  pggm-error-message:has(+input[is]) {
+    margin-bottom: .5em;
   }
-
+  
   .btn {
     padding: 0.5rem 1rem;
     border: none;
