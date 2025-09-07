@@ -1,4 +1,4 @@
-@page "/pggm-input-demo"
+@page "/pggm-input"
 @using Blazor.Pggm.Components
 
 <PageTitle>PGGM Input Component Demo</PageTitle>
@@ -100,7 +100,7 @@
         <div class="mb-3">
             <label for="time-input" class="form-label">Time Input</label>
             <PggmInput @bind-Value="_timeValue" 
-                       Type="@PggmInput.InputTypes.Time"
+                       Type="@PggmInput.InputTypes.Time" id="time-input"
                        Name="time-input" />
             <small class="form-text text-muted">Selected time: @_timeValue</small>
         </div>
