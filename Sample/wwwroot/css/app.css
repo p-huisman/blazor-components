@@ -111,7 +111,7 @@ code {
 
 article.content {
   /* remove bootstrap margin for article content inside custom build in components */
-  [is] * {
+  p {
     margin: unset;
   }
 }
