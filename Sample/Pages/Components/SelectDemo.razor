@@ -1,0 +1,147 @@
+@page "/components/select"
+
+<h3>PggmSelect Component Demo</h3>
+
+<div class="demo-section">
+    <h4>Basic Select</h4>
+    <p>Selected Country: <strong>@selectedCountry</strong></p>
+    
+    <PggmSelect Value="@selectedCountry" ValueChanged="@(value => selectedCountry = value)">
+        <option value="">Choose a country...</option>
+        <option value="nl">Netherlands</option>
+        <option value="de">Germany</option>
+        <option value="be">Belgium</option>
+        <option value="fr">France</option>
+        <option value="uk">United Kingdom</option>
+    </PggmSelect>
+</div>
+
+<div class="demo-section">
+    <h4>Required Select with Name</h4>
+    <p>Selected Department: <strong>@selectedDepartment</strong></p>
+    
+    <PggmSelect Name="department" Required="true" Value="@selectedDepartment" ValueChanged="@(value => selectedDepartment = value)">
+        <option value="">Select department...</option>
+        <option value="hr">Human Resources</option>
+        <option value="it">Information Technology</option>
+        <option value="finance">Finance</option>
+        <option value="marketing">Marketing</option>
+        <option value="sales">Sales</option>
+    </PggmSelect>
+</div>
+
+<div class="demo-section">
+    <h4>Disabled Select</h4>
+    <p>This select is disabled and cannot be changed.</p>
+    
+    <PggmSelect Disabled="true" Value="disabled-option">
+        <option value="disabled-option">This option is pre-selected</option>
+        <option value="other">Other option (not selectable)</option>
+    </PggmSelect>
+</div>
+
+<div class="demo-section">
+    <h4>Select with Grouped Options</h4>
+    <p>Selected Technology: <strong>@selectedTechnology</strong></p>
+    
+    <PggmSelect Value="@selectedTechnology" ValueChanged="@(value => selectedTechnology = value)">
+        <option value="">Choose a technology...</option>
+        <optgroup label="Frontend">
+            <option value="html">HTML</option>
+            <option value="css">CSS</option>
+            <option value="javascript-fe">JavaScript</option>
+            <option value="typescript">TypeScript</option>
+        </optgroup>
+        <optgroup label="Backend">
+            <option value="csharp-be">C#</option>
+            <option value="nodejs">Node.js</option>
+            <option value="python-be">Python</option>
+            <option value="java-be">Java</option>
+        </optgroup>
+        <optgroup label="Frameworks">
+            <option value="blazor-fw">Blazor</option>
+            <option value="react-fw">React</option>
+            <option value="angular-fw">Angular</option>
+            <option value="vue-fw">Vue.js</option>
+        </optgroup>
+    </PggmSelect>
+</div>
+
+<div class="demo-section">
+    <h4>Event Handling</h4>
+    <p>Last Event: <strong>@lastEvent</strong></p>
+    
+    <PggmSelect Value="@eventTestValue" 
+                ValueChanged="@HandleValueChange"
+                OnFocus="@HandleFocus"
+                OnBlur="@HandleBlur">
+        <option value="">Select an option...</option>
+        <option value="option1">Option 1</option>
+        <option value="option2">Option 2</option>
+        <option value="option3">Option 3</option>
+    </PggmSelect>
+</div>
+
+@code {
+    private string? selectedCountry = "nl";
+    private string? selectedDepartment;
+    private string? selectedTechnology;
+    private string? eventTestValue;
+    private string lastEvent = "None";
+
+    private void HandleValueChange(string? value)
+    {
+        eventTestValue = value;
+        lastEvent = $"Value changed to: {value ?? "null"} at {DateTime.Now:HH:mm:ss}";
+    }
+
+    private void HandleFocus(FocusEventArgs args)
+    {
+        lastEvent = $"Select focused at {DateTime.Now:HH:mm:ss}";
+    }
+
+    private void HandleBlur(FocusEventArgs args)
+    {
+        lastEvent = $"Select blurred at {DateTime.Now:HH:mm:ss}";
+    }
+}
+
+<style>
+    .demo-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+    }
+    
+    .demo-section h4 {
+        margin-top: 0;
+        color: #333;
+    }
+    
+    .demo-section p {
+        margin-bottom: 1rem;
+    }
+    
+    .demo-section p strong {
+        color: #0066cc;
+    }
+    
+    .demo-section small {
+        color: #666;
+        font-style: italic;
+    }
+    
+    select[is="pggm-select"] {
+        width: 100%;
+        max-width: 300px;
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1rem;
+    }
+    
+    select[is="pggm-select"][multiple] {
+        height: auto;
+    }
+</style>
