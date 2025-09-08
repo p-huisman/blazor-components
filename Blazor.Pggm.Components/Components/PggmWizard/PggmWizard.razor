@@ -1,0 +1,218 @@
+@inherits PggmEventComponentBase
+@namespace Blazor.Pggm.Components
+@using Blazor.Pggm.Components.Models.Wizard
+
+<pggm-wizard @ref="ElementRef" @attributes="GetAttributes()">
+  @ChildContent
+  @if (SuccessContent != null)
+  {
+    <div slot="success">
+      @SuccessContent
+    </div>
+  }
+  @if (ErrorContent != null)
+  {
+    <div slot="error">
+      @ErrorContent
+    </div>
+  }
+</pggm-wizard>
+
+@code {
+  protected override string TagName => "pggm-wizard";
+
+  /// <summary>
+  /// The HTTP method to use for form submission (GET or POST)
+  /// </summary>
+  [Parameter] public string Method { get; set; } = "POST";
+
+  /// <summary>
+  /// The URL to submit the form to
+  /// </summary>
+  [Parameter] public string Action { get; set; } = "";
+
+  /// <summary>
+  /// Label for the next button
+  /// </summary>
+  [Parameter] public string NextLabel { get; set; } = "Volgende";
+
+  /// <summary>
+  /// Label for the back button
+  /// </summary>
+  [Parameter] public string BackLabel { get; set; } = "Vorige";
+
+  /// <summary>
+  /// Label for the submit button
+  /// </summary>
+  [Parameter] public string SubmitLabel { get; set; } = "Verzenden";
+
+  /// <summary>
+  /// Title shown on successful form submission
+  /// </summary>
+  [Parameter] public string SuccessTitle { get; set; } = "Bedankt";
+
+  /// <summary>
+  /// Title shown on form submission error
+  /// </summary>
+  [Parameter] public string ErrorTitle { get; set; } = "Er is iets fout gegaan";
+
+  /// <summary>
+  /// Content to display in the success slot
+  /// </summary>
+  [Parameter] public RenderFragment? SuccessContent { get; set; }
+
+  /// <summary>
+  /// Content to display in the error slot
+  /// </summary>
+  [Parameter] public RenderFragment? ErrorContent { get; set; }
+
+  /// <summary>
+  /// Event callback fired before form submission
+  /// Set Cancel = true in the event args to prevent submission
+  /// </summary>
+  [Parameter] public EventCallback<BeforeSubmitEventArgs> OnBeforeSubmit { get; set; }
+
+  /// <summary>
+  /// Event callback fired before navigation
+  /// Set Cancel = true in the event args to prevent navigation
+  /// </summary>
+  [Parameter] public EventCallback<BeforeNavigateEventArgs> OnBeforeNavigate { get; set; }
+
+  /// <summary>
+  /// Event callback fired after navigation
+  /// </summary>
+  [Parameter] public EventCallback<AfterNavigateEventArgs> OnAfterNavigate { get; set; }
+
+  /// <summary>
+  /// Event callback fired when wizard is finished
+  /// </summary>
+  [Parameter] public EventCallback OnWizardFinished { get; set; }
+
+  /// <summary>
+  /// Event callback fired when a wizard form is invalid
+  /// </summary>
+  [Parameter] public EventCallback<WizardFormInvalidEventArgs> OnWizardFormInvalid { get; set; }
+
+  protected override IEnumerable<string> GetEventNames()
+  {
+    return new[] { "beforeSubmit", "beforeNavigate", "afterNavigate", "wizardFinished", "wizardFormInvalid" };
+  }
+
+  protected override async Task SetupEventListenersAsync()
+  {
+    // Register event handlers first, before setting up listeners
+    RegisterCancelableEventHandler<BeforeSubmitEventArgs>("beforeSubmit", async (args) =>
+    {
+      if (OnBeforeSubmit.HasDelegate && args != null)
+      {
+        await OnBeforeSubmit.InvokeAsync(args);
+        // The base class will now check args.Cancel and return the appropriate value
+        return true; // This will be overridden by base class if Cancel=true
+      }
+      return true; // Allow the event to continue
+    });
+
+    RegisterCancelableEventHandler<BeforeNavigateEventArgs>("beforeNavigate", async (args) =>
+    {
+      if (OnBeforeNavigate.HasDelegate && args != null)
+      {
+        await OnBeforeNavigate.InvokeAsync(args);
+        // The base class will now check args.Cancel and return the appropriate value
+        return true; // This will be overridden by base class if Cancel=true
+      }
+      return true; // Allow the event to continue
+    });
+
+    RegisterEventHandler<AfterNavigateEventArgs>("afterNavigate", async (args) =>
+    {
+      if (OnAfterNavigate.HasDelegate)
+      {
+        await OnAfterNavigate.InvokeAsync(args);
+      }
+    });
+
+    RegisterEventHandler("wizardFinished", async () =>
+    {
+      if (OnWizardFinished.HasDelegate)
+      {
+        await OnWizardFinished.InvokeAsync();
+      }
+    });
+
+    RegisterEventHandler<WizardFormInvalidEventArgs>("wizardFormInvalid", async (args) =>
+    {
+      if (OnWizardFormInvalid.HasDelegate)
+      {
+        await OnWizardFormInvalid.InvokeAsync(args);
+      }
+    });
+
+    // Set up cancelable event listeners for beforeSubmit and beforeNavigate
+    await AddCancelableEventListenerAsync("beforeSubmit");
+    await AddCancelableEventListenerAsync("beforeNavigate");
+    
+    // Set up regular event listeners for other events
+    await AddEventListenerAsync("afterNavigate");
+    await AddEventListenerAsync("wizardFinished");
+    await AddEventListenerAsync("wizardFormInvalid");
+  }
+
+  protected override void AddComponentAttributes(Dictionary<string, object> attributes)
+  {
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "method", Method);
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "action", Action);
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "next-label", NextLabel);
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "back-label", BackLabel);
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "submit-label", SubmitLabel);
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "success-title", SuccessTitle);
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "error-title", ErrorTitle);
+  }
+
+  /// <summary>
+  /// Navigate to the next or previous step
+  /// </summary>
+  /// <param name="direction">Direction to navigate (forwards or backwards)</param>
+  public async Task NavigateAsync(string direction)
+  {
+    if (ElementRef.Id != null)
+    {
+      await JSRuntime.InvokeVoidAsync("eval", $"document.getElementById('{ElementRef.Id}').navigate('{direction}')");
+    }
+  }
+
+  /// <summary>
+  /// Start the wizard
+  /// </summary>
+  public async Task StartAsync()
+  {
+    if (ElementRef.Id != null)
+    {
+      await JSRuntime.InvokeVoidAsync("eval", $"document.getElementById('{ElementRef.Id}').start()");
+    }
+  }
+
+  /// <summary>
+  /// Finish the wizard with the specified result
+  /// </summary>
+  /// <param name="success">Whether the wizard completed successfully</param>
+  public async Task FinishAsync(bool success)
+  {
+    if (ElementRef.Id != null)
+    {
+      await JSRuntime.InvokeVoidAsync("eval", $"document.getElementById('{ElementRef.Id}').finish({success.ToString().ToLower()})");
+    }
+  }
+
+  /// <summary>
+  /// Get the current form data as a dictionary
+  /// </summary>
+  public async Task<Dictionary<string, object>> GetFormDataAsync()
+  {
+    if (ElementRef.Id != null)
+    {
+      return await JSRuntime.InvokeAsync<Dictionary<string, object>>("eval", 
+        $"Object.fromEntries(document.getElementById('{ElementRef.Id}').formData)");
+    }
+    return new Dictionary<string, object>();
+  }
+}

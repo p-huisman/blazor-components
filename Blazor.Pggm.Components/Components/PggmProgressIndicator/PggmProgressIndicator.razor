@@ -1,0 +1,22 @@
+@inherits PggmComponentBase
+@namespace Blazor.Pggm.Components
+
+<pggm-progress-indicator @ref="ElementRef" @attributes="GetAttributes()">
+  @ChildContent
+</pggm-progress-indicator>
+
+@code {
+  protected override string TagName => "pggm-progress-indicator";
+
+  /// <summary>
+  /// Get the current step element
+  /// </summary>
+  public async Task<object?> GetCurrentStepElementAsync()
+  {
+    if (ElementRef.Id != null)
+    {
+      return await JSRuntime.InvokeAsync<object>("eval", $"document.getElementById('{ElementRef.Id}').currentStepElement");
+    }
+    return null;
+  }
+}

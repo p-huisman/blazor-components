@@ -1,0 +1,93 @@
+@inherits PggmEventComponentBase
+@namespace Blazor.Pggm.Components
+@using Blazor.Pggm.Components.Models.Wizard
+
+<pggm-wizard-form @ref="ElementRef" @attributes="GetAttributes()">
+  @ChildContent
+</pggm-wizard-form>
+
+@code {
+  protected override string TagName => "pggm-wizard-form";
+
+  /// <summary>
+  /// The label for this wizard form step
+  /// </summary>
+  [Parameter] public string Label { get; set; } = "";
+
+  /// <summary>
+  /// Whether this form is the currently active step
+  /// </summary>
+  [Parameter] public bool Active { get; set; }
+
+  /// <summary>
+  /// Whether this form step is disabled
+  /// </summary>
+  [Parameter] public bool Disabled { get; set; }
+
+  /// <summary>
+  /// Whether the next button should be disabled for this step
+  /// </summary>
+  [Parameter] public bool NextDisabled { get; set; }
+
+  /// <summary>
+  /// Event callback fired when the form changes (active, disabled, etc.)
+  /// </summary>
+  [Parameter] public EventCallback OnWizardFormChanged { get; set; }
+
+  /// <summary>
+  /// Event callback fired after navigation to this form
+  /// </summary>
+  [Parameter] public EventCallback<AfterNavigateEventArgs> OnAfterNavigate { get; set; }
+
+  protected override IEnumerable<string> GetEventNames()
+  {
+    return new[] { "wizardFormChanged", "afterNavigate" };
+  }
+
+  protected override void OnInitialized()
+  {
+    base.OnInitialized();
+
+    RegisterEventHandler("wizardFormChanged", async () =>
+    {
+      if (OnWizardFormChanged.HasDelegate)
+      {
+        await OnWizardFormChanged.InvokeAsync();
+      }
+    });
+
+    RegisterEventHandler<AfterNavigateEventArgs>("afterNavigate", async (args) =>
+    {
+      if (OnAfterNavigate.HasDelegate)
+      {
+        await OnAfterNavigate.InvokeAsync(args);
+      }
+    });
+  }
+
+  protected override void AddComponentAttributes(Dictionary<string, object> attributes)
+  {
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "label", Label);
+    AttributeHelper.SetBooleanAttribute(attributes, "active", Active);
+    
+    // Special handling for disabled - web component expects "disabled" string value
+    if (Disabled)
+    {
+      attributes["disabled"] = "disabled";
+    }
+    else
+    {
+      attributes.Remove("disabled");
+    }
+    
+    // Special handling for next-disabled - web component expects "disabled" string value
+    if (NextDisabled)
+    {
+      attributes["next-disabled"] = "disabled";
+    }
+    else
+    {
+      attributes.Remove("next-disabled");
+    }
+  }
+}

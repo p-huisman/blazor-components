@@ -52,6 +52,77 @@ class EventListenerManager {
   }
 
   /**
+   * Add a cancelable event listener with error handling and automatic cleanup
+   */
+  addCancelableListener(element, eventName, dotNetRef, methodName) {
+    if (!element || !eventName || !dotNetRef || !methodName) {
+      console.warn("EventListenerManager: Invalid parameters provided");
+      return;
+    }
+
+    const key = this._getKey(element, eventName);
+    if (this.listeners.has(key)) {
+      console.warn(
+        `EventListenerManager: Listener already exists for ${eventName} on element`
+      );
+      return;
+    }
+
+    const handler = (event) => {
+      // Always prevent default to stop web component's built-in behavior
+      event.preventDefault();
+      
+      // Check with .NET if the event should proceed
+      this._handleCancelableEvent(element, eventName, event, dotNetRef, methodName);
+    };
+
+    element.addEventListener(eventName, handler);
+    this.listeners.set(key, { element, eventName, handler, dotNetRef });
+  }
+
+  /**
+   * Handle the async validation and optional re-triggering of cancelable events
+   */
+  async _handleCancelableEvent(element, eventName, event, dotNetRef, methodName) {
+    try {
+      const shouldContinue = await dotNetRef.invokeMethodAsync(
+        methodName,
+        eventName,
+        event.detail || null
+      );
+      
+      if (shouldContinue === true) {
+        this._retriggerEventAction(element, eventName, event.detail);
+      }
+      // If shouldContinue is false, event remains cancelled (no action needed)
+      
+    } catch (error) {
+      console.error(`Error in cancelable event handler for ${eventName}:`, error);
+    }
+  }
+
+  /**
+   * Re-trigger the web component's action after validation approval
+   */
+  _retriggerEventAction(element, eventName, eventDetail) {
+    // Use setTimeout to avoid any potential timing issues
+    setTimeout(() => {
+      try {
+        if (eventName === 'beforeNavigate' && eventDetail?.direction) {
+          if (element.navigate && typeof element.navigate === 'function') {
+            element.navigate(eventDetail.direction);
+          }
+        } else if (eventName === 'beforeSubmit') {
+          // For future implementation - manual form submission if needed
+        }
+        // Add more event types here as needed
+      } catch (error) {
+        console.error(`Error re-triggering action for ${eventName}:`, error);
+      }
+    }, 0);
+  }
+
+  /**
    * Remove a specific event listener
    */
   removeListener(element, eventName) {
@@ -130,6 +201,20 @@ class EventListenerManager {
       dotNetRef,
       methodName,
       useTimeout
+    );
+  };
+
+  window.PggmComponents.addCancelableEventListener = function (
+    element,
+    eventName,
+    dotNetRef,
+    methodName
+  ) {
+    eventManager.addCancelableListener(
+      element,
+      eventName,
+      dotNetRef,
+      methodName
     );
   };
 
@@ -239,6 +324,11 @@ class PggmDesignSystem {
       {
         src: "./_content/Blazor.Pggm.Components/js/slider.js",
         id: "pggm-slider",
+        isModule: true,
+      },
+      {
+        src: "./_content/Blazor.Pggm.Components/js/wizard.js",
+        id: "pggm-wizard",
         isModule: true,
       },
     ];

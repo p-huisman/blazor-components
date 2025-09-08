@@ -1,0 +1,97 @@
+@page "/pggm-wizard"
+
+<h1>PGGM Wizard with Validation Demo</h1>
+
+<PggmWizard Method="POST" Action="/api/submit-wizard" SuccessTitle="Success!" ErrorTitle="Something went wrong"
+    OnBeforeNavigate="HandleBeforeNavigate" OnWizardFinished="HandleWizardFinished">
+
+    <ChildContent>
+        <PggmWizardForm Label="Personal Information" Active="true">
+            <form>
+                <fieldset>
+                    <legend>Personal Details</legend>
+
+                    <div style="margin-bottom: 1rem;">
+                        <label for="firstName">First Name *</label>
+                        <input id="firstName" name="firstName" required />
+                    </div>
+
+                    <div style="margin-bottom: 1rem;">
+                        <label for="lastName">Last Name *</label>
+                        <input id="lastName" name="lastName" required />
+                    </div>
+
+                    <div style="margin-bottom: 1rem;">
+                        <label for="email">Email *</label>
+                        <input id="email" name="email" type="email" required />
+                    </div>
+                </fieldset>
+            </form>
+        </PggmWizardForm>
+
+        <PggmWizardForm Label="Additional Info">
+            <form>
+                <fieldset>
+                    <legend>Additional Information</legend>
+
+                    <div style="margin-bottom: 1rem;">
+                        <label for="phone">Phone Number</label>
+                        <input id="phone" name="phone" type="tel" />
+                    </div>
+
+                    <div style="margin-bottom: 1rem;">
+                        <label>
+                            <input type="checkbox" name="allowNavigation" @bind="allowNavigation" />
+                            Allow navigation to next step (via event cancellation)
+                        </label>
+                        <div
+                            style="margin-top: 0.5rem; font-weight: bold; color: @(allowNavigation ? "green" : "red");">
+                            Current state: @(allowNavigation ? "ALLOWED" : "BLOCKED")
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </PggmWizardForm>
+
+        <PggmWizardForm Label="Confirmation">
+            <form>
+                <h3>Review Your Information</h3>
+                <p>Please review and confirm your information.</p>
+
+                <label>
+                    <input type="checkbox" name="terms" required />
+                    I agree to the terms and conditions
+                </label>
+            </form>
+        </PggmWizardForm>
+    </ChildContent>
+
+    <SuccessContent>
+        <p>Thank you for submitting your information!</p>
+    </SuccessContent>
+
+    <ErrorContent>
+        <p>There was an error. Please try again.</p>
+    </ErrorContent>
+</PggmWizard>
+
+@code {
+    private bool allowNavigation = true;
+
+    private Task HandleBeforeNavigate(Blazor.Pggm.Components.Models.Wizard.BeforeNavigateEventArgs args)
+    {
+        // Check cancellation logic
+        if (args?.Direction == "forwards" && !allowNavigation)
+        {
+            args.Cancel = true;
+        }
+        
+        return Task.CompletedTask;
+    }
+   
+    private Task HandleWizardFinished()
+    {
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+}

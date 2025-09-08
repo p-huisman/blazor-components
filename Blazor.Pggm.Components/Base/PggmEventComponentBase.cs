@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using Blazor.Pggm.Components.Models.Wizard;
 
 namespace Blazor.Pggm.Components.Base;
 
@@ -13,7 +14,12 @@ public abstract class PggmEventComponentBase : PggmComponentBase
     /// <summary>
     /// Dictionary of event handlers for this component
     /// </summary>
-    protected virtual Dictionary<string, Func<object?, Task>> EventHandlers => new();
+    protected virtual Dictionary<string, Func<object?, Task>> EventHandlers { get; } = new();
+
+    /// <summary>
+    /// Dictionary of cancelable event handlers for this component
+    /// </summary>
+    protected virtual Dictionary<string, Func<object?, Task<bool>>> CancelableEventHandlers { get; } = new();
 
     protected override async Task InitializeWebComponentAsync()
     {
@@ -86,6 +92,33 @@ public abstract class PggmEventComponentBase : PggmComponentBase
         }
     }
 
+    /// <summary>
+    /// Generic cancelable event handler that dispatches to specific handlers
+    /// Returns false if the event should be canceled
+    /// </summary>
+    [JSInvokable]
+    public async Task<bool> HandleCancelableEvent(string eventName, object? eventData = null)
+    {
+        try
+        {
+            if (CancelableEventHandlers.TryGetValue(eventName, out var handler))
+            {
+                var result = await handler(eventData);
+                return result;
+            }
+            else
+            {
+                await OnUnhandledEventAsync(eventName, eventData);
+                return true; // Don't cancel if no handler
+            }
+        }
+        catch (Exception ex)
+        {
+            await OnEventErrorAsync(eventName, eventData, ex);
+            return true; // Don't cancel on error
+        }
+    }
+
 
 
     /// <summary>
@@ -135,6 +168,116 @@ public abstract class PggmEventComponentBase : PggmComponentBase
             var typedData = eventData is T data ? data : default(T);
             return handler(typedData);
         };
+    }
+
+    /// <summary>
+    /// Register a cancelable event handler for the specified event name
+    /// </summary>
+    protected void RegisterCancelableEventHandler<T>(string eventName, Func<T?, Task<bool>> handler) where T : class, new()
+    {
+        CancelableEventHandlers[eventName] = async eventData => 
+        {
+            T? typedData = default(T);
+            if (eventData != null)
+            {
+                try
+                {
+                    // Configure JSON options for case-insensitive property matching
+                    var options = new System.Text.Json.JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                    
+                    // Always create a new instance and populate it from the event data
+                    typedData = new T();
+                    
+                    // Try to deserialize as JSON if it's a JsonElement
+                    if (eventData is System.Text.Json.JsonElement jsonElement)
+                    {
+                        var tempData = System.Text.Json.JsonSerializer.Deserialize<T>(jsonElement.GetRawText(), options);
+                        if (tempData != null)
+                        {
+                            // Copy properties from deserialized data to our instance
+                            foreach (var prop in typeof(T).GetProperties())
+                            {
+                                if (prop.CanWrite)
+                                {
+                                    var value = prop.GetValue(tempData);
+                                    prop.SetValue(typedData, value);
+                                }
+                            }
+                        }
+                    }
+                    else if (eventData is T directCast)
+                    {
+                        typedData = directCast;
+                    }
+                    else
+                    {
+                        // Try to serialize and deserialize to convert
+                        var json = System.Text.Json.JsonSerializer.Serialize(eventData);
+                        var tempData = System.Text.Json.JsonSerializer.Deserialize<T>(json, options);
+                        if (tempData != null)
+                        {
+                            // Copy properties from deserialized data to our instance
+                            foreach (var prop in typeof(T).GetProperties())
+                            {
+                                if (prop.CanWrite)
+                                {
+                                    var value = prop.GetValue(tempData);
+                                    prop.SetValue(typedData, value);
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    // Silent fallback to empty instance on deserialization error
+                    typedData = new T();
+                }
+            }
+            else
+            {
+                typedData = new T(); // Create empty instance if no data
+            }
+            
+            // Call the handler and get the result
+            var result = await handler(typedData);
+            
+            // For CancelableEventArgs, check if Cancel property was modified
+            if (typedData is CancelableEventArgs cancelableArgs)
+            {
+                // If Cancel was set to true, return false (cancel the event)
+                // If Cancel was set to false, use the handler's return value
+                if (cancelableArgs.Cancel)
+                {
+                    return false;
+                }
+                else
+                {
+                    return result;
+                }
+            }
+            
+            return result;
+        };
+    }
+
+    /// <summary>
+    /// Add an event listener for a cancelable event
+    /// </summary>
+    protected async Task AddCancelableEventListenerAsync(string eventName)
+    {
+        if (_objectReference == null) return;
+
+        await JSRuntime.InvokeVoidAsync(
+            "PggmComponents.addCancelableEventListener",
+            ElementRef,
+            eventName,
+            _objectReference,
+            nameof(HandleCancelableEvent)
+        );
     }
 
     public override async ValueTask DisposeAsync()
