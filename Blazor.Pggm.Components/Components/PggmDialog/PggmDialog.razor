@@ -1,5 +1,5 @@
 @using System.Linq
-@inherits PggmComponentBase
+@inherits PggmEventComponentBase
 @namespace Blazor.Pggm.Components
 
 <pggm-dialog @ref="ElementRef" @attributes="GetAttributes()">
@@ -17,6 +17,21 @@
     @ChildContent
   }
 
+  @if (Actions != null && Actions.Any())
+  {
+    @foreach (var action in Actions)
+    {
+      <button slot="action" 
+              is="pggm-button"
+              type="@action.Type"
+              disabled="@action.Disabled"
+              appearance="@action.Appearance"
+              class="@action.CssClass"
+              @onclick="action.OnClick">
+        @action.Text
+      </button>
+    }
+  }
 </pggm-dialog>
 
 @code {
@@ -72,43 +87,67 @@
   /// </summary>
   [Parameter] public EventCallback<bool> OpenChanged { get; set; }
 
-  private DotNetObjectReference<PggmDialog>? _dotNetRef;
-
-  protected override async Task InitializeWebComponentAsync()
+  protected override IEnumerable<string> GetEventNames()
   {
-    _dotNetRef = DotNetObjectReference.Create(this);
-    await JSRuntime.InvokeVoidAsync("PggmComponents.setupDialogEventHandlers", ElementRef, _dotNetRef);
+    var events = new List<string>();
+    
+    if (OnOpen.HasDelegate)
+      events.Add("openDialog");
+      
+    if (OnClose.HasDelegate || OpenChanged.HasDelegate)
+      events.Add("closeDialog");
+      
+    if (OnCancel.HasDelegate || OpenChanged.HasDelegate)
+      events.Add("cancelDialog");
+      
+    return events;
   }
 
-  [JSInvokable]
-  public async Task HandleDialogOpen()
+  protected override Dictionary<string, Func<object?, Task>> EventHandlers => new()
   {
-    if (!Open)
-    {
-      await InvokeAsync(async () =>
+    ["openDialog"] = async (_) => {
+      if (!Open)
       {
-        Open = true;
-
-        if (OpenChanged.HasDelegate)
+        await InvokeAsync(async () =>
         {
-          await OpenChanged.InvokeAsync(Open);
-        }
+          Open = true;
 
-        if (OnOpen.HasDelegate)
+          if (OpenChanged.HasDelegate)
+          {
+            await OpenChanged.InvokeAsync(Open);
+          }
+
+          if (OnOpen.HasDelegate)
+          {
+            await OnOpen.InvokeAsync();
+          }
+
+          StateHasChanged();
+        });
+      }
+    },
+    ["closeDialog"] = async (_) => {
+      if (Open)
+      {
+        await InvokeAsync(async () =>
         {
-          await OnOpen.InvokeAsync();
-        }
+          Open = false;
 
-        StateHasChanged();
-      });
-    }
-  }
+          if (OpenChanged.HasDelegate)
+          {
+            await OpenChanged.InvokeAsync(Open);
+          }
 
-  [JSInvokable]
-  public async Task HandleDialogClose()
-  {
-    if (Open)
-    {
+          if (OnClose.HasDelegate)
+          {
+            await OnClose.InvokeAsync();
+          }
+
+          StateHasChanged();
+        });
+      }
+    },
+    ["cancelDialog"] = async (_) => {
       await InvokeAsync(async () =>
       {
         Open = false;
@@ -118,36 +157,15 @@
           await OpenChanged.InvokeAsync(Open);
         }
 
-        if (OnClose.HasDelegate)
+        if (OnCancel.HasDelegate)
         {
-          await OnClose.InvokeAsync();
+          await OnCancel.InvokeAsync();
         }
 
         StateHasChanged();
       });
     }
-  }
-
-  [JSInvokable]
-  public async Task HandleDialogCancel()
-  {
-    await InvokeAsync(async () =>
-    {
-      Open = false;
-
-      if (OpenChanged.HasDelegate)
-      {
-        await OpenChanged.InvokeAsync(Open);
-      }
-
-      if (OnCancel.HasDelegate)
-      {
-        await OnCancel.InvokeAsync();
-      }
-
-      StateHasChanged();
-    });
-  }
+  };
 
   /// <summary>
   /// Programmatically open the dialog
@@ -155,7 +173,7 @@
   public async Task OpenDialog()
   {
     Open = true;
-    await JSRuntime.InvokeVoidAsync("PggmComponents.openDialog", ElementRef);
+    await JSRuntime.InvokeVoidAsync("PggmComponents.setProperty", ElementRef, "open", true);
   }
 
   /// <summary>
@@ -164,7 +182,7 @@
   public async Task CloseDialog()
   {
     Open = false;
-    await JSRuntime.InvokeVoidAsync("PggmComponents.closeDialog", ElementRef);
+    await JSRuntime.InvokeVoidAsync("PggmComponents.setProperty", ElementRef, "open", false);
   }
 
   protected override Dictionary<string, object> GetAttributes()
@@ -188,48 +206,4 @@
 
     return attributes;
   }
-
-  public override async ValueTask DisposeAsync()
-  {
-    if (_dotNetRef != null)
-    {
-      await JSRuntime.InvokeVoidAsync("PggmComponents.cleanupDialogEventHandlers", ElementRef);
-      _dotNetRef.Dispose();
-    }
-    await base.DisposeAsync();
-  }
 }
-
-<pggm-dialog @ref="ElementRef" @attributes="GetAttributes()">
-  @if (HeaderTemplate != null || !string.IsNullOrEmpty(HeaderContent))
-  {
-    <span slot="header">
-      @if (HeaderTemplate != null)
-      {
-        @HeaderTemplate
-      }
-      else
-      {
-        @HeaderContent
-      }
-    </span>
-  }
-
-  @ChildContent
-
-  @if (Actions != null && Actions.Any())
-  {
-    @foreach (var action in Actions)
-    {
-      <button slot="action" 
-              is="pggm-button"
-              type="@action.Type"
-              disabled="@action.Disabled"
-              appearance="@action.Appearance"
-              class="@action.CssClass"
-              @onclick="action.OnClick">
-        @action.Text
-      </button>
-    }
-  }
-</pggm-dialog>
