@@ -2,7 +2,7 @@
 @inherits PggmEventComponentBase
 @namespace Blazor.Pggm.Components
 
-<select is="pggm-select" @ref="ElementRef" @attributes="GetAttributes()">
+<select is="pggm-select" @ref="ElementRef" value="@Value" @onchange="HandleValueChanged" @attributes="GetAttributes()">
   @ChildContent
 </select>
 
@@ -17,7 +17,31 @@
   /// <summary>
   /// Event callback for when the selected value changes (two-way binding)
   /// </summary>
-  [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+  [Parameter] 
+  public EventCallback<string?> ValueChanged { get; set; }
+
+  /// <summary>
+  /// Handle value changes and invoke callbacks
+  /// </summary>
+  private async Task HandleValueChanged(ChangeEventArgs args)
+  {
+    var newValue = args.Value?.ToString();
+    
+    if (Value != newValue)
+    {
+      Value = newValue;
+      
+      if (ValueChanged.HasDelegate)
+      {
+        await ValueChanged.InvokeAsync(newValue);
+      }
+      
+      if (OnChange.HasDelegate)
+      {
+        await OnChange.InvokeAsync(args);
+      }
+    }
+  }
 
   /// <summary>
   /// Whether the select is disabled
@@ -71,63 +95,13 @@
 
   protected override Dictionary<string, Func<object?, Task>> EventHandlers => new()
   {
-    ["change"] = HandleChangeEventAsync,
     ["focus"] = HandleFocusEventAsync,
     ["blur"] = HandleBlurEventAsync
   };
 
   protected override IEnumerable<string> GetEventNames()
   {
-    return new[] { "change", "focus", "blur" };
-  }
-
-  private async Task HandleChangeEventAsync(object? eventData)
-  {
-    string? newValue = null;
-
-    if (eventData is JsonElement jsonElement)
-    {
-      if (jsonElement.TryGetProperty("value", out var valueProp))
-      {
-        newValue = valueProp.GetString();
-      }
-      else if (jsonElement.TryGetProperty("target", out var targetProp) && 
-               targetProp.TryGetProperty("value", out var targetValueProp))
-      {
-        newValue = targetValueProp.GetString();
-      }
-    }
-    else if (eventData is string stringValue)
-    {
-      newValue = stringValue;
-    }
-
-    var oldValue = Value;
-    
-    // Only proceed if the value actually changed
-    if (oldValue != newValue)
-    {
-      Value = newValue;
-      
-      await InvokeAsync(async () =>
-      {
-        if (ValueChanged.HasDelegate)
-        {
-          await ValueChanged.InvokeAsync(Value);
-        }
-        
-        if (OnChange.HasDelegate)
-        {
-          var changeArgs = new ChangeEventArgs
-          {
-            Value = newValue
-          };
-          await OnChange.InvokeAsync(changeArgs);
-        }
-        
-        StateHasChanged();
-      });
-    }
+    return new[] { "focus", "blur" };
   }
 
   private async Task HandleFocusEventAsync(object? eventData)
