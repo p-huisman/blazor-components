@@ -9,7 +9,8 @@
     <ChildContent>
         <PggmWizardForm Label="Personal Information" Active="true">
             <form>
-
+                <PggmHeader Level="3">Enter Your Personal Information</PggmHeader>
+                <p>Please fill in your personal information.</p>
                 <PggmFieldset>
                     <Label>
                         <PggmLabel For="firstName">First Name *</PggmLabel>
@@ -68,6 +69,8 @@
 
         <PggmWizardForm Label="Additional Info" NextDisabled="@(!allowNextStep)">
             <form>
+                <PggmHeader Level="3">Additional Information</PggmHeader>
+                <p>Provide any additional information you think is relevant.</p>
                 <PggmFieldset>
                     <Label>
                         <PggmLabel For="phone">Phone Number</PggmLabel>
@@ -79,40 +82,50 @@
 
                     </Error>
                     <ChildContent>
-
                         <PggmInput Id="phone" Name="phone" Type="@PggmInput.InputTypes.Tel"
                             @bind-Value="@phoneNumber" />
-
                     </ChildContent>
                 </PggmFieldset>
 
+                <PggmFieldset>
+                    <PggmCheckbox Id="subscribe" Name="allowNavigation" @bind-Checked="allowNavigation">
+                        Allow navigation to next step (via event cancellation)
+                    </PggmCheckbox>
+                </PggmFieldset>
 
-                <PggmLabel>
-                    <input type="checkbox" name="allowNavigation" @bind="allowNavigation" />
-                    Allow navigation to next step (via event cancellation)
-                </PggmLabel>
-
-                <div style="margin-bottom: 1rem;">
-                    <PggmLabel>
-                        <input type="checkbox" name="allowNextStep" @bind="allowNextStep" />
+                <PggmFieldset>
+                    <PggmCheckbox Id="allowNextStep" Name="allowNextStep" @bind-Checked="allowNextStep">
                         Allow navigation to next step (via disable Next button)
-                    </PggmLabel>
-                </div>
+                    </PggmCheckbox>
+                </PggmFieldset>
+               
             </form>
         </PggmWizardForm>
 
         <PggmWizardForm Label="Confirmation">
             <form>
-                <h3>Review Your Information</h3>
+                <PggmHeader Level="3">Review Your Information</PggmHeader>
                 <p>Please review and confirm your information.</p>
 
-                <PggmLabel>
-                    <input type="checkbox" name="terms" required />
-                    I agree to the terms and conditions
-                </PggmLabel>
-                <PggmErrorMessage For="terms" Validity="@PggmErrorMessage.ValidityStates.ValueMissing">
-                    You must agree to the terms and conditions
-                </PggmErrorMessage>
+                <ul is="pggm-unordered-list">
+                    <li>First Name: @firstName</li>
+                    <li>Last Name: @lastName</li>
+                    <li>Email: @email</li>
+                    <li>Phone Number: @(string.IsNullOrWhiteSpace(phoneNumber) ? "N/A" : phoneNumber)</li>
+                </ul>
+                <PggmFieldset>
+                    <Error>
+                        <PggmErrorMessage For="terms" Validity="@PggmErrorMessage.ValidityStates.ValueMissing">
+                            You must agree to the terms and conditions
+                        </PggmErrorMessage>
+                    </Error>
+                    <ChildContent>
+                        <PggmCheckbox Id="terms" Name="terms" Required="true">
+                            I agree to the terms and conditions
+                        </PggmCheckbox>
+                    </ChildContent>
+                </PggmFieldset>
+                
             </form>
         </PggmWizardForm>
     </ChildContent>
