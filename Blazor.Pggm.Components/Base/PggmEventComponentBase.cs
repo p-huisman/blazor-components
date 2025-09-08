@@ -86,42 +86,7 @@ public abstract class PggmEventComponentBase : PggmComponentBase
         }
     }
 
-    /// <summary>
-    /// Alternative event handler for cases where only event data is passed
-    /// This provides backward compatibility
-    /// </summary>
-    [JSInvokable]
-    public async Task HandleEventData(object? eventData = null)
-    {
-        try
-        {
-            // Try to determine event type from the event data or context
-            var eventName = DetermineEventNameFromData(eventData);
-            if (!string.IsNullOrEmpty(eventName) && EventHandlers.TryGetValue(eventName, out var handler))
-            {
-                await handler(eventData);
-            }
-            else
-            {
-                await OnUnhandledEventAsync(eventName ?? "unknown", eventData);
-            }
-        }
-        catch (Exception ex)
-        {
-            await OnEventErrorAsync("unknown", eventData, ex);
-        }
-    }
 
-    /// <summary>
-    /// Try to determine the event name from event data
-    /// Override in derived classes for custom logic
-    /// </summary>
-    protected virtual string? DetermineEventNameFromData(object? eventData)
-    {
-        // Default implementation returns null
-        // Derived classes can override to provide specific logic
-        return null;
-    }
 
     /// <summary>
     /// Called when an event is received but no handler is registered

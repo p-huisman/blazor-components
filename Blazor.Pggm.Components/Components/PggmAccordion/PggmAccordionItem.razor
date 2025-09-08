@@ -1,4 +1,4 @@
-@inherits PggmComponentBase
+@inherits PggmEventComponentBase
 @namespace Blazor.Pggm.Components
 @using Microsoft.AspNetCore.Components.Web
 
@@ -24,26 +24,23 @@
   /// </summary>
   [Parameter] public EventCallback<EventArgs> OnAccordionItemToggle { get; set; }
 
-  private DotNetObjectReference<PggmAccordionItem>? dotNetRef;
-
-  protected override async Task OnAfterRenderAsync(bool firstRender)
-  {
-    if (firstRender && OnAccordionItemToggle.HasDelegate)
-    {
-      dotNetRef = DotNetObjectReference.Create(this);
-      await JSRuntime.InvokeVoidAsync("PggmComponents.addAccordionItemToggleListener", ElementRef, dotNetRef);
-    }
-    await base.OnAfterRenderAsync(firstRender);
-  }
-
-  [JSInvokable]
-  public async Task HandleAccordionItemToggle()
+  protected override IEnumerable<string> GetEventNames()
   {
     if (OnAccordionItemToggle.HasDelegate)
     {
-      await OnAccordionItemToggle.InvokeAsync(EventArgs.Empty);
+      yield return "accordionItemToggle";
     }
   }
+
+  protected override Dictionary<string, Func<object?, Task>> EventHandlers => new()
+  {
+    ["accordionItemToggle"] = async (_) => {
+      if (OnAccordionItemToggle.HasDelegate)
+      {
+        await OnAccordionItemToggle.InvokeAsync(EventArgs.Empty);
+      }
+    }
+  };
 
   protected override Dictionary<string, object> GetAttributes()
   {
@@ -60,15 +57,5 @@
     }
 
     return attributes;
-  }
-
-  public override async ValueTask DisposeAsync()
-  {
-    if (dotNetRef != null)
-    {
-      await JSRuntime.InvokeVoidAsync("PggmComponents.removeAccordionItemToggleListener", ElementRef);
-      dotNetRef.Dispose();
-    }
-    await base.DisposeAsync();
   }
 }

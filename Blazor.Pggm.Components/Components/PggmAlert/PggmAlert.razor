@@ -1,4 +1,4 @@
-@inherits PggmComponentBase
+@inherits PggmEventComponentBase
 @namespace Blazor.Pggm.Components
 
 <pggm-alert @ref="ElementRef" @attributes="GetAttributes()">
@@ -34,33 +34,20 @@
   /// </summary>
   [Parameter] public EventCallback OnDismiss { get; set; }
 
-  private DotNetObjectReference<PggmAlert>? dotNetRef;
-
-  protected override async Task OnAfterRenderAsync(bool firstRender)
+  protected override IEnumerable<string> GetEventNames()
   {
-    if (firstRender)
+    if (Closeable && OnDismiss.HasDelegate)
     {
-      dotNetRef = DotNetObjectReference.Create(this);
-      await JSRuntime.InvokeVoidAsync("PggmComponents.addCloseAlertListener", ElementRef, dotNetRef);
+      yield return "closeAlert";
     }
-    await base.OnAfterRenderAsync(firstRender);
   }
 
-  [JSInvokable]
-  public async Task HandleCloseAlert()
+  protected override Dictionary<string, Func<object?, Task>> EventHandlers => new()
   {
-    await OnDismiss.InvokeAsync();
-  }
-
-  public override async ValueTask DisposeAsync()
-  {
-    if (dotNetRef != null)
-    {
-      await JSRuntime.InvokeVoidAsync("PggmComponents.removeCloseAlertListener", ElementRef);
-      dotNetRef.Dispose();
+    ["closeAlert"] = async (_) => {
+      await OnDismiss.InvokeAsync();
     }
-    await base.DisposeAsync();
-  }
+  };
 
   /// <summary>
   /// Gets the combined attributes for the component

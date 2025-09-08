@@ -1,4 +1,3 @@
-@using System.Text.Json
 @inherits PggmEventComponentBase
 @namespace Blazor.Pggm.Components
 
@@ -61,19 +60,9 @@
 
   protected override Dictionary<string, Func<object?, Task>> EventHandlers => new()
   {
-    ["change"] = HandleChangeEventAsync
-  };
-
-  protected override IEnumerable<string> GetEventNames()
-  {
-    return new[] { "change" };
-  }
-
-  private async Task HandleChangeEventAsync(object? eventData)
-  {
-    if (eventData is JsonElement jsonElement && jsonElement.TryGetProperty("checked", out var checkedProp))
-    {
-      var isChecked = checkedProp.GetBoolean();
+    ["change"] = async (eventData) => {
+      // Get the checked state from the element
+      var isChecked = await JSRuntime.InvokeAsync<bool>("PggmComponents.getProperty", ElementRef, "checked");
       var oldValue = Checked;
       
       // Only proceed if the value actually changed
@@ -81,6 +70,7 @@
       {
         Checked = isChecked;
         
+        // Use InvokeAsync to ensure we're on the proper thread
         await InvokeAsync(async () =>
         {
           if (CheckedChanged.HasDelegate)
@@ -105,6 +95,50 @@
           StateHasChanged();
         });
       }
+    }
+  };
+
+  protected override IEnumerable<string> GetEventNames()
+  {
+    if (CheckedChanged.HasDelegate || ValueChanged.HasDelegate || OnChange.HasDelegate)
+    {
+      yield return "change";
+    }
+  }
+
+  protected override async Task OnParametersSetAsync()
+  {
+    await base.OnParametersSetAsync();
+  }
+
+  protected override async Task OnAfterRenderAsync(bool firstRender)
+  {
+    await base.OnAfterRenderAsync(firstRender);
+    
+    if (!firstRender)
+    {
+      // Sync checked state after parameter changes
+      await SyncCheckedStateAsync();
+    }
+  }
+
+  protected override async Task InitializeWebComponentAsync()
+  {
+    await base.InitializeWebComponentAsync();
+    
+    // Sync the initial checked state with the web component
+    await SyncCheckedStateAsync();
+  }
+
+  private async Task SyncCheckedStateAsync()
+  {
+    try
+    {
+      await JSRuntime.InvokeVoidAsync("PggmComponents.setProperty", ElementRef, "checked", Checked);
+    }
+    catch (Exception)
+    {
+      // Ignore JavaScript errors during sync
     }
   }
 
