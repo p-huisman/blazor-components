@@ -4,8 +4,9 @@
 
 <h1>PGGM Wizard Demo</h1>
 
-<PggmWizard @ref="wizardRef" Method="POST" Action="/api/submit-wizard" SuccessTitle="Success!" ErrorTitle="Something went wrong"
-    OnBeforeNavigate="HandleBeforeNavigate" OnBeforeSubmit="HandleBeforeSubmit" OnWizardFinished="HandleWizardFinished">
+<PggmWizard @ref="wizardRef" Method="POST" Action="/api/submit-wizard" SuccessTitle="Success!"
+    ErrorTitle="Something went wrong" OnBeforeNavigate="HandleBeforeNavigate" OnBeforeSubmit="HandleBeforeSubmit"
+    OnWizardFinished="HandleWizardFinished">
 
     <ChildContent>
         <PggmWizardForm Label="Personal Information" Active="true">
@@ -77,13 +78,8 @@
                         <PggmLabel For="phone">Phone Number</PggmLabel>
                     </Label>
                     <ChildContent>
-                         <PggmInputPhone @bind-Value="@phoneNumber" 
-                    TopCountries="NL,BE,DE,FR"
-                    CountryLabel="Choose country..."
-                    InitialCountry="NL"
-                    Name="phone" />
-                        
-                        
+                        <PggmInputPhone @bind-Value="@phoneNumber" TopCountries="NL,BE,DE,FR"
+                            CountryLabel="Choose country..." InitialCountry="NL" Name="phone" />
                     </ChildContent>
                 </PggmFieldset>
 
@@ -98,7 +94,7 @@
                         Allow navigation to next step (via disable Next button)
                     </PggmCheckbox>
                 </PggmFieldset>
-               
+
             </form>
         </PggmWizardForm>
 
@@ -125,7 +121,7 @@
                         </PggmCheckbox>
                     </ChildContent>
                 </PggmFieldset>
-                
+
             </form>
         </PggmWizardForm>
     </ChildContent>
@@ -168,7 +164,7 @@
 
         // Show confirmation dialog
         var confirmed = await ShowConfirmationDialog();
-        
+
         // Call finish on the wizard with the user's choice
         if (wizardRef != null)
         {
@@ -180,13 +176,13 @@
     {
         // Use JavaScript confirm dialog for simplicity
         // In a real application, you might want to use a custom modal component
-        return await JSRuntime.InvokeAsync<bool>("confirm", 
-            "Are you sure you want to submit this form?\n\n" +
-            $"First Name: {firstName}\n" +
-            $"Last Name: {lastName}\n" +
-            $"Email: {email}\n" +
-            $"Phone: {phoneNumber ?? "N/A"}\n\n" +
-            "Click OK to submit or Cancel to abort.");
+        return await JSRuntime.InvokeAsync<bool>("confirm",
+        "Are you sure you want to submit this form?\n\n" +
+        $"First Name: {firstName}\n" +
+        $"Last Name: {lastName}\n" +
+        $"Email: {email}\n" +
+        $"Phone: {phoneNumber ?? "N/A"}\n\n" +
+        "Click OK to submit or Cancel to abort.");
     }
 
     private Task HandleWizardFinished()
