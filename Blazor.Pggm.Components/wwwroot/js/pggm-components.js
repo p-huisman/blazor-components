@@ -2,6 +2,103 @@
 let bundleLoaded = false;
 
 /**
+ * Sanitize event data to remove circular references and DOM elements
+ */
+function sanitizeEventData(eventData) {
+  if (eventData === null || eventData === undefined) {
+    return null;
+  }
+
+  // If it's a primitive type, return as-is
+  if (typeof eventData !== 'object') {
+    return eventData;
+  }
+
+  // If it's a DOM element, return only safe properties
+  if (eventData instanceof Element) {
+    return {
+      tagName: eventData.tagName,
+      id: eventData.id,
+      className: eventData.className,
+      value: eventData.value || null
+    };
+  }
+
+  // If it's an array, sanitize each element
+  if (Array.isArray(eventData)) {
+    return eventData.map(item => sanitizeEventData(item));
+  }
+
+  // For objects, create a new object with sanitized properties
+  const sanitized = {};
+  const seen = new WeakSet();
+
+  function sanitizeObject(obj, target) {
+    if (obj === null || obj === undefined) {
+      return null;
+    }
+
+    // Prevent circular references
+    if (seen.has(obj)) {
+      return '[Circular Reference]';
+    }
+    seen.add(obj);
+
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        const value = obj[key];
+        
+        // Skip functions and DOM elements
+        if (typeof value === 'function' || value instanceof Element || value instanceof Node) {
+          continue;
+        }
+
+        // Handle primitive types
+        if (value === null || typeof value !== 'object') {
+          target[key] = value;
+        }
+        // Handle arrays
+        else if (Array.isArray(value)) {
+          target[key] = value.map(item => sanitizeEventData(item));
+        }
+        // Handle plain objects (but not complex objects like FormData, etc.)
+        else if (value.constructor === Object) {
+          target[key] = {};
+          sanitizeObject(value, target[key]);
+        }
+        // For other object types, try to extract safe properties
+        else {
+          const safeProps = {};
+          try {
+            // Only include safe property types
+            for (const prop in value) {
+              if (value.hasOwnProperty(prop)) {
+                const propValue = value[prop];
+                if (typeof propValue === 'string' || 
+                    typeof propValue === 'number' || 
+                    typeof propValue === 'boolean' ||
+                    propValue === null) {
+                  safeProps[prop] = propValue;
+                }
+              }
+            }
+            if (Object.keys(safeProps).length > 0) {
+              target[key] = safeProps;
+            }
+          } catch (e) {
+            // Skip this property if we can't access it safely
+            continue;
+          }
+        }
+      }
+    }
+  }
+
+  sanitizeObject(eventData, sanitized);
+  return sanitized;
+}
+
+/**
  * Generic event listener manager for web components
  */
 class EventListenerManager {
@@ -29,11 +126,14 @@ class EventListenerManager {
     const handler = async (event) => {
       const executeCallback = async () => {
         try {
-          // Pass the event name as the first parameter and event details as the second
+          // Sanitize event data to remove circular references
+          const sanitizedEventData = sanitizeEventData(event.detail);
+          
+          // Pass the event name as the first parameter and sanitized event details as the second
           await dotNetRef.invokeMethodAsync(
             methodName,
             eventName,
-            event.detail || null
+            sanitizedEventData
           );
         } catch (error) {
           console.error(`Error invoking ${methodName}:`, error);
@@ -85,10 +185,13 @@ class EventListenerManager {
    */
   async _handleCancelableEvent(element, eventName, event, dotNetRef, methodName) {
     try {
+      // Sanitize event data to remove circular references
+      const sanitizedEventData = sanitizeEventData(event.detail);
+      
       const shouldContinue = await dotNetRef.invokeMethodAsync(
         methodName,
         eventName,
-        event.detail || null
+        sanitizedEventData
       );
       
       if (shouldContinue === true) {

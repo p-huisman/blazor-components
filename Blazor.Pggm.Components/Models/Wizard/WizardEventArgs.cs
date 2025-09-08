@@ -42,5 +42,6 @@ public class AfterNavigateEventArgs
 /// </summary>
 public class WizardFormInvalidEventArgs
 {
-    public object? Form { get; set; }
+    public string? FormId { get; set; }
+    public string? FormName { get; set; }
 }

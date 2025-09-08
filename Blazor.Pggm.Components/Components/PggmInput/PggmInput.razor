@@ -142,7 +142,12 @@
 
         if (OnChange.HasDelegate)
         {
-            await OnChange.InvokeAsync(args);
+            // Create a clean ChangeEventArgs to avoid circular references
+            var cleanArgs = new ChangeEventArgs
+            {
+                Value = args.Value
+            };
+            await OnChange.InvokeAsync(cleanArgs);
         }
     }
 
@@ -162,7 +167,12 @@
 
         if (OnInput.HasDelegate)
         {
-            await OnInput.InvokeAsync(args);
+            // Create a clean ChangeEventArgs to avoid circular references
+            var cleanArgs = new ChangeEventArgs
+            {
+                Value = args.Value
+            };
+            await OnInput.InvokeAsync(cleanArgs);
         }
     }
 
@@ -170,7 +180,12 @@
     {
         if (OnFocus.HasDelegate)
         {
-            await OnFocus.InvokeAsync(args);
+            // Create a clean FocusEventArgs to avoid circular references
+            var cleanArgs = new FocusEventArgs
+            {
+                Type = args.Type
+            };
+            await OnFocus.InvokeAsync(cleanArgs);
         }
     }
 
@@ -178,7 +193,12 @@
     {
         if (OnBlur.HasDelegate)
         {
-            await OnBlur.InvokeAsync(args);
+            // Create a clean FocusEventArgs to avoid circular references
+            var cleanArgs = new FocusEventArgs
+            {
+                Type = args.Type
+            };
+            await OnBlur.InvokeAsync(cleanArgs);
         }
     }
 

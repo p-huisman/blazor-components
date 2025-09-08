@@ -1,4 +1,5 @@
 @page "/pggm-wizard"
+@using Blazor.Pggm.Components
 
 <h1>PGGM Wizard with Validation Demo</h1>
 
@@ -8,48 +9,95 @@
     <ChildContent>
         <PggmWizardForm Label="Personal Information" Active="true">
             <form>
-                <fieldset>
-                    <legend>Personal Details</legend>
 
-                    <div style="margin-bottom: 1rem;">
-                        <label for="firstName">First Name *</label>
-                        <input id="firstName" name="firstName" required />
-                    </div>
+                <PggmFieldset>
+                    <Label>
+                        <PggmLabel For="firstName">First Name *</PggmLabel>
+                    </Label>
+                    <Description>
+                        <p>Vul uw naam in.</p>
+                    </Description>
+                    <Error>
+                        <PggmErrorMessage For="firstName" Validity="@PggmErrorMessage.ValidityStates.ValueMissing">
+                            First name is required
+                        </PggmErrorMessage>
+                    </Error>
+                    <ChildContent>
+                        <PggmInput Id="firstName" Name="firstName" Required="true" @bind-Value="@firstName" />
+                    </ChildContent>
 
-                    <div style="margin-bottom: 1rem;">
-                        <label for="lastName">Last Name *</label>
-                        <input id="lastName" name="lastName" required />
-                    </div>
-
-                    <div style="margin-bottom: 1rem;">
-                        <label for="email">Email *</label>
-                        <input id="email" name="email" type="email" required />
-                    </div>
-                </fieldset>
+                </PggmFieldset>
+                <PggmFieldset>
+                    <Label>
+                        <PggmLabel For="lastName">Last Name *</PggmLabel>
+                    </Label>
+                    <Description>
+                        <p>Vul uw achternaam in.</p>
+                    </Description>
+                    <Error>
+                        <PggmErrorMessage For="lastName" Validity="@PggmErrorMessage.ValidityStates.ValueMissing">
+                            Last name is required
+                        </PggmErrorMessage>
+                    </Error>
+                    <ChildContent>
+                        <PggmInput Id="lastName" Name="lastName" Required="true" @bind-Value="@lastName" />
+                    </ChildContent>
+                </PggmFieldset>
+                <PggmFieldset>
+                    <Label>
+                        <PggmLabel For="email">Email *</PggmLabel>
+                    </Label>
+                    <Description>
+                        <p>Vul uw email in.</p>
+                    </Description>
+                    <Error>
+                        <PggmErrorMessage For="email" Validity="@PggmErrorMessage.ValidityStates.ValueMissing">
+                            Email is required
+                        </PggmErrorMessage>
+                        <PggmErrorMessage For="email" Validity="@PggmErrorMessage.ValidityStates.TypeMismatch">
+                            Please enter a valid email address
+                        </PggmErrorMessage>
+                    </Error>
+                    <ChildContent>
+                        <PggmInput Id="email" Name="email" Type="@PggmInput.InputTypes.Email" Required="true"
+                            @bind-Value="@email" />
+                    </ChildContent>
+                </PggmFieldset>
             </form>
         </PggmWizardForm>
 
-        <PggmWizardForm Label="Additional Info">
+        <PggmWizardForm Label="Additional Info" NextDisabled="@(!allowNextStep)">
             <form>
-                <fieldset>
-                    <legend>Additional Information</legend>
+                <PggmFieldset>
+                    <Label>
+                        <PggmLabel For="phone">Phone Number</PggmLabel>
+                    </Label>
+                    <Error>
+                        <PggmErrorMessage For="phone" Validity="@PggmErrorMessage.ValidityStates.TypeMismatch">
+                            Please enter a valid phone number
+                        </PggmErrorMessage>
 
-                    <div style="margin-bottom: 1rem;">
-                        <label for="phone">Phone Number</label>
-                        <input id="phone" name="phone" type="tel" />
-                    </div>
+                    </Error>
+                    <ChildContent>
 
-                    <div style="margin-bottom: 1rem;">
-                        <label>
-                            <input type="checkbox" name="allowNavigation" @bind="allowNavigation" />
-                            Allow navigation to next step (via event cancellation)
-                        </label>
-                        <div
-                            style="margin-top: 0.5rem; font-weight: bold; color: @(allowNavigation ? "green" : "red");">
-                            Current state: @(allowNavigation ? "ALLOWED" : "BLOCKED")
-                        </div>
-                    </div>
-                </fieldset>
+                        <PggmInput Id="phone" Name="phone" Type="@PggmInput.InputTypes.Tel"
+                            @bind-Value="@phoneNumber" />
+
+                    </ChildContent>
+                </PggmFieldset>
+
+
+                <PggmLabel>
+                    <input type="checkbox" name="allowNavigation" @bind="allowNavigation" />
+                    Allow navigation to next step (via event cancellation)
+                </PggmLabel>
+
+                <div style="margin-bottom: 1rem;">
+                    <PggmLabel>
+                        <input type="checkbox" name="allowNextStep" @bind="allowNextStep" />
+                        Allow navigation to next step (via disable Next button)
+                    </PggmLabel>
+                </div>
             </form>
         </PggmWizardForm>
 
@@ -58,10 +106,13 @@
                 <h3>Review Your Information</h3>
                 <p>Please review and confirm your information.</p>
 
-                <label>
+                <PggmLabel>
                     <input type="checkbox" name="terms" required />
                     I agree to the terms and conditions
-                </label>
+                </PggmLabel>
+                <PggmErrorMessage For="terms" Validity="@PggmErrorMessage.ValidityStates.ValueMissing">
+                    You must agree to the terms and conditions
+                </PggmErrorMessage>
             </form>
         </PggmWizardForm>
     </ChildContent>
@@ -77,6 +128,13 @@
 
 @code {
     private bool allowNavigation = true;
+    private bool allowNextStep = true;
+
+    // Form field properties for binding
+    private string? firstName;
+    private string? lastName;
+    private string? email;
+    private string? phoneNumber;
 
     private Task HandleBeforeNavigate(Blazor.Pggm.Components.Models.Wizard.BeforeNavigateEventArgs args)
     {
@@ -85,10 +143,10 @@
         {
             args.Cancel = true;
         }
-        
+
         return Task.CompletedTask;
     }
-   
+
     private Task HandleWizardFinished()
     {
         StateHasChanged();

@@ -185,7 +185,9 @@ public abstract class PggmEventComponentBase : PggmComponentBase
                     // Configure JSON options for case-insensitive property matching
                     var options = new System.Text.Json.JsonSerializerOptions
                     {
-                        PropertyNameCaseInsensitive = true
+                        PropertyNameCaseInsensitive = true,
+                        ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles,
+                        DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
                     };
                     
                     // Always create a new instance and populate it from the event data
@@ -198,14 +200,7 @@ public abstract class PggmEventComponentBase : PggmComponentBase
                         if (tempData != null)
                         {
                             // Copy properties from deserialized data to our instance
-                            foreach (var prop in typeof(T).GetProperties())
-                            {
-                                if (prop.CanWrite)
-                                {
-                                    var value = prop.GetValue(tempData);
-                                    prop.SetValue(typedData, value);
-                                }
-                            }
+                            CopyProperties(tempData, typedData);
                         }
                     }
                     else if (eventData is T directCast)
@@ -214,21 +209,8 @@ public abstract class PggmEventComponentBase : PggmComponentBase
                     }
                     else
                     {
-                        // Try to serialize and deserialize to convert
-                        var json = System.Text.Json.JsonSerializer.Serialize(eventData);
-                        var tempData = System.Text.Json.JsonSerializer.Deserialize<T>(json, options);
-                        if (tempData != null)
-                        {
-                            // Copy properties from deserialized data to our instance
-                            foreach (var prop in typeof(T).GetProperties())
-                            {
-                                if (prop.CanWrite)
-                                {
-                                    var value = prop.GetValue(tempData);
-                                    prop.SetValue(typedData, value);
-                                }
-                            }
-                        }
+                        // Use safe property copying instead of JSON serialization
+                        typedData = SafeConvertEventData<T>(eventData);
                     }
                 }
                 catch (Exception)
@@ -262,6 +244,80 @@ public abstract class PggmEventComponentBase : PggmComponentBase
             
             return result;
         };
+    }
+
+    /// <summary>
+    /// Safely convert event data to the target type without JSON serialization
+    /// </summary>
+    private static T SafeConvertEventData<T>(object eventData) where T : class, new()
+    {
+        var result = new T();
+        var sourceType = eventData.GetType();
+        var targetType = typeof(T);
+
+        foreach (var targetProp in targetType.GetProperties())
+        {
+            if (!targetProp.CanWrite) continue;
+
+            var sourceProp = sourceType.GetProperty(targetProp.Name);
+            if (sourceProp != null && sourceProp.CanRead)
+            {
+                try
+                {
+                    var value = sourceProp.GetValue(eventData);
+                    
+                    // Only copy primitive types and strings to avoid circular references
+                    if (value == null || 
+                        targetProp.PropertyType.IsPrimitive || 
+                        targetProp.PropertyType == typeof(string) ||
+                        targetProp.PropertyType == typeof(bool) ||
+                        targetProp.PropertyType == typeof(DateTime) ||
+                        targetProp.PropertyType.IsEnum)
+                    {
+                        if (value != null && targetProp.PropertyType.IsAssignableFrom(sourceProp.PropertyType))
+                        {
+                            targetProp.SetValue(result, value);
+                        }
+                        else if (value != null)
+                        {
+                            // Try to convert the value
+                            var convertedValue = Convert.ChangeType(value, targetProp.PropertyType);
+                            targetProp.SetValue(result, convertedValue);
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    // Skip property on error
+                    continue;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Copy properties between objects
+    /// </summary>
+    private static void CopyProperties<T>(T source, T target) where T : class
+    {
+        foreach (var prop in typeof(T).GetProperties())
+        {
+            if (prop.CanWrite && prop.CanRead)
+            {
+                try
+                {
+                    var value = prop.GetValue(source);
+                    prop.SetValue(target, value);
+                }
+                catch (Exception)
+                {
+                    // Skip property on error
+                    continue;
+                }
+            }
+        }
     }
 
     /// <summary>
