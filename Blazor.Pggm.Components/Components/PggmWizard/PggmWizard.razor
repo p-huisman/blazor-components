@@ -174,9 +174,14 @@
   /// <param name="direction">Direction to navigate (forwards or backwards)</param>
   public async Task NavigateAsync(string direction)
   {
-    if (ElementRef.Id != null)
+    try
     {
-      await JSRuntime.InvokeVoidAsync("eval", $"document.getElementById('{ElementRef.Id}').navigate('{direction}')");
+      await JSRuntime.InvokeVoidAsync("PggmComponents.callElementMethod", ElementRef, "navigate", direction);
+    }
+    catch (Exception)
+    {
+      // Fallback approach
+      await JSRuntime.InvokeVoidAsync("PggmComponents.setProperty", ElementRef, "navigate", direction);
     }
   }
 
@@ -185,9 +190,14 @@
   /// </summary>
   public async Task StartAsync()
   {
-    if (ElementRef.Id != null)
+    try
     {
-      await JSRuntime.InvokeVoidAsync("eval", $"document.getElementById('{ElementRef.Id}').start()");
+      await JSRuntime.InvokeVoidAsync("PggmComponents.callElementMethod", ElementRef, "start");
+    }
+    catch (Exception)
+    {
+      // Fallback approach
+      await JSRuntime.InvokeVoidAsync("PggmComponents.setProperty", ElementRef, "start", true);
     }
   }
 
@@ -197,9 +207,23 @@
   /// <param name="success">Whether the wizard completed successfully</param>
   public async Task FinishAsync(bool success)
   {
-    if (ElementRef.Id != null)
+    try
     {
-      await JSRuntime.InvokeVoidAsync("eval", $"document.getElementById('{ElementRef.Id}').finish({success.ToString().ToLower()})");
+      // Use a dedicated JavaScript function to call the finish method
+      await JSRuntime.InvokeVoidAsync("PggmComponents.callElementMethod", ElementRef, "finish", success);
+    }
+    catch (Exception ex)
+    {
+      Console.WriteLine($"Error calling finish on wizard: {ex.Message}");
+      // Fallback: try using a different approach
+      try
+      {
+        await JSRuntime.InvokeVoidAsync("PggmComponents.setProperty", ElementRef, "finished", success);
+      }
+      catch (Exception fallbackEx)
+      {
+        Console.WriteLine($"Fallback error: {fallbackEx.Message}");
+      }
     }
   }
 

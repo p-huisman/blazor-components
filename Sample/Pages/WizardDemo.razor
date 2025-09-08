@@ -1,10 +1,11 @@
 @page "/pggm-wizard"
 @using Blazor.Pggm.Components
+@inject IJSRuntime JSRuntime
 
-<h1>PGGM Wizard with Validation Demo</h1>
+<h1>PGGM Wizard Demo</h1>
 
-<PggmWizard Method="POST" Action="/api/submit-wizard" SuccessTitle="Success!" ErrorTitle="Something went wrong"
-    OnBeforeNavigate="HandleBeforeNavigate" OnWizardFinished="HandleWizardFinished">
+<PggmWizard @ref="wizardRef" Method="POST" Action="/api/submit-wizard" SuccessTitle="Success!" ErrorTitle="Something went wrong"
+    OnBeforeNavigate="HandleBeforeNavigate" OnBeforeSubmit="HandleBeforeSubmit" OnWizardFinished="HandleWizardFinished">
 
     <ChildContent>
         <PggmWizardForm Label="Personal Information" Active="true">
@@ -142,6 +143,7 @@
 @code {
     private bool allowNavigation = true;
     private bool allowNextStep = true;
+    private PggmWizard? wizardRef;
 
     // Form field properties for binding
     private string? firstName;
@@ -158,6 +160,34 @@
         }
 
         return Task.CompletedTask;
+    }
+
+    private async Task HandleBeforeSubmit(Blazor.Pggm.Components.Models.Wizard.BeforeSubmitEventArgs args)
+    {
+        // Always cancel the default submit behavior
+        args.Cancel = true;
+
+        // Show confirmation dialog
+        var confirmed = await ShowConfirmationDialog();
+        
+        // Call finish on the wizard with the user's choice
+        if (wizardRef != null)
+        {
+            await wizardRef.FinishAsync(confirmed);
+        }
+    }
+
+    private async Task<bool> ShowConfirmationDialog()
+    {
+        // Use JavaScript confirm dialog for simplicity
+        // In a real application, you might want to use a custom modal component
+        return await JSRuntime.InvokeAsync<bool>("confirm", 
+            "Are you sure you want to submit this form?\n\n" +
+            $"First Name: {firstName}\n" +
+            $"Last Name: {lastName}\n" +
+            $"Email: {email}\n" +
+            $"Phone: {phoneNumber ?? "N/A"}\n\n" +
+            "Click OK to submit or Cancel to abort.");
     }
 
     private Task HandleWizardFinished()

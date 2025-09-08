@@ -340,6 +340,15 @@ class EventListenerManager {
     return element ? element[property] : undefined;
   };
 
+  // Method calling
+  window.PggmComponents.callElementMethod = function (element, methodName, ...args) {
+    if (element && typeof element[methodName] === 'function') {
+      return element[methodName](...args);
+    } else {
+      console.warn(`Method '${methodName}' not found on element or is not a function`, element);
+    }
+  };
+
   // Cleanup function
   window.PggmComponents.dispose = function () {
     eventManager.dispose();
