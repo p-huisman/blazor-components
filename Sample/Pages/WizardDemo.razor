@@ -76,15 +76,14 @@
                     <Label>
                         <PggmLabel For="phone">Phone Number</PggmLabel>
                     </Label>
-                    <Error>
-                        <PggmErrorMessage For="phone" Validity="@PggmErrorMessage.ValidityStates.TypeMismatch">
-                            Please enter a valid phone number
-                        </PggmErrorMessage>
-
-                    </Error>
                     <ChildContent>
-                        <PggmInput Id="phone" Name="phone" Type="@PggmInput.InputTypes.Tel"
-                            @bind-Value="@phoneNumber" />
+                         <PggmInputPhone @bind-Value="@phoneNumber" 
+                    TopCountries="NL,BE,DE,FR"
+                    CountryLabel="Choose country..."
+                    InitialCountry="NL"
+                    Name="phone" />
+                        
+                        
                     </ChildContent>
                 </PggmFieldset>
 
