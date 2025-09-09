@@ -1,156 +1,85 @@
 ﻿@namespace Pggm.Components.Sample.Layout
-<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">Blazor Components</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
+@using Microsoft.AspNetCore.Components.Routing
+
+<div class="nav">
+    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+        <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span>Home
+    </NavLink>
+    <NavLink class="nav-link" href="counter">
+        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span>Counter
+    </NavLink>
+    <NavLink class="nav-link" href="weather">
+        <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span>Weather
+    </NavLink>
+    <NavLink class="nav-link" href="pggm-wizard">
+        <span class="bi bi-arrow-right-circle-fill-nav-menu" aria-hidden="true"></span>Wizard
+    </NavLink>
+    <NavLink class="nav-link" href="pggm-progress">
+        <span class="bi bi-arrow-right-nav-menu" aria-hidden="true"></span>Progress
+    </NavLink>
+    <NavLink class="nav-link" href="pggm-accordion">
+        <span class="bi bi-arrow-down-up-nav-menu" aria-hidden="true"></span>Accordion
+    </NavLink>
+    <NavLink class="nav-link" href="pggm-alert">
+        <span class="bi bi-exclamation-triangle-fill-nav-menu" aria-hidden="true"></span>Alert
+    </NavLink>
+    <NavLink class="nav-link" href="pggm-button">
+        <span class="bi bi-grid-3x3-gap-fill-nav-menu" aria-hidden="true"></span>Button
+    </NavLink>
+    <NavLink class="nav-link" href="pggm-checkbox">
+        <span class="bi bi-check-square-fill-nav-menu" aria-hidden="true"></span>Checkbox
+    </NavLink>
+    <NavLink class="nav-link" href="pggm-dialog">
+        <span class="bi bi-window-dock-nav-menu" aria-hidden="true"></span>Dialog
+    </NavLink>
+    <NavLink class="nav-link" href="pggm-error-message">
+        <span class="bi bi-exclamation-circle-fill-nav-menu" aria-hidden="true"></span>Error Message
+    </NavLink>
+    <NavLink class="nav-link" href="pggm-fieldset">
+        <span class="bi bi-collection-nav-menu" aria-hidden="true"></span>Fieldset
+    </NavLink>
+    <NavLink class="nav-link" href="pggm-file-upload">
+        <span class="bi bi-cloud-upload-fill-nav-menu" aria-hidden="true"></span>File Upload
+    </NavLink>
+    <NavLink class="nav-link" href="pggm-header">
+        <span class="bi bi-type-h1-nav-menu" aria-hidden="true"></span>Header
+    </NavLink>
+    <NavLink class="nav-link" href="pggm-input">
+        <span class="bi bi-input-cursor-text-nav-menu" aria-hidden="true"></span>Input
+    </NavLink>
+    <NavLink class="nav-link" href="pggm-input-iban-demo">
+        <span class="bi bi-credit-card-2-front-nav-menu" aria-hidden="true"></span>Input IBAN
+    </NavLink>
+    <NavLink class="nav-link" href="input-phone-demo">
+        <span class="bi bi-telephone-fill-nav-menu" aria-hidden="true"></span>Input Phone
+    </NavLink>
+    <NavLink class="nav-link" href="inputdate-demo">
+        <span class="bi bi-calendar-date-fill-nav-menu" aria-hidden="true"></span>Input Date
+    </NavLink>
+    <NavLink class="nav-link" href="pggm-label">
+        <span class="bi bi-tag-fill-nav-menu" aria-hidden="true"></span>Label
+    </NavLink>
+    <NavLink class="nav-link" href="components/link">
+        <span class="bi bi-link-45deg-nav-menu" aria-hidden="true"></span>Link
+    </NavLink>
+    <NavLink class="nav-link" href="components/radio">
+        <span class="bi bi-circle-nav-menu" aria-hidden="true"></span>Radio
+    </NavLink>
+    <NavLink class="nav-link" href="components/select">
+        <span class="bi bi-menu-button-wide-nav-menu" aria-hidden="true"></span>Select
+    </NavLink>
+    <NavLink class="nav-link" href="components/switch">
+        <span class="bi bi-toggle-on-nav-menu" aria-hidden="true"></span>Switch
+    </NavLink>
+    <NavLink class="nav-link" href="textarea">
+        <span class="bi bi-textarea-resize-nav-menu" aria-hidden="true"></span>Textarea
+    </NavLink>
+    <NavLink class="nav-link" href="tooltip-demo">
+        <span class="bi bi-chat-dots-nav-menu" aria-hidden="true"></span>Tooltip
+    </NavLink>
+    <NavLink class="nav-link" href="tabs">
+        <span class="bi bi-folder-nav-menu" aria-hidden="true"></span>Tabs
+    </NavLink>
+   
 </div>
 
-<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span>Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span>Counter
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span>Weather
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="pggm-wizard">
-                <span class="bi bi-arrow-right-circle-fill-nav-menu" aria-hidden="true"></span>Wizard
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="pggm-progress">
-                <span class="bi bi-arrow-right-nav-menu" aria-hidden="true"></span>Progress
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="pggm-accordion">
-                <span class="bi bi-arrow-down-up-nav-menu" aria-hidden="true"></span>Accordion
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="pggm-alert">
-                <span class="bi bi-exclamation-triangle-fill-nav-menu" aria-hidden="true"></span>Alert
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="pggm-button">
-                <span class="bi bi-grid-3x3-gap-fill-nav-menu" aria-hidden="true"></span>Button
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="pggm-checkbox">
-                <span class="bi bi-check-square-fill-nav-menu" aria-hidden="true"></span>Checkbox
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="pggm-dialog">
-                <span class="bi bi-window-dock-nav-menu" aria-hidden="true"></span>Dialog
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="pggm-error-message">
-                <span class="bi bi-exclamation-circle-fill-nav-menu" aria-hidden="true"></span>Error Message
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="pggm-fieldset">
-                <span class="bi bi-collection-nav-menu" aria-hidden="true"></span>Fieldset
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="pggm-file-upload">
-                <span class="bi bi-cloud-upload-fill-nav-menu" aria-hidden="true"></span>File Upload
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="pggm-header">
-                <span class="bi bi-type-h1-nav-menu" aria-hidden="true"></span>Header
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="pggm-input">
-                <span class="bi bi-input-cursor-text-nav-menu" aria-hidden="true"></span>Input
-            </NavLink>
-        </div>
-        
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="pggm-input-iban-demo">
-                <span class="bi bi-credit-card-2-front-nav-menu" aria-hidden="true"></span>Input IBAN
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="input-phone-demo">
-                <span class="bi bi-telephone-fill-nav-menu" aria-hidden="true"></span>Input Phone
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="inputdate-demo">
-                <span class="bi bi-calendar-date-fill-nav-menu" aria-hidden="true"></span>Input Date
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="pggm-label">
-                <span class="bi bi-tag-fill-nav-menu" aria-hidden="true"></span>Label
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="components/link">
-                <span class="bi bi-link-45deg-nav-menu" aria-hidden="true"></span>Link
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="components/radio">
-                <span class="bi bi-circle-nav-menu" aria-hidden="true"></span>Radio
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="components/select">
-                <span class="bi bi-menu-button-wide-nav-menu" aria-hidden="true"></span>Select
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="components/switch">
-                <span class="bi bi-toggle-on-nav-menu" aria-hidden="true"></span>Switch
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="textarea">
-                <span class="bi bi-textarea-resize-nav-menu" aria-hidden="true"></span>Textarea
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="tooltip-demo">
-                <span class="bi bi-chat-dots-nav-menu" aria-hidden="true"></span>Tooltip
-            </NavLink>
-        </div>
-        <div class="nav-item px-3 hidden">
-            <NavLink class="nav-link" href="tabs">
-                <span class="bi bi-folder-nav-menu" aria-hidden="true"></span>Tabs
-            </NavLink>
-        </div>
-    </nav>
-</div>
-
-@code {
-    private bool collapseNavMenu = true;
-
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-}

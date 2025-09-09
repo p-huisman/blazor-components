@@ -1,0 +1,51 @@
+@using System.ComponentModel
+@inherits PggmComponentBase
+@namespace Blazor.Pggm.Components
+
+<label is="pggm-label" @ref="ElementRef" @attributes="GetAttributes()">
+  @ChildContent
+</label>
+
+@code {
+  protected override string TagName => "label";
+
+  /// <summary>
+  /// The for attribute - associates the label with a form control
+  /// </summary>
+  [Parameter] public string? For { get; set; }
+
+  protected override void AddComponentAttributes(Dictionary<string, object> attributes)
+  {
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "for", For);
+  }
+
+  /// <summary>
+  /// Override to exclude CSS classes from attributes
+  /// </summary>
+  protected override Dictionary<string, object> GetAttributes()
+  {
+    var attributes = new Dictionary<string, object>();
+
+    // Add component-specific attributes
+    AddComponentAttributes(attributes);
+    
+    // Add additional attributes (these take precedence)
+    if (AdditionalAttributes != null)
+    {
+      foreach (var attr in AdditionalAttributes)
+      {
+        attributes[attr.Key] = attr.Value;
+      }
+    }
+
+    return attributes;
+  }
+
+  /// <summary>
+  /// Override to prevent CSS classes from being applied
+  /// </summary>
+  protected override string? GetDefaultCssClasses()
+  {
+    return null;
+  }
+}
