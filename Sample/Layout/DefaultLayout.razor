@@ -1,5 +1,9 @@
+@using Microsoft.AspNetCore.Components.Routing
 @inherits LayoutComponentBase
-<div class="app-layout">
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+@implements IDisposable
+<div class="app-layout @(isNavOpen ? "nav-open" : "")">
 
   <header class="header">
 
@@ -28,6 +32,11 @@
           fill="#1D8551"></path>
       </g>
     </svg>
+
+    <button class="hamburger" @onclick="ToggleNavMenu" @onclick:preventDefault="true" aria-label="Toggle navigation menu">
+      <span class="screen-reader-text">Menu</span>
+      <span class="hamburger-icon">&#9776;</span>
+    </button>
   </header>
 
   <aside class="sidebar">
@@ -48,4 +57,58 @@
 
 @code {
   private string year = DateTime.Now.Year.ToString();
+  private bool isNavOpen = false;
+  private DotNetObjectReference<DefaultLayout>? objRef;
+  
+  protected override async Task OnAfterRenderAsync(bool firstRender)
+  {
+    if (firstRender)
+    {
+      // Subscribe to navigation changes
+      Navigation.LocationChanged += OnLocationChanged;
+      
+      // Set up JavaScript object reference for resize events
+      objRef = DotNetObjectReference.Create(this);
+      
+      // Register resize event listener
+      await JSRuntime.InvokeVoidAsync("blazorCulture.registerResizeHandler", objRef);
+    }
+  }
+
+  private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+  {
+    // Close navigation menu when route changes
+    if (isNavOpen)
+    {
+      isNavOpen = false;
+      InvokeAsync(StateHasChanged);
+    }
+  }
+
+  [JSInvokable]
+  public async Task OnScreenSizeChanged(bool isLargeScreen)
+  {
+    // Close navigation menu when screen becomes large (>= 690px)
+    if (isLargeScreen && isNavOpen)
+    {
+      isNavOpen = false;
+      await InvokeAsync(StateHasChanged);
+    }
+  }
+  
+  private void ToggleNavMenu()
+  {
+    Console.WriteLine($"ToggleNavMenu called! Current state: {isNavOpen}");
+    isNavOpen = !isNavOpen;
+    Console.WriteLine($"New state: {isNavOpen}");
+    StateHasChanged(); // Force re-render
+  }
+
+  public void Dispose()
+  {
+    // Unsubscribe from events to prevent memory leaks
+    Navigation.LocationChanged -= OnLocationChanged;
+    objRef?.Dispose();
+  }
+
 }
