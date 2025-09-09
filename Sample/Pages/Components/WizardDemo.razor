@@ -75,10 +75,10 @@
                 <p>Provide any additional information you think is relevant.</p>
                 <PggmFieldset>
                     <Label>
-                        <PggmLabel For="phone">Phone Number</PggmLabel>
+                        <PggmLabel For="phoneInput">Phone Number</PggmLabel>
                     </Label>
                     <ChildContent>
-                        <PggmInputPhone @bind-Value="@phoneNumber" TopCountries="NL,BE,DE,FR"
+                        <PggmInputPhone id="phoneInput" @bind-Value="@phoneNumber" TopCountries="NL,BE,DE,FR"
                             CountryLabel="Choose country..." InitialCountry="NL" Name="phone" />
                     </ChildContent>
                 </PggmFieldset>
