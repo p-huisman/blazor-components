@@ -1,0 +1,160 @@
+@page "/textarea"
+@using Pggm.Components
+
+<h3>PggmTextarea Demo</h3>
+
+<div class="demo-section">
+    <h4>Basic Textarea</h4>
+    <PggmTextarea @bind-Value="@basicValue" 
+                  Rows="4" 
+                  Cols="50" 
+                  Placeholder="Enter your text here..." />
+    <p><strong>Current Value:</strong> @basicValue</p>
+</div>
+
+<div class="demo-section">
+    <h4>Textarea with Character Limit</h4>
+    <PggmTextarea @bind-Value="@limitedValue" 
+                  Rows="3" 
+                  Cols="40" 
+                  MaxLength="100"
+                  Placeholder="Maximum 100 characters..." />
+    <p><strong>Characters:</strong> @(limitedValue?.Length ?? 0) / 100</p>
+</div>
+
+<div class="demo-section">
+    <h4>Required Textarea</h4>
+    <PggmTextarea @bind-Value="@requiredValue" 
+                  Rows="3" 
+                  Cols="40" 
+                  Required="true"
+                  Placeholder="This field is required..." />
+    <p><strong>Current Value:</strong> @requiredValue</p>
+</div>
+
+<div class="demo-section">
+    <h4>Disabled Textarea</h4>
+    <PggmTextarea Value="This textarea is disabled and cannot be edited." 
+                  Rows="2" 
+                  Cols="40" 
+                  Disabled="true" />
+</div>
+
+<div class="demo-section">
+    <h4>ReadOnly Textarea</h4>
+    <PggmTextarea Value="This textarea is readonly and cannot be edited." 
+                  Rows="2" 
+                  Cols="40" 
+                  ReadOnly="true" />
+</div>
+
+<div class="demo-section">
+    <h4>Textarea with Hard Wrap</h4>
+    <PggmTextarea @bind-Value="@wrapValue" 
+                  Rows="4" 
+                  Cols="30" 
+                  Wrap="@PggmTextarea.WrapTypes.Hard"
+                  Placeholder="Text will wrap at column boundary..." />
+</div>
+
+<div class="demo-section">
+    <h4>Event Handling</h4>
+    <PggmTextarea @bind-Value="@eventValue" 
+                  Rows="3" 
+                  Cols="40" 
+                  OnInput="@OnInputEvent"
+                  OnChange="@OnChangeEvent"
+                  OnFocus="@OnFocusEvent"
+                  OnBlur="@OnBlurEvent"
+                  Placeholder="Type to see events..." />
+    
+    <div class="event-log">
+        <h5>Event Log:</h5>
+        <ul>
+            @foreach (var eventInfo in eventLog)
+            {
+                <li>@eventInfo</li>
+            }
+        </ul>
+        <button class="btn btn-secondary btn-sm" @onclick="ClearEventLog">Clear Log</button>
+    </div>
+</div>
+
+<style>
+    .demo-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    
+    .demo-section h4 {
+        margin-top: 0;
+        color: #333;
+    }
+    
+    .event-log {
+        margin-top: 1rem;
+        padding: 1rem;
+        background-color: #f8f9fa;
+        border-radius: 4px;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+    
+    .event-log ul {
+        margin: 0;
+        padding-left: 1rem;
+        max-height: 150px;
+        overflow-y: auto;
+    }
+    
+    .event-log li {
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
+    }
+</style>
+
+@code {
+    private string? basicValue = "";
+    private string? limitedValue = "";
+    private string? requiredValue = "";
+    private string? wrapValue = "";
+    private string? eventValue = "";
+    
+    private List<string> eventLog = new();
+
+    private void OnInputEvent(ChangeEventArgs args)
+    {
+        eventLog.Insert(0, $"Input: '{args.Value}' at {DateTime.Now:HH:mm:ss}");
+        if (eventLog.Count > 10) eventLog.RemoveAt(10);
+        StateHasChanged();
+    }
+
+    private void OnChangeEvent(ChangeEventArgs args)
+    {
+        eventLog.Insert(0, $"Change: '{args.Value}' at {DateTime.Now:HH:mm:ss}");
+        if (eventLog.Count > 10) eventLog.RemoveAt(10);
+        StateHasChanged();
+    }
+
+    private void OnFocusEvent(FocusEventArgs args)
+    {
+        eventLog.Insert(0, $"Focus: {args.Type} at {DateTime.Now:HH:mm:ss}");
+        if (eventLog.Count > 10) eventLog.RemoveAt(10);
+        StateHasChanged();
+    }
+
+    private void OnBlurEvent(FocusEventArgs args)
+    {
+        eventLog.Insert(0, $"Blur: {args.Type} at {DateTime.Now:HH:mm:ss}");
+        if (eventLog.Count > 10) eventLog.RemoveAt(10);
+        StateHasChanged();
+    }
+
+    private void ClearEventLog()
+    {
+        eventLog.Clear();
+        StateHasChanged();
+    }
+}

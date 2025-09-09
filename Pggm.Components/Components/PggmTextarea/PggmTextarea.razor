@@ -1,0 +1,227 @@
+@inherits PggmComponentBase
+@namespace Pggm.Components
+
+<textarea is="pggm-textarea" @ref="ElementRef" @attributes="GetAttributes()" 
+          @onchange="OnChangeHandler" 
+          @oninput="OnInputHandler"
+          @onfocus="OnFocusHandler"
+          @onblur="OnBlurHandler">@Value</textarea>
+
+@code {
+    protected override string TagName => "textarea";
+
+    /// <summary>
+    /// The current value of the textarea
+    /// </summary>
+    [Parameter] public string? Value { get; set; }
+
+    /// <summary>
+    /// Event callback for when the textarea value changes (two-way binding)
+    /// </summary>
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+
+    /// <summary>
+    /// Number of visible text lines for the control
+    /// </summary>
+    [Parameter] public int? Rows { get; set; }
+
+    /// <summary>
+    /// Visible width of the text control, in average character widths
+    /// </summary>
+    [Parameter] public int? Cols { get; set; }
+
+    /// <summary>
+    /// Placeholder text for the textarea
+    /// </summary>
+    [Parameter] public string? Placeholder { get; set; }
+
+    /// <summary>
+    /// Whether the textarea is disabled
+    /// </summary>
+    [Parameter] public bool Disabled { get; set; }
+
+    /// <summary>
+    /// Whether the textarea is required
+    /// </summary>
+    [Parameter] public bool Required { get; set; }
+
+    /// <summary>
+    /// Whether the textarea is readonly
+    /// </summary>
+    [Parameter] public bool ReadOnly { get; set; }
+
+    /// <summary>
+    /// The name attribute for the textarea
+    /// </summary>
+    [Parameter] public string? Name { get; set; }
+
+    /// <summary>
+    /// Maximum length for the textarea value
+    /// </summary>
+    [Parameter] public int? MaxLength { get; set; }
+
+    /// <summary>
+    /// Minimum length for the textarea value
+    /// </summary>
+    [Parameter] public int? MinLength { get; set; }
+
+    /// <summary>
+    /// How the text in a text area is to be wrapped when submitted in a form
+    /// </summary>
+    [Parameter] public string? Wrap { get; set; }
+
+    /// <summary>
+    /// Specifies whether the textarea should automatically get focus when the page loads
+    /// </summary>
+    [Parameter] public bool AutoFocus { get; set; }
+
+    /// <summary>
+    /// Provides a hint to the user of what can be entered in the control
+    /// </summary>
+    [Parameter] public string? AutoComplete { get; set; }
+
+    /// <summary>
+    /// Indicates that the textarea should receive focus on page load
+    /// </summary>
+    [Parameter] public bool SpellCheck { get; set; } = true;
+
+    /// <summary>
+    /// Event callback for the change event (when textarea loses focus)
+    /// </summary>
+    [Parameter] public EventCallback<ChangeEventArgs> OnChange { get; set; }
+
+    /// <summary>
+    /// Event callback for the input event (on every keystroke)
+    /// </summary>
+    [Parameter] public EventCallback<ChangeEventArgs> OnInput { get; set; }
+
+    /// <summary>
+    /// Event callback for when the textarea gains focus
+    /// </summary>
+    [Parameter] public EventCallback<FocusEventArgs> OnFocus { get; set; }
+
+    /// <summary>
+    /// Event callback for when the textarea loses focus
+    /// </summary>
+    [Parameter] public EventCallback<FocusEventArgs> OnBlur { get; set; }
+
+    protected override void AddComponentAttributes(Dictionary<string, object> attributes)
+    {
+        AttributeHelper.SetAttributeIfNotEmpty(attributes, Constants.AttributeNames.Placeholder, Placeholder);
+        AttributeHelper.SetAttributeIfNotEmpty(attributes, Constants.AttributeNames.Name, Name);
+        AttributeHelper.SetAttributeIfNotEmpty(attributes, "wrap", Wrap);
+        AttributeHelper.SetAttributeIfNotEmpty(attributes, "autocomplete", AutoComplete);
+        
+        AttributeHelper.SetBooleanAttribute(attributes, Constants.AttributeNames.Disabled, Disabled);
+        AttributeHelper.SetBooleanAttribute(attributes, Constants.AttributeNames.Required, Required);
+        AttributeHelper.SetBooleanAttribute(attributes, Constants.AttributeNames.ReadOnly, ReadOnly);
+        AttributeHelper.SetBooleanAttribute(attributes, "autofocus", AutoFocus);
+        AttributeHelper.SetBooleanAttribute(attributes, "spellcheck", SpellCheck);
+
+        if (Rows.HasValue)
+        {
+            attributes["rows"] = Rows.Value;
+        }
+
+        if (Cols.HasValue)
+        {
+            attributes["cols"] = Cols.Value;
+        }
+
+        if (MaxLength.HasValue)
+        {
+            attributes["maxlength"] = MaxLength.Value;
+        }
+
+        if (MinLength.HasValue)
+        {
+            attributes["minlength"] = MinLength.Value;
+        }
+    }
+
+    private async Task OnChangeHandler(ChangeEventArgs args)
+    {
+        var newValue = args.Value?.ToString();
+        
+        if (Value != newValue)
+        {
+            Value = newValue;
+            
+            if (ValueChanged.HasDelegate)
+            {
+                await ValueChanged.InvokeAsync(Value);
+            }
+        }
+
+        if (OnChange.HasDelegate)
+        {
+            // Create a clean ChangeEventArgs to avoid circular references
+            var cleanArgs = new ChangeEventArgs
+            {
+                Value = args.Value
+            };
+            await OnChange.InvokeAsync(cleanArgs);
+        }
+    }
+
+    private async Task OnInputHandler(ChangeEventArgs args)
+    {
+        var newValue = args.Value?.ToString();
+        
+        if (Value != newValue)
+        {
+            Value = newValue;
+            
+            if (ValueChanged.HasDelegate)
+            {
+                await ValueChanged.InvokeAsync(Value);
+            }
+        }
+
+        if (OnInput.HasDelegate)
+        {
+            // Create a clean ChangeEventArgs to avoid circular references
+            var cleanArgs = new ChangeEventArgs
+            {
+                Value = args.Value
+            };
+            await OnInput.InvokeAsync(cleanArgs);
+        }
+    }
+
+    private async Task OnFocusHandler(FocusEventArgs args)
+    {
+        if (OnFocus.HasDelegate)
+        {
+            // Create a clean FocusEventArgs to avoid circular references
+            var cleanArgs = new FocusEventArgs
+            {
+                Type = args.Type
+            };
+            await OnFocus.InvokeAsync(cleanArgs);
+        }
+    }
+
+    private async Task OnBlurHandler(FocusEventArgs args)
+    {
+        if (OnBlur.HasDelegate)
+        {
+            // Create a clean FocusEventArgs to avoid circular references
+            var cleanArgs = new FocusEventArgs
+            {
+                Type = args.Type
+            };
+            await OnBlur.InvokeAsync(cleanArgs);
+        }
+    }
+
+    /// <summary>
+    /// Wrap attribute constants for better IntelliSense
+    /// </summary>
+    public static class WrapTypes
+    {
+        public const string Hard = "hard";
+        public const string Soft = "soft";
+        public const string Off = "off";
+    }
+}
