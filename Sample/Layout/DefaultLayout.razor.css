@@ -16,7 +16,7 @@
     }
 
     aside {
-      z-index: 1;
+      z-index: 999;
       position: fixed;
       transform: translate(calc(250px + 2em), 0);
       top: 0;
