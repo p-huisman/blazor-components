@@ -1,6 +1,5 @@
 @page "/pggm-label"
 
-@using Blazor.Pggm.Components
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.AspNetCore.Components
 
@@ -17,17 +16,17 @@
     <div class="form-example">
         <div class="form-group">
             <PggmLabel For="basic-text-input">Basic Text Input:</PggmLabel>
-            <PggmInput id="basic-text-input" Type="text" @bind-Value="basicText" Placeholder="Enter some text..." />
+            <PggmInput id="basic-text-input" Type="text" @bind-value="basicText" Placeholder="Enter some text..." />
         </div>
 
         <div class="form-group">
             <PggmLabel For="basic-email-input">Email Address:</PggmLabel>
-            <PggmInput id="basic-email-input" Type="email" @bind-Value="emailValue" Placeholder="user@example.com" />
+            <PggmInput id="basic-email-input" Type="email" @bind-value="emailValue" Placeholder="user@example.com" />
         </div>
 
         <div class="form-group">
             <PggmLabel For="basic-number-input">Number Input:</PggmLabel>
-            <PggmInput id="basic-number-input" Type="number" @bind-Value="numberValue" Min="0" Max="100" />
+            <PggmInput id="basic-number-input" Type="number" @bind-value="numberValue" Min="0" Max="100" />
         </div>
     </div>
 </section>

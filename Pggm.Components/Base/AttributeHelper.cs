@@ -1,4 +1,4 @@
-namespace Blazor.Pggm.Components.Base;
+namespace Pggm.Components.Base;
 
 /// <summary>
 /// Utility class for handling web component attributes

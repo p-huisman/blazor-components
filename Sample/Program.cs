@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Blazor.Pggm.Components.Sample;
-using Blazor.Pggm.Components.Extensions;
+using Pggm.Components.Sample;
+using Pggm.Components.Extensions;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");

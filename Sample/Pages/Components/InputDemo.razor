@@ -1,5 +1,4 @@
 @page "/pggm-input"
-@using Blazor.Pggm.Components
 
 <PageTitle>PGGM Input Component Demo</PageTitle>
 
@@ -16,7 +15,7 @@
         
         <div class="mb-3">
             <PggmLabel For="text-input" class="form-label">Text Input</PggmLabel>
-            <PggmInput @bind-Value="_textValue" 
+            <PggmInput @bind-value="_textValue" 
                           id="text-input"
                        Type="@PggmInput.InputTypes.Text"
                        Name="text-input"
@@ -27,7 +26,7 @@
 
         <div class="mb-3">
             <PggmLabel For="email-input" class="form-label">Email Input</PggmLabel>
-            <PggmInput @bind-Value="_emailValue" 
+            <PggmInput @bind-value="_emailValue" 
                           id="email-input"
                        Type="@PggmInput.InputTypes.Email"
                        Name="email-input"
@@ -38,7 +37,7 @@
 
         <div class="mb-3">
             <PggmLabel For="password-input" class="form-label">Password Input</PggmLabel>
-            <PggmInput @bind-Value="_passwordValue" 
+            <PggmInput @bind-value="_passwordValue" 
                           id="password-input"
                        Type="@PggmInput.InputTypes.Password"
                        Name="password-input"
@@ -49,7 +48,7 @@
 
         <div class="mb-3">
             <PggmLabel For="number-input" class="form-label">Number Input</PggmLabel>
-            <PggmInput @bind-Value="_numberValue" 
+            <PggmInput @bind-value="_numberValue" 
                           id="number-input"
                        Type="@PggmInput.InputTypes.Number"
                        Name="number-input"

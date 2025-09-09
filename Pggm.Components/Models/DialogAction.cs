@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 
-namespace Blazor.Pggm.Components;
+namespace Pggm.Components;
 
 /// <summary>
 /// Represents an action button for a PGGM dialog

@@ -1,5 +1,5 @@
+
 @page "/pggm-wizard"
-@using Blazor.Pggm.Components
 @inject IJSRuntime JSRuntime
 
 <h1>PGGM Wizard Demo</h1>
@@ -26,7 +26,7 @@
                         </PggmErrorMessage>
                     </Error>
                     <ChildContent>
-                        <PggmInput Id="firstName" Name="firstName" Required="true" @bind-Value="@firstName" />
+                        <PggmInput Id="firstName" Name="firstName" Required="true" @bind-value="@firstName" />
                     </ChildContent>
 
                 </PggmFieldset>
@@ -43,7 +43,7 @@
                         </PggmErrorMessage>
                     </Error>
                     <ChildContent>
-                        <PggmInput Id="lastName" Name="lastName" Required="true" @bind-Value="@lastName" />
+                        <PggmInput Id="lastName" Name="lastName" Required="true" @bind-value="@lastName" />
                     </ChildContent>
                 </PggmFieldset>
                 <PggmFieldset>
@@ -146,7 +146,7 @@
     private string? email;
     private string? phoneNumber;
 
-    private Task HandleBeforeNavigate(Blazor.Pggm.Components.Models.Wizard.BeforeNavigateEventArgs args)
+    private Task HandleBeforeNavigate(Pggm.Components.Models.Wizard.BeforeNavigateEventArgs args)
     {
         // Check cancellation logic
         if (args?.Direction == "forwards" && !allowNavigation)
@@ -157,7 +157,7 @@
         return Task.CompletedTask;
     }
 
-    private async Task HandleBeforeSubmit(Blazor.Pggm.Components.Models.Wizard.BeforeSubmitEventArgs args)
+    private async Task HandleBeforeSubmit(Pggm.Components.Models.Wizard.BeforeSubmitEventArgs args)
     {
         // Always cancel the default submit behavior
         args.Cancel = true;

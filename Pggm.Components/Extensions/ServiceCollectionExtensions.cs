@@ -1,7 +1,7 @@
-using Blazor.Pggm.Components.Services;
+using Pggm.Components.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Blazor.Pggm.Components.Extensions;
+namespace Pggm.Components.Extensions;
 
 /// <summary>
 /// Extension methods for registering PGGM components services

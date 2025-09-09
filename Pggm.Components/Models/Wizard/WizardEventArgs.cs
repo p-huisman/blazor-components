@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Blazor.Pggm.Components.Models.Wizard;
+namespace Pggm.Components.Models.Wizard;
 
 /// <summary>
 /// Base class for cancelable event arguments

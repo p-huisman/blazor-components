@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using Blazor.Pggm.Components.Models.Wizard;
+using Pggm.Components.Models.Wizard;
 
-namespace Blazor.Pggm.Components.Base;
+namespace Pggm.Components.Base;
 
 /// <summary>
 /// Base class for PGGM components that need event handling

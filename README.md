@@ -1,29 +1,6 @@
-# Blazor PGGM Components
+# PGGM Components
 
-A Blazor component library that wraps web components from the PGGM Design System, making them available as native B<!-- Phone input without validation -->
-<PggmInputPhone @bind-Value="@simplePhone" 
-                Placeholder="Phone number only..."
-                Name="simple-phone" />
-
-<!-- Mobile numbers only validation -->
-<PggmInputPhone @bind-Value="@mobilePhone" 
-                PhoneNumberType="@PggmInputPhone.PhoneNumberTypes.Mobile"
-                CountryCode="@PggmInputPhone.CountryCodes.Netherlands"
-                Placeholder="Enter mobile number..."
-                Name="mobile-phone" />
-
-<!-- Fixed line numbers only validation -->
-<PggmInputPhone @bind-Value="@fixedLinePhone" 
-                PhoneNumberType="@PggmInputPhone.PhoneNumberTypes.FixedLine"
-                Placeholder="Enter fixed line number..."
-                Name="fixed-line-phone" />
-
-<!-- European countries priority -->
-<PggmInputPhone @bind-Value="@europeanPhone" 
-                TopCountries="NL,BE,DE,FR,ES,IT"
-                CountryLabel="Select your country..."
-                Placeholder="Enter European phone number..."
-                Name="european-phone" /> components.
+A Blazor component library that wraps web components from the PGGM Design System, making them available as native Blazor components.
 
 ## Features
 
@@ -62,7 +39,7 @@ All components include:
 ### 1. Install the NuGet Package
 
 ```bash
-dotnet add package Blazor.Pggm.Components
+dotnet add package Pggm.Components
 ```
 
 ### 2. Register Services
@@ -70,7 +47,7 @@ dotnet add package Blazor.Pggm.Components
 In your `Program.cs` file:
 
 ```csharp
-using Blazor.Pggm.Components.Extensions;
+using Pggm.Components.Extensions;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 // ... other configuration
@@ -86,7 +63,7 @@ await builder.Build().RunAsync();
 In your `_Imports.razor` file:
 
 ```razor
-@using Blazor.Pggm.Components
+@using Pggm.Components
 ```
 
 ## Usage Examples

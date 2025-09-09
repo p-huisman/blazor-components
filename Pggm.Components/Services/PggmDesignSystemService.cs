@@ -2,7 +2,7 @@ using Microsoft.JSInterop;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Components;
 
-namespace Blazor.Pggm.Components.Services;
+namespace Pggm.Components.Services;
 
 /// <summary>
 /// Service for managing PGGM Design System initialization and interactions

@@ -19,7 +19,7 @@ The library now uses a **local bundle approach**:
 ### Current Setup (Recommended)
 ```javascript
 // Primary: Local PGGM bundle (no CORS issues)
-src: "./_content/Blazor.Pggm.Components/js/bundle.js"
+src: "./_content/Pggm.Components/js/bundle.js"
 
 // Secondary: External P-elements core (with CORS handling)
 src: "https://cdn.jsdelivr.net/npm/p-elements-core@1.2.31/dist/p-elements-core-modern.min.js"

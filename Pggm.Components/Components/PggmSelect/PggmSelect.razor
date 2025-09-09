@@ -1,6 +1,6 @@
 @using System.Text.Json
 @inherits PggmEventComponentBase
-@namespace Blazor.Pggm.Components
+@namespace Pggm.Components
 
 <select is="pggm-select" @ref="ElementRef" value="@Value" @onchange="HandleValueChanged" @attributes="GetAttributes()">
   @ChildContent

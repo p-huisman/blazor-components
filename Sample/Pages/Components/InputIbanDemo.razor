@@ -1,6 +1,5 @@
 @page "/pggm-input-iban-demo"
 @using Microsoft.AspNetCore.Components
-@using Blazor.Pggm.Components
 
 <PageTitle>Input IBAN Demo</PageTitle>
 
@@ -13,25 +12,25 @@
 
     <div class="form-group">
         <PggmLabel For="iban1">Basic IBAN Input:</PggmLabel>
-        <PggmInputIban @bind-Value="@ibanValue1" Placeholder="Enter your IBAN" Name="iban1" id="iban1" />
+        <PggmInputIban @bind-value="@ibanValue1" Placeholder="Enter your IBAN" Name="iban1" id="iban1" />
         <p>Current value: @ibanValue1</p>
     </div>
 
     <div class="form-group">
         <PggmLabel For="iban2">Required IBAN Input:</PggmLabel>
-        <PggmInputIban @bind-Value="@ibanValue2" Placeholder="NL91 ABNA 0417 1643 00" Name="iban2" id="iban2"
+        <PggmInputIban @bind-value="@ibanValue2" Placeholder="NL91 ABNA 0417 1643 00" Name="iban2" id="iban2"
             Required="true" ErrorMessage="Please enter a valid IBAN" />
         <p>Current value: @ibanValue2</p>
     </div>
 
     <div class="form-group">
         <PggmLabel For="iban3">Disabled IBAN Input:</PggmLabel>
-        <PggmInputIban @bind-Value="@ibanValue3" Placeholder="Disabled input" Name="iban3" id="iban3" Disabled="true" />
+        <PggmInputIban @bind-value="@ibanValue3" Placeholder="Disabled input" Name="iban3" id="iban3" Disabled="true" />
     </div>
 
     <div class="form-group">
         <PggmLabel For="iban4">IBAN with Event Handling:</PggmLabel>
-        <PggmInputIban @bind-Value="@ibanValue4" Placeholder="Enter IBAN with validation" Name="iban4" id="iban4"
+        <PggmInputIban @bind-value="@ibanValue4" Placeholder="Enter IBAN with validation" Name="iban4" id="iban4"
             OnInput="@OnIbanInput" OnChange="@OnIbanChange" OnFocus="@OnIbanFocus" OnBlur="@OnIbanBlur"
             OnInvalid="@OnIbanInvalid" />
         <p>Current value: @ibanValue4</p>

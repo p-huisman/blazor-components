@@ -7,7 +7,7 @@ The PGGM Design System assets (bundle.js and tokens.css) are now hosted locally 
 ## File Location
 
 ```
-Blazor.Pggm.Components/
+Pggm.Components/
 ├── wwwroot/
 │   ├── css/
 │   │   └── tokens.css         ← PGGM Design System CSS tokens
@@ -32,8 +32,8 @@ To update the PGGM Design System to a newer version:
 2. **Replace Local Files**
    ```bash
    # Replace the existing assets
-   cp bundle.js Blazor.Pggm.Components/wwwroot/js/bundle.js
-   cp tokens.css Blazor.Pggm.Components/wwwroot/css/tokens.css
+   cp bundle.js Pggm.Components/wwwroot/js/bundle.js
+   cp tokens.css Pggm.Components/wwwroot/css/tokens.css
    ```
 
 3. **Test Components**

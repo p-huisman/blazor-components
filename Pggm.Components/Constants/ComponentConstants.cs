@@ -1,4 +1,4 @@
-namespace Blazor.Pggm.Components.Constants;
+namespace Pggm.Components.Constants;
 
 /// <summary>
 /// Constants for PGGM component event names
