@@ -1,0 +1,81 @@
+@page "/tooltip-demo"
+@namespace Pggm.Components.Sample.Pages.Components
+
+<h3>Tooltip Demo</h3>
+
+<div class="demo-section">
+    <h4>Basic Tooltip with Button Trigger</h4>
+    <p>Hover over the button to see the tooltip:</p>
+    
+    <PggmTooltipTrigger Id="LumpsumButton" TooltipId="LumpsumTooltip" CssClass="btn btn-primary">
+        Lumpsum
+    </PggmTooltipTrigger>
+
+    <PggmTooltip For="LumpsumButton" Id="LumpsumTooltip">
+        <p>
+            <strong>Lumpsum</strong> is een bedrag ineens.
+        </p>
+        <p>De financieel gevolgen voor deze pensioenkeuze kunnen nadelig zijn.</p>
+    </PggmTooltip>
+</div>
+
+<div class="demo-section">
+    <h4>Tooltip with Span Trigger</h4>
+    <p>Hover over the <PggmTooltipTrigger Id="SpanTrigger" TooltipId="SpanTooltip" AsButton="false" Element="span" CssClass="text-decoration-underline text-primary">underlined text</PggmTooltipTrigger> to see the tooltip.</p>
+
+    <PggmTooltip For="SpanTrigger" Id="SpanTooltip">
+        <p>This tooltip is triggered by a span element!</p>
+    </PggmTooltip>
+</div>
+
+<div class="demo-section">
+    <h4>Multiple Tooltips</h4>
+    <p>This section demonstrates multiple tooltips on the same page:</p>
+    
+    <div class="mb-3">
+        <PggmTooltipTrigger Id="InfoButton1" TooltipId="InfoTooltip1" CssClass="btn btn-info me-2">
+            Information 1
+        </PggmTooltipTrigger>
+        
+        <PggmTooltipTrigger Id="InfoButton2" TooltipId="InfoTooltip2" CssClass="btn btn-warning">
+            Information 2
+        </PggmTooltipTrigger>
+    </div>
+
+    <PggmTooltip For="InfoButton1" Id="InfoTooltip1">
+        <p>This is the first tooltip with some useful information.</p>
+    </PggmTooltip>
+
+    <PggmTooltip For="InfoButton2" Id="InfoTooltip2">
+        <p>This is the second tooltip with different information.</p>
+        <p>It can contain multiple paragraphs and even <strong>formatted text</strong>.</p>
+    </PggmTooltip>
+</div>
+
+<div class="demo-section">
+    <h4>Tooltip with Link Trigger</h4>
+    <p>Click on this <PggmTooltipTrigger Id="LinkTrigger" TooltipId="LinkTooltip" AsButton="false" Element="a" CssClass="text-primary">link</PggmTooltipTrigger> to see the tooltip.</p>
+
+    <PggmTooltip For="LinkTrigger" Id="LinkTooltip">
+        <p>This tooltip is triggered by a link element.</p>
+        <p>Perfect for providing additional context for links.</p>
+    </PggmTooltip>
+</div>
+
+<style>
+    .demo-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+    }
+    
+    .demo-section h4 {
+        margin-top: 0;
+        color: #333;
+    }
+</style>
+
+@code {
+    // No additional code needed for this demo
+}

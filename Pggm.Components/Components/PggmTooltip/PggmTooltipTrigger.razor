@@ -1,0 +1,96 @@
+@namespace Pggm.Components
+
+@if (AsButton)
+{
+  <button id="@Id" 
+          type="@Type" 
+          aria-describedby="@TooltipId" 
+          popovertarget="@TooltipId" 
+          class="@CssClass" 
+          @attributes="AdditionalAttributes">
+    @ChildContent
+  </button>
+}
+else if (Element == "span")
+{
+  <span id="@Id" 
+        aria-describedby="@TooltipId" 
+        popovertarget="@TooltipId" 
+        class="@CssClass" 
+        @attributes="AdditionalAttributes">
+    @ChildContent
+  </span>
+}
+else if (Element == "div")
+{
+  <div id="@Id" 
+       aria-describedby="@TooltipId" 
+       popovertarget="@TooltipId" 
+       class="@CssClass" 
+       @attributes="AdditionalAttributes">
+    @ChildContent
+  </div>
+}
+else if (Element == "a")
+{
+  <a id="@Id" 
+     aria-describedby="@TooltipId" 
+     popovertarget="@TooltipId" 
+     class="@CssClass" 
+     @attributes="AdditionalAttributes">
+    @ChildContent
+  </a>
+}
+else
+{
+  <span id="@Id" 
+        aria-describedby="@TooltipId" 
+        popovertarget="@TooltipId" 
+        class="@CssClass" 
+        @attributes="AdditionalAttributes">
+    @ChildContent
+  </span>
+}
+
+@code {
+  /// <summary>
+  /// The content to display inside the trigger element
+  /// </summary>
+  [Parameter] public RenderFragment? ChildContent { get; set; }
+
+  /// <summary>
+  /// The ID for the trigger element
+  /// </summary>
+  [Parameter, EditorRequired] public string Id { get; set; } = string.Empty;
+
+  /// <summary>
+  /// The ID of the tooltip that this element triggers
+  /// </summary>
+  [Parameter, EditorRequired] public string TooltipId { get; set; } = string.Empty;
+
+  /// <summary>
+  /// Render as a button element (default is true)
+  /// </summary>
+  [Parameter] public bool AsButton { get; set; } = true;
+
+  /// <summary>
+  /// The HTML element tag to use when AsButton is false (span, div, a)
+  /// </summary>
+  [Parameter] public string Element { get; set; } = "span";
+
+  /// <summary>
+  /// The button type when AsButton is true
+  /// </summary>
+  [Parameter] public string Type { get; set; } = "button";
+
+  /// <summary>
+  /// Additional CSS classes
+  /// </summary>
+  [Parameter] public string? CssClass { get; set; }
+
+  /// <summary>
+  /// Additional attributes to apply to the trigger element
+  /// </summary>
+  [Parameter(CaptureUnmatchedValues = true)]
+  public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

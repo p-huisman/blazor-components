@@ -24,6 +24,7 @@ A Blazor component library that wraps web components from the PGGM Design System
 - **Input**: Text input controls with comprehensive validation and event handling
 - **Input Phone**: Specialized phone number input with country selection and formatting
 - **Slider**: Range input controls for numeric value selection
+- **Tooltip**: Contextual information overlays triggered by user interaction
 
 ### Component Features
 
@@ -179,6 +180,48 @@ In your `_Imports.razor` file:
 - `CountryLabel`: Placeholder text for the country selector
 - `PhoneNumberType`: Validates specific phone number types (Mobile, FixedLine, etc.)
 
+### Tooltip Component
+
+```razor
+<!-- Basic tooltip with button trigger -->
+<PggmTooltipTrigger Id="LumpsumButton" TooltipId="LumpsumTooltip" CssClass="btn btn-primary">
+    Lumpsum
+</PggmTooltipTrigger>
+
+<PggmTooltip For="LumpsumButton" Id="LumpsumTooltip">
+    <p>
+        <strong>Lumpsum</strong> is een bedrag ineens.
+    </p>
+    <p>De financieel gevolgen voor deze pensioenkeuze kunnen nadelig zijn.</p>
+</PggmTooltip>
+
+<!-- Tooltip with span trigger -->
+<p>Hover over the <PggmTooltipTrigger Id="SpanTrigger" 
+                                        TooltipId="SpanTooltip" 
+                                        AsButton="false" 
+                                        Element="span" 
+                                        CssClass="text-decoration-underline text-primary">underlined text</PggmTooltipTrigger> to see more info.</p>
+
+<PggmTooltip For="SpanTrigger" Id="SpanTooltip">
+    <p>This tooltip provides additional context!</p>
+</PggmTooltip>
+
+@code {
+    // No additional code needed for tooltips
+}
+```
+
+**Key Components:**
+- `PggmTooltip`: The tooltip content component that displays the information
+- `PggmTooltipTrigger`: Helper component that creates properly configured trigger elements
+
+**Key Parameters:**
+- `For` (PggmTooltip): ID of the element that triggers this tooltip
+- `Id` (PggmTooltip): Unique identifier for the tooltip
+- `TooltipId` (PggmTooltipTrigger): ID of the tooltip to show
+- `AsButton` (PggmTooltipTrigger): Whether to render as button (true) or other element (false)
+- `Element` (PggmTooltipTrigger): HTML element type when AsButton is false (span, div, a)
+
 ### Nested Components
 
 
@@ -205,6 +248,30 @@ In your `_Imports.razor` file:
 | OnClick | EventCallback<MouseEventArgs> | - | Click event handler |
 | CssClass | string? | null | Additional CSS classes |
 | ChildContent | RenderFragment? | null | Button content |
+
+### Tooltip
+
+#### PggmTooltip
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| For | string | - | **Required**. The ID of the element that triggers this tooltip |
+| Id | string? | null | The unique identifier for this tooltip |
+| Position | string? | null | The position where the tooltip should appear |
+| CssClass | string? | null | Additional CSS classes |
+| ChildContent | RenderFragment? | null | The content inside the tooltip |
+
+#### PggmTooltipTrigger
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| Id | string | - | **Required**. The ID for the trigger element |
+| TooltipId | string | - | **Required**. The ID of the tooltip that this element triggers |
+| AsButton | bool | true | Whether to render as a button element |
+| Element | string | "span" | The HTML element tag when AsButton is false |
+| Type | string | "button" | The button type when AsButton is true |
+| CssClass | string? | null | Additional CSS classes |
+| ChildContent | RenderFragment? | null | The content inside the trigger element |
 
 
 
