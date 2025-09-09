@@ -408,12 +408,12 @@ class PggmDesignSystem {
       const link = document.createElement("link");
       link.id = cssId;
       link.rel = "stylesheet";
-      link.href = "./_content/Blazor.Pggm.Components/css/tokens.css";
+      link.href = "./_content/Pggm.Components/css/tokens.css";
       document.head.appendChild(link);
 
       const fontLink = document.createElement("link");
       fontLink.rel = "stylesheet";
-      fontLink.href = "./_content/Blazor.Pggm.Components/css/fonts.css";
+      fontLink.href = "./_content/Pggm.Components/css/fonts.css";
       document.head.appendChild(fontLink);
     }
   }
@@ -429,17 +429,17 @@ class PggmDesignSystem {
 
     const jsFiles = [
       {
-        src: "./_content/Blazor.Pggm.Components/js/bundle.js",
+        src: "./_content/Pggm.Components/js/bundle.js",
         id: "pggm-bundle",
         isModule: true,
       },
       {
-        src: "./_content/Blazor.Pggm.Components/js/slider.js",
+        src: "./_content/Pggm.Components/js/slider.js",
         id: "pggm-slider",
         isModule: true,
       },
       {
-        src: "./_content/Blazor.Pggm.Components/js/wizard.js",
+        src: "./_content/Pggm.Components/js/wizard.js",
         id: "pggm-wizard",
         isModule: true,
       },
@@ -506,20 +506,18 @@ class PggmDesignSystem {
 // Create singleton instance
 const designSystem = new PggmDesignSystem();
 
-// Export functions for module usage
-export function initialize() {
+// Make initialize function available globally
+window.PggmComponents.initialize = function() {
   return designSystem.initialize();
-}
+};
 
-export function setProperty(element, property, value) {
+// Make property management functions available globally  
+window.PggmComponents.setProperty = function(element, property, value) {
   if (element && element[property] !== undefined) {
     element[property] = value;
   }
-}
+};
 
-export function getProperty(element, property) {
+window.PggmComponents.getProperty = function(element, property) {
   return element ? element[property] : undefined;
-}
-
-// Update global object with functions
-window.PggmComponents.initialize = initialize;
+};

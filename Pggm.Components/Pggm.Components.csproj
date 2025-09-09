@@ -6,11 +6,11 @@
     <Nullable>enable</Nullable>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageId>Blazor.Pggm.Components</PackageId>
+    <PackageId>Pggm.Components</PackageId>
     <PackageVersion>1.0.0</PackageVersion>
     <Authors>PGGM</Authors>
     <Description>Blazor wrapper components for PGGM Design System web components</Description>
-    <PackageTags>blazor;pggm;design-system;web-components</PackageTags>
+    <PackageTags>blazor;pggm;design-system;web-components;ui</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

@@ -11,7 +11,6 @@ public class PggmDesignSystemService : IAsyncDisposable
 {
     private readonly IJSRuntime _jsRuntime;
     private readonly ILogger<PggmDesignSystemService>? _logger;
-    private IJSObjectReference? _module;
     private bool _isInitialized = false;
     private Task<bool>? _initializationTask;
 
@@ -43,12 +42,8 @@ public class PggmDesignSystemService : IAsyncDisposable
         {
             _logger?.LogInformation("Initializing PGGM Design System...");
 
-            // Load the module
-            _module = await _jsRuntime.InvokeAsync<IJSObjectReference>(
-                "import", "./_content/Blazor.Pggm.Components/js/pggm-components.js");
-            
-            // Initialize the design system
-            await _module.InvokeVoidAsync("initialize");
+            // Call the global initialize function directly
+            await _jsRuntime.InvokeVoidAsync("PggmComponents.initialize");
             
             _isInitialized = true;
             _logger?.LogInformation("PGGM Design System initialized successfully");
@@ -75,15 +70,15 @@ public class PggmDesignSystemService : IAsyncDisposable
     /// </summary>
     public async Task<bool> SetPropertyAsync(IJSObjectReference element, string property, object value)
     {
-        if (_module == null) 
+        if (!_isInitialized) 
         {
-            _logger?.LogWarning("Cannot set property {Property}: Module not initialized", property);
+            _logger?.LogWarning("Cannot set property {Property}: Design system not initialized", property);
             return false;
         }
 
         try
         {
-            await _module.InvokeVoidAsync("setProperty", element, property, value);
+            await _jsRuntime.InvokeVoidAsync("PggmComponents.setProperty", element, property, value);
             return true;
         }
         catch (Exception ex)
@@ -98,15 +93,15 @@ public class PggmDesignSystemService : IAsyncDisposable
     /// </summary>
     public async Task<T?> GetPropertyAsync<T>(IJSObjectReference element, string property)
     {
-        if (_module == null) 
+        if (!_isInitialized) 
         {
-            _logger?.LogWarning("Cannot get property {Property}: Module not initialized", property);
+            _logger?.LogWarning("Cannot get property {Property}: Design system not initialized", property);
             return default(T);
         }
 
         try
         {
-            return await _module.InvokeAsync<T>("getProperty", element, property);
+            return await _jsRuntime.InvokeAsync<T>("PggmComponents.getProperty", element, property);
         }
         catch (Exception ex)
         {
@@ -120,9 +115,9 @@ public class PggmDesignSystemService : IAsyncDisposable
     /// </summary>
     public async Task<bool> AddEventListenerAsync(ElementReference element, string eventName, DotNetObjectReference<object> callback)
     {
-        if (_module == null) 
+        if (!_isInitialized) 
         {
-            _logger?.LogWarning("Cannot add event listener for {EventName}: Module not initialized", eventName);
+            _logger?.LogWarning("Cannot add event listener for {EventName}: Design system not initialized", eventName);
             return false;
         }
 
@@ -143,9 +138,9 @@ public class PggmDesignSystemService : IAsyncDisposable
     /// </summary>
     public async Task<bool> RemoveEventListenerAsync(ElementReference element, string eventName)
     {
-        if (_module == null) 
+        if (!_isInitialized) 
         {
-            _logger?.LogWarning("Cannot remove event listener for {EventName}: Module not initialized", eventName);
+            _logger?.LogWarning("Cannot remove event listener for {EventName}: Design system not initialized", eventName);
             return false;
         }
 
@@ -166,11 +161,9 @@ public class PggmDesignSystemService : IAsyncDisposable
     /// </summary>
     public bool IsInitialized => _isInitialized;
 
-    public async ValueTask DisposeAsync()
+    public ValueTask DisposeAsync()
     {
-        if (_module != null)
-        {
-            await _module.DisposeAsync();
-        }
+        // No module to dispose of since we're using global functions
+        return ValueTask.CompletedTask;
     }
 }
