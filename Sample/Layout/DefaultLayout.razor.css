@@ -68,6 +68,7 @@ footer {
   text-align: center;
   font-size: 0.9rem;
   color: #6c757d;
+  margin-bottom: 2em;
 }
 
 #main-content {
@@ -103,7 +104,7 @@ footer {
 
   aside {
     transform: unset;
-    position: unset;
+    position: unset;  
     width: unset;
     height: unset;
     top: unset;
@@ -120,7 +121,7 @@ footer {
     grid-area: main;
     padding: 1rem;
     overflow-y: auto;
-    max-height: calc(100vh - 80px - 60px);
+    max-height: calc(100vh - 80px);
   }
 }
 
