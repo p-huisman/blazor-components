@@ -38,16 +38,6 @@ aside {
   height: 100vh;
   overflow-y: auto;
   transition: transform 0.3s ease;
-
-  a{
-    color: var(--pggm-color-text);
-    text-decoration: none;
-    padding: 0.5em 1em;
-  }
-  .active {
-    font-weight: bold;
-    color: #146641;
-  }
 }
 
 .app-layout.nav-open aside {
@@ -132,4 +122,21 @@ footer {
     overflow-y: auto;
     max-height: calc(100vh - 80px - 60px);
   }
+}
+
+aside ::deep a {
+  color: var(--pggm-color-text);
+  text-decoration: none;
+  padding: 0.5em 1em;
+}
+
+aside ::deep a:hover {
+  background-color: #e9ecef;
+  color: #146641;
+  text-decoration: none;
+} 
+
+aside ::deep a.active {
+  font-weight: bold;
+  color: #146641;
 }
