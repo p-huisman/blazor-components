@@ -1,0 +1,56 @@
+@inherits PggmComponentBase
+@namespace Pggm.Components
+
+<pggm-th @ref="ElementRef" @attributes="GetAttributes()">
+  @ChildContent
+</pggm-th>
+
+@code {
+  protected override string TagName => "pggm-th";
+
+  /// <summary>
+  /// Whether this column is sortable
+  /// </summary>
+  [Parameter] public bool Sortable { get; set; }
+
+  /// <summary>
+  /// Whether this column is filterable
+  /// </summary>
+  [Parameter] public bool Filterable { get; set; }
+
+  /// <summary>
+  /// The field name in the data object that this column represents
+  /// </summary>
+  [Parameter] public string? Field { get; set; }
+
+  /// <summary>
+  /// Width of the column (e.g., "150", "auto")
+  /// </summary>
+  [Parameter] public string? Width { get; set; }
+
+  /// <summary>
+  /// Data type of the column (string, number, date, etc.)
+  /// </summary>
+  [Parameter] public string? Type { get; set; }
+
+  /// <summary>
+  /// Format for displaying the data (string, date, currency, etc.)
+  /// </summary>
+  [Parameter] public string? Format { get; set; }
+
+  /// <summary>
+  /// Text alignment for the column (left, center, right)
+  /// </summary>
+  [Parameter] public string? TextAlign { get; set; }
+
+  protected override void AddComponentAttributes(Dictionary<string, object> attributes)
+  {
+    AttributeHelper.SetBooleanAttribute(attributes, "sortable", Sortable);
+    AttributeHelper.SetBooleanAttribute(attributes, "filterable", Filterable);
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "field", Field);
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "width", Width);
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "type", Type);
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "format", Format);
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "text-align", TextAlign);
+  }
+}

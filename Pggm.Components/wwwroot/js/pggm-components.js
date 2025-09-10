@@ -443,6 +443,11 @@ class PggmDesignSystem {
         id: "pggm-wizard",
         isModule: true,
       },
+       {
+        src: "./_content/Pggm.Components/js/table.js",
+        id: "pggm-table",
+        isModule: true,
+      },
     ];
     for (const file of jsFiles) {
       await this._loadScript(file.src, file.id, file.isModule);

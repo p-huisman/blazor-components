@@ -1,0 +1,72 @@
+@inherits PggmComponentBase
+@namespace Pggm.Components
+
+<pggm-table @ref="ElementRef" @attributes="GetAttributes()">
+  @ChildContent
+</pggm-table>
+
+@code {
+  protected override string TagName => "pggm-table";
+
+  /// <summary>
+  /// Label for the filter functionality
+  /// </summary>
+  [Parameter] public string? FilterLabel { get; set; }
+
+  /// <summary>
+  /// Label for clearing filters
+  /// </summary>
+  [Parameter] public string? ClearLabel { get; set; }
+
+  /// <summary>
+  /// Language setting for the table
+  /// </summary>
+  [Parameter] public string? Lang { get; set; }
+
+  /// <summary>
+  /// Field name that serves as the unique identifier for table rows
+  /// </summary>
+  [Parameter] public string? IdField { get; set; }
+
+  /// <summary>
+  /// Whether rows in the table can be selected
+  /// </summary>
+  [Parameter] public bool Selectable { get; set; }
+
+  /// <summary>
+  /// Type of selection allowed (single, multiple)
+  /// </summary>
+  [Parameter] public string? SelectType { get; set; }
+
+  /// <summary>
+  /// JSON data for the table rows
+  /// </summary>
+  [Parameter] public object? Data { get; set; }
+
+  /// <summary>
+  /// Remote URL endpoint for fetching table data
+  /// </summary>
+  [Parameter] public string? RemoteUrl { get; set; }
+
+  /// <summary>
+  /// Remote mode for the endpoint (simple, cursor, offset)
+  /// </summary>
+  [Parameter] public string? Remote { get; set; }
+
+  protected override void AddComponentAttributes(Dictionary<string, object> attributes)
+  {
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "filter-label", FilterLabel);
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "clear-label", ClearLabel);
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "lang", Lang);
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "id-field", IdField);
+    AttributeHelper.SetBooleanAttribute(attributes, "selectable", Selectable);
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "select-type", SelectType);
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "remote-url", RemoteUrl);
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "remote", Remote);
+    
+    if (Data != null)
+    {
+      attributes["data"] = System.Text.Json.JsonSerializer.Serialize(Data);
+    }
+  }
+}

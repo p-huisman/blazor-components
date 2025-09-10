@@ -1,0 +1,369 @@
+@page "/pggm-table"
+@using Pggm.Components
+
+<PageTitle>Advanced Table Example</PageTitle>
+
+<h1>Advanced PGGM Table Examples</h1>
+
+<h2>Local Data Table</h2>
+<p>This table uses local data with sorting, filtering, and single selection.</p>
+
+<PggmTable 
+  FilterLabel="Filter instellen" 
+  ClearLabel="Filter wissen" 
+  Lang="nl" 
+  IdField="id" 
+  Selectable="true" 
+  SelectType="single"
+  Data="@employeeData">
+  
+  <PggmTh 
+    Sortable="true" 
+    Filterable="true" 
+    Field="firstName" 
+    Width="150" 
+    Type="string" 
+    Format="string">
+    First Name
+  </PggmTh>
+  
+  <PggmTh 
+    Sortable="true" 
+    Filterable="true" 
+    Field="lastName" 
+    Width="150" 
+    Type="string" 
+    Format="string">
+    Last Name
+  </PggmTh>
+  
+  <PggmTh 
+    Filterable="true" 
+    Field="department" 
+    Width="200" 
+    Type="string" 
+    Format="string">
+    Department
+  </PggmTh>
+  
+  <PggmTh 
+    Sortable="true" 
+    Format="date" 
+    TextAlign="center" 
+    Type="date" 
+    Field="hireDate" 
+    Width="auto">
+    Hire Date
+  </PggmTh>
+  
+  <PggmTh 
+    TextAlign="right" 
+    Sortable="true" 
+    Format="currency" 
+    Type="number" 
+    Field="salary" 
+    Width="auto">
+    Annual Salary
+  </PggmTh>
+  
+  <PggmTh 
+    TextAlign="center" 
+    Sortable="true" 
+    Field="isActive" 
+    Width="100" 
+    Type="boolean" 
+    Format="boolean">
+    Active
+  </PggmTh>
+  
+</PggmTable>
+
+<hr />
+
+<h2>Remote Data Table simple</h2>
+<p>This table would fetch data from a remote endpoint.</p>
+
+ 
+<!-- Simple remote mode example -->
+<h3>Simple Remote Mode</h3>
+<PggmTable 
+  RemoteUrl="https://jsonplaceholder.typicode.com/users" 
+  Remote="simple"
+  FilterLabel="Filter users" 
+  ClearLabel="Clear filters" 
+  Lang="en" 
+  IdField="id" 
+  Selectable="true" 
+  SelectType="multiple">
+  
+  <PggmTh Field="name" Type="string" Sortable="true" Filterable="true" Width="200">
+    Name
+  </PggmTh>
+  
+  <PggmTh Field="email" Type="string" Filterable="true" Width="250">
+    Email
+  </PggmTh>
+  
+  <PggmTh Field="address.city" Type="string" Filterable="true" Width="150">
+    City
+  </PggmTh>
+  
+  <PggmTh Field="company.name" Type="string" Filterable="true" Width="200">
+    Company
+  </PggmTh>
+  
+</PggmTable>
+
+
+
+<!-- Cursor-based pagination example -->
+<h3>Cursor Remote Mode</h3>
+<p>Currently commented out</p>
+@*
+<PggmTable 
+  RemoteUrl="https://api.example.com/employees" 
+  Remote="cursor"
+  FilterLabel="Filter employees" 
+  ClearLabel="Clear filters" 
+  Lang="nl" 
+  IdField="employeeId" 
+  Selectable="true" 
+  SelectType="single">
+  
+  <PggmTh Field="firstName" Type="string" Sortable="true" Filterable="true">
+    First Name
+  </PggmTh>
+  
+  <PggmTh Field="lastName" Type="string" Sortable="true" Filterable="true">
+    Last Name
+  </PggmTh>
+  
+  <PggmTh Field="department" Type="string" Filterable="true">
+    Department
+  </PggmTh>
+  
+</PggmTable>
+*@
+
+<!-- Offset-based pagination example -->
+<h3>Offset Remote Mode</h3>
+<p>Currently commented out</p>
+@*
+<PggmTable 
+  RemoteUrl="https://api.example.com/products" 
+  Remote="offset"
+  FilterLabel="Filter products" 
+  ClearLabel="Clear filters" 
+  Lang="en" 
+  IdField="productId" 
+  Selectable="true" 
+  SelectType="multiple">
+  
+  <PggmTh Field="name" Type="string" Sortable="true" Filterable="true">
+    Product Name
+  </PggmTh>
+  
+  <PggmTh Field="price" Type="number" Format="currency" Sortable="true" TextAlign="right">
+    Price
+  </PggmTh>
+  
+  <PggmTh Field="category" Type="string" Filterable="true">
+    Category
+  </PggmTh>
+  
+</PggmTable>
+*@
+
+<hr />
+
+<h2>Multi-Select Table</h2>
+<p>This table allows multiple row selection.</p>
+
+<PggmTable 
+  FilterLabel="Filter projects" 
+  ClearLabel="Clear filters" 
+  Lang="nl" 
+  IdField="projectId" 
+  Selectable="true" 
+  SelectType="multiple"
+  Data="@projectData">
+  
+  <PggmTh 
+    Sortable="true" 
+    Filterable="true" 
+    Field="projectName" 
+    Width="200" 
+    Type="string" 
+    Format="string">
+    Project Name
+  </PggmTh>
+  
+  <PggmTh 
+    Filterable="true" 
+    Field="client" 
+    Width="150" 
+    Type="string" 
+    Format="string">
+    Client
+  </PggmTh>
+  
+  <PggmTh 
+    Sortable="true" 
+    Format="date" 
+    TextAlign="center" 
+    Type="date" 
+    Field="startDate" 
+    Width="120">
+    Start Date
+  </PggmTh>
+  
+  <PggmTh 
+    Sortable="true" 
+    Format="date" 
+    TextAlign="center" 
+    Type="date" 
+    Field="endDate" 
+    Width="120">
+    End Date
+  </PggmTh>
+  
+  <PggmTh 
+    TextAlign="right" 
+    Sortable="true" 
+    Format="currency" 
+    Type="number" 
+    Field="budget" 
+    Width="auto">
+    Budget
+  </PggmTh>
+  
+  <PggmTh 
+    Filterable="true" 
+    Field="status" 
+    Width="100" 
+    Type="string" 
+    Format="string">
+    Status
+  </PggmTh>
+  
+</PggmTable>
+
+@code {
+  private object[] employeeData = new object[]
+  {
+    new
+    {
+      id = 1,
+      firstName = "John",
+      lastName = "Doe",
+      department = "Engineering",
+      hireDate = "2020-01-15",
+      salary = 75000.00,
+      isActive = true
+    },
+    new
+    {
+      id = 2,
+      firstName = "Jane",
+      lastName = "Smith",
+      department = "Product Management",
+      hireDate = "2019-03-22",
+      salary = 85000.00,
+      isActive = true
+    },
+    new
+    {
+      id = 3,
+      firstName = "Bob",
+      lastName = "Johnson",
+      department = "Design",
+      hireDate = "2021-07-08",
+      salary = 65000.00,
+      isActive = true
+    },
+    new
+    {
+      id = 4,
+      firstName = "Alice",
+      lastName = "Brown",
+      department = "Engineering",
+      hireDate = "2018-05-30",
+      salary = 95000.00,
+      isActive = false
+    },
+    new
+    {
+      id = 5,
+      firstName = "Charlie",
+      lastName = "Wilson",
+      department = "Marketing",
+      hireDate = "2022-01-12",
+      salary = 55000.00,
+      isActive = true
+    },
+    new
+    {
+      id = 6,
+      firstName = "Diana",
+      lastName = "Davis",
+      department = "Sales",
+      hireDate = "2019-11-25",
+      salary = 70000.00,
+      isActive = true
+    }
+  };
+
+  private object[] projectData = new object[]
+  {
+    new
+    {
+      projectId = 101,
+      projectName = "Website Redesign",
+      client = "ACME Corp",
+      startDate = "2024-01-15",
+      endDate = "2024-06-30",
+      budget = 150000.00,
+      status = "In Progress"
+    },
+    new
+    {
+      projectId = 102,
+      projectName = "Mobile App Development",
+      client = "TechStart",
+      startDate = "2024-02-01",
+      endDate = "2024-09-15",
+      budget = 250000.00,
+      status = "Planning"
+    },
+    new
+    {
+      projectId = 103,
+      projectName = "Data Migration",
+      client = "BigBank",
+      startDate = "2023-08-10",
+      endDate = "2024-01-31",
+      budget = 180000.00,
+      status = "Completed"
+    },
+    new
+    {
+      projectId = 104,
+      projectName = "E-commerce Platform",
+      client = "ShopMore",
+      startDate = "2024-03-01",
+      endDate = "2024-12-31",
+      budget = 300000.00,
+      status = "In Progress"
+    },
+    new
+    {
+      projectId = 105,
+      projectName = "Analytics Dashboard",
+      client = "DataCorp",
+      startDate = "2024-04-15",
+      endDate = "2024-08-30",
+      budget = 120000.00,
+      status = "Planning"
+    }
+  };
+}

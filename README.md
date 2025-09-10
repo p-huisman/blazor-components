@@ -24,6 +24,7 @@ A Blazor component library that wraps web components from the PGGM Design System
 - **Input**: Text input controls with comprehensive validation and event handling
 - **Input Phone**: Specialized phone number input with country selection and formatting
 - **Slider**: Range input controls for numeric value selection
+- **Table**: Data tables with sorting, filtering, and selection capabilities
 - **Tooltip**: Contextual information overlays triggered by user interaction
 
 ### Component Features
@@ -179,6 +180,106 @@ In your `_Imports.razor` file:
 - `TopCountries`: Comma-separated list of countries to show at the top of the dropdown
 - `CountryLabel`: Placeholder text for the country selector
 - `PhoneNumberType`: Validates specific phone number types (Mobile, FixedLine, etc.)
+
+### Table Component
+
+```razor
+<!-- Basic table with local data -->
+<PggmTable FilterLabel="Filter instellen" 
+           ClearLabel="Filter wissen" 
+           Lang="nl" 
+           IdField="id" 
+           Selectable="true" 
+           SelectType="single"
+           Data="@tableData">
+  
+  <PggmTh Sortable="true" 
+          Filterable="true" 
+          Field="name" 
+          Width="150" 
+          Type="string" 
+          Format="string">
+    Name
+  </PggmTh>
+  
+  <PggmTh Filterable="true" 
+          Field="description" 
+          Width="250" 
+          Type="string" 
+          Format="string">
+    Description
+  </PggmTh>
+  
+  <PggmTh Sortable="true" 
+          Format="date" 
+          TextAlign="right" 
+          Type="date" 
+          Field="dateOfBirth" 
+          Width="auto">
+    Date of Birth
+  </PggmTh>
+  
+  <PggmTh TextAlign="right" 
+          Filterable="true" 
+          Sortable="true" 
+          Format="currency" 
+          Type="number" 
+          Field="salary" 
+          Width="auto">
+    Salary
+  </PggmTh>
+  
+</PggmTable>
+
+<!-- Table with remote data -->
+<PggmTable RemoteUrl="https://api.example.com/employees" 
+           Remote="cursor"
+           FilterLabel="Filter instellen" 
+           ClearLabel="Filter wissen" 
+           Lang="nl" 
+           IdField="employeeId" 
+           Selectable="true" 
+           SelectType="multiple">
+  
+  <PggmTh Field="firstName" Type="string" Sortable="true" Filterable="true">
+    First Name
+  </PggmTh>
+  
+  <PggmTh Field="lastName" Type="string" Sortable="true" Filterable="true">
+    Last Name
+  </PggmTh>
+  
+  <PggmTh Field="department" Type="string" Filterable="true">
+    Department
+  </PggmTh>
+  
+</PggmTable>
+
+@code {
+    private object[] tableData = new object[]
+    {
+        new { id = 1, name = "John Doe", description = "Developer", dateOfBirth = "1990-01-15", salary = 50000 },
+        new { id = 2, name = "Jane Smith", description = "Manager", dateOfBirth = "1985-05-22", salary = 75000 }
+    };
+}
+```
+
+**Key Parameters:**
+- `Data`: Object array containing the table data (alternative to RemoteUrl)
+- `RemoteUrl`: URL endpoint for fetching table data remotely
+- `Remote`: Remote mode for the endpoint ("simple", "cursor", "offset")
+- `FilterLabel`/`ClearLabel`: Labels for filter functionality
+- `IdField`: Field name that serves as unique identifier for rows
+- `Selectable`: Whether rows can be selected
+- `SelectType`: Type of selection ("single" or "multiple")
+
+**Column Parameters (PggmTh):**
+- `Field`: Data field name this column represents
+- `Sortable`/`Filterable`: Enable sorting/filtering for this column
+- `Type`: Data type ("string", "number", "date")
+- `Format`: Display format ("string", "date", "currency")
+- `TextAlign`: Text alignment ("left", "center", "right")
+- `Width`: Column width ("auto", "150", etc.)
 
 ### Tooltip Component
 
