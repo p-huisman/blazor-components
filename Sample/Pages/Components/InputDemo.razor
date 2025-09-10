@@ -1,8 +1,8 @@
 @page "/pggm-input"
 
-<PageTitle>PGGM Input Component Demo</PageTitle>
+<PageTitle>PGGM Input</PageTitle>
 
-<h1>PGGM Input Component Demo</h1>
+<PggmHeader Level="1">PGGM Input</PggmHeader>
 
 <p class="lead">
     This page demonstrates the PggmInput component, which is a wrapper for the pggm-input web component
@@ -11,7 +11,7 @@
 
 <div class="row">
     <div class="col-md-6">
-        <h2>Basic Input Examples</h2>
+        <PggmHeader Level="2">Basic Input Examples</PggmHeader>
         
         <div class="mb-3">
             <PggmLabel For="text-input" class="form-label">Text Input</PggmLabel>
@@ -59,20 +59,11 @@
             <small class="form-text text-muted">Range: 0-100, Current value: @_numberValue</small>
         </div>
 
-        <div class="mb-3">
-            <PggmLabel For="tel-input" class="form-label">Telephone Input</PggmLabel>
-            <PggmInput @bind-Value="_telValue" 
-                          id="tel-input"
-                       Type="@PggmInput.InputTypes.Tel"
-                       Name="tel-input"
-                       Pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                       Placeholder="123-456-7890" />
-            <small class="form-text text-muted">Format: 123-456-7890</small>
-        </div>
+        
     </div>
 
     <div class="col-md-6">
-        <h2>Advanced Input Examples</h2>
+        <PggmHeader Level="2">Advanced Input Examples</PggmHeader>
         
         <div class="mb-3">
             <PggmLabel For="search-input" class="form-label">Search Input</PggmLabel>
@@ -95,38 +86,12 @@
             <small class="form-text text-muted">Current URL: @_urlValue</small>
         </div>
 
-        <div class="mb-3">
-            <PggmLabel For="date-input" class="form-label">Date Input</PggmLabel>
-            <PggmInput @bind-Value="_dateValue" 
-                       id="date-input"
-                       Type="@PggmInput.InputTypes.Date"
-                       Name="date-input" />
-            <small class="form-text text-muted">Selected date: @_dateValue</small>
-        </div>
-
-        <div class="mb-3">
-            <PggmLabel For="time-input" class="form-label">Time Input</PggmLabel>
-            <PggmInput @bind-Value="_timeValue" 
-                       id="time-input"
-                       Type="@PggmInput.InputTypes.Time"
-                       Name="time-input" />
-            <small class="form-text text-muted">Selected time: @_timeValue</small>
-        </div>
-
-        <div class="mb-3">
-            <PggmLabel For="color-input" class="form-label">Color Input</PggmLabel>
-            <PggmInput @bind-Value="_colorValue" 
-                        id="color-input"
-                       Type="@PggmInput.InputTypes.Color"
-                       Name="color-input" />
-            <small class="form-text text-muted">Selected color: @_colorValue</small>
-        </div>
     </div>
 </div>
 
 <div class="row mt-4">
     <div class="col-12">
-        <h2>Input States</h2>
+        <PggmHeader Level="2">Input States</PggmHeader>
         
         <div class="row">
             <div class="col-md-4">
@@ -165,7 +130,7 @@
 
 <div class="row mt-4">
     <div class="col-12">
-        <h2>Event Handling Example</h2>
+        <PggmHeader Level="2">Event Handling Example</PggmHeader>
         
         <div class="mb-3">
             <PggmLabel For="event-input" class="form-label">Event Demo Input</PggmLabel>

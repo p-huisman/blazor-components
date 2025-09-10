@@ -1,9 +1,13 @@
 @page "/pggm-select"
 
-<h3>PggmSelect Component Demo</h3>
+<PageTitle>PGGM Select</PageTitle>
+
+<PggmHeader Level="1">PggmSelect Component Demo</PggmHeader>
+
+<p>This page demonstrates the PGGM Select component with various configurations and event handling.</p>
 
 <div class="demo-section">
-    <h4>Basic Select</h4>
+    <PggmHeader Level="2">Basic Select</PggmHeader>
     <p>Selected Country: <strong>@selectedCountry</strong></p>
     
     <PggmSelect Value="@selectedCountry" ValueChanged="@(value => selectedCountry = value)">
@@ -17,7 +21,7 @@
 </div>
 
 <div class="demo-section">
-    <h4>Required Select with Name</h4>
+    <PggmHeader Level="2">Required Select with Name</PggmHeader>
     <p>Selected Department: <strong>@selectedDepartment</strong></p>
     
     <PggmSelect Name="department" Required="true" Value="@selectedDepartment" ValueChanged="@(value => selectedDepartment = value)">
@@ -31,7 +35,7 @@
 </div>
 
 <div class="demo-section">
-    <h4>Disabled Select</h4>
+    <PggmHeader Level="2">Disabled Select</PggmHeader>
     <p>This select is disabled and cannot be changed.</p>
     
     <PggmSelect Disabled="true" Value="disabled-option">
@@ -41,7 +45,7 @@
 </div>
 
 <div class="demo-section">
-    <h4>Select with Grouped Options</h4>
+    <PggmHeader Level="2">Select with Grouped Options</PggmHeader>
     <p>Selected Technology: <strong>@selectedTechnology</strong></p>
     
     <PggmSelect Value="@selectedTechnology" ValueChanged="@(value => selectedTechnology = value)">
@@ -68,7 +72,7 @@
 </div>
 
 <div class="demo-section">
-    <h4>Event Handling</h4>
+    <PggmHeader Level="2">Event Handling</PggmHeader>
     <p>Last Event: <strong>@lastEvent</strong></p>
     
     <PggmSelect Value="@eventTestValue" 

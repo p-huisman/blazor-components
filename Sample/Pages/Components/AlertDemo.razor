@@ -1,10 +1,12 @@
 @page "/pggm-alert"
-<PageTitle>PGGM Alert Demo</PageTitle>
+<PageTitle>PGGM Alert</PageTitle>
 
-<h1>PGGM Alert Component Demo</h1>
+<PggmHeader Level="1">PGGM Alert</PggmHeader>
+
+<p>This page demonstrates the PggmAlert component with various types and configurations.</p>
 
 <div class="demo-section">
-  <h2>Different Alert Types</h2>
+  <PggmHeader Level="2">Different Alert Types</PggmHeader>
 
   <div class="alert-examples">
     <PggmAlert Open=true Type="@PggmAlert.AlertTypes.Informative">
@@ -35,7 +37,7 @@
 
 
 <div class="demo-section">
-  <h2>Closable Alert</h2>
+  <PggmHeader Level="2">Closable Alert</PggmHeader>
 
   <PggmAlert Type="@PggmAlert.AlertTypes.Informative" Closeable="true" CloseLabel="Close this notification" Open="true" OnDismiss="HandleAlertDismiss">
     <PggmAlertTitle>Closable Alert</PggmAlertTitle>

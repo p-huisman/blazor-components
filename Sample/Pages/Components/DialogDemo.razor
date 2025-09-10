@@ -3,14 +3,14 @@
 @using Microsoft.AspNetCore.Components.Web
 @using System.ComponentModel.DataAnnotations
 
-<PageTitle>PGGM PggmDialog Demo</PageTitle>
+<PageTitle>PGGM Dialog</PageTitle>
 
-<h1>PGGM PggmDialog Component Demo</h1>
+<PggmHeader Level="1">PGGM Dialog Component</PggmHeader>
 
-<p>This page demonstrates the PggmDialog component with various configurations and interactions.</p>
+<p>This page demonstrates the PGGM Dialog component with various configurations and interactions.</p>
 
 <section class="demo-section">
-    <h2>Basic Dialog</h2>
+    <PggmHeader Level="2">Basic Dialog</PggmHeader>
     <p>A simple dialog with content:</p>
 
     <div class="demo-controls">
@@ -28,7 +28,7 @@
 </section>
 
 <section class="demo-section">
-    <h2>Modal Dialog</h2>
+    <PggmHeader Level="2">Modal Dialog</PggmHeader>
     <p>A modal dialog that blocks interaction with the background:</p>
 
     <div class="demo-controls">
@@ -49,7 +49,7 @@
 </section>
 
 <section class="demo-section">
-    <h2>Dialog with Custom Header Template</h2>
+    <PggmHeader Level="2">Dialog with Custom Header Template</PggmHeader>
     <p>Dialog with a custom header using RenderFragment:</p>
 
     <div class="demo-controls">
@@ -76,7 +76,7 @@
 </section>
 
 <section class="demo-section">
-    <h2>Dialog with Action Buttons</h2>
+    <PggmHeader Level="2">Dialog with Action Buttons</PggmHeader>
     <p>Dialog with custom action buttons in the footer:</p>
 
     <div class="demo-controls">
@@ -101,7 +101,7 @@
 </section>
 
 <section class="demo-section">
-    <h2>Form Dialog</h2>
+    <PggmHeader Level="2">Form Dialog</PggmHeader>
     <p>Dialog containing a form for user input:</p>
 
     <div class="demo-controls">
@@ -143,7 +143,7 @@
 </section>
 
 <section class="demo-section">
-    <h2>Programmatic Control</h2>
+    <PggmHeader Level="2">Programmatic Control</PggmHeader>
     <p>Control dialogs programmatically using component methods:</p>
 
     <div class="demo-controls">
@@ -166,7 +166,7 @@
     @if (programmaticEvents.Any())
     {
         <div class="event-log">
-            <h4>Event Log:</h4>
+            <PggmHeader Level="4">Event Log:</PggmHeader>
             <ul>
                 @foreach (var evt in programmaticEvents.TakeLast(5))
                 {

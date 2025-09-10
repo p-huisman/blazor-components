@@ -2,7 +2,9 @@
 @page "/pggm-wizard"
 @inject IJSRuntime JSRuntime
 
-<h1>PGGM Wizard Demo</h1>
+<PageTitle>PGGM Wizard</PageTitle>
+
+<PggmHeader Level="1">PGGM Wizard</PggmHeader>
 
 <PggmWizard @ref="wizardRef" Method="POST" Action="/api/submit-wizard" SuccessTitle="Success!"
     ErrorTitle="Something went wrong" OnBeforeNavigate="HandleBeforeNavigate" OnBeforeSubmit="HandleBeforeSubmit"

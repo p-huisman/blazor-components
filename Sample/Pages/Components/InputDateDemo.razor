@@ -1,11 +1,13 @@
 @page "/pggm-input-date"
 
-<PageTitle>Input Date Demo</PageTitle>
+<PageTitle>PGGM Input Date</PageTitle>
 
-<h1>PGGM Input Date Component Demo</h1>
+<PggmHeader Level="1">PGGM Input Date</PggmHeader>
+
+<p>This page demonstrates the PGGM Input Date component with various configurations and features.</p>
 
 <div class="demo-section">
-    <h2>Basic Date Input</h2>
+    <PggmHeader Level="2">Basic Date Input</PggmHeader>
     <p>Basic date input with dd-mm-yyyy format</p>
     
     <PggmInputDate @bind-value="basicDate" 
@@ -17,7 +19,7 @@
 </div>
 
 <div class="demo-section">
-    <h2>Date Range (Period) Input</h2>
+    <PggmHeader Level="2">Date Range (Period) Input</PggmHeader>
     <p>Date input with period enabled for date ranges</p>
     
     <PggmInputDate @bind-value="periodDate" 
@@ -30,7 +32,7 @@
 </div>
 
 <div class="demo-section">
-    <h2>Date Input with Min/Max</h2>
+    <PggmHeader Level="2">Date Input with Min/Max</PggmHeader>
     <p>Date input with minimum and maximum date restrictions</p>
     
     <PggmInputDate @bind-value="restrictedDate" 
@@ -45,15 +47,15 @@
 </div>
 
 <div class="demo-section">
-    <h2>Different Date Formats</h2>
+    <PggmHeader Level="2">Different Date Formats</PggmHeader>
     
-    <h3>US Format (mm-dd-yyyy)</h3>
+    <PggmHeader Level="3">US Format (mm-dd-yyyy)</PggmHeader>
     <PggmInputDate @bind-value="usDate" 
                    Format="@PggmInputDate.DateFormats.MonthDayYear"
                    Name="us-date" />
     <p><strong>Current Value:</strong> @usDate</p>
     
-    <h3>ISO Format (yyyy-mm-dd)</h3>
+    <PggmHeader Level="3">ISO Format (yyyy-mm-dd)</PggmHeader>
     <PggmInputDate @bind-value="isoDate" 
                    Format="@PggmInputDate.DateFormats.YearMonthDay"
                    Name="iso-date" />
@@ -61,15 +63,15 @@
 </div>
 
 <div class="demo-section">
-    <h2>Disabled and ReadOnly States</h2>
+    <PggmHeader Level="2">Disabled and ReadOnly States</PggmHeader>
     
-    <h3>Disabled</h3>
+    <PggmHeader Level="3">Disabled</PggmHeader>
     <PggmInputDate Value="15-03-2024" 
                    Format="@PggmInputDate.DateFormats.DayMonthYear"
                    Name="disabled-date"
                    Disabled="true" />
     
-    <h3>ReadOnly</h3>
+    <PggmHeader Level="3">ReadOnly</PggmHeader>
     <PggmInputDate Value="20-03-2024" 
                    Format="@PggmInputDate.DateFormats.DayMonthYear"
                    Name="readonly-date"
@@ -77,7 +79,7 @@
 </div>
 
 <div class="demo-section">
-    <h2>Event Handling</h2>
+    <PggmHeader Level="2">Event Handling</PggmHeader>
     <p>Date input with event handlers</p>
     
     <PggmInputDate @bind-Value="eventDate" 
@@ -89,7 +91,7 @@
     
     <p><strong>Current Value:</strong> @eventDate</p>
     
-    <h3>Event Log:</h3>
+    <PggmHeader Level="3">Event Log:</PggmHeader>
     <div class="event-log">
         @foreach (var logEntry in eventLog)
         {

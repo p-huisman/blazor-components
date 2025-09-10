@@ -3,17 +3,17 @@
 
 <PageTitle>Tabs</PageTitle>
 
-<h1>PGGM Tabs</h1>
+<PggmHeader Level="1">PGGM Tabs</PggmHeader>
 
-<h2>Basic Tabs</h2>
+<PggmHeader Level="2">Basic Tabs</PggmHeader>
 <PggmTab OnTabChange="OnTabChanged">
   <PggmTabPanel Label="Tab 1" Active="true">
-    <h3>Content for Tab 1</h3>
+    <PggmHeader Level="3">Content for Tab 1</PggmHeader>
     <p>This is the content for the first tab. It can contain any HTML or Blazor components.</p>
   </PggmTabPanel>
   
   <PggmTabPanel Label="Tab 2">
-    <h3>Content for Tab 2</h3>
+    <PggmHeader Level="3">Content for Tab 2</PggmHeader>
     <p>This is the content for the second tab with different information.</p>
     <ul>
       <li>List item 1</li>
@@ -23,13 +23,13 @@
   </PggmTabPanel>
   
   <PggmTabPanel Label="Tab 3">
-    <h3>Content for Tab 3</h3>
+    <PggmHeader Level="3">Content for Tab 3</PggmHeader>
     <p>The third tab contains yet another set of content.</p>
     <button class="btn btn-primary">Sample Button</button>
   </PggmTabPanel>
 </PggmTab>
 
-<h2>Scrollable Tabs</h2>
+<PggmHeader Level="2">Scrollable Tabs</PggmHeader>
 <PggmTab Scrollable="true" OnTabChange="OnScrollableTabChanged">
   <PggmTabPanel Label="First Tab" Active="true">
     <p>Content for the first scrollable tab.</p>
@@ -56,7 +56,7 @@
   </PggmTabPanel>
 </PggmTab>
 
-<h2>Tabs with Different Sizes</h2>
+<PggmHeader Level="2">Tabs with Different Sizes</PggmHeader>
 <PggmTab Size="small" OnTabChange="OnSmallTabChanged">
   <PggmTabPanel Label="Small 1" Active="true">
     <p>Small size tab content 1.</p>
@@ -67,7 +67,7 @@
   </PggmTabPanel>
 </PggmTab>
 
-<h2>Tabs with Disabled Panel</h2>
+<PggmHeader Level="2">Tabs with Disabled Panel</PggmHeader>
 <PggmTab OnTabChange="OnDisabledTabChanged">
   <PggmTabPanel Label="Enabled Tab" Active="true">
     <p>This tab is enabled and functional.</p>
@@ -82,9 +82,9 @@
   </PggmTabPanel>
 </PggmTab>
 
-<h2>Event Information</h2>
+<PggmHeader Level="2">Event Information</PggmHeader>
 <div class="alert alert-info">
-  <h4>Tab Events</h4>
+  <PggmHeader Level="4">Tab Events</PggmHeader>
   <p><strong>Last Basic Tab Changed:</strong> @lastBasicTabIndex</p>
   <p><strong>Last Scrollable Tab Changed:</strong> @lastScrollableTabIndex</p>
   <p><strong>Last Small Tab Changed:</strong> @lastSmallTabIndex</p>

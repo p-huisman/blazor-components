@@ -1,10 +1,15 @@
 @page "/pggm-textarea"
+
 @using Pggm.Components
 
-<h3>PggmTextarea Demo</h3>
+<PageTitle>PGGM Textarea</PageTitle>
+
+<PggmHeader Level="1">PGGM Textarea</PggmHeader>
+
+<p>This page demonstrates the PGGM Textarea component with various configurations and event handling.</p>
 
 <div class="demo-section">
-    <h4>Basic Textarea</h4>
+    <PggmHeader Level="4">Basic Textarea</PggmHeader>
     <PggmTextarea @bind-Value="@basicValue" 
                   Rows="4" 
                   Cols="50" 
@@ -13,7 +18,7 @@
 </div>
 
 <div class="demo-section">
-    <h4>Textarea with Character Limit</h4>
+    <PggmHeader Level="4">Textarea with Character Limit</PggmHeader>
     <PggmTextarea @bind-Value="@limitedValue" 
                   Rows="3" 
                   Cols="40" 
@@ -23,7 +28,7 @@
 </div>
 
 <div class="demo-section">
-    <h4>Required Textarea</h4>
+    <PggmHeader Level="4">Required Textarea</PggmHeader>
     <PggmTextarea @bind-Value="@requiredValue" 
                   Rows="3" 
                   Cols="40" 
@@ -33,7 +38,7 @@
 </div>
 
 <div class="demo-section">
-    <h4>Disabled Textarea</h4>
+    <PggmHeader Level="4">Disabled Textarea</PggmHeader>
     <PggmTextarea Value="This textarea is disabled and cannot be edited." 
                   Rows="2" 
                   Cols="40" 
@@ -41,7 +46,7 @@
 </div>
 
 <div class="demo-section">
-    <h4>ReadOnly Textarea</h4>
+    <PggmHeader Level="4">ReadOnly Textarea</PggmHeader>
     <PggmTextarea Value="This textarea is readonly and cannot be edited." 
                   Rows="2" 
                   Cols="40" 
@@ -49,7 +54,7 @@
 </div>
 
 <div class="demo-section">
-    <h4>Textarea with Hard Wrap</h4>
+    <PggmHeader Level="4">Textarea with Hard Wrap</PggmHeader>
     <PggmTextarea @bind-Value="@wrapValue" 
                   Rows="4" 
                   Cols="30" 
@@ -58,7 +63,7 @@
 </div>
 
 <div class="demo-section">
-    <h4>Event Handling</h4>
+    <PggmHeader Level="4">Event Handling</PggmHeader>
     <PggmTextarea @bind-Value="@eventValue" 
                   Rows="3" 
                   Cols="40" 

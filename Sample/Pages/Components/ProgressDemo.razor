@@ -1,11 +1,13 @@
-@page "/pggm-progress"
+@page "/pggm-progress-indicator"
 
-<h1>PGGM Progress Indicator Demo</h1>
+<PageTitle>PGGM Progress Indicator</PageTitle>
+
+<PggmHeader Level="1">PGGM Progress Indicator</PggmHeader>
 
 <p>This page demonstrates the PGGM Progress Indicator and Progress Step components.</p>
 
 <div style="margin-bottom: 2rem;">
-    <h2>Progress Indicator Example</h2>
+    <PggmHeader Level="2">Progress Indicator Example</PggmHeader>
     <PggmProgressIndicator>
         <PggmProgressStep Completed="true">
             <div>Step 1: Personal Info</div>
@@ -20,7 +22,7 @@
 </div>
 
 <div style="margin-bottom: 2rem;">
-    <h2>Interactive Progress</h2>
+    <PggmHeader Level="2">Interactive Progress</PggmHeader>
     <PggmProgressIndicator>
         <PggmProgressStep Completed="@(currentStep > 0)" Current="@(currentStep == 0)">
             <div>Start</div>

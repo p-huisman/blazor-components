@@ -3,9 +3,9 @@
 
 <PageTitle>Advanced Table Example</PageTitle>
 
-<h1>Advanced PGGM Table Examples</h1>
+<PggmHeader Level="1">Advanced PGGM Table Examples</PggmHeader>
 
-<h2>Local Data Table</h2>
+<PggmHeader Level="2">Local Data Table</PggmHeader>
 <p>This table uses local data with sorting, filtering, and single selection.</p>
 
 <PggmTable 
@@ -80,12 +80,12 @@
 
 <hr />
 
-<h2>Remote Data Table simple</h2>
+<PggmHeader Level="2">Remote Data Table simple</PggmHeader>
 <p>This table would fetch data from a remote endpoint.</p>
 
  
 <!-- Simple remote mode example -->
-<h3>Simple Remote Mode</h3>
+<PggmHeader Level="3">Simple Remote Mode</PggmHeader>
 <PggmTable 
   RemoteUrl="https://jsonplaceholder.typicode.com/users" 
   Remote="simple"
@@ -117,7 +117,7 @@
 
 
 <!-- Cursor-based pagination example -->
-<h3>Cursor Remote Mode</h3>
+<PggmHeader Level="3">Cursor Remote Mode</PggmHeader>
 <p>Currently commented out</p>
 @*
 <PggmTable 
@@ -146,7 +146,7 @@
 *@
 
 <!-- Offset-based pagination example -->
-<h3>Offset Remote Mode</h3>
+<PggmHeader Level="3">Offset Remote Mode</PggmHeader>
 <p>Currently commented out</p>
 @*
 <PggmTable 
@@ -176,7 +176,7 @@
 
 <hr />
 
-<h2>Multi-Select Table</h2>
+<PggmHeader Level="2">Multi-Select Table</PggmHeader>
 <p>This table allows multiple row selection.</p>
 
 <PggmTable 

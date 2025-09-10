@@ -1,9 +1,13 @@
 @page "/pggm-switch"
 
-<h3>PggmSwitch Component Demo</h3>
+<PageTitle>PGGM Switch</PageTitle>
+
+<PggmHeader Level="1">PggmSwitch Component Demo</PggmHeader>
+
+<p>This page demonstrates the PGGM Switch component with various configurations, states, and event handling.</p>
 
 <div class="demo-section">
-    <h4>Basic Switch</h4>
+    <PggmHeader Level="2">Basic Switch</PggmHeader>
     <p>Notifications Enabled: <strong>@(notificationsEnabled ? "On" : "Off")</strong></p>
     
     <label>
@@ -15,7 +19,7 @@
 </div>
 
 <div class="demo-section">
-    <h4>Switch with Value and Label</h4>
+    <PggmHeader Level="2">Switch with Value and Label</PggmHeader>
     <p>Marketing Emails: <strong>@(marketingEmailsEnabled ? "Subscribed" : "Unsubscribed")</strong></p>
     
     <label>
@@ -28,7 +32,7 @@
 </div>
 
 <div class="demo-section">
-    <h4>Disabled Switch</h4>
+    <PggmHeader Level="2">Disabled Switch</PggmHeader>
     <p>This switch is disabled and cannot be toggled.</p>
     
     <PggmSwitch Checked="true" Disabled="true">
@@ -41,7 +45,7 @@
 </div>
 
 <div class="demo-section">
-    <h4>Multiple Switches with Labels</h4>
+    <PggmHeader Level="2">Multiple Switches with Labels</PggmHeader>
     
     <div class="switch-group">
         <label>
@@ -68,7 +72,7 @@
 </div>
 
 <div class="demo-section">
-    <h4>Event Handling</h4>
+    <PggmHeader Level="2">Event Handling</PggmHeader>
     <p>Last Event: <strong>@lastEvent</strong></p>
     
     <label>

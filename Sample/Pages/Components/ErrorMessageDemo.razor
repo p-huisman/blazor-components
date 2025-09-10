@@ -1,12 +1,14 @@
 @page "/pggm-error-message"
 
-<h1>PGGM Error Message Component Demo</h1>
+<PageTitle>PGGM Error Message</PageTitle>
+
+<PggmHeader Level="1">PGGM Error Message</PggmHeader>
 
 <div class="demo-section">
-  <h2>Basic Error Messages</h2>
+  <PggmHeader Level="2">Basic Error Messages</PggmHeader>
 
   <div class="demo-item">
-    <h3>Error Message Associated with Input Field</h3>
+    <PggmHeader Level="3">Error Message Associated with Input Field</PggmHeader>
     <PggmLabel For="sample-input">Sample Input:</PggmLabel>
     <PggmErrorMessage For="sample-input" Validity="@PggmErrorMessage.ValidityStates.ValueMissing">
       This field is required.
@@ -15,7 +17,7 @@
   </div>
 
   <div class="demo-item">
-    <h3>Multiple Validity States</h3>
+    <PggmHeader Level="3">Multiple Validity States</PggmHeader>
     <PggmLabel For="multi-input">Multi-validation Input:</PggmLabel>
     <PggmErrorMessage For="multi-input"
       Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.PatternMismatch}")">
@@ -26,10 +28,10 @@
 </div>
 
 <div class="demo-section">
-  <h2>Form Validation Examples</h2>
+  <PggmHeader Level="2">Form Validation Examples</PggmHeader>
 
   <div class="demo-item">
-    <h3>Email Validation</h3>
+    <PggmHeader Level="3">Email Validation</PggmHeader>
     <PggmLabel For="email-input">Email Address:</PggmLabel>
     @if (!string.IsNullOrEmpty(emailValidityState))
     {
@@ -42,7 +44,7 @@
   </div>
 
   <div class="demo-item">
-    <h3>Password Validation</h3>
+    <PggmHeader Level="3">Password Validation</PggmHeader>
     <PggmLabel For="password-input">Password (min 8 characters):</PggmLabel>
     @if (!string.IsNullOrEmpty(passwordValidityState))
     {
@@ -55,7 +57,7 @@
   </div>
 
   <div class="demo-item">
-    <h3>Number Range Validation</h3>
+    <PggmHeader Level="3">Number Range Validation</PggmHeader>
     <PggmLabel For="age-input">Age (18-100):</PggmLabel>
     @if (!string.IsNullOrEmpty(ageValidityState))
     {
@@ -69,10 +71,10 @@
 </div>
 
 <div class="demo-section">
-  <h2>All Validity States Examples</h2>
+  <PggmHeader Level="2">All Validity States Examples</PggmHeader>
 
   <div class="demo-item">
-    <h3>Pattern Mismatch</h3>
+    <PggmHeader Level="3">Pattern Mismatch</PggmHeader>
     <PggmLabel For="pattern-input">Phone Number (format: 123-456-7890):</PggmLabel>
     <PggmErrorMessage For="pattern-input" Validity="@PggmErrorMessage.ValidityStates.PatternMismatch">
       Please enter a valid phone number in the format 123-456-7890.
@@ -81,7 +83,7 @@
   </div>
 
   <div class="demo-item">
-    <h3>Too Long / Too Short</h3>
+    <PggmHeader Level="3">Too Long / Too Short</PggmHeader>
     <PggmLabel For="length-input">Username (5-15 characters):</PggmLabel>
     <PggmErrorMessage For="length-input" Validity="@PggmErrorMessage.ValidityStates.TooShort">
       Username must be at least 5 characters long.
@@ -93,7 +95,7 @@
   </div>
 
   <div class="demo-item">
-    <h3>Step Mismatch</h3>
+    <PggmHeader Level="3">Step Mismatch</PggmHeader>
     <PggmLabel For="step-input">Price (increments of 0.50):</PggmLabel>
     <PggmErrorMessage For="step-input" Validity="@PggmErrorMessage.ValidityStates.StepMismatch">
       Price must be in increments of $0.50.
@@ -102,7 +104,7 @@
   </div>
 
   <div class="demo-item">
-    <h3>Custom Error</h3>
+    <PggmHeader Level="3">Custom Error</PggmHeader>
     <PggmLabel For="custom-input">Custom Validation:</PggmLabel>
     @if (showCustomError)
     {
@@ -116,7 +118,7 @@
 </div>
 
 <div class="demo-section">
-  <h2>Interactive Controls</h2>
+  <PggmHeader Level="2">Interactive Controls</PggmHeader>
 
   <div class="demo-item">
     <button type="button" class="btn btn-primary" @onclick="ClearAllErrors">Clear All Errors</button>

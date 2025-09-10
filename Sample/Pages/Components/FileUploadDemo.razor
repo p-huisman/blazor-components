@@ -2,18 +2,20 @@
 @page "/pggm-file-upload"
 
 
-<PageTitle>File Upload Demo</PageTitle>
+<PageTitle>PGGM File Upload</PageTitle>
 
-<h1>File Upload Demo</h1>
+<PggmHeader Level="1">PGGM File Upload</PggmHeader>
+
+<p>This page demonstrates the PGGM File Upload component with various configurations and use cases.</p>
 
 <div class="demo-section">
-    <h2>Basic File Upload</h2>
+    <PggmHeader Level="2">Basic File Upload</PggmHeader>
     <PggmFileUpload Button="Choose File" 
                     DropzoneLabel="Drag and drop a file here or click to browse" />
 </div>
 
 <div class="demo-section">
-    <h2>Multiple Files with Size Limits</h2>
+    <PggmHeader Level="2">Multiple Files with Size Limits</PggmHeader>
     <PggmFileUpload Button="Choose Files"
                     Multiple="true"
                     MaxFiles="5"
@@ -22,7 +24,7 @@
 </div>
 
 <div class="demo-section">
-    <h2>Image Files Only</h2>
+    <PggmHeader Level="2">Image Files Only</PggmHeader>
     <PggmFileUpload Button="Choose Images"
                     Accept='"image/*"'
                     Multiple="true"
@@ -31,7 +33,7 @@
 </div>
 
 <div class="demo-section">
-    <h2>Document Upload with Custom Labels</h2>
+    <PggmHeader Level="2">Document Upload with Custom Labels</PggmHeader>
     <PggmFileUpload Button="Upload Document"
                     Accept='".pdf,.doc,.docx,.txt"'
                     MenuFile="Select Document"
@@ -42,7 +44,7 @@
 </div>
 
 <div class="demo-section">
-    <h2>Disabled File Upload</h2>
+    <PggmHeader Level="2">Disabled File Upload</PggmHeader>
     <PggmFileUpload Button="Upload"
                     Disabled="true"
                     DropzoneLabel="File upload is disabled" />

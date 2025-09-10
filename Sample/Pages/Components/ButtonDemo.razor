@@ -2,15 +2,17 @@
 
 @using Microsoft.AspNetCore.Components.Web
 
-<PageTitle>PGGM PggmButton Demo</PageTitle>
+<PageTitle>PGGM Pggm Button</PageTitle>
 
-<h1>PGGM PggmButton Component Demo</h1>
+    
 
-<p>This page demonstrates the PggmButton component with various configurations and interactions.</p>
+<PggmHeader Level="1">PGGM Button</PggmHeader>
+
+<p>This page demonstrates the PGGM Button component with various configurations and interactions.</p>
 
 <section class="demo-section">
-    <h2>Basic PggmButton Variants</h2>
-    <p>Different PggmButton appearances available in the PGGM design system:</p>
+    <PggmHeader Level="2">Basic PGGM Button Variants</PggmHeader>
+    <p>Different PGGM Button appearances available in the PGGM design system:</p>
 
     <div class="PggmButton-group">
         <PggmButton Appearance="primary" OnClick="@(() => HandlePggmButtonClick("Primary"))">
@@ -29,7 +31,7 @@
 </section>
 
 <section class="demo-section">
-    <h2>PggmButton States</h2>
+    <PggmHeader Level="2">PggmButton States</PggmHeader>
     <p>PggmButtons in different states:</p>
 
     <div class="PggmButton-group">
@@ -46,7 +48,7 @@
 </section>
 
 <section class="demo-section">
-    <h2>PggmButton Types</h2>
+    <PggmHeader Level="2">PggmButton Types</PggmHeader>
     <p>Different PggmButton types for forms:</p>
 
     <div class="form-example">
@@ -65,12 +67,12 @@
 </section>
 
 <section class="demo-section">
-    <h2>Interactive Examples</h2>
+    <PggmHeader Level="2">Interactive Examples</PggmHeader>
     <p>PggmButtons with various interactive behaviors:</p>
 
     <div class="interactive-section">
         <div class="counter-example">
-            <h3>Counter Example</h3>
+            <PggmHeader Level="3">Counter Example</PggmHeader>
             <p>Current count: <strong>@counter</strong></p>
             <div class="PggmButton-group">
                 <PggmButton Appearance="primary" OnClick="IncrementCounter">
@@ -86,7 +88,7 @@
         </div>
 
         <div class="toggle-example">
-            <h3>Toggle Example</h3>
+            <PggmHeader Level="3">Toggle Example</PggmHeader>
             <p>Toggle state: <strong>@(isToggled ? "ON" : "OFF")</strong></p>
             <PggmButton Appearance="@(isToggled ? "primary" : "secondary")" OnClick="ToggleState">
                 @(isToggled ? "Turn OFF" : "Turn ON")
@@ -94,7 +96,7 @@
         </div>
 
         <div class="async-example">
-            <h3>Async Operation Example</h3>
+            <PggmHeader Level="3">Async Operation Example</PggmHeader>
             <p>Simulate async operations with loading states:</p>
             <PggmButton Appearance="primary" Disabled="@isLoading" OnClick="SimulateAsyncOperation">
                 @(isLoading ? "Loading..." : "Start Async Operation")

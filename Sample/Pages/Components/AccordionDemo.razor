@@ -2,16 +2,16 @@
 
 @using Microsoft.AspNetCore.Components.Web
 
-<PageTitle>Accordion Demo</PageTitle>
+<PageTitle>PGGM Accordion</PageTitle>
 
-<h1>PGGM Accordion Components</h1>
+<PggmHeader Level="1">PGGM Accordion</PggmHeader>
 
 <p>This page demonstrates the PGGM Accordion and Accordion Item components.</p>
 
-<h2>Accordion</h2>
+<PggmHeader Level="2">Accordion</PggmHeader>
 
 <div class="demo-section">
-    <h3>Basic Accordion (Single Expand)</h3>
+    <PggmHeader Level="3">Basic Accordion (Single Expand)</PggmHeader>
     <p>Only one item can be open at a time (default behavior):</p>
     <PggmAccordion>
         <PggmAccordionItem>
@@ -30,7 +30,7 @@
 </div>
 
 <div class="demo-section">
-    <h3>Multi-Expand Accordion</h3>
+    <PggmHeader Level="3">Multi-Expand Accordion</PggmHeader>
     <p>Multiple items can be open simultaneously:</p>
     <PggmAccordion AllowMultiple="true">
         <PggmAccordionItem>
@@ -53,7 +53,7 @@
 </div>
 
 <div class="demo-section">
-    <h3>Interactive Accordion Demo</h3>
+    <PggmHeader Level="3">Interactive Accordion Demo</PggmHeader>
     <p>
         <label>
             <input type="checkbox" @bind="allowMultiple" />
@@ -79,10 +79,10 @@
     </PggmAccordion>
 </div>
 
-<h2>Accordion Item</h2>
+<PggmHeader Level="2">Accordion Item</PggmHeader>
 
 <div class="demo-section">
-    <h3>Default Accordion Item</h3>
+    <PggmHeader Level="3">Default Accordion Item</PggmHeader>
     <PggmAccordionItem>
         <PggmAccordionItemTitle>Accordion Item 1</PggmAccordionItemTitle>
         <p>This is the content of the first accordion item.</p>
@@ -90,7 +90,7 @@
 </div>
 
 <div class="demo-section">
-    <h3>Open Accordion Item</h3>
+    <PggmHeader Level="3">Open Accordion Item</PggmHeader>
     <PggmAccordionItem Open="true">
         <PggmAccordionItemTitle>Accordion Item 2 (Open by default)</PggmAccordionItemTitle>
         <p>This accordion item is open by default using the Open parameter.</p>
@@ -98,7 +98,7 @@
 </div>
 
 <div class="demo-section">
-    <h3>Disabled Accordion Item</h3>
+    <PggmHeader Level="3">Disabled Accordion Item</PggmHeader>
     <PggmAccordionItem Disabled="true">
         <PggmAccordionItemTitle>Accordion Item 3 (Disabled)</PggmAccordionItemTitle>
         <p>This accordion item is disabled and cannot be interacted with.</p>
@@ -106,7 +106,7 @@
 </div>
 
 <div class="demo-section">
-    <h3>Event Handling Demo</h3>
+    <PggmHeader Level="3">Event Handling Demo</PggmHeader>
     <p>This accordion item demonstrates the OnAccordionItemToggle event:</p>
     <p><strong>Toggle Count:</strong> @toggleCount</p>
     <p><strong>Last Event Time:</strong> @lastToggleTime</p>
@@ -119,7 +119,7 @@
 </div>
 
 <div class="demo-section">
-    <h3>Interactive Demo</h3>
+    <PggmHeader Level="3">Interactive Demo</PggmHeader>
     <p>
         <label>
             <input type="checkbox" @bind="isOpen" />
