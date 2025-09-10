@@ -1,128 +1,135 @@
+.app-layout {
+  h1:focus-visible {
+    outline: none !important;
+  }
 
-    .app-layout {
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-template-rows: 80px calc(100vh - 80px);
-      grid-gap: 1em;
-      grid-template-areas:
-        "header"
-        "main";
-    }
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 80px calc(100vh - 80px);
+  grid-gap: 1em;
+  grid-template-areas:
+    "header"
+    "main";
+}
 
-    header {
-      grid-area: header;
-      margin-top: .5em;
-      margin-left: 1em;
-    }
+header {
+  grid-area: header;
+  background-color: #fff;
+}
 
-    aside {
-      z-index: 999;
-      position: fixed;
-      transform: translate(calc(250px + 2em), 0);
-      top: 0;
-      right: 0;
-      width: 250px;
-      background-color: #f8f9fa;
-      padding: 1em;
-      border-right: 1px solid #dee2e6;
-      height: 100vh;
-      overflow-y: auto;
-      transition: transform 0.3s ease;
-    }
+aside:before {
+  content: " ";
+  display: block;
+  width: 100%;
+  border-top: #dee2e6 1px solid;
+  height: 1px;
+  position: absolute;
+  width: 250px;
+}
+aside {
+  z-index: 999;
+  position: fixed;
+  transform: translate(calc(250px + 2em), 0);
+  top: 0;
+  right: 0;
+  width: 250px;
+  background-color: #f8f9fa;
+  border-right: 1px solid #dee2e6;
+  height: 100vh;
+  overflow-y: auto;
+  transition: transform 0.3s ease;
 
-    .app-layout.nav-open aside {
-      transform: translate(0, 0);
-    }
+  a{
+    color: var(--pggm-color-text);
+    text-decoration: none;
+    padding: 0.5em 1em;
+  }
+  .active {
+    font-weight: bold;
+    color: #146641;
+  }
+}
 
-    .hamburger {
-      top: .5em;
-      right: .5em;
-      position: fixed;
-      appearance: none;
-      border: 0;
-      font-size: 1.2em;
-      cursor: pointer;
-      z-index: 1000;
-      background: transparent;
-    }
-    
-    main {
-      grid-area: main;
-      padding: 1rem;
-      overflow-y: auto;
-      max-height: calc(100vh - 80px - 60px);
-    }
+.app-layout.nav-open aside {
+  transform: translate(0, 0);
+}
 
-    footer {
-      grid-area: footer;
-      background-color: #f8f9fa;
-      text-align: center;
-      font-size: 0.9rem;
-      color: #6c757d;
-    }
+.hamburger {
+  top: 0.5em;
+  right: 0.5em;
+  position: fixed;
+  appearance: none;
+  border: 0;
+  font-size: 1.2em;
+  cursor: pointer;
+  z-index: 1000;
+  background: transparent;
+}
 
-    #main-content{
-      max-width: 960px;
-      margin: 0 auto;
-    }
+main {
+  grid-area: main;
+  padding: 1rem;
+  overflow-y: auto;
+  max-height: calc(100vh - 80px - 60px);
+}
 
-   
-    .hamburger:hover {
-      color: #146641;
-    }
+footer {
+  margin-top: 4em;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #6c757d;
+}
 
-    .debug-info {
-      font-size: 0.8rem;
-      margin-left: 0.5rem;
-      opacity: 0.7;
-    }
+#main-content {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.hamburger:hover {
+  color: #146641;
+}
+
+.debug-info {
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
+  opacity: 0.7;
+}
 
 @media screen and (min-width: 690px) {
-    .hamburger {
-      display: none; 
-      visibility: hidden;
-    }
+  .hamburger {
+    display: none;
+    visibility: hidden;
+  }
 
-    .app-layout {
-      display: grid;
-      grid-template-columns: 250px 1fr;
-      grid-template-rows: 80px calc(100vh - 80px);
-      grid-gap: 0 1em;
-      grid-template-areas:
-        "header header"
-        "aside main";
-    }
+  .app-layout {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    grid-template-rows: 80px calc(100vh - 80px);
+    grid-gap: 0 1em;
+    grid-template-areas:
+      "header header"
+      "aside main";
+  }
 
-  
+  aside {
+    transform: unset;
+    position: unset;
+    width: unset;
+    height: unset;
+    top: unset;
+    left: unset;
+    right: unset;
+    grid-area: aside;
+    border-left: 0px;
+    border-right: 1px solid #dee2e6;
+    max-height: 100vh;
+    overflow-y: auto;
+  }
 
-    aside {
-      transform: unset;
-      position:  unset;
-      width: unset;
-      height: unset;
-      top: unset;
-      left: unset;
-      right: unset;
-      grid-area: aside;
-      background-color: #f8f9fa;
-      padding: 1rem;
-      border-right: 1px solid #dee2e6;
-      max-height: 100vh;
-      overflow-y: auto;
-    }
-
-    main {
-      grid-area: main;
-      padding: 1rem;
-      overflow-y: auto;
-      max-height: calc(100vh - 80px - 60px);
-    }
-    footer {
-      grid-area: footer;
-      background-color: #f8f9fa;
-      text-align: center;
-      font-size: 0.9rem;
-      color: #6c757d;
-    }
-
+  main {
+    grid-area: main;
+    padding: 1rem;
+    overflow-y: auto;
+    max-height: calc(100vh - 80px - 60px);
+  }
 }
