@@ -3,13 +3,10 @@
  */
 
 :root {
-  --pggm-accordion-border-radius: 0px;
-  --pggm-accordion-section-border-width: 0px;
-  --pggm-accordion-body-border-color: rgba(0, 0, 0, 0);
-  --pggm-accordion-button-hover-border-color: rgba(0, 0, 0, 0);
-  --pggm-accordion-button-expanded-border-color: rgba(0, 0, 0, 0);
-  --pggm-accordion-button-border-color: rgba(0, 0, 0, 0);
-  --pggm-accordion-button-active-border-color: rgba(0, 0, 0, 0);
+  --pggm-accordion-item-background: #ffffff;
+  --pggm-accordion-item-border-width: 1px;
+  --pggm-accordion-item-content-padding-block-start: 0px;
+  --pggm-accordion-item-header-icon-border-radius: 99999px;
   --pggm-button-icon-hover-border-color: rgba(0, 0, 0, 0);
   --pggm-button-primary-border-color: rgba(0, 0, 0, 0);
   --pggm-button-primary-active-border-color: rgba(0, 0, 0, 0);
@@ -32,12 +29,11 @@
   --pggm-checkbox-indeterminate-active-border-color: rgba(0, 0, 0, 0);
   --pggm-checkbox-indeterminate-hover-border-color: rgba(0, 0, 0, 0);
   --pggm-checkbox-indeterminate-invalid-border-color: rgba(0, 0, 0, 0);
-  --pggm-heading-md-number: 0px;
   --pggm-link-text-decoration-thickness: auto;
   --pggm-link-text-underline-offset: auto;
   --pggm-link-text-decoration: underline;
-  --pggm-alert-icon-padding-inline-end: 0px;
-  --pggm-alert-icon-padding-inline-start: 0px;
+  --pggm-alert-border-radius: 4px;
+  --pggm-alert-max-width: 584px;
   --pggm-radio-checked-border-color: rgba(0, 0, 0, 0);
   --pggm-radio-checked-hover-border-color: rgba(0, 0, 0, 0);
   --pggm-radio-checked-active-border-color: rgba(0, 0, 0, 0);
@@ -48,7 +44,7 @@
   --pggm-table-footer-background-color: rgba(0, 0, 0, 0);
   --pggm-table-row-background-color: rgba(0, 0, 0, 0);
   --pggm-table-container-box-shadow-offset-x: 0px;
-  --pggm-text-input-content-line-height: 0;
+  --pggm-text-input-content-line-height: 1;
   --pggm-text-input-max-inline-size: 488px;
   --pggm-textarea-max-inline-size: 400px;
   --pggm-textarea-border-radius: 0px;
@@ -105,17 +101,18 @@
   --pggm-typography-line-height-sm: 1.25;
   --pggm-typography-line-height-md: 1.5;
   --pggm-typography-font-size-base: 16px;
-  --pggm-typography-font-size-sm: 14px;
-  --pggm-typography-font-size-lg: 20px;
-  --pggm-typography-font-size-xl: 24px;
-  --pggm-typography-font-size-2xl: 28px;
-  --pggm-typography-font-size-3xl: 36px;
-  --pggm-typography-font-size-4xl: 48px;
-  --pggm-typography-font-weight-regular: Regular;
-  --pggm-typography-font-weight-bold: Bold;
-  --pggm-typography-font-weight-semibold: SemiBold;
-  --pggm-typography-font-weight-extrabold: ExtraBold;
-  --pggm-typography-font-family-primary: NantesWeb;
+  --pggm-typography-font-size-sm: 16px;
+  --pggm-typography-font-size-lg: 18px;
+  --pggm-typography-font-size-xl: 20px;
+  --pggm-typography-font-size-2xl: 24px;
+  --pggm-typography-font-size-3xl: 28px;
+  --pggm-typography-font-size-4xl: 36px;
+  --pggm-typography-font-weight-regular: 400;
+  --pggm-typography-font-weight-medium: 500;
+  --pggm-typography-font-weight-bold: 700;
+  --pggm-typography-font-weight-semibold: 600;
+  --pggm-typography-font-weight-extrabold: 800;
+  --pggm-typography-font-family-primary: Poppins;
   --pggm-typography-font-family-secondary: Open Sans;
   --pggm-space-base: 16px;
   --pggm-space-inline-2xs: 4px;
@@ -132,10 +129,10 @@
   --pggm-space-block-xl: 32px;
   --pggm-space-block-2xl: 48px;
   --pggm-space-block-3xl: 64px;
-  --pggm-space-text-2xs: 4px;
-  --pggm-space-text-xs: 8px;
-  --pggm-space-text-sm: 12px;
-  --pggm-space-text-lg: 24px;
+  --pggm-space-text-2xs: 4px; /** 0.25ch */
+  --pggm-space-text-xs: 8px; /** 0.5ch */
+  --pggm-space-text-sm: 12px; /** 0.75ch */
+  --pggm-space-text-lg: 24px; /** 1.5ch */
   --pggm-space-column-2xs: 4px;
   --pggm-space-column-xs: 8px;
   --pggm-space-column-sm: 12px;
@@ -179,16 +176,18 @@
   --pggm-focus-border-radius: 4px;
   --pggm-focus-outline-offset: 1px;
   --pggm-focus-outline-style: solid;
-  --pggm-accordion-section-border-block-end-width: var(--pggm-border-width-sm);
-  --pggm-accordion-body-border-width: var(--pggm-border-width-lg);
-  --pggm-accordion-body-padding-block-end: var(--pggm-space-block-lg);
-  --pggm-accordion-body-padding-block-start: var(--pggm-space-block-lg);
-  --pggm-accordion-button-icon-margin-inline: var(--pggm-space-text-sm);
-  --pggm-accordion-button-hover-background-color: var(--pggm-color-gray-100);
-  --pggm-accordion-button-expanded-background-color: var(--pggm-color-gray-50);
-  --pggm-accordion-button-background-color: var(--pggm-color-gray-50);
-  --pggm-accordion-button-active-background-color: var(--pggm-color-gray-200);
-  --pggm-accordion-button-border-width: var(--pggm-border-width-sm);
+  --pggm-accordion-item-border-radius: var(--pggm-border-radius-sm);
+  --pggm-accordion-item-padding-inline-start: var(--pggm-space-inline-lg);
+  --pggm-accordion-item-padding-inline-end: var(--pggm-space-inline-lg);
+  --pggm-accordion-item-content-padding-block-end: var(--pggm-space-block-2xs);
+  --pggm-accordion-item-header-column-gap: var(--pggm-space-inline-xs);
+  --pggm-accordion-item-header-padding-block-start: var(--pggm-space-block-2xs);
+  --pggm-accordion-item-header-padding-block-end: var(--pggm-space-block-2xs);
+  --pggm-accordion-item-header-icon-color: var(--pggm-color-green-700);
+  --pggm-accordion-item-header-icon-background-color: var(--pggm-color-gray-100);
+  --pggm-accordion-item-header-title-padding-block-start: var(--pggm-space-block-2xs);
+  --pggm-accordion-item-header-title-padding-block-end: var(--pggm-space-block-2xs);
+  --pggm-accordion-row-gap: var(--pggm-space-block-xl);
   --pggm-button-icon-hover-color: var(--pggm-color-white);
   --pggm-button-primary-color: var(--pggm-color-white);
   --pggm-button-primary-active-color: var(--pggm-color-white);
@@ -231,22 +230,23 @@
   --pggm-form-field-label-column-gap: var(--pggm-space-column-sm);
   --pggm-form-field-label-row-gap: var(--pggm-space-row-xs);
   --pggm-form-field-invalid-border-inline-start-width: var(--pggm-border-width-md);
-  --pggm-heading-2xl-large-font-size: var(--pggm-typography-font-size-3xl);
-  --pggm-heading-2xl-small-font-size: var(--pggm-typography-font-size-2xl);
+  --pggm-heading-2xl-large-font-size: var(--pggm-typography-font-size-4xl);
+  --pggm-heading-2xl-small-font-size: var(--pggm-typography-font-size-3xl);
   --pggm-heading-2xl-line-height: var(--pggm-typography-line-height-sm);
-  --pggm-heading-xl-small-font-size: var(--pggm-typography-font-size-xl);
+  --pggm-heading-xl-large-font-size: var(--pggm-typography-font-size-2xl);
+  --pggm-heading-xl-small-font-size: var(--pggm-typography-font-size-2xl);
   --pggm-heading-xl-line-height: var(--pggm-typography-line-height-sm);
-  --pggm-heading-lg-large-font-size: var(--pggm-typography-font-size-lg);
-  --pggm-heading-lg-small-font-size: var(--pggm-typography-font-size-lg);
+  --pggm-heading-lg-large-font-size: var(--pggm-typography-font-size-xl);
+  --pggm-heading-lg-small-font-size: var(--pggm-typography-font-size-xl);
   --pggm-heading-lg-line-height: var(--pggm-typography-line-height-md);
   --pggm-heading-md-line-height: var(--pggm-typography-line-height-md);
   --pggm-heading-sm-large-font-size: var(--pggm-typography-font-size-sm);
   --pggm-heading-sm-small-font-size: var(--pggm-typography-font-size-sm);
   --pggm-heading-sm-line-height: var(--pggm-typography-line-height-md);
-  --pggm-heading-color: var(--pggm-color-gray-800);
-  --pggm-heading-font-family: var(--pggm-typography-font-family-secondary);
-  --pggm-heading-font-weight: var(--pggm-typography-font-weight-bold);
-  --pggm-heading-strong-font-weight: var(--pggm-typography-font-weight-extrabold);
+  --pggm-heading-color: var(--pggm-color-gray-800); /** Standaard kleur voor titels. */
+  --pggm-heading-font-family: var(--pggm-typography-font-family-primary); /** Standaard lettertype voor titels. */
+  --pggm-heading-font-weight: var(--pggm-typography-font-weight-medium); /** Standaard lettergewicht voor titels. */
+  --pggm-heading-strong-font-weight: var(--pggm-typography-font-weight-semibold); /** Steviger lettergewicht voor titels. */
   --pggm-heading-line-height: var(--pggm-typography-line-height-sm);
   --pggm-link-standalone-color: var(--pggm-color-gray-800);
   --pggm-link-standalone-font-weight: var(--pggm-typography-font-weight-semibold);
@@ -328,7 +328,7 @@
   --pggm-typography-font-size-md: var(--pggm-typography-font-size-base);
   --pggm-space-inline-md: var(--pggm-space-base);
   --pggm-space-block-md: var(--pggm-space-base);
-  --pggm-space-text-md: var(--pggm-space-base);
+  --pggm-space-text-md: var(--pggm-space-base); /** 1ch */
   --pggm-space-column-md: var(--pggm-space-base);
   --pggm-space-row-md: var(--pggm-space-base);
   --pggm-border-radius-lg: var(--pggm-border-radius-base);
@@ -337,75 +337,73 @@
   --pggm-box-shadow-color-sm: var(--pggm-color-alpha-dark-200);
   --pggm-box-shadow-color-md: var(--pggm-color-alpha-dark-100);
   --pggm-box-shadow-color-lg: var(--pggm-color-alpha-dark-100);
-  --pggm-root-background-color: var(--pggm-color-gray-50);
-  --pggm-container-background-color: var(--pggm-color-white);
-  --pggm-container-border-color: var(--pggm-color-gray-500);
-  --pggm-container-border-width: var(--pggm-border-width-sm);
-  --pggm-document-color: var(--pggm-color-gray-800);
-  --pggm-document-subtle-color: var(--pggm-color-gray-600);
-  --pggm-document-font-family: var(--pggm-typography-font-family-secondary);
-  --pggm-document-font-weight: var(--pggm-typography-font-weight-regular);
-  --pggm-document-strong-font-weight: var(--pggm-typography-font-weight-bold);
-  --pggm-document-line-height: var(--pggm-typography-line-height-md);
-  --pggm-line-border-color: var(--pggm-color-gray-200);
-  --pggm-line-border-width: var(--pggm-border-width-sm);
-  --pggm-interaction-color: var(--pggm-color-green-700);
-  --pggm-interaction-active-color: var(--pggm-color-green-900);
-  --pggm-interaction-hover-color: var(--pggm-color-green-800);
-  --pggm-focus-outline-color: var(--pggm-color-blue-500);
-  --pggm-focus-outline-width: var(--pggm-border-width-md);
-  --pggm-form-control-background-color: var(--pggm-color-white);
-  --pggm-form-control-border-color: var(--pggm-color-gray-500);
-  --pggm-form-control-color: var(--pggm-color-gray-800);
-  --pggm-form-control-active-background-color: var(--pggm-color-gray-50);
-  --pggm-form-control-active-border-color: var(--pggm-color-gray-800);
-  --pggm-form-control-active-color: var(--pggm-color-gray-800);
-  --pggm-form-control-active-border-width: var(--pggm-border-width-md);
-  --pggm-form-control-disabled-accent-color: var(--pggm-color-gray-500);
-  --pggm-form-control-disabled-background-color: var(--pggm-color-gray-50);
-  --pggm-form-control-disabled-border-color: var(--pggm-color-gray-200);
-  --pggm-form-control-disabled-color: var(--pggm-color-gray-600);
-  --pggm-form-control-read-only-accent-color: var(--pggm-color-gray-500);
-  --pggm-form-control-read-only-background-color: var(--pggm-color-gray-50);
-  --pggm-form-control-read-only-border-color: var(--pggm-color-gray-200);
-  --pggm-form-control-read-only-color: var(--pggm-color-gray-800);
-  --pggm-form-control-hover-background-color: var(--pggm-color-white);
-  --pggm-form-control-hover-border-color: var(--pggm-color-gray-800);
-  --pggm-form-control-hover-color: var(--pggm-color-gray-800);
-  --pggm-form-control-invalid-background-color: var(--pggm-color-white);
-  --pggm-form-control-invalid-color: var(--pggm-color-gray-800);
-  --pggm-form-control-invalid-border-width: var(--pggm-border-width-md);
-  --pggm-form-control-placeholder-color: var(--pggm-color-gray-600);
-  --pggm-form-control-border-width: var(--pggm-border-width-sm);
-  --pggm-feedback-informative-background-color: var(--pggm-color-blue-50);
-  --pggm-feedback-informative-border-color: var(--pggm-color-blue-500);
-  --pggm-feedback-informative-color: var(--pggm-color-blue-500);
-  --pggm-feedback-negative-background-color: var(--pggm-color-red-50);
-  --pggm-feedback-negative-border-color: var(--pggm-color-red-500);
-  --pggm-feedback-negative-color: var(--pggm-color-red-500);
-  --pggm-feedback-positive-background-color: var(--pggm-color-green-50);
-  --pggm-feedback-positive-border-color: var(--pggm-color-green-700);
-  --pggm-feedback-positive-color: var(--pggm-color-green-700);
-  --pggm-feedback-warning-background-color: var(--pggm-color-yellow-50);
-  --pggm-feedback-warning-border-color: var(--pggm-color-yellow-700);
-  --pggm-feedback-warning-color: var(--pggm-color-yellow-700);
-  --pggm-pointer-target-min-size: var(--pggm-size-2xl);
-  --pggm-icon-functional-size: var(--pggm-size-icon-md);
-  --pggm-accordion-section-border-color: var(--pggm-line-border-color);
-  --pggm-accordion-body-padding-inline-end: var(--pggm-space-inline-md);
-  --pggm-accordion-body-padding-inline-start: var(--pggm-space-inline-md);
-  --pggm-accordion-button-icon-size: var(--pggm-icon-functional-size);
-  --pggm-accordion-button-padding-block-end: var(--pggm-space-block-md);
-  --pggm-accordion-button-padding-block-start: var(--pggm-space-block-md);
-  --pggm-accordion-button-padding-inline-end: var(--pggm-space-inline-md);
-  --pggm-accordion-button-padding-inline-start: var(--pggm-space-inline-md);
-  --pggm-accordion-button-hover-color: var(--pggm-interaction-hover-color);
-  --pggm-accordion-button-expanded-color: var(--pggm-interaction-color);
-  --pggm-accordion-button-color: var(--pggm-interaction-color);
-  --pggm-accordion-button-active-color: var(--pggm-interaction-active-color);
-  --pggm-accordion-button-font-family: var(--pggm-document-font-family);
-  --pggm-accordion-button-font-weight: var(--pggm-document-strong-font-weight);
-  --pggm-accordion-button-line-height: var(--pggm-document-line-height);
+  --pggm-root-background-color: var(--pggm-color-gray-50); /** Standaard achtergrondkleur. */
+  --pggm-container-background-color: var(--pggm-color-white); /** Standaard kleur voor de achtergrond van een component die content groepeert. */
+  --pggm-container-border-color: var(--pggm-color-gray-500); /** Standaard kleur voor de rand rondom een component die content groepeert. */
+  --pggm-container-border-width: var(--pggm-border-width-sm); /** Standaard breedte voor de rand rondom een component die content groepeert. */
+  --pggm-document-color: var(--pggm-color-gray-800); /** Standard color for text (and icons). */
+  --pggm-document-subtle-color: var(--pggm-color-gray-600); /** Subtiele kleur voor tekst (en iconen). */
+  --pggm-document-font-family: var(--pggm-typography-font-family-secondary); /** Standard font family for text. */
+  --pggm-document-font-weight: var(--pggm-typography-font-weight-regular); /** Standard font-weight for text. */
+  --pggm-document-strong-font-weight: var(--pggm-typography-font-weight-bold); /** Steviger lettergewicht voor tekst. */
+  --pggm-document-line-height: var(--pggm-typography-line-height-md); /** Standard line-height for text. */
+  --pggm-line-border-color: var(--pggm-color-gray-200); /** Standaard kleur voor de horizontale of verticale lijnen die content scheiden. */
+  --pggm-line-border-width: var(--pggm-border-width-sm); /** Standaard breedte voor de horizontale of verticale lijnen die content scheiden. */
+  --pggm-line-hover-border-color: var(--pggm-color-gray-500);
+  --pggm-interaction-color: var(--pggm-color-green-700); /** Standaard kleur voor interactie. */
+  --pggm-interaction-active-color: var(--pggm-color-green-900); /** Standaard kleur voor interactie bij een active (on press) state.  */
+  --pggm-interaction-hover-color: var(--pggm-color-green-800); /** Standaard kleur voor interactie bij een hover state. */
+  --pggm-focus-outline-color: var(--pggm-color-blue-500); /** Standaard kleur voor de rand bij een focus state. */
+  --pggm-focus-outline-width: var(--pggm-border-width-md); /** Standaard breedte voor rand bij een focus state. */
+  --pggm-form-control-background-color: var(--pggm-color-white); /** Standaard achtergrondkleur voor form controls. */
+  --pggm-form-control-border-color: var(--pggm-color-gray-500); /** Standaard kleur voor rand rondom form controls. */
+  --pggm-form-control-color: var(--pggm-color-gray-800); /** Standaar kleur voor content binnen form controls. */
+  --pggm-form-control-active-background-color: var(--pggm-color-gray-50); /** Standaard achtergrondkleur voor form controls bij een active (on press) state. */
+  --pggm-form-control-active-border-color: var(--pggm-color-gray-800); /** Standaard kleur voor rand rondom form controls bij een active (on press) state.  */
+  --pggm-form-control-active-color: var(--pggm-color-gray-800); /** Standaard kleur voor content binnen form controls bij een active (on press) state. */
+  --pggm-form-control-active-border-width: var(--pggm-border-width-md); /** Standaard breedte voor rand rondom form controls bij een active (on press) state. */
+  --pggm-form-control-disabled-accent-color: var(--pggm-color-gray-500); /** Standaard kleur bij een disabled state voor form controls die gebruik maken van CSS accent-color property   */
+  --pggm-form-control-disabled-background-color: var(--pggm-color-gray-50); /** Standaard achtergrondkleur voor form controls bij een disabled state. */
+  --pggm-form-control-disabled-border-color: var(--pggm-color-gray-200); /** Standaard kleur voor rand rondom form controls bij een disabled state.  */
+  --pggm-form-control-disabled-color: var(--pggm-color-gray-600); /** Standaard kleur voor data binnen form controls bij een disabled state. */
+  --pggm-form-control-read-only-accent-color: var(--pggm-color-gray-500); /**   */
+  --pggm-form-control-read-only-background-color: var(--pggm-color-gray-50); /** Standaard achtergrondkleur voor form controls bij een read-only state. */
+  --pggm-form-control-read-only-border-color: var(--pggm-color-gray-200); /** Standaard kleur voor rand rondom form controls bij een read-only state. */
+  --pggm-form-control-read-only-color: var(--pggm-color-gray-800); /** Standaard kleur voor data binnen form controls bij een read-only state. */
+  --pggm-form-control-hover-background-color: var(--pggm-color-white); /** Standaard achtergrondkleur voor form controls bij een hover state. */
+  --pggm-form-control-hover-border-color: var(--pggm-color-gray-800); /** Standaard kleur voor rand rondom form controls bij een hover state.  */
+  --pggm-form-control-hover-color: var(--pggm-color-gray-800); /** Standaard kleur voor content binnen form controls bij een hover state. */
+  --pggm-form-control-invalid-background-color: var(--pggm-color-white); /** Standaard achtergrondkleur voor form controls bij een invalid state.  */
+  --pggm-form-control-invalid-color: var(--pggm-color-gray-800); /** Standaard kleur voor data binnen form controls bij een invalid state. */
+  --pggm-form-control-invalid-border-width: var(--pggm-border-width-md); /** Standaard breedte voor rand rondom form controls bij een invalid state. */
+  --pggm-form-control-placeholder-color: var(--pggm-color-gray-600); /** Standaard kleur voor placeholder tekst binnen form controls. */
+  --pggm-form-control-border-width: var(--pggm-border-width-sm); /** Standaard breedte voor rand rondom form controls. */
+  --pggm-feedback-informative-background-color: var(--pggm-color-white); /** Standaard achtergrondkleur voor informatieve feedback. */
+  --pggm-feedback-informative-border-color: var(--pggm-color-blue-500); /** Standaard kleur voor rand rondom informatieve feedback. */
+  --pggm-feedback-informative-color: var(--pggm-color-blue-500); /** Standaard kleur voor tekst (en iconen) voor informatieve feedback. */
+  --pggm-feedback-negative-background-color: var(--pggm-color-white); /** Standaard achtergrondkleur voor negatieve feedback. */
+  --pggm-feedback-negative-border-color: var(--pggm-color-red-500); /** Standaard kleur voor rand rondom negatieve feedback. */
+  --pggm-feedback-negative-color: var(--pggm-color-red-500); /** Standaard kleur voor tekst (en iconen) voor negatieve feedback. */
+  --pggm-feedback-positive-background-color: var(--pggm-color-white); /** Standaard achtergrondkleur voor positieve feedback. */
+  --pggm-feedback-positive-border-color: var(--pggm-color-green-700); /** Standaard kleur voor rand rondom positieve feedback. */
+  --pggm-feedback-positive-color: var(--pggm-color-green-700); /** Standaard kleur voor tekst (en iconen) voor positieve feedback. */
+  --pggm-feedback-warning-background-color: var(--pggm-color-white); /** Standaard achtergrondkleur voor waarschuwende feedback. */
+  --pggm-feedback-warning-border-color: var(--pggm-color-yellow-700); /** Standaard kleur voor rand rondom waarschuwende feedback. */
+  --pggm-feedback-warning-color: var(--pggm-color-yellow-700); /** Standaard kleur voor tekst (en iconen) voor waarschuwende feedback. */
+  --pggm-pointer-target-min-size: var(--pggm-size-2xl); /** Standaard minimale grootte voor interactieve elementen. */
+  --pggm-icon-functional-size: var(--pggm-size-icon-md); /** Standaard grootte voor functionele iconen. */
+  --pggm-icon-remarkable-size: var(--pggm-size-icon-lg);
+  --pggm-icon-notifiction-size: var(--pggm-size-icon-xl);
+  --pggm-accordion-item-border-color: var(--pggm-line-border-color);
+  --pggm-accordion-item-padding-block-start: var(--pggm-space-block-md);
+  --pggm-accordion-item-padding-block-end: var(--pggm-space-block-md);
+  --pggm-accordion-item-row-gap: var(--pggm-space-inline-md);
+  --pggm-accordion-item-header-icon-size: var(--pggm-icon-remarkable-size);
+  --pggm-accordion-item-header-title-font-family: var(--pggm-heading-font-family);
+  --pggm-accordion-item-header-title-font-size: var(--pggm-heading-lg-large-font-size);
+  --pggm-accordion-item-header-title-line-height: var(--pggm-heading-line-height);
+  --pggm-accordion-item-header-title-color: var(--pggm-heading-color);
+  --pggm-accordion-item-hover-border-color: var(--pggm-line-hover-border-color);
   --pggm-button-icon-hover-background-color: var(--pggm-interaction-hover-color);
   --pggm-button-icon-size: var(--pggm-icon-functional-size);
   --pggm-button-primary-background-color: var(--pggm-interaction-color);
@@ -474,8 +472,7 @@
   --pggm-heading-2xl-font-weight: var(--pggm-heading-strong-font-weight);
   --pggm-heading-xl-color: var(--pggm-heading-color);
   --pggm-heading-xl-font-family: var(--pggm-heading-font-family);
-  --pggm-heading-xl-font-weight: var(--pggm-heading-font-weight);
-  --pggm-heading-xl-large-font-size: var(--pggm-heading-2xl-small-font-size);
+  --pggm-heading-xl-font-weight: var(--pggm-heading-strong-font-weight);
   --pggm-heading-lg-color: var(--pggm-heading-color);
   --pggm-heading-lg-font-family: var(--pggm-heading-font-family);
   --pggm-heading-lg-font-weight: var(--pggm-heading-font-weight);
@@ -514,12 +511,10 @@
   --pggm-alert-informative-border-color: var(--pggm-feedback-informative-border-color);
   --pggm-alert-informative-color: var(--pggm-document-color);
   --pggm-alert-icon-informative-color: var(--pggm-feedback-informative-color);
-  --pggm-alert-icon-padding-block-end: var(--pggm-space-block-md);
-  --pggm-alert-icon-padding-block-start: var(--pggm-space-block-md);
   --pggm-alert-icon-positive-color: var(--pggm-feedback-positive-color);
   --pggm-alert-icon-negative-color: var(--pggm-feedback-negative-color);
   --pggm-alert-icon-warning-color: var(--pggm-feedback-warning-color);
-  --pggm-alert-icon-size: var(--pggm-icon-functional-size);
+  --pggm-alert-icon-size: var(--pggm-icon-notifiction-size);
   --pggm-alert-negative-background-color: var(--pggm-feedback-negative-background-color);
   --pggm-alert-negative-border-color: var(--pggm-feedback-negative-border-color);
   --pggm-alert-negative-color: var(--pggm-document-color);
@@ -682,12 +677,12 @@
   --pggm-unordered-list-font-family: var(--pggm-document-font-family);
   --pggm-unordered-list-font-weight: var(--pggm-document-font-weight);
   --pggm-unordered-list-line-height: var(--pggm-document-line-height);
-  --pggm-document-font-size: var(--pggm-typography-font-size-md);
-  --pggm-form-control-accent-color: var(--pggm-interaction-color);
-  --pggm-form-control-active-accent-color: var(--pggm-interaction-active-color);
-  --pggm-form-control-hover-accent-color: var(--pggm-interaction-hover-color);
-  --pggm-form-control-invalid-border-color: var(--pggm-feedback-negative-border-color);
-  --pggm-accordion-button-font-size: var(--pggm-document-font-size);
+  --pggm-document-font-size: var(--pggm-typography-font-size-md); /** Standard font-size for text. */
+  --pggm-form-control-accent-color: var(--pggm-interaction-color); /** Standaard kleur voor form controls die gebruik maken van CSS accent-color property. */
+  --pggm-form-control-active-accent-color: var(--pggm-interaction-active-color); /** Standaard kleur bij een active (on press) state voor form controls die gebruik maken van CSS accent-color property  */
+  --pggm-form-control-hover-accent-color: var(--pggm-interaction-hover-color); /** Standaard kleur bij een hover state voor form controls die gebruik maken van CSS accent-color property  */
+  --pggm-form-control-invalid-border-color: var(--pggm-feedback-negative-border-color); /** Standaard kleur voor rand rondom form controls bij een invalid state.  */
+  --pggm-accordion-item-header-title-font-weight: var(--pggm-heading-lg-font-weight);
   --pggm-button-font-size: var(--pggm-document-font-size);
   --pggm-checkbox-invalid-border-color: var(--pggm-form-control-invalid-border-color);
   --pggm-checkbox-checked-background-color: var(--pggm-form-control-accent-color);
