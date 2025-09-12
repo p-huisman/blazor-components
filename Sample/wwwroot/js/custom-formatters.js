@@ -15,9 +15,9 @@ class StatusFormatter extends HTMLElement {
             'cancelled': { text: 'Cancelled', class: 'status-cancelled' }
         };
         
-        const config = statusConfig[value?.toLowerCase()] || { text: value || 'Unknown', class: 'status-unknown' };
+        const config = statusConfig[value?.toLowerCase()] || { text: value || 'Unknown', part: 'status-unknown' };
         
-        element.className = `status-badge ${config.class}`;
+        element.part = `status-badge ${config.class}`;
         element.textContent = config.text;
         
         return element;
@@ -29,32 +29,32 @@ class PriorityFormatter extends HTMLElement {
     static format(fieldName, record) {
         const value = record[fieldName];
         const container = document.createElement('div');
-        container.className = 'priority-container';
+        container.part = 'priority-container';
         
         const icon = document.createElement('span');
         const text = document.createElement('span');
-        text.className = 'priority-text';
+        text.part= "priority-text";
         
         switch(value?.toLowerCase()) {
             case 'high':
                 icon.innerHTML = '🔴';
                 text.textContent = 'High';
-                container.className += ' priority-high';
+                container.part += ' priority-high';
                 break;
             case 'medium':
                 icon.innerHTML = '🟡';
                 text.textContent = 'Medium';
-                container.className += ' priority-medium';
+                container.part += ' priority-medium';
                 break;
             case 'low':
                 icon.innerHTML = '🟢';
                 text.textContent = 'Low';
-                container.className += ' priority-low';
+                container.part += ' priority-low';
                 break;
             default:
                 icon.innerHTML = '⚪';
                 text.textContent = value || 'None';
-                container.className += ' priority-none';
+                container.part += ' priority-none';
         }
         
         container.appendChild(icon);
@@ -69,17 +69,17 @@ class ProgressFormatter extends HTMLElement {
     static format(fieldName, record) {
         const value = parseFloat(record[fieldName]) || 0;
         const container = document.createElement('div');
-        container.className = 'progress-container';
+        container.part = 'progress-container';
         
         const progressBar = document.createElement('div');
-        progressBar.className = 'progress-bar';
+        progressBar.part = 'progress-bar';
         
         const progressFill = document.createElement('div');
-        progressFill.className = 'progress-fill';
+        progressFill.part = 'progress-fill';
         progressFill.style.width = `${Math.min(100, Math.max(0, value))}%`;
         
         const progressText = document.createElement('span');
-        progressText.className = 'progress-text';
+        progressText.part = 'progress-text';
         progressText.textContent = `${value}%`;
         
         progressBar.appendChild(progressFill);
@@ -93,42 +93,32 @@ class ProgressFormatter extends HTMLElement {
 // Avatar formatter - creates user avatars with initials
 class AvatarFormatter extends HTMLElement {
     static format(fieldName, record) {
-        const value = record[fieldName];
         const name = record.name || record.firstName + ' ' + (record.lastName || '');
         
         const container = document.createElement('div');
-        container.className = 'avatar-container';
+        container.part = 'avatar-container';
         
         const avatar = document.createElement('div');
-        avatar.className = 'avatar';
-        
-        if (value && value.startsWith('http')) {
-            // If we have an image URL
-            const img = document.createElement('img');
-            img.src = value;
-            img.alt = name;
-            img.className = 'avatar-image';
-            avatar.appendChild(img);
-        } else {
+        avatar.part = 'avatar';
+
             // Generate initials
-            const initials = name
-                .split(' ')
-                .map(n => n.charAt(0))
-                .join('')
-                .toUpperCase()
-                .substring(0, 2);
-            
-            avatar.textContent = initials;
-            avatar.className += ' avatar-initials';
-            
-            // Generate a color based on the name
-            const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8'];
-            const colorIndex = name.length % colors.length;
-            avatar.style.backgroundColor = colors[colorIndex];
-        }
+        const initials = name
+            .split(' ')
+            .map(n => n.charAt(0))
+            .join('')
+            .toUpperCase()
+            .substring(0, 2);
         
+        avatar.textContent = initials;
+        avatar.part += ' avatar-initials';
+        
+        // Generate a color based on the name
+        const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8'];
+        const colorIndex = name.length % colors.length;
+        avatar.style.backgroundColor = colors[colorIndex];
+    
         const nameSpan = document.createElement('span');
-        nameSpan.className = 'avatar-name';
+        nameSpan.part = 'avatar-name';
         nameSpan.textContent = name;
         
         container.appendChild(avatar);
@@ -141,11 +131,12 @@ class AvatarFormatter extends HTMLElement {
 // Action buttons formatter - creates action buttons for each row
 class ActionFormatter extends HTMLElement {
     static format(fieldName, record) {
+        
         const container = document.createElement('div');
-        container.className = 'action-buttons';
+        container.part = 'action-buttons';
         
         const editBtn = document.createElement('button');
-        editBtn.className = 'action-btn edit-btn';
+        editBtn.part = 'action-btn edit-btn';
         editBtn.innerHTML = '✏️';
         editBtn.title = 'Edit';
         editBtn.onclick = () => {
@@ -153,7 +144,7 @@ class ActionFormatter extends HTMLElement {
         };
         
         const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'action-btn delete-btn';
+        deleteBtn.part = 'action-btn delete-btn';
         deleteBtn.innerHTML = '🗑️';
         deleteBtn.title = 'Delete';
         deleteBtn.onclick = () => {
@@ -163,7 +154,7 @@ class ActionFormatter extends HTMLElement {
         };
         
         const viewBtn = document.createElement('button');
-        viewBtn.className = 'action-btn view-btn';
+        viewBtn.part = 'action-btn view-btn';
         viewBtn.innerHTML = '👁️';
         viewBtn.title = 'View Details';
         viewBtn.onclick = () => {
@@ -188,7 +179,7 @@ class TagsFormatter extends HTMLElement {
         if (Array.isArray(value)) {
             value.forEach(tag => {
                 const tagElement = document.createElement('span');
-                tagElement.className = 'tag';
+                tagElement.part = 'tag';
                 tagElement.textContent = tag;
                 container.appendChild(tagElement);
             });
@@ -196,13 +187,13 @@ class TagsFormatter extends HTMLElement {
             const tags = value.split(',').map(t => t.trim());
             tags.forEach(tag => {
                 const tagElement = document.createElement('span');
-                tagElement.className = 'tag';
+                tagElement.part = 'tag';
                 tagElement.textContent = tag;
                 container.appendChild(tagElement);
             });
         } else if (value) {
             const tagElement = document.createElement('span');
-            tagElement.className = 'tag';
+            tagElement.part = 'tag';
             tagElement.textContent = value;
             container.appendChild(tagElement);
         }

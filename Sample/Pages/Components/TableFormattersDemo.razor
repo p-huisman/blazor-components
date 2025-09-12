@@ -27,7 +27,7 @@ class StatusFormatter extends HTMLElement {<br/>
 &nbsp;&nbsp;static format(fieldName, record) {<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;const value = record[fieldName];<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;const element = document.createElement('span');<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;element.className = 'status-badge';<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;element.part = 'status-badge';<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;element.textContent = value;<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;return element;<br/>
 &nbsp;&nbsp;}<br/>
@@ -56,7 +56,7 @@ class StatusFormatter extends HTMLElement {<br/>
         Data="@projectData">
         
         <PggmTh 
-            Field="assignee" 
+            Field="lastName" 
             Type="string" 
             Format="avatar-formatter"
             Width="180"
@@ -135,7 +135,7 @@ class StatusFormatter extends HTMLElement {<br/>
         Data="@employeeData">
         
         <PggmTh 
-            Field="avatar" 
+            Field="lastName" 
             Type="string" 
             Format="avatar-formatter"
             Width="200"
@@ -206,10 +206,10 @@ class StatusFormatter extends HTMLElement {<br/>
             status = "active",
             priority = "high",
             progress = 75,
-            assignee = "https://via.placeholder.com/32",
-            name = "Sarah Johnson",
+            firstName = "Sarah",
+            lastName = "Johnson",
             tags = new[] { "UI/UX", "Frontend", "Responsive" },
-            actions = ""
+            actions = true
         },
         new {
             id = 2,
@@ -217,10 +217,10 @@ class StatusFormatter extends HTMLElement {<br/>
             status = "pending",
             priority = "medium",
             progress = 30,
-            assignee = "",
-            name = "Mike Chen",
+            firstName = "Mike",
+            lastName = "Chen",
             tags = new[] { "Mobile", "React Native", "iOS", "Android" },
-            actions = ""
+            actions = true
         },
         new {
             id = 3,
@@ -228,10 +228,10 @@ class StatusFormatter extends HTMLElement {<br/>
             status = "completed",
             priority = "high",
             progress = 100,
-            assignee = "",
-            name = "Lisa Davis",
+            firstName = "Lisa",
+            lastName = "Davis",
             tags = new[] { "Backend", "Database", "Migration" },
-            actions = ""
+            actions = true
         },
         new {
             id = 4,
@@ -239,10 +239,10 @@ class StatusFormatter extends HTMLElement {<br/>
             status = "active",
             priority = "low",
             progress = 45,
-            assignee = "",
-            name = "Tom Wilson",
+            firstName = "Tom",
+            lastName = "Wilson",
             tags = new[] { "API", "Integration", "Backend" },
-            actions = ""
+            actions = true
         },
         new {
             id = 5,
@@ -250,10 +250,10 @@ class StatusFormatter extends HTMLElement {<br/>
             status = "cancelled",
             priority = "medium",
             progress = 15,
-            assignee = "",
-            name = "Emma Brown",
+            firstName = "Emma",
+            lastName = "Brown",
             tags = new[] { "Security", "Audit", "Compliance" },
-            actions = ""
+            actions = true
         },
         new {
             id = 6,
@@ -261,10 +261,10 @@ class StatusFormatter extends HTMLElement {<br/>
             status = "inactive",
             priority = "low",
             progress = 60,
-            assignee = "",
-            name = "Alex Garcia",
+            firstName = "Alex",
+            lastName = "Garcia",
             tags = new[] { "Performance", "Optimization", "Frontend" },
-            actions = ""
+            actions = true
         }
     };
 
@@ -273,57 +273,52 @@ class StatusFormatter extends HTMLElement {<br/>
         new {
             employeeId = 1,
             avatar = "",
-            name = "John Smith",
             firstName = "John",
             lastName = "Smith",
             department = "Engineering",
             status = "active",
             skills = new[] { "C#", "JavaScript", "React", "Azure" },
-            actions = ""
+            actions = true
         },
         new {
             employeeId = 2,
             avatar = "https://via.placeholder.com/32",
-            name = "Jane Doe",
             firstName = "Jane",
             lastName = "Doe",
             department = "Design",
             status = "active",
             skills = new[] { "Figma", "Photoshop", "UI/UX", "Prototyping" },
-            actions = ""
+            actions = true
         },
         new {
             employeeId = 3,
             avatar = "",
-            name = "Bob Johnson",
             firstName = "Bob",
             lastName = "Johnson",
             department = "Marketing",
             status = "pending",
             skills = new[] { "SEO", "Content", "Analytics", "Social Media" },
-            actions = ""
+            actions = true
         },
         new {
             employeeId = 4,
             avatar = "",
-            name = "Alice Williams",
             firstName = "Alice",
             lastName = "Williams",
             department = "Engineering",
             status = "inactive",
             skills = new[] { "Python", "Machine Learning", "Data Science", "TensorFlow" },
-            actions = ""
+            actions = true
         },
         new {
             employeeId = 5,
             avatar = "",
-            name = "Charlie Brown",
             firstName = "Charlie",
             lastName = "Brown",
             department = "Sales",
             status = "active",
             skills = new[] { "CRM", "Lead Generation", "Negotiation", "Salesforce" },
-            actions = ""
+            actions = true
         }
     };
 }
