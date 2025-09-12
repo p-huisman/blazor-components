@@ -17,7 +17,7 @@ public class AttributeBuilder
         if (!string.IsNullOrWhiteSpace(cssClass))
         {
             var existing = _attributes.TryGetValue("class", out var value) ? value?.ToString() : null;
-            _attributes["class"] = AttributeHelper.MergeCssClasses(existing, cssClass);
+            _attributes["class"] = AttributeHelper.MergeCssClasses(existing, cssClass)!;
         }
         return this;
     }

@@ -14,14 +14,17 @@ namespace Pggm.Components.Tests
         {
             // Arrange
             var services = new ServiceCollection();
+            
             // Add required dependencies
-            services.AddScoped<IJSRuntime>(_ => new Mock<IJSRuntime>().Object);
+            var mockJSRuntime = new Mock<IJSRuntime>();
+            services.AddSingleton(mockJSRuntime.Object);
+            services.AddLogging();
 
             // Act
             var result = services.AddPggmComponents();
 
             // Assert
-            Assert.Same(services, result); // Ensures fluent interface returns the same collection
+            Assert.Same(services, result);
             
             // Verify the service is registered
             var serviceProvider = services.BuildServiceProvider();
@@ -45,21 +48,111 @@ namespace Pggm.Components.Tests
         }
 
         [Fact]
+        public void AddPggmComponents_WithConfiguration_RegistersOptions()
+        {
+            // Arrange
+            var services = new ServiceCollection();
+
+            // Act
+            services.AddPggmComponents(options =>
+            {
+                options.EnableDevelopmentMode = true;
+                options.EnablePerformanceMetrics = true;
+                options.CustomCssBundlePath = "/custom/css/path";
+                options.CustomJsBundlePath = "/custom/js/path";
+            });
+
+            // Assert
+            var serviceProvider = services.BuildServiceProvider();
+            var options = serviceProvider.GetService<PggmComponentsOptions>();
+            
+            Assert.NotNull(options);
+            Assert.True(options.EnableDevelopmentMode);
+            Assert.True(options.EnablePerformanceMetrics);
+            Assert.Equal("/custom/css/path", options.CustomCssBundlePath);
+            Assert.Equal("/custom/js/path", options.CustomJsBundlePath);
+        }
+
+        [Fact]
+        public void AddPggmComponents_WithoutConfiguration_UsesDefaultOptions()
+        {
+            // Arrange
+            var services = new ServiceCollection();
+
+            // Act
+            services.AddPggmComponents();
+
+            // Assert
+            var serviceProvider = services.BuildServiceProvider();
+            var options = serviceProvider.GetService<PggmComponentsOptions>();
+            
+            Assert.NotNull(options);
+            Assert.False(options.EnableDevelopmentMode);
+            Assert.False(options.EnablePerformanceMetrics);
+            Assert.Null(options.CustomCssBundlePath);
+            Assert.Null(options.CustomJsBundlePath);
+        }
+
+        [Fact]
+        public void AddPggmComponents_OptionsRegisteredAsSingleton()
+        {
+            // Arrange
+            var services = new ServiceCollection();
+
+            // Act
+            services.AddPggmComponents();
+
+            // Assert
+            var serviceDescriptor = services.FirstOrDefault(s => s.ServiceType == typeof(PggmComponentsOptions));
+            Assert.NotNull(serviceDescriptor);
+            Assert.Equal(ServiceLifetime.Singleton, serviceDescriptor.Lifetime);
+        }
+
+        [Fact]
         public void AddPggmComponents_CanBeCalledMultipleTimes()
         {
             // Arrange
             var services = new ServiceCollection();
+            
             // Add required dependencies
-            services.AddScoped<IJSRuntime>(_ => new Mock<IJSRuntime>().Object);
+            var mockJSRuntime = new Mock<IJSRuntime>();
+            services.AddSingleton(mockJSRuntime.Object);
+            services.AddLogging();
 
-            // Act
+            // Act & Assert - Should not throw
             services.AddPggmComponents();
-            services.AddPggmComponents(); // Should not cause issues
+            services.AddPggmComponents();
 
-            // Assert
+            // Verify services are still registered correctly
             var serviceProvider = services.BuildServiceProvider();
             var designSystemService = serviceProvider.GetService<PggmDesignSystemService>();
             Assert.NotNull(designSystemService);
+        }
+
+        [Theory]
+        [InlineData(true, true)]
+        [InlineData(true, false)]
+        [InlineData(false, true)]
+        [InlineData(false, false)]
+        public void AddPggmComponents_WithBooleanOptions_ConfiguresCorrectly(bool developmentMode, bool performanceMetrics)
+        {
+            // Arrange
+            var services = new ServiceCollection();
+
+            // Act
+            services.AddPggmComponents(options =>
+            {
+                options.EnableDevelopmentMode = developmentMode;
+                options.EnablePerformanceMetrics = performanceMetrics;
+            });
+
+            // Assert
+            var serviceProvider = services.BuildServiceProvider();
+            var options = serviceProvider.GetService<PggmComponentsOptions>();
+            
+            Assert.NotNull(options);
+            Assert.Equal(developmentMode, options.EnableDevelopmentMode);
+            Assert.Equal(performanceMetrics, options.EnablePerformanceMetrics);
         }
     }
 }
