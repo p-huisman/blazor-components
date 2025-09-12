@@ -3,7 +3,6 @@
  */
 
 :root {
-  --pggm-accordion-item-background: #ffffff;
   --pggm-accordion-item-border-width: 1px;
   --pggm-accordion-item-content-padding-block-start: 0px;
   --pggm-accordion-item-header-icon-border-radius: 99999px;
@@ -239,6 +238,8 @@
   --pggm-heading-lg-large-font-size: var(--pggm-typography-font-size-xl);
   --pggm-heading-lg-small-font-size: var(--pggm-typography-font-size-xl);
   --pggm-heading-lg-line-height: var(--pggm-typography-line-height-md);
+  --pggm-heading-md-large-font-size: var(--pggm-typography-font-size-lg);
+  --pggm-heading-md-small-font-size: var(--pggm-typography-font-size-lg);
   --pggm-heading-md-line-height: var(--pggm-typography-line-height-md);
   --pggm-heading-sm-large-font-size: var(--pggm-typography-font-size-sm);
   --pggm-heading-sm-small-font-size: var(--pggm-typography-font-size-sm);
@@ -394,6 +395,7 @@
   --pggm-icon-functional-size: var(--pggm-size-icon-md); /** Standaard grootte voor functionele iconen. */
   --pggm-icon-remarkable-size: var(--pggm-size-icon-lg);
   --pggm-icon-notifiction-size: var(--pggm-size-icon-xl);
+  --pggm-accordion-item-background-color: var(--pggm-container-background-color);
   --pggm-accordion-item-border-color: var(--pggm-line-border-color);
   --pggm-accordion-item-padding-block-start: var(--pggm-space-block-md);
   --pggm-accordion-item-padding-block-end: var(--pggm-space-block-md);
@@ -479,8 +481,6 @@
   --pggm-heading-md-color: var(--pggm-heading-color);
   --pggm-heading-md-font-family: var(--pggm-heading-font-family);
   --pggm-heading-md-font-weight: var(--pggm-heading-font-weight);
-  --pggm-heading-md-large-font-size: var(--pggm-typography-font-size-md);
-  --pggm-heading-md-small-font-size: var(--pggm-typography-font-size-md);
   --pggm-heading-sm-color: var(--pggm-heading-color);
   --pggm-heading-sm-font-family: var(--pggm-heading-font-family);
   --pggm-heading-sm-font-weight: var(--pggm-heading-font-weight);
