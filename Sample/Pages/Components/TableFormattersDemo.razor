@@ -1,0 +1,329 @@
+@page "/pggm-table-formatters"
+@using Pggm.Components
+@using Microsoft.AspNetCore.Components
+
+<PageTitle>Table Custom Formatters Demo</PageTitle>
+
+<PggmHeader Level="1">PGGM Table Custom Formatters Demo</PggmHeader>
+
+<p>This page demonstrates how to use custom web components as formatters in PGGM Tables. 
+   The <code>format</code> attribute of <code>&lt;PggmTh&gt;</code> can contain the tag name of a custom component 
+   that implements a static <code>format(fieldName: string, record: any)</code> method.</p>
+
+<div class="demo-section">
+    <PggmHeader Level="2">How Custom Formatters Work</PggmHeader>
+    <div class="demo-description">
+        <p>Custom formatters are web components with a static <strong>format</strong> method that:</p>
+        <ul>
+            <li>Receives the field name and the complete record object</li>
+            <li>Returns an HTMLElement that will be rendered in the table cell</li>
+            <li>Can create complex UI elements like badges, progress bars, buttons, etc.</li>
+        </ul>
+        
+        <div class="code-example">
+            <strong>Example Custom Formatter Implementation:</strong><br/>
+            <code>
+class StatusFormatter extends HTMLElement {<br/>
+&nbsp;&nbsp;static format(fieldName, record) {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;const value = record[fieldName];<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;const element = document.createElement('span');<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;element.className = 'status-badge';<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;element.textContent = value;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;return element;<br/>
+&nbsp;&nbsp;}<br/>
+}
+            </code>
+        </div>
+        
+        <div class="code-example">
+            <strong>Usage in PggmTh:</strong><br/>
+            <code>&lt;PggmTh Format="<span class="highlight">status-formatter</span>" Field="status"&gt;Status&lt;/PggmTh&gt;</code>
+        </div>
+    </div>
+</div>
+
+<div class="formatter-showcase">
+    <PggmHeader Level="2">Project Management Dashboard</PggmHeader>
+    <p>This table demonstrates various custom formatters in a realistic project management context.</p>
+    
+    <PggmTable 
+        FilterLabel="Filter projects" 
+        ClearLabel="Clear filters" 
+        Lang="en" 
+        IdField="id" 
+        Selectable="true" 
+        SelectType="single"
+        Data="@projectData">
+        
+        <PggmTh 
+            Field="assignee" 
+            Type="string" 
+            Format="avatar-formatter"
+            Width="180"
+            Filterable="true">
+            Assignee
+        </PggmTh>
+        
+        <PggmTh 
+            Sortable="true" 
+            Filterable="true" 
+            Field="projectName" 
+            Width="200" 
+            Type="string" 
+            Format="string">
+            Project Name
+        </PggmTh>
+        
+        <PggmTh 
+            Field="status" 
+            Type="string" 
+            Format="status-formatter"
+            Width="100"
+            Filterable="true">
+            Status
+        </PggmTh>
+        
+        <PggmTh 
+            Field="priority" 
+            Type="string" 
+            Format="priority-formatter"
+            Width="100"
+            Filterable="true">
+            Priority
+        </PggmTh>
+        
+        <PggmTh 
+            Field="progress" 
+            Type="number" 
+            Format="progress-formatter"
+            Width="150"
+            Sortable="true">
+            Progress
+        </PggmTh>
+        
+        <PggmTh 
+            Field="tags" 
+            Type="string" 
+            Format="tags-formatter"
+            Width="200">
+            Tags
+        </PggmTh>
+        
+        <PggmTh 
+            Field="actions" 
+            Type="string" 
+            Format="action-formatter"
+            Width="120"
+            TextAlign="center">
+            Actions
+        </PggmTh>
+        
+    </PggmTable>
+</div>
+
+<div class="formatter-showcase">
+    <PggmHeader Level="2">Employee Directory</PggmHeader>
+    <p>Another example showing different formatters in an employee directory context.</p>
+    
+    <PggmTable 
+        FilterLabel="Filter employees" 
+        ClearLabel="Clear filters" 
+        Lang="en" 
+        IdField="employeeId" 
+        Selectable="true" 
+        SelectType="multiple"
+        Data="@employeeData">
+        
+        <PggmTh 
+            Field="avatar" 
+            Type="string" 
+            Format="avatar-formatter"
+            Width="200"
+            Filterable="true">
+            Employee
+        </PggmTh>
+        
+        <PggmTh 
+            Sortable="true" 
+            Filterable="true" 
+            Field="department" 
+            Width="150" 
+            Type="string" 
+            Format="string">
+            Department
+        </PggmTh>
+        
+        <PggmTh 
+            Field="status" 
+            Type="string" 
+            Format="status-formatter"
+            Width="100"
+            Filterable="true">
+            Status
+        </PggmTh>
+        
+        <PggmTh 
+            Field="skills" 
+            Type="string" 
+            Format="tags-formatter"
+            Width="250">
+            Skills
+        </PggmTh>
+        
+        <PggmTh 
+            Field="actions" 
+            Type="string" 
+            Format="action-formatter"
+            Width="120"
+            TextAlign="center">
+            Actions
+        </PggmTh>
+        
+    </PggmTable>
+</div>
+
+<div class="demo-section">
+    <PggmHeader Level="2">Available Custom Formatters</PggmHeader>
+    <div class="demo-description">
+        <p>The following custom formatters are included in this demo:</p>
+        <ul>
+            <li><strong>status-formatter</strong> - Creates colored status badges</li>
+            <li><strong>priority-formatter</strong> - Shows priority with colored icons</li>
+            <li><strong>progress-formatter</strong> - Displays progress bars with percentages</li>
+            <li><strong>avatar-formatter</strong> - Creates user avatars with names</li>
+            <li><strong>action-formatter</strong> - Adds action buttons (Edit, View, Delete)</li>
+            <li><strong>tags-formatter</strong> - Displays multiple tags/labels</li>
+        </ul>
+    </div>
+</div>
+
+@code {
+    private object[] projectData = new object[]
+    {
+        new {
+            id = 1,
+            projectName = "Website Redesign",
+            status = "active",
+            priority = "high",
+            progress = 75,
+            assignee = "https://via.placeholder.com/32",
+            name = "Sarah Johnson",
+            tags = new[] { "UI/UX", "Frontend", "Responsive" },
+            actions = ""
+        },
+        new {
+            id = 2,
+            projectName = "Mobile App Development",
+            status = "pending",
+            priority = "medium",
+            progress = 30,
+            assignee = "",
+            name = "Mike Chen",
+            tags = new[] { "Mobile", "React Native", "iOS", "Android" },
+            actions = ""
+        },
+        new {
+            id = 3,
+            projectName = "Database Migration",
+            status = "completed",
+            priority = "high",
+            progress = 100,
+            assignee = "",
+            name = "Lisa Davis",
+            tags = new[] { "Backend", "Database", "Migration" },
+            actions = ""
+        },
+        new {
+            id = 4,
+            projectName = "API Integration",
+            status = "active",
+            priority = "low",
+            progress = 45,
+            assignee = "",
+            name = "Tom Wilson",
+            tags = new[] { "API", "Integration", "Backend" },
+            actions = ""
+        },
+        new {
+            id = 5,
+            projectName = "Security Audit",
+            status = "cancelled",
+            priority = "medium",
+            progress = 15,
+            assignee = "",
+            name = "Emma Brown",
+            tags = new[] { "Security", "Audit", "Compliance" },
+            actions = ""
+        },
+        new {
+            id = 6,
+            projectName = "Performance Optimization",
+            status = "inactive",
+            priority = "low",
+            progress = 60,
+            assignee = "",
+            name = "Alex Garcia",
+            tags = new[] { "Performance", "Optimization", "Frontend" },
+            actions = ""
+        }
+    };
+
+    private object[] employeeData = new object[]
+    {
+        new {
+            employeeId = 1,
+            avatar = "",
+            name = "John Smith",
+            firstName = "John",
+            lastName = "Smith",
+            department = "Engineering",
+            status = "active",
+            skills = new[] { "C#", "JavaScript", "React", "Azure" },
+            actions = ""
+        },
+        new {
+            employeeId = 2,
+            avatar = "https://via.placeholder.com/32",
+            name = "Jane Doe",
+            firstName = "Jane",
+            lastName = "Doe",
+            department = "Design",
+            status = "active",
+            skills = new[] { "Figma", "Photoshop", "UI/UX", "Prototyping" },
+            actions = ""
+        },
+        new {
+            employeeId = 3,
+            avatar = "",
+            name = "Bob Johnson",
+            firstName = "Bob",
+            lastName = "Johnson",
+            department = "Marketing",
+            status = "pending",
+            skills = new[] { "SEO", "Content", "Analytics", "Social Media" },
+            actions = ""
+        },
+        new {
+            employeeId = 4,
+            avatar = "",
+            name = "Alice Williams",
+            firstName = "Alice",
+            lastName = "Williams",
+            department = "Engineering",
+            status = "inactive",
+            skills = new[] { "Python", "Machine Learning", "Data Science", "TensorFlow" },
+            actions = ""
+        },
+        new {
+            employeeId = 5,
+            avatar = "",
+            name = "Charlie Brown",
+            firstName = "Charlie",
+            lastName = "Brown",
+            department = "Sales",
+            status = "active",
+            skills = new[] { "CRM", "Lead Generation", "Negotiation", "Salesforce" },
+            actions = ""
+        }
+    };
+}
