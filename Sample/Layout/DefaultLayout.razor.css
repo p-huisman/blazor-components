@@ -5,7 +5,7 @@
 
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 80px calc(100vh - 80px);
+  grid-template-rows: 80px calc(100dvh - 80px);
   grid-gap: 1em;
   grid-template-areas:
     "header"
@@ -35,7 +35,7 @@ aside {
   width: 250px;
   background-color: #f8f9fa;
   border-right: 1px solid #dee2e6;
-  height: 100vh;
+  height: 100dvh;
   overflow-y: auto;
   transition: transform 0.3s ease;
 }
@@ -60,7 +60,7 @@ main {
   grid-area: main;
   padding: 1rem;
   overflow-y: auto;
-  max-height: calc(100vh - 80px - 60px);
+  max-height: calc(100dvh - 80px - 60px);
 }
 
 footer {
@@ -95,7 +95,7 @@ footer {
   .app-layout {
     display: grid;
     grid-template-columns: 250px 1fr;
-    grid-template-rows: 80px calc(100vh - 80px);
+    grid-template-rows: 80px calc(100dvh - 80px);
     grid-gap: 0 1em;
     grid-template-areas:
       "header header"
@@ -113,7 +113,7 @@ footer {
     grid-area: aside;
     border-left: 0px;
     border-right: 1px solid #dee2e6;
-    max-height: 100vh;
+    max-height: 100dvh;
     overflow-y: auto;
   }
 
@@ -121,7 +121,7 @@ footer {
     grid-area: main;
     padding: 1rem;
     overflow-y: auto;
-    max-height: calc(100vh - 80px);
+    max-height: calc(100dvh - 80px);
   }
 }
 
