@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using Microsoft.Extensions.Logging;
+using Pggm.Components.Interfaces;
 using Pggm.Components.Models.Wizard;
 
 namespace Pggm.Components.Base;
@@ -7,9 +9,13 @@ namespace Pggm.Components.Base;
 /// <summary>
 /// Base class for PGGM components that need event handling
 /// </summary>
-public abstract class PggmEventComponentBase : PggmComponentBase
+public abstract class PggmEventComponentBase : PggmComponentBase, IPggmEventComponent
 {
     private DotNetObjectReference<PggmEventComponentBase>? _objectReference;
+    private readonly List<string> _registeredEvents = new();
+    private bool _eventsInitialized;
+
+    [Inject] protected ILogger<PggmEventComponentBase>? Logger { get; set; }
     
     /// <summary>
     /// Dictionary of event handlers for this component
@@ -25,11 +31,15 @@ public abstract class PggmEventComponentBase : PggmComponentBase
     {
         await base.InitializeWebComponentAsync();
         
-        // Create object reference for JS interop
-        _objectReference = DotNetObjectReference.Create(this);
-        
-        // Set up event listeners
-        await SetupEventListenersAsync();
+        if (!_eventsInitialized)
+        {
+            // Create object reference for JS interop
+            _objectReference = DotNetObjectReference.Create(this);
+            
+            // Set up event listeners
+            await SetupEventListenersAsync();
+            _eventsInitialized = true;
+        }
     }
 
     /// <summary>
@@ -38,9 +48,20 @@ public abstract class PggmEventComponentBase : PggmComponentBase
     /// </summary>
     protected virtual async Task SetupEventListenersAsync()
     {
-        foreach (var eventName in GetEventNames())
+        var eventNames = GetEventNames().ToList();
+        
+        foreach (var eventName in eventNames)
         {
-            await AddEventListenerAsync(eventName);
+            try
+            {
+                await AddEventListenerAsync(eventName);
+                _registeredEvents.Add(eventName);
+            }
+            catch (Exception ex)
+            {
+                Logger?.LogWarning(ex, "Failed to register event listener for {EventName} in component {ComponentType}", 
+                    eventName, GetType().Name);
+            }
         }
     }
 
@@ -137,8 +158,9 @@ public abstract class PggmEventComponentBase : PggmComponentBase
     /// </summary>
     protected virtual Task OnEventErrorAsync(string eventName, object? eventData, Exception exception)
     {
-        // Default implementation logs the error
-        Console.WriteLine($"Error handling event '{eventName}' in component '{GetType().Name}': {exception.Message}");
+        // Log the error using proper logging instead of Console.WriteLine
+        Logger?.LogError(exception, "Error handling event '{EventName}' in component '{ComponentType}' with data: {EventData}", 
+            eventName, GetType().Name, eventData);
         return Task.CompletedTask;
     }
 
@@ -327,27 +349,43 @@ public abstract class PggmEventComponentBase : PggmComponentBase
     {
         if (_objectReference == null) return;
 
-        await JSRuntime.InvokeVoidAsync(
-            "PggmComponents.addCancelableEventListener",
-            ElementRef,
-            eventName,
-            _objectReference,
-            nameof(HandleCancelableEvent)
-        );
+        try
+        {
+            await JSRuntime.InvokeVoidAsync(
+                "PggmComponents.addCancelableEventListener",
+                ElementRef,
+                eventName,
+                _objectReference,
+                nameof(HandleCancelableEvent)
+            );
+        }
+        catch (Exception ex)
+        {
+            Logger?.LogWarning(ex, "Failed to add cancelable event listener for {EventName}", eventName);
+        }
     }
 
-    public override async ValueTask DisposeAsync()
+    protected override async ValueTask DisposeAsyncCore()
     {
-        if (_objectReference != null)
+        await base.DisposeAsyncCore();
+        
+        // Clean up event listeners
+        foreach (var eventName in _registeredEvents)
         {
-            // Clean up event listeners
-            await JSRuntime.InvokeVoidAsync("PggmComponents.removeAllEventListeners", ElementRef);
-            
-            // Dispose object reference
-            _objectReference.Dispose();
-            _objectReference = null;
+            try
+            {
+                await JSRuntime.InvokeVoidAsync("PggmComponents.removeEventListener", ElementRef, eventName);
+            }
+            catch (Exception ex)
+            {
+                Logger?.LogWarning(ex, "Failed to remove event listener for {EventName} during disposal", eventName);
+            }
         }
-
-        await base.DisposeAsync();
+        
+        _registeredEvents.Clear();
+        
+        // Dispose object reference
+        _objectReference?.Dispose();
+        _objectReference = null;
     }
 }

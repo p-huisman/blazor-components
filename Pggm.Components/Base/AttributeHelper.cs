@@ -1,10 +1,15 @@
+using System.Text;
+using System.Collections.Concurrent;
+
 namespace Pggm.Components.Base;
 
 /// <summary>
-/// Utility class for handling web component attributes
+/// Utility class for handling web component attributes with performance optimizations
 /// </summary>
 public static class AttributeHelper
 {
+    private static readonly ConcurrentDictionary<string, string> _kebabCaseCache = new();
+    private static readonly StringBuilder _stringBuilder = new();
     /// <summary>
     /// Convert a boolean parameter to a web component attribute
     /// Web components typically use presence/absence for boolean attributes
@@ -54,28 +59,56 @@ public static class AttributeHelper
     }
 
     /// <summary>
-    /// Convert PascalCase to kebab-case for web component attributes
+    /// Convert PascalCase to kebab-case for web component attributes with caching
     /// </summary>
     public static string ConvertToKebabCase(string input)
     {
         if (string.IsNullOrEmpty(input))
             return input;
 
-        var result = new System.Text.StringBuilder();
-        
-        for (int i = 0; i < input.Length; i++)
+        return _kebabCaseCache.GetOrAdd(input, static key =>
         {
-            char c = input[i];
-            
-            if (i > 0 && char.IsUpper(c))
+            lock (_stringBuilder)
             {
-                result.Append('-');
+                _stringBuilder.Clear();
+                
+                for (int i = 0; i < key.Length; i++)
+                {
+                    char c = key[i];
+                    
+                    if (i > 0 && char.IsUpper(c))
+                    {
+                        _stringBuilder.Append('-');
+                    }
+                    
+                    _stringBuilder.Append(char.ToLowerInvariant(c));
+                }
+                
+                return _stringBuilder.ToString();
             }
-            
-            result.Append(char.ToLowerInvariant(c));
+        });
+    }
+
+    /// <summary>
+    /// Batch set multiple boolean attributes efficiently
+    /// </summary>
+    public static void SetBooleanAttributes(Dictionary<string, object> attributes, params (string name, bool value)[] booleanAttributes)
+    {
+        foreach (var (name, value) in booleanAttributes)
+        {
+            SetBooleanAttribute(attributes, name, value);
         }
-        
-        return result.ToString();
+    }
+
+    /// <summary>
+    /// Set multiple string attributes efficiently, skipping null/empty values
+    /// </summary>
+    public static void SetStringAttributes(Dictionary<string, object> attributes, params (string name, string? value)[] stringAttributes)
+    {
+        foreach (var (name, value) in stringAttributes)
+        {
+            SetAttributeIfNotEmpty(attributes, name, value);
+        }
     }
 
     /// <summary>

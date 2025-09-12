@@ -1,21 +1,25 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Pggm.Components.Services;
+using Pggm.Components.Interfaces;
+using Pggm.Components.Utilities;
 
 namespace Pggm.Components.Base;
 
 /// <summary>
 /// Base class for all PGGM web component wrappers
 /// </summary>
-public abstract class PggmComponentBase : ComponentBase, IAsyncDisposable
+public abstract class PggmComponentBase : ComponentBase, IPggmComponent
 {
+    private bool _disposed;
+
     [Inject] protected IJSRuntime JSRuntime { get; set; } = default!;
     [Inject] protected PggmDesignSystemService DesignSystemService { get; set; } = default!;
     
     /// <summary>
     /// The HTML tag name for the web component
     /// </summary>
-    protected abstract string TagName { get; }
+    public abstract string TagName { get; }
     
     /// <summary>
     /// Additional CSS classes to apply to the component
@@ -36,12 +40,15 @@ public abstract class PggmComponentBase : ComponentBase, IAsyncDisposable
     /// <summary>
     /// Reference to the HTML element
     /// </summary>
-    protected ElementReference ElementRef { get; set; }
+    public ElementReference ElementRef { get; protected set; }
     
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
+            Guard.NotNull(DesignSystemService, nameof(DesignSystemService));
+            Guard.NotNull(JSRuntime, nameof(JSRuntime));
+            
             await DesignSystemService.InitializeAsync();
             await InitializeWebComponentAsync();
         }
@@ -102,8 +109,23 @@ public abstract class PggmComponentBase : ComponentBase, IAsyncDisposable
         return null;
     }
     
-    public virtual ValueTask DisposeAsync()
+    /// <summary>
+    /// Performs cleanup operations for the component
+    /// Override in derived classes to add custom cleanup logic
+    /// </summary>
+    protected virtual ValueTask DisposeAsyncCore()
     {
         return ValueTask.CompletedTask;
+    }
+    
+    public virtual async ValueTask DisposeAsync()
+    {
+        if (!_disposed)
+        {
+            await DisposeAsyncCore();
+            _disposed = true;
+        }
+        
+        GC.SuppressFinalize(this);
     }
 }
