@@ -1,0 +1,31 @@
+@inherits PggmComponentBase
+@namespace Pggm.Components
+
+<pggm-icon @ref="ElementRef" @attributes="GetAttributes()">
+</pggm-icon>
+
+@code {
+  protected override string TagName => "pggm-icon";
+
+  /// <summary>
+  /// The icon name to display
+  /// </summary>
+  [Parameter] public string Icon { get; set; } = string.Empty;
+
+  /// <summary>
+  /// The size of the icon (s, m, l, xl)
+  /// </summary>
+  [Parameter] public string Size { get; set; } = ComponentValues.IconSize.Medium;
+
+  /// <summary>
+  /// Whether the icon should be outlined
+  /// </summary>
+  [Parameter] public bool Outline { get; set; }
+
+  protected override void AddComponentAttributes(Dictionary<string, object> attributes)
+  {
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "icon", Icon);
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "size", Size);
+    AttributeHelper.SetBooleanAttribute(attributes, "outline", Outline);
+  }
+}

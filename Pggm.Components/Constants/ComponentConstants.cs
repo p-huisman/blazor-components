@@ -116,4 +116,38 @@ public static class ComponentValues
         public const string Medium = "medium";
         public const string Large = "large";
     }
+    
+    /// <summary>
+    /// Icon size values
+    /// </summary>
+    public static class IconSize
+    {
+        public const string Small = "s";
+        public const string Medium = "m";
+        public const string Large = "l";
+        public const string ExtraLarge = "xl";
+    }
+    
+    /// <summary>
+    /// Icon name values
+    /// </summary>
+    public static class IconName
+    {
+        public const string AlertFilled = "alert-filled";
+        public const string Alert = "alert";
+        public const string Apple = "apple";
+        public const string Calendar = "calendar";
+        public const string ChartBars = "chart-bars";
+        public const string ChevronDown = "chevron-down";
+        public const string ChevronLeft = "chevron-left";
+        public const string ChevronRight = "chevron-right";
+        public const string ChevronUp = "chevron-up";
+        public const string Copy = "copy";
+        public const string Heart = "heart";
+        public const string Info = "info";
+        public const string MoodSmile = "mood-smile";
+        public const string Pencil = "pencil";
+        public const string User = "user";
+        public const string Users = "users";
+    }
 }

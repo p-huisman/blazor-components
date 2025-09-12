@@ -1,0 +1,414 @@
+@page "/pggm-icon"
+
+<PageTitle>PGGM Icon</PageTitle>
+
+<PggmHeader Level="1">PGGM Icon</PggmHeader>
+
+<p>
+    The <code>PggmIcon</code> component is a Blazor wrapper for the PGGM design system's icon web component.
+    It provides access to a comprehensive set of icons in various sizes and styles.
+</p>
+
+<div class="demo-section">
+    <PggmHeader Level="2">Icon Sizes</PggmHeader>
+    <p>Icons are available in four different sizes: Small (s), Medium (m), Large (l), and Extra Large (xl).</p>
+    
+    <div class="icon-demo-grid">
+        <div class="icon-demo-item">
+            <PggmIcon Icon="@ComponentValues.IconName.User" Size="@ComponentValues.IconSize.Small" />
+            <span>Small (s)</span>
+        </div>
+        <div class="icon-demo-item">
+            <PggmIcon Icon="@ComponentValues.IconName.User" Size="@ComponentValues.IconSize.Medium" />
+            <span>Medium (m) - Default</span>
+        </div>
+        <div class="icon-demo-item">
+            <PggmIcon Icon="@ComponentValues.IconName.User" Size="@ComponentValues.IconSize.Large" />
+            <span>Large (l)</span>
+        </div>
+        <div class="icon-demo-item">
+            <PggmIcon Icon="@ComponentValues.IconName.User" Size="@ComponentValues.IconSize.ExtraLarge" />
+            <span>Extra Large (xl)</span>
+        </div>
+    </div>
+</div>
+
+<div class="demo-section">
+    <PggmHeader Level="2">Available Icons</PggmHeader>
+    <p>Here are all the available icons in the PGGM design system:</p>
+    
+    <div class="icon-catalog">
+        <div class="icon-catalog-item">
+            <PggmIcon Icon="@ComponentValues.IconName.Alert" Size="@ComponentValues.IconSize.Large" />
+            <span>alert</span>
+        </div>
+        <div class="icon-catalog-item">
+            <PggmIcon Icon="@ComponentValues.IconName.AlertFilled" Size="@ComponentValues.IconSize.Large" />
+            <span>alert-filled</span>
+        </div>
+        <div class="icon-catalog-item">
+            <PggmIcon Icon="@ComponentValues.IconName.Apple" Size="@ComponentValues.IconSize.Large" />
+            <span>apple</span>
+        </div>
+        <div class="icon-catalog-item">
+            <PggmIcon Icon="@ComponentValues.IconName.Calendar" Size="@ComponentValues.IconSize.Large" />
+            <span>calendar</span>
+        </div>
+        <div class="icon-catalog-item">
+            <PggmIcon Icon="@ComponentValues.IconName.ChartBars" Size="@ComponentValues.IconSize.Large" />
+            <span>chart-bars</span>
+        </div>
+        <div class="icon-catalog-item">
+            <PggmIcon Icon="@ComponentValues.IconName.ChevronDown" Size="@ComponentValues.IconSize.Large" />
+            <span>chevron-down</span>
+        </div>
+        <div class="icon-catalog-item">
+            <PggmIcon Icon="@ComponentValues.IconName.ChevronLeft" Size="@ComponentValues.IconSize.Large" />
+            <span>chevron-left</span>
+        </div>
+        <div class="icon-catalog-item">
+            <PggmIcon Icon="@ComponentValues.IconName.ChevronRight" Size="@ComponentValues.IconSize.Large" />
+            <span>chevron-right</span>
+        </div>
+        <div class="icon-catalog-item">
+            <PggmIcon Icon="@ComponentValues.IconName.ChevronUp" Size="@ComponentValues.IconSize.Large" />
+            <span>chevron-up</span>
+        </div>
+        <div class="icon-catalog-item">
+            <PggmIcon Icon="@ComponentValues.IconName.Copy" Size="@ComponentValues.IconSize.Large" />
+            <span>copy</span>
+        </div>
+        <div class="icon-catalog-item">
+            <PggmIcon Icon="@ComponentValues.IconName.Heart" Size="@ComponentValues.IconSize.Large" />
+            <span>heart</span>
+        </div>
+        <div class="icon-catalog-item">
+            <PggmIcon Icon="@ComponentValues.IconName.Info" Size="@ComponentValues.IconSize.Large" />
+            <span>info</span>
+        </div>
+        <div class="icon-catalog-item">
+            <PggmIcon Icon="@ComponentValues.IconName.MoodSmile" Size="@ComponentValues.IconSize.Large" />
+            <span>mood-smile</span>
+        </div>
+        <div class="icon-catalog-item">
+            <PggmIcon Icon="@ComponentValues.IconName.Pencil" Size="@ComponentValues.IconSize.Large" />
+            <span>pencil</span>
+        </div>
+        <div class="icon-catalog-item">
+            <PggmIcon Icon="@ComponentValues.IconName.User" Size="@ComponentValues.IconSize.Large" />
+            <span>user</span>
+        </div>
+        <div class="icon-catalog-item">
+            <PggmIcon Icon="@ComponentValues.IconName.Users" Size="@ComponentValues.IconSize.Large" />
+            <span>users</span>
+        </div>
+    </div>
+</div>
+
+<div class="demo-section">
+    <PggmHeader Level="2">Outlined Icons</PggmHeader>
+    <p>Icons can be displayed in an outlined style by setting the <code>Outline</code> parameter to <code>true</code>.</p>
+    
+    <div class="icon-comparison">
+        <div class="icon-comparison-section">
+            <h4>Regular Icons</h4>
+            <div class="icon-demo-row">
+                <PggmIcon Icon="@ComponentValues.IconName.Alert" Size="@ComponentValues.IconSize.Large" />
+                <PggmIcon Icon="@ComponentValues.IconName.Calendar" Size="@ComponentValues.IconSize.Large" />
+                <PggmIcon Icon="@ComponentValues.IconName.Heart" Size="@ComponentValues.IconSize.Large" />
+                <PggmIcon Icon="@ComponentValues.IconName.Info" Size="@ComponentValues.IconSize.Large" />
+                <PggmIcon Icon="@ComponentValues.IconName.User" Size="@ComponentValues.IconSize.Large" />
+            </div>
+        </div>
+        <div class="icon-comparison-section">
+            <h4>Outlined Icons</h4>
+            <div class="icon-demo-row">
+                <PggmIcon Icon="@ComponentValues.IconName.Alert" Size="@ComponentValues.IconSize.Large" Outline="true" />
+                <PggmIcon Icon="@ComponentValues.IconName.Calendar" Size="@ComponentValues.IconSize.Large" Outline="true" />
+                <PggmIcon Icon="@ComponentValues.IconName.Heart" Size="@ComponentValues.IconSize.Large" Outline="true" />
+                <PggmIcon Icon="@ComponentValues.IconName.Info" Size="@ComponentValues.IconSize.Large" Outline="true" />
+                <PggmIcon Icon="@ComponentValues.IconName.User" Size="@ComponentValues.IconSize.Large" Outline="true" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="demo-section">
+    <PggmHeader Level="2">Interactive Example</PggmHeader>
+    <p>Try different combinations of icons, sizes, and styles:</p>
+    
+    <div class="interactive-demo">
+        <div class="controls">
+            <div class="control-group">
+                <PggmLabel For="icon-select">Select Icon:</PggmLabel>
+                <PggmSelect @bind-Value="selectedIcon" Id="icon-select">
+                    <option value="@ComponentValues.IconName.Alert">Alert</option>
+                    <option value="@ComponentValues.IconName.AlertFilled">Alert Filled</option>
+                    <option value="@ComponentValues.IconName.Apple">Apple</option>
+                    <option value="@ComponentValues.IconName.Calendar">Calendar</option>
+                    <option value="@ComponentValues.IconName.ChartBars">Chart Bars</option>
+                    <option value="@ComponentValues.IconName.ChevronDown">Chevron Down</option>
+                    <option value="@ComponentValues.IconName.ChevronLeft">Chevron Left</option>
+                    <option value="@ComponentValues.IconName.ChevronRight">Chevron Right</option>
+                    <option value="@ComponentValues.IconName.ChevronUp">Chevron Up</option>
+                    <option value="@ComponentValues.IconName.Copy">Copy</option>
+                    <option value="@ComponentValues.IconName.Heart">Heart</option>
+                    <option value="@ComponentValues.IconName.Info">Info</option>
+                    <option value="@ComponentValues.IconName.MoodSmile">Mood Smile</option>
+                    <option value="@ComponentValues.IconName.Pencil">Pencil</option>
+                    <option value="@ComponentValues.IconName.User">User</option>
+                    <option value="@ComponentValues.IconName.Users">Users</option>
+                </PggmSelect>
+            </div>
+            
+            <div class="control-group">
+                <PggmLabel For="size-select">Select Size:</PggmLabel>
+                <PggmSelect @bind-Value="selectedSize" Id="size-select">
+                    <option value="@ComponentValues.IconSize.Small">Small (s)</option>
+                    <option value="@ComponentValues.IconSize.Medium">Medium (m)</option>
+                    <option value="@ComponentValues.IconSize.Large">Large (l)</option>
+                    <option value="@ComponentValues.IconSize.ExtraLarge">Extra Large (xl)</option>
+                </PggmSelect>
+            </div>
+            
+            <div class="control-group">
+                <PggmCheckbox @bind-Checked="isOutlined" Id="outline-checkbox" />
+                <PggmLabel For="outline-checkbox">Outlined</PggmLabel>
+            </div>
+        </div>
+        
+        <div class="preview">
+            <PggmHeader Level="4">Preview:</PggmHeader>
+            <div class="icon-preview">
+                <PggmIcon Icon="@selectedIcon" Size="@selectedSize" Outline="@isOutlined" />
+            </div>
+            <div class="code-preview">
+                <strong>Code:</strong>
+                <code>&lt;PggmIcon Icon="@selectedIcon" Size="@selectedSize"@(isOutlined ? " Outline=\"true\"" : "") /&gt;</code>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="demo-section">
+    <PggmHeader Level="2">Usage Examples</PggmHeader>
+    
+    <div class="code-examples">
+        <div class="code-example">
+            <h4>Basic Icon</h4>
+            <div class="example-preview">
+                <PggmIcon Icon="@ComponentValues.IconName.User" />
+            </div>
+            <div class="example-code">
+                <code>&lt;PggmIcon Icon="@ComponentValues.IconName.User" /&gt;</code>
+            </div>
+        </div>
+        
+        <div class="code-example">
+            <h4>Large Icon</h4>
+            <div class="example-preview">
+                <PggmIcon Icon="@ComponentValues.IconName.Calendar" Size="@ComponentValues.IconSize.Large" />
+            </div>
+            <div class="example-code">
+                <code>&lt;PggmIcon Icon="@ComponentValues.IconName.Calendar" Size="@ComponentValues.IconSize.Large" /&gt;</code>
+            </div>
+        </div>
+        
+        <div class="code-example">
+            <h4>Outlined Icon</h4>
+            <div class="example-preview">
+                <PggmIcon Icon="@ComponentValues.IconName.Heart" Outline="true" />
+            </div>
+            <div class="example-code">
+                <code>&lt;PggmIcon Icon="@ComponentValues.IconName.Heart" Outline="true" /&gt;</code>
+            </div>
+        </div>
+        
+        <div class="code-example">
+            <h4>In a Button</h4>
+            <div class="example-preview">
+                <PggmButton Appearance="primary">
+                    <PggmIcon Icon="@ComponentValues.IconName.Pencil" Size="@ComponentValues.IconSize.Medium" />
+                    Edit
+                </PggmButton>
+            </div>
+            <div class="example-code">
+                <code>
+&lt;PggmButton Appearance="primary"&gt;<br/>
+&nbsp;&nbsp;&lt;PggmIcon Icon="@ComponentValues.IconName.Pencil" Size="@ComponentValues.IconSize.Medium" /&gt;<br/>
+&nbsp;&nbsp;Edit<br/>
+&lt;/PggmButton&gt;
+                </code>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string selectedIcon = ComponentValues.IconName.User;
+    private string selectedSize = ComponentValues.IconSize.Medium;
+    private bool isOutlined = false;
+}
+
+<style>
+    .demo-section {
+        margin: 2rem 0;
+        padding: 1.5rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+    }
+
+    .icon-demo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        margin: 1rem 0;
+    }
+
+    .icon-demo-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        background: #f9f9f9;
+    }
+
+    .icon-catalog {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 1rem;
+        margin: 1rem 0;
+    }
+
+    .icon-catalog-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        background: #f9f9f9;
+        text-align: center;
+    }
+
+    .icon-catalog-item span {
+        font-size: 0.875rem;
+        color: #666;
+        word-break: break-word;
+    }
+
+    .icon-comparison {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin: 1rem 0;
+    }
+
+    .icon-comparison-section h4 {
+        margin-bottom: 1rem;
+        color: #333;
+    }
+
+    .icon-demo-row {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    .interactive-demo {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin: 1rem 0;
+    }
+
+    .controls {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .control-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .preview {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .icon-preview {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+        border: 2px dashed #ccc;
+        border-radius: 8px;
+        background: #f9f9f9;
+    }
+
+    .code-preview {
+        padding: 1rem;
+        background: #f5f5f5;
+        border-radius: 4px;
+        font-family: 'Courier New', monospace;
+    }
+
+    .code-examples {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1rem;
+        margin: 1rem 0;
+    }
+
+    .code-example {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .code-example h4 {
+        margin: 0;
+        padding: 1rem;
+        background: #f5f5f5;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .example-preview {
+        padding: 1.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: white;
+    }
+
+    .example-code {
+        padding: 1rem;
+        background: #f9f9f9;
+        border-top: 1px solid #e0e0e0;
+        font-family: 'Courier New', monospace;
+        font-size: 0.875rem;
+    }
+
+    @@media (max-width: 768px) {
+        .icon-comparison,
+        .interactive-demo {
+            grid-template-columns: 1fr;
+        }
+        
+        .icon-demo-grid {
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        }
+        
+        .icon-catalog {
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        }
+    }
+</style>
