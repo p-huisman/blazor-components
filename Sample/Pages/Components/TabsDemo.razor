@@ -7,12 +7,12 @@
 
 <PggmHeader Level="2">Basic Tabs</PggmHeader>
 <PggmTab OnTabChange="OnTabChanged">
-  <PggmTabPanel Label="Tab 1" Active="true">
+  <PggmTabPanel Title="Tab 1" Active="true">
     <PggmHeader Level="3">Content for Tab 1</PggmHeader>
     <p>This is the content for the first tab. It can contain any HTML or Blazor components.</p>
   </PggmTabPanel>
   
-  <PggmTabPanel Label="Tab 2">
+  <PggmTabPanel Title="Tab 2">
     <PggmHeader Level="3">Content for Tab 2</PggmHeader>
     <p>This is the content for the second tab with different information.</p>
     <ul>
@@ -22,7 +22,7 @@
     </ul>
   </PggmTabPanel>
   
-  <PggmTabPanel Label="Tab 3">
+  <PggmTabPanel Title="Tab 3">
     <PggmHeader Level="3">Content for Tab 3</PggmHeader>
     <p>The third tab contains yet another set of content.</p>
     <button class="btn btn-primary">Sample Button</button>
@@ -31,53 +31,53 @@
 
 <PggmHeader Level="2">Scrollable Tabs</PggmHeader>
 <PggmTab Scrollable="true" OnTabChange="OnScrollableTabChanged">
-  <PggmTabPanel Label="First Tab" Active="true">
+  <PggmTabPanel Title="First Tab" Active="true">
     <p>Content for the first scrollable tab.</p>
   </PggmTabPanel>
   
-  <PggmTabPanel Label="Second Tab">
+  <PggmTabPanel Title="Second Tab">
     <p>Content for the second scrollable tab.</p>
   </PggmTabPanel>
   
-  <PggmTabPanel Label="Third Tab">
+  <PggmTabPanel Title="Third Tab">
     <p>Content for the third scrollable tab.</p>
   </PggmTabPanel>
   
-  <PggmTabPanel Label="Fourth Tab">
+  <PggmTabPanel Title="Fourth Tab">
     <p>Content for the fourth scrollable tab.</p>
   </PggmTabPanel>
   
-  <PggmTabPanel Label="Fifth Tab">
+  <PggmTabPanel Title="Fifth Tab">
     <p>Content for the fifth scrollable tab.</p>
   </PggmTabPanel>
   
-  <PggmTabPanel Label="Sixth Tab">
+  <PggmTabPanel Title="Sixth Tab">
     <p>Content for the sixth scrollable tab.</p>
   </PggmTabPanel>
 </PggmTab>
 
 <PggmHeader Level="2">Tabs with Different Sizes</PggmHeader>
 <PggmTab Size="small" OnTabChange="OnSmallTabChanged">
-  <PggmTabPanel Label="Small 1" Active="true">
+  <PggmTabPanel Title="Small 1" Active="true">
     <p>Small size tab content 1.</p>
   </PggmTabPanel>
   
-  <PggmTabPanel Label="Small 2">
+  <PggmTabPanel Title="Small 2">
     <p>Small size tab content 2.</p>
   </PggmTabPanel>
 </PggmTab>
 
 <PggmHeader Level="2">Tabs with Disabled Panel</PggmHeader>
 <PggmTab OnTabChange="OnDisabledTabChanged">
-  <PggmTabPanel Label="Enabled Tab" Active="true">
+  <PggmTabPanel Title="Enabled Tab" Active="true">
     <p>This tab is enabled and functional.</p>
   </PggmTabPanel>
   
-  <PggmTabPanel Label="Disabled Tab" Disabled="true">
+  <PggmTabPanel Title="Disabled Tab" Disabled="true">
     <p>This tab is disabled and should not be selectable.</p>
   </PggmTabPanel>
   
-  <PggmTabPanel Label="Another Enabled Tab">
+  <PggmTabPanel Title="Another Enabled Tab">
     <p>This is another enabled tab.</p>
   </PggmTabPanel>
 </PggmTab>

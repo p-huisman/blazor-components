@@ -1,0 +1,342 @@
+using Bunit;
+using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.DependencyInjection;
+using Pggm.Components;
+using Pggm.Components.Services;
+using System.Text.Json;
+using Xunit;
+
+namespace Pggm.Components.Tests
+{
+    public class PggmTabTests : TestContext
+    {
+        public PggmTabTests()
+        {
+            Services.AddScoped<PggmDesignSystemService>();
+        }
+
+        [Fact]
+        public void PggmTab_RendersBasicStructure()
+        {
+            // Arrange & Act
+            var component = RenderComponent<PggmTab>();
+
+            // Assert
+            var element = component.Find("pggm-tab");
+            Assert.NotNull(element);
+        }
+
+        [Fact]
+        public void PggmTab_RendersWithScrollableAttribute()
+        {
+            // Arrange & Act
+            var component = RenderComponent<PggmTab>(parameters => parameters
+                .Add(p => p.Scrollable, true));
+
+            // Assert
+            var element = component.Find("pggm-tab");
+            Assert.True(element.HasAttribute("scrollable"));
+        }
+
+        [Fact]
+        public void PggmTab_DoesNotRenderScrollableWhenFalse()
+        {
+            // Arrange & Act
+            var component = RenderComponent<PggmTab>(parameters => parameters
+                .Add(p => p.Scrollable, false));
+
+            // Assert
+            var element = component.Find("pggm-tab");
+            Assert.False(element.HasAttribute("scrollable"));
+        }
+
+        [Fact]
+        public void PggmTab_RendersWithSize()
+        {
+            // Arrange
+            var size = "small";
+
+            // Act
+            var component = RenderComponent<PggmTab>(parameters => parameters
+                .Add(p => p.Size, size));
+
+            // Assert
+            var element = component.Find("pggm-tab");
+            Assert.Equal(size, element.GetAttribute("size"));
+        }
+
+        [Fact]
+        public void PggmTab_DoesNotRenderSizeWhenEmpty()
+        {
+            // Arrange & Act
+            var component = RenderComponent<PggmTab>(parameters => parameters
+                .Add(p => p.Size, string.Empty));
+
+            // Assert
+            var element = component.Find("pggm-tab");
+            Assert.False(element.HasAttribute("size"));
+        }
+
+        [Fact]
+        public void PggmTab_RendersWithAppearance()
+        {
+            // Arrange
+            var appearance = "primary";
+
+            // Act
+            var component = RenderComponent<PggmTab>(parameters => parameters
+                .Add(p => p.Appearance, appearance));
+
+            // Assert
+            var element = component.Find("pggm-tab");
+            Assert.Equal(appearance, element.GetAttribute("appearance"));
+        }
+
+        [Fact]
+        public void PggmTab_RendersWithDisabledAttribute()
+        {
+            // Arrange & Act
+            var component = RenderComponent<PggmTab>(parameters => parameters
+                .Add(p => p.Disabled, true));
+
+            // Assert
+            var element = component.Find("pggm-tab");
+            Assert.True(element.HasAttribute("disabled"));
+        }
+
+        [Fact]
+        public void PggmTab_DoesNotRenderDisabledWhenFalse()
+        {
+            // Arrange & Act
+            var component = RenderComponent<PggmTab>(parameters => parameters
+                .Add(p => p.Disabled, false));
+
+            // Assert
+            var element = component.Find("pggm-tab");
+            Assert.False(element.HasAttribute("disabled"));
+        }
+
+        [Fact]
+        public void PggmTab_RendersWithActiveTabIndex()
+        {
+            // Arrange
+            var activeIndex = 2;
+
+            // Act
+            var component = RenderComponent<PggmTab>(parameters => parameters
+                .Add(p => p.ActiveTabIndex, activeIndex));
+
+            // Assert
+            var element = component.Find("pggm-tab");
+            Assert.Equal(activeIndex.ToString(), element.GetAttribute("active-tab-index"));
+        }
+
+        [Fact]
+        public void PggmTab_DoesNotRenderActiveTabIndexWhenNull()
+        {
+            // Arrange & Act
+            var component = RenderComponent<PggmTab>(parameters => parameters
+                .Add(p => p.ActiveTabIndex, (int?)null));
+
+            // Assert
+            var element = component.Find("pggm-tab");
+            Assert.False(element.HasAttribute("active-tab-index"));
+        }
+
+        [Fact]
+        public void PggmTab_RendersChildContent()
+        {
+            // Arrange
+            var content = "<pggm-tab-panel>Tab content</pggm-tab-panel>";
+
+            // Act
+            var component = RenderComponent<PggmTab>(parameters => parameters
+                .AddChildContent(content));
+
+            // Assert
+            var element = component.Find("pggm-tab");
+            Assert.Contains("Tab content", element.InnerHtml);
+        }
+
+        [Fact]
+        public void PggmTab_RendersWithAllAttributes()
+        {
+            // Arrange
+            var size = "large";
+            var appearance = "secondary";
+            var activeIndex = 1;
+
+            // Act
+            var component = RenderComponent<PggmTab>(parameters => parameters
+                .Add(p => p.Scrollable, true)
+                .Add(p => p.Size, size)
+                .Add(p => p.Appearance, appearance)
+                .Add(p => p.Disabled, false)
+                .Add(p => p.ActiveTabIndex, activeIndex)
+                .AddChildContent("<pggm-tab-panel>Content</pggm-tab-panel>"));
+
+            // Assert
+            var element = component.Find("pggm-tab");
+            Assert.True(element.HasAttribute("scrollable"));
+            Assert.Equal(size, element.GetAttribute("size"));
+            Assert.Equal(appearance, element.GetAttribute("appearance"));
+            Assert.False(element.HasAttribute("disabled"));
+            Assert.Equal(activeIndex.ToString(), element.GetAttribute("active-tab-index"));
+        }
+
+        [Fact]
+        public void PggmTab_RendersWithCustomAttributes()
+        {
+            // Arrange & Act
+            var component = RenderComponent<PggmTab>(parameters => parameters
+                .AddUnmatched("data-testid", "my-tab-container")
+                .AddUnmatched("class", "custom-tab-class"));
+
+            // Assert
+            var element = component.Find("pggm-tab");
+            Assert.Equal("my-tab-container", element.GetAttribute("data-testid"));
+            Assert.Equal("custom-tab-class", element.GetAttribute("class"));
+        }
+
+        [Fact]
+        public void PggmTab_HasCorrectTagName()
+        {
+            // Arrange & Act
+            var component = RenderComponent<PggmTab>();
+
+            // Assert
+            var instance = component.Instance;
+            Assert.Equal("pggm-tab", instance.TagName);
+        }
+
+        [Fact]
+        public void PggmTab_EventCallbacksAreAssigned()
+        {
+            // Arrange
+            var receivedTabIndex = -1;
+
+            EventCallback<int> onTabChange = EventCallback.Factory.Create<int>(this, (index) =>
+            {
+                receivedTabIndex = index;
+            });
+
+            EventCallback<int> onTabClick = EventCallback.Factory.Create<int>(this, (index) =>
+            {
+                // Click handled
+            });
+
+            // Act
+            var component = RenderComponent<PggmTab>(parameters => parameters
+                .Add(p => p.OnTabChange, onTabChange)
+                .Add(p => p.OnTabClick, onTabClick));
+
+            // Assert
+            var instance = component.Instance;
+            Assert.True(instance.OnTabChange.HasDelegate);
+            Assert.True(instance.OnTabClick.HasDelegate);
+        }
+
+        [Fact]
+        public void PggmTab_HasCorrectEventNames()
+        {
+            // Arrange & Act
+            var component = RenderComponent<PggmTab>();
+
+            // Assert
+            var instance = component.Instance;
+            var eventNames = instance.GetType()
+                .GetMethod("GetEventNames", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                ?.Invoke(instance, null) as IEnumerable<string>;
+
+            Assert.NotNull(eventNames);
+            Assert.Contains("tabChange", eventNames);
+            Assert.Contains("tabClick", eventNames);
+        }
+
+        [Fact]
+        public void PggmTab_ActiveTabIndexProperty()
+        {
+            // Arrange
+            var initialIndex = 0;
+            var newIndex = 2;
+
+            // Act
+            var component = RenderComponent<PggmTab>(parameters => parameters
+                .Add(p => p.ActiveTabIndex, initialIndex));
+
+            var instance = component.Instance;
+            Assert.Equal(initialIndex, instance.ActiveTabIndex);
+
+            // Update property
+            component.SetParametersAndRender(parameters => parameters
+                .Add(p => p.ActiveTabIndex, newIndex));
+
+            // Assert
+            Assert.Equal(newIndex, instance.ActiveTabIndex);
+        }
+
+        [Fact]
+        public void PggmTab_SizeProperty()
+        {
+            // Arrange
+            var sizes = new[] { "small", "medium", "large" };
+
+            foreach (var size in sizes)
+            {
+                // Act
+                var component = RenderComponent<PggmTab>(parameters => parameters
+                    .Add(p => p.Size, size));
+
+                // Assert
+                var element = component.Find("pggm-tab");
+                Assert.Equal(size, element.GetAttribute("size"));
+            }
+        }
+
+        [Fact]
+        public void PggmTab_AppearanceProperty()
+        {
+            // Arrange
+            var appearances = new[] { "primary", "secondary", "tertiary" };
+
+            foreach (var appearance in appearances)
+            {
+                // Act
+                var component = RenderComponent<PggmTab>(parameters => parameters
+                    .Add(p => p.Appearance, appearance));
+
+                // Assert
+                var element = component.Find("pggm-tab");
+                Assert.Equal(appearance, element.GetAttribute("appearance"));
+            }
+        }
+
+        [Fact]
+        public void PggmTab_SupportsMultipleTabPanels()
+        {
+            // Arrange & Act
+            var component = RenderComponent<PggmTab>(parameters => parameters
+                .AddChildContent(builder =>
+                {
+                    builder.OpenComponent<PggmTabPanel>(0);
+                    builder.AddAttribute(1, "Title", "Tab 1");
+                    builder.AddAttribute(2, "Active", true);
+                    builder.AddAttribute(3, "ChildContent", (RenderFragment)(content => content.AddContent(4, "Content 1")));
+                    builder.CloseComponent();
+
+                    builder.OpenComponent<PggmTabPanel>(5);
+                    builder.AddAttribute(6, "Title", "Tab 2");
+                    builder.AddAttribute(7, "ChildContent", (RenderFragment)(content => content.AddContent(8, "Content 2")));
+                    builder.CloseComponent();
+                }));
+
+            // Assert
+            var element = component.Find("pggm-tab");
+            var tabPanels = component.FindAll("pggm-tab-panel");
+            
+            Assert.Equal(2, tabPanels.Count);
+            Assert.Contains("Content 1", element.InnerHtml);
+            Assert.Contains("Content 2", element.InnerHtml);
+        }
+    }
+}

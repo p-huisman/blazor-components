@@ -2,6 +2,10 @@
 @namespace Pggm.Components
 
 <pggm-tab-panel @ref="ElementRef" @attributes="GetAttributes()">
+  @if (!string.IsNullOrEmpty(Title))
+  {
+    <h3 slot="title">@Title</h3>
+  }
   @ChildContent
 </pggm-tab-panel>
 
@@ -9,9 +13,9 @@
   public override string TagName => "pggm-tab-panel";
 
   /// <summary>
-  /// The tab label/header text
+  /// The tab title/header text
   /// </summary>
-  [Parameter] public string? Label { get; set; }
+  [Parameter] public string? Title { get; set; }
 
   /// <summary>
   /// Whether this tab panel is active/selected
@@ -40,7 +44,6 @@
 
   protected override void AddComponentAttributes(Dictionary<string, object> attributes)
   {
-    AttributeHelper.SetAttributeIfNotEmpty(attributes, "label", Label);
     AttributeHelper.SetBooleanAttribute(attributes, "active", Active);
     AttributeHelper.SetBooleanAttribute(attributes, Constants.AttributeNames.Disabled, Disabled);
     AttributeHelper.SetAttributeIfNotEmpty(attributes, "icon", Icon);
