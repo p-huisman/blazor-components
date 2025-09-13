@@ -4,10 +4,10 @@
 
 <pggm-wizard @ref="ElementRef" @attributes="GetAttributes()">
   @ChildContent
-  @if (SuccessContent != null)
+  @if (FinishContent != null)
   {
-    <div slot="success">
-      @SuccessContent
+    <div slot="finish">
+      @FinishContent
     </div>
   }
   @if (ErrorContent != null)
@@ -47,19 +47,9 @@
   [Parameter] public string SubmitLabel { get; set; } = "Verzenden";
 
   /// <summary>
-  /// Title shown on successful form submission
+  /// Content to display in the finish slot
   /// </summary>
-  [Parameter] public string SuccessTitle { get; set; } = "Bedankt";
-
-  /// <summary>
-  /// Title shown on form submission error
-  /// </summary>
-  [Parameter] public string ErrorTitle { get; set; } = "Er is iets fout gegaan";
-
-  /// <summary>
-  /// Content to display in the success slot
-  /// </summary>
-  [Parameter] public RenderFragment? SuccessContent { get; set; }
+  [Parameter] public RenderFragment? FinishContent { get; set; }
 
   /// <summary>
   /// Content to display in the error slot
@@ -164,8 +154,6 @@
     AttributeHelper.SetAttributeIfNotEmpty(attributes, "next-label", NextLabel);
     AttributeHelper.SetAttributeIfNotEmpty(attributes, "back-label", BackLabel);
     AttributeHelper.SetAttributeIfNotEmpty(attributes, "submit-label", SubmitLabel);
-    AttributeHelper.SetAttributeIfNotEmpty(attributes, "success-title", SuccessTitle);
-    AttributeHelper.SetAttributeIfNotEmpty(attributes, "error-title", ErrorTitle);
   }
 
   /// <summary>

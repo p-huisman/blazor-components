@@ -24,9 +24,7 @@ The main wizard component that orchestrates navigation between multiple forms.
 | `NextLabel` | string | "Volgende" | Label for the next button |
 | `BackLabel` | string | "Vorige" | Label for the back button |
 | `SubmitLabel` | string | "Verzenden" | Label for the submit button |
-| `SuccessTitle` | string | "Bedankt" | Title shown on successful form submission |
-| `ErrorTitle` | string | "Er is iets fout gegaan" | Title shown on form submission error |
-| `SuccessContent` | RenderFragment | null | Content to display in the success slot |
+| `FinishContent` | RenderFragment | null | Content to display in the finish slot |
 | `ErrorContent` | RenderFragment | null | Content to display in the error slot |
 
 ### Events
@@ -54,8 +52,6 @@ The main wizard component that orchestrates navigation between multiple forms.
 <PggmWizard 
     Method="POST" 
     Action="/api/submit-wizard" 
-    SuccessTitle="Success!" 
-    ErrorTitle="Something went wrong"
     OnBeforeSubmit="HandleBeforeSubmit"
     OnWizardFinished="HandleWizardFinished">
     
@@ -69,9 +65,9 @@ The main wizard component that orchestrates navigation between multiple forms.
         </PggmWizardForm>
     </ChildContent>
     
-    <SuccessContent>
+    <FinishContent>
         <p>Thank you for submitting your information!</p>
-    </SuccessContent>
+    </FinishContent>
     
     <ErrorContent>
         <p>There was an error. Please try again.</p>

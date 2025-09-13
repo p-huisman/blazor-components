@@ -6,8 +6,8 @@
 
 <PggmHeader Level="1">PGGM Wizard</PggmHeader>
 
-<PggmWizard @ref="wizardRef" Method="POST" Action="/api/submit-wizard" SuccessTitle="Success!"
-    ErrorTitle="Something went wrong" OnBeforeNavigate="HandleBeforeNavigate" OnBeforeSubmit="HandleBeforeSubmit"
+<PggmWizard @ref="wizardRef" Method="POST" Action="/api/submit-wizard"
+    OnBeforeNavigate="HandleBeforeNavigate" OnBeforeSubmit="HandleBeforeSubmit"
     OnWizardFinished="HandleWizardFinished">
 
     <ChildContent>
@@ -128,9 +128,9 @@
         </PggmWizardForm>
     </ChildContent>
 
-    <SuccessContent>
+    <FinishContent>
         <p>Thank you for submitting your information!</p>
-    </SuccessContent>
+    </FinishContent>
 
     <ErrorContent>
         <p>There was an error. Please try again.</p>

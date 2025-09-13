@@ -11,10 +11,15 @@
     <Authors>PGGM</Authors>
     <Description>Blazor wrapper components for PGGM Design System web components</Description>
     <PackageTags>blazor;pggm;design-system;web-components;ui</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>
