@@ -1,9 +1,13 @@
-@page "/slider"
+@page "/pggm-slider"
 
-<h1>Slider Component Demo</h1>
+<PggmHeader Level="1">Pggm Slider</PggmHeader>
+
+<p>The Pggm Slider component allows users to select a value from a range by sliding a handle along a track. It supports
+    features like custom ranges, snap values, fraction digits for decimal precision, labels for context, and integration
+    with forms and validation.</p>
 
 <div class="demo-section">
-    <h2>Basic Slider</h2>
+    <PggmHeader Level="2">Basic Slider</PggmHeader>
     <p>A simple slider with default values (0-100, step 1).</p>
 
     <PggmSlider @bind-Value="basicValue" FractionDigits="0" />
@@ -11,7 +15,7 @@
 </div>
 
 <div class="demo-section">
-    <h2>Custom Range</h2>
+    <PggmHeader Level="2">Custom Range</PggmHeader>
     <p>Slider with custom min (10) and max (50).</p>
 
     <PggmSlider @bind-Value="customValue" Min="10" Max="50" FractionDigits="0" />
@@ -19,7 +23,7 @@
 </div>
 
 <div class="demo-section">
-    <h2>Snap Values</h2>
+    <PggmHeader Level="2">Snap Values</PggmHeader>
     <p>Slider that snaps to specific values: 0, 25, 50, 75, 100.</p>
 
     <PggmSlider @bind-Value="snapValue" Min="0" Max="100" SnapValues="0,25,50,75,100" FractionDigits="0" />
@@ -28,7 +32,7 @@
 </div>
 
 <div class="demo-section">
-    <h2>Rating Slider with Snap Values</h2>
+    <PggmHeader Level="2">Rating Slider with Snap Values</PggmHeader>
     <p>A rating slider with snap values from 1 to 5.</p>
 
     <PggmSlider @bind-Value="ratingValue" Min="1" Max="5" SnapValues="1,2,3,4,5" FractionDigits="0" />
@@ -36,7 +40,7 @@
 </div>
 
 <div class="demo-section">
-    <h2>Percentage Slider</h2>
+    <PggmHeader Level="2">Percentage Slider</PggmHeader>
     <p>Slider with snap values at 10% intervals.</p>
 
     <PggmSlider @bind-Value="percentageValue" Min="0" Max="100" SnapValues="0,10,20,30,40,50,60,70,80,90,100"
@@ -45,27 +49,27 @@
 </div>
 
 <div class="demo-section">
-    <h2>Fraction Digits Demo</h2>
+    <PggmHeader Level="2">Fraction Digits Demo</PggmHeader>
     <p>Compare sliders with different fraction digit settings for decimal precision display.</p>
 
-    <h3>No fraction digits (integers only)</h3>
+    <PggmHeader Level="3">No fraction digits (integers only)</PggmHeader>
     <PggmSlider @bind-Value="fractionValue" Min="0" Max="10" FractionDigits="0" />
     <p>Value: <strong>@fractionValue.ToString("F1")</strong> (displayed as integer in slider)</p>
 
-    <h3>1 fraction digit</h3>
+    <PggmHeader Level="3">1 fraction digit</PggmHeader>
     <PggmSlider @bind-Value="fractionValue1" Min="0" Max="10" FractionDigits="1" />
     <p>Value: <strong>@fractionValue1.ToString("F1")</strong> (displayed with 1 decimal place)</p>
 
-    <h3>2 fraction digits</h3>
+    <PggmHeader Level="3">2 fraction digits</PggmHeader>
     <PggmSlider @bind-Value="fractionValue2" Min="0" Max="10" FractionDigits="2" />
     <p>Value: <strong>@fractionValue2.ToString("F2")</strong> (displayed with 2 decimal places)</p>
 </div>
 
 <div class="demo-section">
-    <h2>Slider with Labels</h2>
+    <PggmHeader Level="2">Slider with Labels</PggmHeader>
     <p>Sliders can contain labels positioned at specific values to provide visual context.</p>
 
-    <h3>Percentage Slider with Labels</h3>
+    <PggmHeader Level="3">Percentage Slider with Labels</PggmHeader>
     <PggmSlider @bind-Value="labeledValue" Min="0" Max="100" FractionDigits="0">
         <PggmSliderLabel Value="0">0%</PggmSliderLabel>
         <PggmSliderLabel Value="25">25%</PggmSliderLabel>
@@ -75,7 +79,7 @@
     </PggmSlider>
     <p>Current value: <strong>@labeledValue.ToString("F0")%</strong></p>
 
-    <h3>Rating Slider with HTML Labels</h3>
+    <PggmHeader Level="3">Rating Slider with HTML Labels</PggmHeader>
     <PggmSlider @bind-Value="ratingLabeledValue" Min="1" Max="5" SnapValues="1,2,3,4,5" FractionDigits="0">
         <PggmSliderLabel Value="1"><span style="color: #ff4444;">😞 Poor</span></PggmSliderLabel>
         <PggmSliderLabel Value="2"><span style="color: #ff8800;">😐 Fair</span></PggmSliderLabel>
@@ -85,7 +89,7 @@
     </PggmSlider>
     <p>Rating: <strong>@GetRatingText(ratingLabeledValue)</strong> (@ratingLabeledValue.ToString("F0") stars)</p>
 
-    <h3>Temperature Slider with Unit Labels</h3>
+    <PggmHeader Level="3">Temperature Slider with Unit Labels</PggmHeader>
     <PggmSlider @bind-Value="temperatureValue" Min="-10" Max="40" FractionDigits="0">
         <PggmSliderLabel Value="-10">❄️ -10°C</PggmSliderLabel>
         <PggmSliderLabel Value="0">🧊 0°C</PggmSliderLabel>
@@ -98,7 +102,7 @@
 </div>
 
 <div class="demo-section">
-    <h2>Disabled Slider</h2>
+    <PggmHeader Level="2">Disabled Slider</PggmHeader>
     <p>A disabled slider to show the disabled state.</p>
 
     <PggmSlider @bind-Value="disabledValue" Disabled="true" FractionDigits="0" />
@@ -106,7 +110,7 @@
 </div>
 
 <div class="demo-section">
-    <h2>Event Handling</h2>
+    <PggmHeader Level="2">Event Handling</PggmHeader>
     <p>Demonstrates both OnInput (continuous) and ValueChanged (on commit) events.</p>
 
     <PggmSlider Value="eventValue" ValueChanged="HandleValueChanged" OnInput="HandleInput" FractionDigits="0" />
@@ -118,7 +122,7 @@
 </div>
 
 <div class="demo-section">
-    <h2>Form Integration</h2>
+    <PggmHeader Level="2">Form Integration</PggmHeader>
     <p>Slider integrated with Blazor form validation.</p>
 
     <EditForm Model="formModel" OnValidSubmit="HandleValidSubmit">
@@ -144,7 +148,7 @@
     @if (formSubmitted)
     {
         <div class="success-message">
-            <h3>Form Submitted Successfully!</h3>
+            <PggmHeader Level="3">Form Submitted Successfully!</PggmHeader>
             <p>Satisfaction Level: @formModel.SatisfactionLevel</p>
             <p>Budget: $@formModel.Budget.ToString("F0")</p>
         </div>

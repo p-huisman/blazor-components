@@ -12,10 +12,26 @@
 @code {
   public override string TagName => "pggm-slider";
 
+  private double _value;
+
   /// <summary>
   /// The current value of the slider
   /// </summary>
-  [Parameter] public double Value { get; set; }
+  [Parameter] 
+#pragma warning disable BL0007 // Component parameter should be auto property
+  public double Value 
+  { 
+    get => _value;
+    set
+    {
+      if (Math.Abs(_value - value) > double.Epsilon)
+      {
+        _value = Math.Max(Min, Math.Min(Max, value)); // Clamp to bounds
+        _ = UpdateElementValueAsync();
+      }
+    }
+  }
+#pragma warning restore BL0007
 
   /// <summary>
   /// The minimum value of the slider
@@ -66,39 +82,61 @@
 
   private async Task HandleValueChangeAsync(object? eventData)
   {
-    await UpdateValueFromElement();
+    var elementValue = await GetElementValueAsync();
     
-    if (ValueChanged.HasDelegate)
+    if (Math.Abs(_value - elementValue) > double.Epsilon)
     {
-      await ValueChanged.InvokeAsync(Value);
+      _value = elementValue; // Update backing field directly to avoid recursion
+      
+      if (ValueChanged.HasDelegate)
+      {
+        await ValueChanged.InvokeAsync(Value);
+      }
+      
+      await InvokeAsync(StateHasChanged);
     }
   }
 
   private async Task HandleInputAsync(object? eventData)
   {
-    await UpdateValueFromElement();
+    var elementValue = await GetElementValueAsync();
     
-    if (OnInput.HasDelegate)
+    if (Math.Abs(_value - elementValue) > double.Epsilon)
     {
-      await OnInput.InvokeAsync(Value);
+      _value = elementValue; // Update backing field directly
+      
+      if (OnInput.HasDelegate)
+      {
+        await OnInput.InvokeAsync(Value);
+      }
     }
   }
 
-  private async Task UpdateValueFromElement()
+  private async Task<double> GetElementValueAsync()
   {
     try
     {
-      var newValue = await JSRuntime.InvokeAsync<double>("PggmComponents.getProperty", ElementRef, "value");
-      
-      if (Math.Abs(Value - newValue) > double.Epsilon)
-      {
-        Value = newValue;
-        await InvokeAsync(StateHasChanged);
-      }
+      return await JSRuntime.InvokeAsync<double>("PggmComponents.getProperty", ElementRef, "value");
     }
     catch (Exception ex)
     {
-      Console.WriteLine($"Error updating slider value: {ex.Message}");
+      Console.WriteLine($"Error getting slider value: {ex.Message}");
+      return Value;
+    }
+  }
+
+  private async Task UpdateElementValueAsync()
+  {
+    if (ElementRef.Id != null)
+    {
+      try
+      {
+        await JSRuntime.InvokeVoidAsync("PggmComponents.setProperty", ElementRef, "value", Value);
+      }
+      catch
+      {
+        // Element might not be ready yet
+      }
     }
   }
 
@@ -125,23 +163,16 @@
   protected override async Task OnAfterRenderAsync(bool firstRender)
   {
     await base.OnAfterRenderAsync(firstRender);
+    
+    if (firstRender)
+    {
+      // Ensure initial value is set correctly on first render
+      await UpdateElementValueAsync();
+    }
   }
 
   protected override async Task OnParametersSetAsync()
   {
     await base.OnParametersSetAsync();
-    
-    // Update the element value if it was changed externally
-    if (ElementRef.Id != null)
-    {
-      try
-      {
-        await JSRuntime.InvokeVoidAsync("PggmComponents.setProperty", ElementRef, "value", Value);
-      }
-      catch
-      {
-        // Element might not be ready yet, ignore
-      }
-    }
   }
 }
