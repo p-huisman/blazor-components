@@ -23,11 +23,6 @@
   [Parameter] public bool Active { get; set; }
 
   /// <summary>
-  /// Whether this tab panel is disabled
-  /// </summary>
-  [Parameter] public bool Disabled { get; set; }
-
-  /// <summary>
   /// The tab index for this panel
   /// </summary>
   [Parameter] public int? TabIndex { get; set; }
@@ -45,7 +40,6 @@
   protected override void AddComponentAttributes(Dictionary<string, object> attributes)
   {
     AttributeHelper.SetBooleanAttribute(attributes, "active", Active);
-    AttributeHelper.SetBooleanAttribute(attributes, Constants.AttributeNames.Disabled, Disabled);
     AttributeHelper.SetAttributeIfNotEmpty(attributes, "icon", Icon);
     
     if (TabIndex.HasValue)

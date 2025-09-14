@@ -95,30 +95,6 @@ namespace Pggm.Components.Tests
         }
 
         [Fact]
-        public void PggmTabPanel_RendersWithDisabledAttribute()
-        {
-            // Arrange & Act
-            var component = RenderComponent<PggmTabPanel>(parameters => parameters
-                .Add(p => p.Disabled, true));
-
-            // Assert
-            var element = component.Find("pggm-tab-panel");
-            Assert.True(element.HasAttribute("disabled"));
-        }
-
-        [Fact]
-        public void PggmTabPanel_DoesNotRenderDisabledWhenFalse()
-        {
-            // Arrange & Act
-            var component = RenderComponent<PggmTabPanel>(parameters => parameters
-                .Add(p => p.Disabled, false));
-
-            // Assert
-            var element = component.Find("pggm-tab-panel");
-            Assert.False(element.HasAttribute("disabled"));
-        }
-
-        [Fact]
         public void PggmTabPanel_RendersWithIcon()
         {
             // Arrange
@@ -199,7 +175,6 @@ namespace Pggm.Components.Tests
             var component = RenderComponent<PggmTabPanel>(parameters => parameters
                 .Add(p => p.Title, title)
                 .Add(p => p.Active, true)
-                .Add(p => p.Disabled, false)
                 .Add(p => p.Icon, icon)
                 .Add(p => p.TabIndex, tabIndex)
                 .AddChildContent("<p>Tab content here</p>"));
@@ -212,7 +187,6 @@ namespace Pggm.Components.Tests
             Assert.NotNull(titleElement);
             Assert.Equal(title, titleElement.TextContent);
             Assert.True(element.HasAttribute("active"));
-            Assert.False(element.HasAttribute("disabled"));
             Assert.Equal(icon, element.GetAttribute("icon"));
             Assert.Equal(tabIndex.ToString(), element.GetAttribute("tab-index"));
             Assert.Contains("<p>Tab content here</p>", element.InnerHtml);

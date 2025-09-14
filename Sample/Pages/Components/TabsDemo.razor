@@ -29,56 +29,56 @@
   </PggmTabPanel>
 </PggmTab>
 
-<PggmHeader Level="2">Scrollable Tabs</PggmHeader>
-<PggmTab Scrollable="true" OnTabChange="OnScrollableTabChanged">
+<PggmHeader Level="2">Multiple Tab Example</PggmHeader>
+<PggmTab OnTabChange="OnMultipleTabChanged">
   <PggmTabPanel Title="First Tab" Active="true">
-    <p>Content for the first scrollable tab.</p>
+    <p>Content for the first tab.</p>
   </PggmTabPanel>
   
   <PggmTabPanel Title="Second Tab">
-    <p>Content for the second scrollable tab.</p>
+    <p>Content for the second tab.</p>
   </PggmTabPanel>
   
   <PggmTabPanel Title="Third Tab">
-    <p>Content for the third scrollable tab.</p>
+    <p>Content for the third tab.</p>
   </PggmTabPanel>
   
   <PggmTabPanel Title="Fourth Tab">
-    <p>Content for the fourth scrollable tab.</p>
+    <p>Content for the fourth tab.</p>
   </PggmTabPanel>
   
   <PggmTabPanel Title="Fifth Tab">
-    <p>Content for the fifth scrollable tab.</p>
+    <p>Content for the fifth tab.</p>
   </PggmTabPanel>
   
   <PggmTabPanel Title="Sixth Tab">
-    <p>Content for the sixth scrollable tab.</p>
+    <p>Content for the sixth tab.</p>
   </PggmTabPanel>
 </PggmTab>
 
-<PggmHeader Level="2">Tabs with Different Sizes</PggmHeader>
-<PggmTab Size="small" OnTabChange="OnSmallTabChanged">
-  <PggmTabPanel Title="Small 1" Active="true">
-    <p>Small size tab content 1.</p>
+<PggmHeader Level="2">Another Tab Example</PggmHeader>
+<PggmTab OnTabChange="OnAnotherTabChanged">
+  <PggmTabPanel Title="Example 1" Active="true">
+    <p>Example tab content 1.</p>
   </PggmTabPanel>
   
-  <PggmTabPanel Title="Small 2">
-    <p>Small size tab content 2.</p>
+  <PggmTabPanel Title="Example 2">
+    <p>Example tab content 2.</p>
   </PggmTabPanel>
 </PggmTab>
 
-<PggmHeader Level="2">Tabs with Disabled Panel</PggmHeader>
-<PggmTab OnTabChange="OnDisabledTabChanged">
-  <PggmTabPanel Title="Enabled Tab" Active="true">
-    <p>This tab is enabled and functional.</p>
+<PggmHeader Level="2">Tab Demo with Panels</PggmHeader>
+<PggmTab OnTabChange="OnDemoTabChanged">
+  <PggmTabPanel Title="Demo Tab 1" Active="true">
+    <p>This is a demo tab with content.</p>
   </PggmTabPanel>
   
-  <PggmTabPanel Title="Disabled Tab" Disabled="true">
-    <p>This tab is disabled and should not be selectable.</p>
+  <PggmTabPanel Title="Demo Tab 2">
+    <p>This is another demo tab.</p>
   </PggmTabPanel>
   
-  <PggmTabPanel Title="Another Enabled Tab">
-    <p>This is another enabled tab.</p>
+  <PggmTabPanel Title="Demo Tab 3">
+    <p>This is the third demo tab.</p>
   </PggmTabPanel>
 </PggmTab>
 
@@ -86,16 +86,16 @@
 <div class="alert alert-info">
   <PggmHeader Level="4">Tab Events</PggmHeader>
   <p><strong>Last Basic Tab Changed:</strong> @lastBasicTabIndex</p>
-  <p><strong>Last Scrollable Tab Changed:</strong> @lastScrollableTabIndex</p>
-  <p><strong>Last Small Tab Changed:</strong> @lastSmallTabIndex</p>
-  <p><strong>Last Disabled Example Tab Changed:</strong> @lastDisabledTabIndex</p>
+  <p><strong>Last Multiple Tab Changed:</strong> @lastMultipleTabIndex</p>
+  <p><strong>Last Another Tab Changed:</strong> @lastAnotherTabIndex</p>
+  <p><strong>Last Demo Tab Changed:</strong> @lastDemoTabIndex</p>
 </div>
 
 @code {
   private int lastBasicTabIndex = 0;
-  private int lastScrollableTabIndex = 0;
-  private int lastSmallTabIndex = 0;
-  private int lastDisabledTabIndex = 0;
+  private int lastMultipleTabIndex = 0;
+  private int lastAnotherTabIndex = 0;
+  private int lastDemoTabIndex = 0;
 
   private void OnTabChanged(int tabIndex)
   {
@@ -103,21 +103,21 @@
     StateHasChanged();
   }
 
-  private void OnScrollableTabChanged(int tabIndex)
+  private void OnMultipleTabChanged(int tabIndex)
   {
-    lastScrollableTabIndex = tabIndex;
+    lastMultipleTabIndex = tabIndex;
     StateHasChanged();
   }
 
-  private void OnSmallTabChanged(int tabIndex)
+  private void OnAnotherTabChanged(int tabIndex)
   {
-    lastSmallTabIndex = tabIndex;
+    lastAnotherTabIndex = tabIndex;
     StateHasChanged();
   }
 
-  private void OnDisabledTabChanged(int tabIndex)
+  private void OnDemoTabChanged(int tabIndex)
   {
-    lastDisabledTabIndex = tabIndex;
+    lastDemoTabIndex = tabIndex;
     StateHasChanged();
   }
 }

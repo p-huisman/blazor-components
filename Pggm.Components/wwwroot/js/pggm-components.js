@@ -526,3 +526,9 @@ window.PggmComponents.setProperty = function(element, property, value) {
 window.PggmComponents.getProperty = function(element, property) {
   return element ? element[property] : undefined;
 };
+
+window.PggmComponents.setStyle = function(element, property, value) {
+  if (element && element.style) {
+    element.style[property] = value;
+  }
+};
