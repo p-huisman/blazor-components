@@ -6,7 +6,7 @@
 <div class="app-layout @(isNavOpen ? "nav-open" : "")">
 
   <header class="header">
-
+    <NavLink class="brand" href="">
     <svg class="svg--brand-pggm" width="96" height="65" viewBox="0 0 96 65" xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink">
       <defs>
@@ -32,6 +32,7 @@
           fill="#1D8551"></path>
       </g>
     </svg>
+    </NavLink>
 
     <button class="hamburger" @onclick="ToggleNavMenu" @onclick:preventDefault="true" aria-label="Toggle navigation menu">
       <span class="screen-reader-text">Menu</span>
