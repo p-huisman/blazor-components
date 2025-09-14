@@ -56,6 +56,11 @@ public static class AttributeNames
     // Dialog attributes
     public const string Open = "open";
     public const string Modal = "modal";
+    
+    // Slider attributes
+    public const string SnapValues = "snap-values";
+    public const string FractionDigits = "fraction-digits";
+    public const string EnableSnap = "enable-snap";
 }
 
 /// <summary>

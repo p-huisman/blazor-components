@@ -1,0 +1,249 @@
+@page "/slider"
+
+<h1>Slider Component Demo</h1>
+
+<div class="demo-section">
+    <h2>Basic Slider</h2>
+    <p>A simple slider with default values (0-100, step 1).</p>
+
+    <PggmSlider @bind-Value="basicValue" FractionDigits="0" />
+    <p>Current value: <strong>@basicValue</strong></p>
+</div>
+
+<div class="demo-section">
+    <h2>Custom Range</h2>
+    <p>Slider with custom min (10) and max (50).</p>
+
+    <PggmSlider @bind-Value="customValue" Min="10" Max="50" FractionDigits="0" />
+    <p>Current value: <strong>@customValue.ToString("F1")</strong></p>
+</div>
+
+<div class="demo-section">
+    <h2>Snap Values</h2>
+    <p>Slider that snaps to specific values: 0, 25, 50, 75, 100.</p>
+
+    <PggmSlider @bind-Value="snapValue" Min="0" Max="100" SnapValues="0,25,50,75,100" FractionDigits="0" />
+    <p>Current value: <strong>@snapValue</strong></p>
+    <p><em>Try dragging the slider - it will snap to the nearest specified value.</em></p>
+</div>
+
+<div class="demo-section">
+    <h2>Rating Slider with Snap Values</h2>
+    <p>A rating slider with snap values from 1 to 5.</p>
+
+    <PggmSlider @bind-Value="ratingValue" Min="1" Max="5" SnapValues="1,2,3,4,5" FractionDigits="0" />
+    <p>Rating: <strong>@GetRatingText(ratingValue)</strong> (@ratingValue.ToString("F0") stars)</p>
+</div>
+
+<div class="demo-section">
+    <h2>Percentage Slider</h2>
+    <p>Slider with snap values at 10% intervals.</p>
+
+    <PggmSlider @bind-Value="percentageValue" Min="0" Max="100" SnapValues="0,10,20,30,40,50,60,70,80,90,100"
+        FractionDigits="0" />
+    <p>Percentage: <strong>@percentageValue.ToString("F0")%</strong></p>
+</div>
+
+<div class="demo-section">
+    <h2>Fraction Digits Demo</h2>
+    <p>Compare sliders with different fraction digit settings for decimal precision display.</p>
+
+    <h3>No fraction digits (integers only)</h3>
+    <PggmSlider @bind-Value="fractionValue" Min="0" Max="10" FractionDigits="0" />
+    <p>Value: <strong>@fractionValue.ToString("F1")</strong> (displayed as integer in slider)</p>
+
+    <h3>1 fraction digit</h3>
+    <PggmSlider @bind-Value="fractionValue1" Min="0" Max="10" FractionDigits="1" />
+    <p>Value: <strong>@fractionValue1.ToString("F1")</strong> (displayed with 1 decimal place)</p>
+
+    <h3>2 fraction digits</h3>
+    <PggmSlider @bind-Value="fractionValue2" Min="0" Max="10" FractionDigits="2" />
+    <p>Value: <strong>@fractionValue2.ToString("F2")</strong> (displayed with 2 decimal places)</p>
+</div>
+
+<div class="demo-section">
+    <h2>Slider with Labels</h2>
+    <p>Sliders can contain labels positioned at specific values to provide visual context.</p>
+
+    <h3>Percentage Slider with Labels</h3>
+    <PggmSlider @bind-Value="labeledValue" Min="0" Max="100" FractionDigits="0">
+        <PggmSliderLabel Value="0">0%</PggmSliderLabel>
+        <PggmSliderLabel Value="25">25%</PggmSliderLabel>
+        <PggmSliderLabel Value="50">50%</PggmSliderLabel>
+        <PggmSliderLabel Value="75">75%</PggmSliderLabel>
+        <PggmSliderLabel Value="100">100%</PggmSliderLabel>
+    </PggmSlider>
+    <p>Current value: <strong>@labeledValue.ToString("F0")%</strong></p>
+
+    <h3>Rating Slider with HTML Labels</h3>
+    <PggmSlider @bind-Value="ratingLabeledValue" Min="1" Max="5" SnapValues="1,2,3,4,5" FractionDigits="0">
+        <PggmSliderLabel Value="1"><span style="color: #ff4444;">😞 Poor</span></PggmSliderLabel>
+        <PggmSliderLabel Value="2"><span style="color: #ff8800;">😐 Fair</span></PggmSliderLabel>
+        <PggmSliderLabel Value="3"><span style="color: #ffaa00;">🙂 Good</span></PggmSliderLabel>
+        <PggmSliderLabel Value="4"><span style="color: #88dd00;">😊 Very Good</span></PggmSliderLabel>
+        <PggmSliderLabel Value="5"><span style="color: #00cc44;">🤩 Excellent</span></PggmSliderLabel>
+    </PggmSlider>
+    <p>Rating: <strong>@GetRatingText(ratingLabeledValue)</strong> (@ratingLabeledValue.ToString("F0") stars)</p>
+
+    <h3>Temperature Slider with Unit Labels</h3>
+    <PggmSlider @bind-Value="temperatureValue" Min="-10" Max="40" FractionDigits="0">
+        <PggmSliderLabel Value="-10">❄️ -10°C</PggmSliderLabel>
+        <PggmSliderLabel Value="0">🧊 0°C</PggmSliderLabel>
+        <PggmSliderLabel Value="10">🌤️ 10°C</PggmSliderLabel>
+        <PggmSliderLabel Value="20">☀️ 20°C</PggmSliderLabel>
+        <PggmSliderLabel Value="30">🔥 30°C</PggmSliderLabel>
+        <PggmSliderLabel Value="40">🌋 40°C</PggmSliderLabel>
+    </PggmSlider>
+    <p>Temperature: <strong>@temperatureValue.ToString("F0")°C</strong></p>
+</div>
+
+<div class="demo-section">
+    <h2>Disabled Slider</h2>
+    <p>A disabled slider to show the disabled state.</p>
+
+    <PggmSlider @bind-Value="disabledValue" Disabled="true" FractionDigits="0" />
+    <p>Value: <strong>@disabledValue</strong> (disabled)</p>
+</div>
+
+<div class="demo-section">
+    <h2>Event Handling</h2>
+    <p>Demonstrates both OnInput (continuous) and ValueChanged (on commit) events.</p>
+
+    <PggmSlider Value="eventValue" ValueChanged="HandleValueChanged" OnInput="HandleInput" FractionDigits="0" />
+    <p>Current value: <strong>@eventValue</strong></p>
+    <p>Last input event: <strong>@lastInputValue</strong></p>
+    <p>Last change event: <strong>@lastChangeValue</strong></p>
+    <p>Input event count: <strong>@inputEventCount</strong></p>
+    <p>Change event count: <strong>@changeEventCount</strong></p>
+</div>
+
+<div class="demo-section">
+    <h2>Form Integration</h2>
+    <p>Slider integrated with Blazor form validation.</p>
+
+    <EditForm Model="formModel" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+
+        <div class="form-field">
+            <PggmLabel For="satisfaction">Satisfaction Level (1-10):</PggmLabel>
+            <PggmSlider @bind-Value="formModel.SatisfactionLevel" Min="1" Max="10" SnapValues="1,2,3,4,5,6,7,8,9,10"
+                FractionDigits="0" />
+            <ValidationMessage For="() => formModel.SatisfactionLevel" />
+        </div>
+
+        <div class="form-field">
+            <PggmLabel For="budget">Budget ($1000-$10000):</PggmLabel>
+            <PggmSlider @bind-Value="formModel.Budget" Min="1000" Max="10000" FractionDigits="0" />
+            <ValidationMessage For="() => formModel.Budget" />
+            <p>Selected budget: <strong>${formModel.Budget:F0}</strong></p>
+        </div>
+
+        <PggmButton Type="submit">Submit</PggmButton>
+    </EditForm>
+
+    @if (formSubmitted)
+    {
+        <div class="success-message">
+            <h3>Form Submitted Successfully!</h3>
+            <p>Satisfaction Level: @formModel.SatisfactionLevel</p>
+            <p>Budget: $@formModel.Budget.ToString("F0")</p>
+        </div>
+    }
+</div>
+
+<style>
+    .demo-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+    }
+
+    .demo-section h2 {
+        margin-top: 0;
+        color: #333;
+    }
+
+    .form-field {
+        margin-bottom: 1rem;
+    }
+
+    .success-message {
+        margin-top: 1rem;
+        padding: 1rem;
+        background-color: #d4edda;
+        border: 1px solid #c3e6cb;
+        border-radius: 4px;
+        color: #155724;
+    }
+</style>
+
+@code {
+    private double basicValue = 50;
+    private double customValue = 25;
+    private double snapValue = 50;
+    private double ratingValue = 3;
+    private double percentageValue = 50;
+    private double disabledValue = 30;
+
+    // Fraction digits demo values
+    private double fractionValue = 5.7;
+    private double fractionValue1 = 5.7;
+    private double fractionValue2 = 5.75;
+
+    // Slider with labels demo values
+    private double labeledValue = 50;
+    private double ratingLabeledValue = 3;
+    private double temperatureValue = 20;
+
+    // Event handling demo
+    private double eventValue = 50;
+    private double lastInputValue = 50;
+    private double lastChangeValue = 50;
+    private int inputEventCount = 0;
+    private int changeEventCount = 0;
+
+    // Form demo
+    private FormModel formModel = new();
+    private bool formSubmitted = false;
+
+    private void HandleInput(double value)
+    {
+        lastInputValue = value;
+        inputEventCount++;
+    }
+
+    private void HandleValueChanged(double value)
+    {
+        eventValue = value; // Update the bound value
+        lastChangeValue = value;
+        changeEventCount++;
+    }
+
+    private string GetRatingText(double rating)
+    {
+        return rating switch
+        {
+            1 => "Poor",
+            2 => "Fair",
+            3 => "Good",
+            4 => "Very Good",
+            5 => "Excellent",
+            _ => "Unknown"
+        };
+    }
+
+    private void HandleValidSubmit()
+    {
+        formSubmitted = true;
+    }
+
+    public class FormModel
+    {
+        [System.ComponentModel.DataAnnotations.Range(1, 10, ErrorMessage = "Satisfaction level must be between 1 and 10")]
+        public double SatisfactionLevel { get; set; } = 5;
+
+        [System.ComponentModel.DataAnnotations.Range(1000, 10000, ErrorMessage = "Budget must be between $1,000 and $10,000")]
+        public double Budget { get; set; } = 5000;
+    }
+}

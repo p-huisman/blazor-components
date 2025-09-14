@@ -1,0 +1,20 @@
+@inherits PggmComponentBase
+@namespace Pggm.Components
+
+<pggm-slider-label @ref="ElementRef" @attributes="GetAttributes()">
+  @ChildContent
+</pggm-slider-label>
+
+@code {
+  public override string TagName => "pggm-slider-label";
+
+  /// <summary>
+  /// The value position where this label should be positioned on the slider
+  /// </summary>
+  [Parameter] public double Value { get; set; }
+
+  protected override void AddComponentAttributes(Dictionary<string, object> attributes)
+  {
+    attributes["value"] = Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
+  }
+}
