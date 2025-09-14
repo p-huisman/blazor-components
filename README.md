@@ -2,6 +2,21 @@
 
 A Blazor component library that wraps web components from the PGGM Design System, making them available as native Blazor components.
 
+## 🚀 Live Demo
+
+**[Explore the Interactive Demo →](https://p-huisman.github.io/blazor-components/)**
+
+Experience all PGGM Blazor components in action! Try out forms, wizards, accordions, and more with real working examples and source code snippets.
+
+✨ **What you'll find:**
+- **Interactive examples** for every component
+- **Form validation demos** with real-time feedback
+- **Multi-step wizard flows** showing complete user journeys
+- **Responsive design** testing across different screen sizes
+- **Accessibility features** in action
+
+*Perfect for developers who want to see before they build!*
+
 ## Features
 
 - 🎨 **PGGM Design System Integration**: Seamless integration with PGGM's web components
