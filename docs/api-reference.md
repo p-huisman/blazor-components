@@ -124,7 +124,7 @@ Base class for PGGM components that handle events and require JavaScript interop
 
 ## UI Components
 
-### PggmAlert
+### PggmNotification
 [View detailed documentation](components/alert.md)
 
 **Properties:**

@@ -1,36 +1,36 @@
 @inherits PggmEventComponentBase
 @namespace Pggm.Components
 
-<pggm-alert @ref="ElementRef" @attributes="GetAttributes()">
+<pggm-notification @ref="ElementRef" @attributes="GetAttributes()">
   @ChildContent
-</pggm-alert>
+</pggm-notification>
 
 @code {
-  public override string TagName => "pggm-alert";
+  public override string TagName => "pggm-notification";
 
   /// <summary>
-  /// The alert type (informative, warning, error, success)
+  /// The notification type (informative, warning, error, success)
   /// </summary>
   [Parameter] public string Type { get; set; } = "informative";
 
   /// <summary>
-  /// Whether the alert is closeable
+  /// Whether the notification is closeable
   /// </summary>
   [Parameter] public bool Closeable { get; set; }
 
   /// <summary>
-  /// The alert type (informative, warning, error, success)
+  /// The close button label for accessibility
   /// </summary>
   [Parameter] public string CloseLabel { get; set; } = "";
 
   /// <summary>
-  /// Whether the alert is open/visible
+  /// Whether the notification is open/visible
   /// </summary>
   [Parameter] public bool Open { get; set; } = true;
 
   
   /// <summary>
-  /// Event callback for when the alert is dismissed
+  /// Event callback for when the notification is dismissed
   /// </summary>
   [Parameter] public EventCallback OnDismiss { get; set; }
 
@@ -38,13 +38,13 @@
   {
     if (Closeable && OnDismiss.HasDelegate)
     {
-      yield return "closeAlert";
+      yield return "closeNotification";
     }
   }
 
   protected override Dictionary<string, Func<object?, Task>> EventHandlers => new()
   {
-    ["closeAlert"] = async (_) => {
+    ["closeNotification"] = async (_) => {
       await OnDismiss.InvokeAsync();
     }
   };
@@ -72,13 +72,13 @@
   }
 
   /// <summary>
-  /// Alert type constants for better IntelliSense
+  /// Notification type constants for better IntelliSense
   /// </summary>
-  public static class AlertTypes
+  public static class NotificationTypes
   {
     public const string Informative = "informative";
-    public const string Negative = "negative";
-    public const string Positive = "positive";
     public const string Warning = "warning";
+    public const string Error = "error";
+    public const string Success = "success";
   }
 }

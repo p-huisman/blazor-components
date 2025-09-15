@@ -227,9 +227,9 @@ Once you have completed the installation steps, you can start using PGGM compone
     </ChildContent>
     
     <FinishContent>
-        <PggmAlert Type="success" Title="Registration Complete">
-            Welcome! Your account has been created successfully.
-        </PggmAlert>
+                <PggmNotification Type="success" Title="Registration Complete">
+          Your account has been successfully created and is ready to use.
+        </PggmNotification>
     </FinishContent>
 </PggmWizard>
 
