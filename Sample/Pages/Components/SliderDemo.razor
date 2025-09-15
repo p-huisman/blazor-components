@@ -80,7 +80,7 @@
     <p>Current value: <strong>@labeledValue.ToString("F0")%</strong></p>
 
     <PggmHeader Level="3">Rating Slider with HTML Labels</PggmHeader>
-    <PggmSlider @bind-Value="ratingLabeledValue" Min="1" Max="5" SnapValues="1,2,3,4,5" FractionDigits="0">
+    <PggmSlider @bind-Value="ratingLabeledValue" Min="1" Max="5" SnapValues="1,2,3,4,5" FractionDigits="1">
         <PggmSliderLabel Value="1">
             <span class="rating-label" style="color: #ff4444;">
                 <span class="rating-icon">😞</span>
