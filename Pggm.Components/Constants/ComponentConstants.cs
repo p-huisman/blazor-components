@@ -61,6 +61,9 @@ public static class AttributeNames
     public const string SnapValues = "snap-values";
     public const string FractionDigits = "fraction-digits";
     public const string EnableSnap = "enable-snap";
+    public const string HideTooltip = "hide-tooltip";
+    public const string TooltipEditable = "tooltip-editable";
+    public const string Step = "step";
 }
 
 /// <summary>

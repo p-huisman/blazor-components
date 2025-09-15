@@ -102,11 +102,62 @@
 </div>
 
 <div class="demo-section">
+    <PggmHeader Level="2">Tooltip Visibility</PggmHeader>
+    <p>Compare sliders with and without tooltips using the HideTooltip property.</p>
+
+    <PggmHeader Level="3">Slider with Tooltip (default)</PggmHeader>
+    <PggmSlider @bind-Value="tooltipVisibleValue" Min="0" Max="100" FractionDigits="0" />
+    <p>Current value: <strong>@tooltipVisibleValue</strong></p>
+    <p><em>Hover or drag the slider to see the tooltip with the current value.</em></p>
+
+    <PggmHeader Level="3">Slider without Tooltip</PggmHeader>
+    <PggmSlider @bind-Value="tooltipHiddenValue" Min="0" Max="100" FractionDigits="0" HideTooltip="true" />
+    <p>Current value: <strong>@tooltipHiddenValue</strong></p>
+    <p><em>This slider has the tooltip disabled using HideTooltip="true".</em></p>
+</div>
+
+<div class="demo-section">
     <PggmHeader Level="2">Disabled Slider</PggmHeader>
     <p>A disabled slider to show the disabled state.</p>
 
     <PggmSlider @bind-Value="disabledValue" Disabled="true" FractionDigits="0" />
     <p>Value: <strong>@disabledValue</strong> (disabled)</p>
+</div>
+
+<div class="demo-section">
+    <PggmHeader Level="2">Editable Tooltip</PggmHeader>
+    <p>Compare sliders with editable and non-editable tooltips using the TooltipEditable property.</p>
+
+    <PggmHeader Level="3">Non-Editable Tooltip (default)</PggmHeader>
+    <PggmSlider @bind-Value="tooltipNonEditableValue" Min="0" Max="100" FractionDigits="0" />
+    <p>Current value: <strong>@tooltipNonEditableValue</strong></p>
+    <p><em>The tooltip shows the value but cannot be edited directly.</em></p>
+
+    <PggmHeader Level="3">Editable Tooltip</PggmHeader>
+    <PggmSlider @bind-Value="tooltipEditableValue" Min="0" Max="100" FractionDigits="0" TooltipEditable="true" />
+    <p>Current value: <strong>@tooltipEditableValue</strong></p>
+    <p><em>Click on the tooltip to edit the value directly using TooltipEditable="true".</em></p>
+</div>
+
+<div class="demo-section">
+    <PggmHeader Level="2">Step Size</PggmHeader>
+    <p>Control the step size for keyboard navigation and value increments using the Step property.</p>
+
+    <PggmHeader Level="3">Default Step (no step specified)</PggmHeader>
+    <PggmSlider Value="50" Min="0" Max="100" FractionDigits="1" />
+<p><em>Use arrow keys to see default step behavior.</em></p>
+
+    @* <PggmHeader Level="3">Small Steps (Step="0.1")</PggmHeader>
+    <PggmSlider Value="5" Min="0" Max="10" Step="0.1" FractionDigits="2" />
+    <p><em>Use arrow keys to increment/decrement by 0.1.</em></p> *@
+
+    <PggmHeader Level="3">Large Steps (Step="5")</PggmHeader>
+    <PggmSlider Value="50" Min="0" Max="100" Step="5" FractionDigits="0" />
+    <p><em>Use arrow keys to increment/decrement by 5.</em></p>
+
+    @* <PggmHeader Level="3">Custom Steps (Step="2.5")</PggmHeader>
+    <PggmSlider Value="25" Min="0" Max="50" Step="2.5" FractionDigits="2" />
+    <p><em>Use arrow keys to increment/decrement by 2.5.</em></p> *@
 </div>
 
 <div class="demo-section">
@@ -199,6 +250,16 @@
     private double labeledValue = 50;
     private double ratingLabeledValue = 3;
     private double temperatureValue = 20;
+
+    // Tooltip visibility demo values
+    private double tooltipVisibleValue = 50;
+    private double tooltipHiddenValue = 50;
+
+    // Tooltip editable demo values
+    private double tooltipNonEditableValue = 50;
+    private double tooltipEditableValue = 50;
+
+   
 
     // Event handling demo
     private double eventValue = 50;
