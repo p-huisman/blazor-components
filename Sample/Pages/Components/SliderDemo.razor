@@ -81,22 +81,77 @@
 
     <PggmHeader Level="3">Rating Slider with HTML Labels</PggmHeader>
     <PggmSlider @bind-Value="ratingLabeledValue" Min="1" Max="5" SnapValues="1,2,3,4,5" FractionDigits="0">
-        <PggmSliderLabel Value="1"><span style="color: #ff4444;">😞 Poor</span></PggmSliderLabel>
-        <PggmSliderLabel Value="2"><span style="color: #ff8800;">😐 Fair</span></PggmSliderLabel>
-        <PggmSliderLabel Value="3"><span style="color: #ffaa00;">🙂 Good</span></PggmSliderLabel>
-        <PggmSliderLabel Value="4"><span style="color: #88dd00;">😊 Very Good</span></PggmSliderLabel>
-        <PggmSliderLabel Value="5"><span style="color: #00cc44;">🤩 Excellent</span></PggmSliderLabel>
+        <PggmSliderLabel Value="1">
+            <span class="rating-label" style="color: #ff4444;">
+                <span class="rating-icon">😞</span>
+                <span class="rating-text">Poor</span>
+            </span>
+        </PggmSliderLabel>
+        <PggmSliderLabel Value="2">
+            <span class="rating-label" style="color: #ff8800;">
+                <span class="rating-icon">😐</span>
+                <span class="rating-text">Fair</span>
+            </span>
+        </PggmSliderLabel>
+        <PggmSliderLabel Value="3">
+            <span class="rating-label" style="color: #ffaa00;">
+                <span class="rating-icon">🙂</span>
+                <span class="rating-text">Good</span>
+            </span>
+        </PggmSliderLabel>
+        <PggmSliderLabel Value="4">
+            <span class="rating-label" style="color: #88dd00;">
+                <span class="rating-icon">😊</span>
+                <span class="rating-text">Very Good</span>
+            </span>
+        </PggmSliderLabel>
+        <PggmSliderLabel Value="5">
+            <span class="rating-label" style="color: #00cc44;">
+                <span class="rating-icon">🤩</span>
+                <span class="rating-text">Excellent</span>
+            </span>
+        </PggmSliderLabel>
     </PggmSlider>
     <p>Rating: <strong>@GetRatingText(ratingLabeledValue)</strong> (@ratingLabeledValue.ToString("F0") stars)</p>
 
     <PggmHeader Level="3">Temperature Slider with Unit Labels</PggmHeader>
     <PggmSlider @bind-Value="temperatureValue" Min="-10" Max="40" FractionDigits="0">
-        <PggmSliderLabel Value="-10">❄️ -10°C</PggmSliderLabel>
-        <PggmSliderLabel Value="0">🧊 0°C</PggmSliderLabel>
-        <PggmSliderLabel Value="10">🌤️ 10°C</PggmSliderLabel>
-        <PggmSliderLabel Value="20">☀️ 20°C</PggmSliderLabel>
-        <PggmSliderLabel Value="30">🔥 30°C</PggmSliderLabel>
-        <PggmSliderLabel Value="40">🌋 40°C</PggmSliderLabel>
+        <PggmSliderLabel Value="-10">
+            <span class="temperature-label">
+                <span class="temperature-icon">❄️</span>
+                <span class="temperature-text">-10°C</span>
+            </span>
+        </PggmSliderLabel>
+        <PggmSliderLabel Value="0">
+            <span class="temperature-label">
+                <span class="temperature-icon">🧊</span>
+                <span class="temperature-text">0°C</span>
+            </span>
+        </PggmSliderLabel>
+        <PggmSliderLabel Value="10">
+            <span class="temperature-label">
+                <span class="temperature-icon">🌤️</span>
+                <span class="temperature-text">10°C</span>
+            </span>
+        </PggmSliderLabel>
+        <PggmSliderLabel Value="20">
+            <span class="temperature-label">
+                <span class="temperature-icon">☀️</span>
+                <span class="temperature-text">20°C</span>
+            </span>
+        </PggmSliderLabel>
+        <PggmSliderLabel Value="30">
+            <span class="temperature-label">
+                <span class="temperature-icon">🔥</span>
+                <span class="temperature-text">30°C</span>
+            </span>
+        </PggmSliderLabel>
+        <PggmSliderLabel Value="40">
+            <span class="temperature-label">
+                <span class="temperature-icon">🌋</span>
+                <span class="temperature-text">40°C</span>
+            </span>
+        </PggmSliderLabel>
     </PggmSlider>
     <p>Temperature: <strong>@temperatureValue.ToString("F0")°C</strong></p>
 </div>
@@ -230,6 +285,83 @@
         border: 1px solid #c3e6cb;
         border-radius: 4px;
         color: #155724;
+    }
+
+    /* Temperature label responsive styling */
+    .temperature-label {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .temperature-icon {
+        font-size: 1.2em;
+    }
+
+    .temperature-text {
+        font-size: 0.8em;
+        white-space: nowrap;
+    }
+
+    /* Rating label responsive styling */
+    .rating-label {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .rating-icon {
+        font-size: 1.2em;
+    }
+
+    .rating-text {
+        font-size: 0.8em;
+        white-space: nowrap;
+    }
+
+    /* On smaller screens, stack icon and text vertically */
+    @@media (max-width: 768px) {
+        .temperature-label {
+            flex-direction: column;
+            gap: 0.1rem;
+        }
+        
+        .temperature-icon {
+            font-size: 1.4em;
+        }
+        
+        .temperature-text {
+            font-size: 0.7em;
+            line-height: 1;
+        }
+
+        /* For rating labels, hide text and show only emoticons */
+        .rating-text {
+            display: none;
+        }
+        
+        .rating-icon {
+            font-size: 1.4em;
+        }
+    }
+    
+    /* On very small screens, make labels even more compact */
+    @@media (max-width: 480px) {
+        .temperature-icon {
+            font-size: 1.2em;
+        }
+        
+        .temperature-text {
+            font-size: 0.6em;
+        }
+
+        .rating-icon {
+            font-size: 1.2em;
+        }
     }
 </style>
 
