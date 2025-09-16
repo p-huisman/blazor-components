@@ -80,25 +80,95 @@
     <p>Current value: <strong>@labeledValue.ToString("F0")%</strong></p>
 
     <PggmHeader Level="3">Rating Slider with HTML Labels</PggmHeader>
-    <PggmSlider @bind-Value="ratingLabeledValue" Min="1" Max="5" SnapValues="1,2,3,4,5" FractionDigits="0">
-        <PggmSliderLabel Value="1"><span style="color: #ff4444;">😞 Poor</span></PggmSliderLabel>
-        <PggmSliderLabel Value="2"><span style="color: #ff8800;">😐 Fair</span></PggmSliderLabel>
-        <PggmSliderLabel Value="3"><span style="color: #ffaa00;">🙂 Good</span></PggmSliderLabel>
-        <PggmSliderLabel Value="4"><span style="color: #88dd00;">😊 Very Good</span></PggmSliderLabel>
-        <PggmSliderLabel Value="5"><span style="color: #00cc44;">🤩 Excellent</span></PggmSliderLabel>
+    <PggmSlider @bind-Value="ratingLabeledValue" Min="1" Max="5" SnapValues="1,2,3,4,5" FractionDigits="1">
+        <PggmSliderLabel Value="1">
+            <span class="rating-label" style="color: #ff4444;">
+                <span class="rating-icon">😞</span>
+                <span class="rating-text">Poor</span>
+            </span>
+        </PggmSliderLabel>
+        <PggmSliderLabel Value="2">
+            <span class="rating-label" style="color: #ff8800;">
+                <span class="rating-icon">😐</span>
+                <span class="rating-text">Fair</span>
+            </span>
+        </PggmSliderLabel>
+        <PggmSliderLabel Value="3">
+            <span class="rating-label" style="color: #ffaa00;">
+                <span class="rating-icon">🙂</span>
+                <span class="rating-text">Good</span>
+            </span>
+        </PggmSliderLabel>
+        <PggmSliderLabel Value="4">
+            <span class="rating-label" style="color: #88dd00;">
+                <span class="rating-icon">😊</span>
+                <span class="rating-text">Very Good</span>
+            </span>
+        </PggmSliderLabel>
+        <PggmSliderLabel Value="5">
+            <span class="rating-label" style="color: #00cc44;">
+                <span class="rating-icon">🤩</span>
+                <span class="rating-text">Excellent</span>
+            </span>
+        </PggmSliderLabel>
     </PggmSlider>
     <p>Rating: <strong>@GetRatingText(ratingLabeledValue)</strong> (@ratingLabeledValue.ToString("F0") stars)</p>
 
     <PggmHeader Level="3">Temperature Slider with Unit Labels</PggmHeader>
     <PggmSlider @bind-Value="temperatureValue" Min="-10" Max="40" FractionDigits="0">
-        <PggmSliderLabel Value="-10">❄️ -10°C</PggmSliderLabel>
-        <PggmSliderLabel Value="0">🧊 0°C</PggmSliderLabel>
-        <PggmSliderLabel Value="10">🌤️ 10°C</PggmSliderLabel>
-        <PggmSliderLabel Value="20">☀️ 20°C</PggmSliderLabel>
-        <PggmSliderLabel Value="30">🔥 30°C</PggmSliderLabel>
-        <PggmSliderLabel Value="40">🌋 40°C</PggmSliderLabel>
+        <PggmSliderLabel Value="-10">
+            <span class="temperature-label">
+                <span class="temperature-icon">❄️</span>
+                <span class="temperature-text">-10°C</span>
+            </span>
+        </PggmSliderLabel>
+        <PggmSliderLabel Value="0">
+            <span class="temperature-label">
+                <span class="temperature-icon">🧊</span>
+                <span class="temperature-text">0°C</span>
+            </span>
+        </PggmSliderLabel>
+        <PggmSliderLabel Value="10">
+            <span class="temperature-label">
+                <span class="temperature-icon">🌤️</span>
+                <span class="temperature-text">10°C</span>
+            </span>
+        </PggmSliderLabel>
+        <PggmSliderLabel Value="20">
+            <span class="temperature-label">
+                <span class="temperature-icon">☀️</span>
+                <span class="temperature-text">20°C</span>
+            </span>
+        </PggmSliderLabel>
+        <PggmSliderLabel Value="30">
+            <span class="temperature-label">
+                <span class="temperature-icon">🔥</span>
+                <span class="temperature-text">30°C</span>
+            </span>
+        </PggmSliderLabel>
+        <PggmSliderLabel Value="40">
+            <span class="temperature-label">
+                <span class="temperature-icon">🌋</span>
+                <span class="temperature-text">40°C</span>
+            </span>
+        </PggmSliderLabel>
     </PggmSlider>
     <p>Temperature: <strong>@temperatureValue.ToString("F0")°C</strong></p>
+</div>
+
+<div class="demo-section">
+    <PggmHeader Level="2">Tooltip Visibility</PggmHeader>
+    <p>Compare sliders with and without tooltips using the HideTooltip property.</p>
+
+    <PggmHeader Level="3">Slider with Tooltip (default)</PggmHeader>
+    <PggmSlider @bind-Value="tooltipVisibleValue" Min="0" Max="100" FractionDigits="0" />
+    <p>Current value: <strong>@tooltipVisibleValue</strong></p>
+    <p><em>Hover or drag the slider to see the tooltip with the current value.</em></p>
+
+    <PggmHeader Level="3">Slider without Tooltip</PggmHeader>
+    <PggmSlider @bind-Value="tooltipHiddenValue" Min="0" Max="100" FractionDigits="0" HideTooltip="true" />
+    <p>Current value: <strong>@tooltipHiddenValue</strong></p>
+    <p><em>This slider has the tooltip disabled using HideTooltip="true".</em></p>
 </div>
 
 <div class="demo-section">
@@ -107,6 +177,42 @@
 
     <PggmSlider @bind-Value="disabledValue" Disabled="true" FractionDigits="0" />
     <p>Value: <strong>@disabledValue</strong> (disabled)</p>
+</div>
+
+<div class="demo-section">
+    <PggmHeader Level="2">Editable Tooltip</PggmHeader>
+    <p>Compare sliders with editable and non-editable tooltips using the TooltipEditable property.</p>
+
+    <PggmHeader Level="3">Non-Editable Tooltip (default)</PggmHeader>
+    <PggmSlider @bind-Value="tooltipNonEditableValue" Min="0" Max="100" FractionDigits="0" />
+    <p>Current value: <strong>@tooltipNonEditableValue</strong></p>
+    <p><em>The tooltip shows the value but cannot be edited directly.</em></p>
+
+    <PggmHeader Level="3">Editable Tooltip</PggmHeader>
+    <PggmSlider @bind-Value="tooltipEditableValue" Min="0" Max="100" FractionDigits="0" TooltipEditable="true" />
+    <p>Current value: <strong>@tooltipEditableValue</strong></p>
+    <p><em>Click on the tooltip to edit the value directly using TooltipEditable="true".</em></p>
+</div>
+
+<div class="demo-section">
+    <PggmHeader Level="2">Step Size</PggmHeader>
+    <p>Control the step size for keyboard navigation and value increments using the Step property.</p>
+
+    <PggmHeader Level="3">Default Step (no step specified)</PggmHeader>
+    <PggmSlider Value="50" Min="0" Max="100" FractionDigits="1" />
+<p><em>Use arrow keys to see default step behavior.</em></p>
+
+    @* <PggmHeader Level="3">Small Steps (Step="0.1")</PggmHeader>
+    <PggmSlider Value="5" Min="0" Max="10" Step="0.1" FractionDigits="2" />
+    <p><em>Use arrow keys to increment/decrement by 0.1.</em></p> *@
+
+    <PggmHeader Level="3">Large Steps (Step="5")</PggmHeader>
+    <PggmSlider Value="50" Min="0" Max="100" Step="5" FractionDigits="0" />
+    <p><em>Use arrow keys to increment/decrement by 5.</em></p>
+
+    @* <PggmHeader Level="3">Custom Steps (Step="2.5")</PggmHeader>
+    <PggmSlider Value="25" Min="0" Max="50" Step="2.5" FractionDigits="2" />
+    <p><em>Use arrow keys to increment/decrement by 2.5.</em></p> *@
 </div>
 
 <div class="demo-section">
@@ -180,6 +286,83 @@
         border-radius: 4px;
         color: #155724;
     }
+
+    /* Temperature label responsive styling */
+    .temperature-label {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .temperature-icon {
+        font-size: 1.2em;
+    }
+
+    .temperature-text {
+        font-size: 0.8em;
+        white-space: nowrap;
+    }
+
+    /* Rating label responsive styling */
+    .rating-label {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .rating-icon {
+        font-size: 1.2em;
+    }
+
+    .rating-text {
+        font-size: 0.8em;
+        white-space: nowrap;
+    }
+
+    /* On smaller screens, stack icon and text vertically */
+    @@media (max-width: 768px) {
+        .temperature-label {
+            flex-direction: column;
+            gap: 0.1rem;
+        }
+        
+        .temperature-icon {
+            font-size: 1.4em;
+        }
+        
+        .temperature-text {
+            font-size: 0.7em;
+            line-height: 1;
+        }
+
+        /* For rating labels, hide text and show only emoticons */
+        .rating-text {
+            display: none;
+        }
+        
+        .rating-icon {
+            font-size: 1.4em;
+        }
+    }
+    
+    /* On very small screens, make labels even more compact */
+    @@media (max-width: 480px) {
+        .temperature-icon {
+            font-size: 1.2em;
+        }
+        
+        .temperature-text {
+            font-size: 0.6em;
+        }
+
+        .rating-icon {
+            font-size: 1.2em;
+        }
+    }
 </style>
 
 @code {
@@ -199,6 +382,16 @@
     private double labeledValue = 50;
     private double ratingLabeledValue = 3;
     private double temperatureValue = 20;
+
+    // Tooltip visibility demo values
+    private double tooltipVisibleValue = 50;
+    private double tooltipHiddenValue = 50;
+
+    // Tooltip editable demo values
+    private double tooltipNonEditableValue = 50;
+    private double tooltipEditableValue = 50;
+
+   
 
     // Event handling demo
     private double eventValue = 50;

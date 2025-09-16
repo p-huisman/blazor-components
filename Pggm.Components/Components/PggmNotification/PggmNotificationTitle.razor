@@ -1,0 +1,10 @@
+@inherits PggmComponentBase
+@namespace Pggm.Components
+
+<h3 slot="header" @ref="ElementRef">
+  @ChildContent
+</h3>
+
+@code {
+  public override string TagName => "h3";
+}

@@ -1,0 +1,80 @@
+@page "/pggm-notification"
+<PageTitle>PGGM Notification</PageTitle>
+
+<PggmHeader Level="1">PGGM Notification</PggmHeader>
+
+<p>This page demonstrates the PggmNotification component with various types and configurations.</p>
+
+<div class="demo-section">
+  <PggmHeader Level="2">Different Notification Types</PggmHeader>
+
+  <div class="notification-examples">
+    <PggmNotification Open=true Type="@PggmNotification.NotificationTypes.Informative">
+      <PggmNotificationTitle>This is an Informative Notification</PggmNotificationTitle>
+      This is an informative notification message with useful information for the user.
+      <a slot="action" href="#">Learn more</a>
+    </PggmNotification>
+
+    <PggmNotification Open=true Type="@PggmNotification.NotificationTypes.Warning">
+      <PggmNotificationTitle>This is a Warning Notification</PggmNotificationTitle>
+      This is a warning notification message that requires attention.
+      <a slot="action" href="#">Learn more</a>
+    </PggmNotification>
+
+    <PggmNotification Open=true Type="@PggmNotification.NotificationTypes.Error">
+      <PggmNotificationTitle>This is an Error Notification</PggmNotificationTitle>
+      This is an error notification message indicating something went wrong.
+      <a slot="action" href="#">Learn more</a>
+    </PggmNotification>
+
+    <PggmNotification Open=true Type="@PggmNotification.NotificationTypes.Success">
+      <PggmNotificationTitle>This is a Success Notification</PggmNotificationTitle>
+      This is a success notification message confirming a successful action.
+      <a slot="action" href="#">Learn more</a>
+    </PggmNotification>
+  </div>
+</div>
+
+
+<div class="demo-section">
+  <PggmHeader Level="2">Closable Notification</PggmHeader>
+
+  <PggmNotification Type="@PggmNotification.NotificationTypes.Informative" Closeable="true" CloseLabel="Close this notification" Open="true" OnDismiss="HandleNotificationDismiss">
+    <PggmNotificationTitle>Closable Notification</PggmNotificationTitle>
+    This notification can be closed by clicking the close button.
+    <a slot="action" href="#">Learn more</a>
+  </PggmNotification>
+
+  @if (notificationDismissed)
+  {
+    <p class="text-muted">Notification was dismissed at @dismissTime</p>
+  }
+</div>
+
+
+
+
+<style>
+  .notification-examples {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+  }
+</style>
+
+@code {
+  private bool notificationDismissed = false;
+  private string dismissTime = "";
+
+  private async Task HandleNotificationDismiss()
+  {
+    notificationDismissed = true;
+    dismissTime = DateTime.Now.ToString("HH:mm:ss");
+    StateHasChanged();
+
+    // Reset after 3 seconds
+    await Task.Delay(3000);
+    notificationDismissed = false;
+    StateHasChanged();
+  }
+}
