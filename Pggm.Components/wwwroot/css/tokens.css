@@ -175,7 +175,7 @@
   --pggm-focus-border-radius: 4px;
   --pggm-focus-outline-offset: 1px;
   --pggm-focus-outline-style: solid;
-  --pggm-accordion-item-border-radius: var(--pggm-border-radius-md);
+  --pggm-accordion-item-border-radius: var(--pggm-border-radius-sm);
   --pggm-accordion-item-padding-inline-start: var(--pggm-space-inline-lg);
   --pggm-accordion-item-padding-inline-end: var(--pggm-space-inline-lg);
   --pggm-accordion-item-content-padding-block-end: var(--pggm-space-block-2xs);
