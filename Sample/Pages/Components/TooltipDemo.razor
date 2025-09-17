@@ -5,15 +5,114 @@
 
 <PggmHeader Level="1">PGGM Tooltip</PggmHeader>
 
-<p>This page demonstrates the PGGM Tooltip component with various triggers and configurations.</p>
+<p>The <code>PggmTooltip</code> component provides accessible tooltip functionality with positioning options and various trigger mechanisms.</p>
+
+<div class="demo-section">
+    <PggmHeader Level="2">Basic Usage with Input Fields</PggmHeader>
+    <p>Basic tooltip functionality with form inputs:</p>
+    
+    <div class="form-field">
+        <PggmLabel For="basic-input">Basic Input with Tooltip</PggmLabel>
+        <PggmInput Id="basic-input" @bind-Value="basicValue" />
+        <PggmTooltip For="basic-input">
+            This is a basic tooltip providing additional context for the input field.
+        </PggmTooltip>
+    </div>
+</div>
+
+<div class="demo-section">
+    <PggmHeader Level="2">Position Options</PggmHeader>
+    <p>The tooltip can be positioned in four directions: above, below, before, or after the target element.</p>
+    
+    <div class="position-examples">
+        <div class="position-row">
+            <div class="form-field">
+                <PggmLabel For="above-input">Above Position</PggmLabel>
+                <PggmInput Id="above-input" @bind-Value="aboveValue" />
+                <PggmTooltip For="above-input" Position="above">
+                    This tooltip appears above the input field.
+                </PggmTooltip>
+            </div>
+            
+            <div class="form-field">
+                <PggmLabel For="below-input">Below Position</PggmLabel>
+                <PggmInput Id="below-input" @bind-Value="belowValue" />
+                <PggmTooltip For="below-input" Position="below">
+                    This tooltip appears below the input field.
+                </PggmTooltip>
+            </div>
+        </div>
+        
+        <div class="position-row">
+            <div class="form-field">
+                <PggmLabel For="before-input">Before Position</PggmLabel>
+                <PggmInput Id="before-input" @bind-Value="beforeValue" />
+                <PggmTooltip For="before-input" Position="before">
+                    This tooltip appears before (left of) the input field.
+                </PggmTooltip>
+            </div>
+            
+            <div class="form-field">
+                <PggmLabel For="after-input">After Position</PggmLabel>
+                <PggmInput Id="after-input" @bind-Value="afterValue" />
+                <PggmTooltip For="after-input" Position="after">
+                    This tooltip appears after (right of) the input field.
+                </PggmTooltip>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="demo-section">
+    <PggmHeader Level="2">Button Tooltips</PggmHeader>
+    <p>Tooltips with various button interactions:</p>
+    
+    <div class="button-group">
+        <PggmButton Id="save-button" OnClick="HandleSave">Save</PggmButton>
+        <PggmTooltip For="save-button" Position="above">
+            Save your changes (Ctrl+S)
+        </PggmTooltip>
+        
+        <PggmButton Id="cancel-button" OnClick="HandleCancel">Cancel</PggmButton>
+        <PggmTooltip For="cancel-button" Position="above">
+            Discard changes and return
+        </PggmTooltip>
+        
+        <PggmButton Id="help-button" OnClick="HandleHelp">Help</PggmButton>
+        <PggmTooltip For="help-button" Position="below">
+            Get help and documentation
+        </PggmTooltip>
+    </div>
+</div>
+
+<div class="demo-section">
+    <PggmHeader Level="2">Complex Content Tooltips</PggmHeader>
+    <p>Tooltips can contain rich HTML content including lists and formatting:</p>
+    
+    <div class="form-field">
+        <PggmLabel For="complex-input">Field with Complex Help</PggmLabel>
+        <PggmInput Id="complex-input" @bind-Value="complexValue" />
+        <PggmTooltip For="complex-input" Position="below">
+            <div>
+                <strong>Input Requirements:</strong>
+                <ul>
+                    <li>Must start with a letter</li>
+                    <li>Can contain letters, numbers, and hyphens</li>
+                    <li>Maximum length: 50 characters</li>
+                    <li>No special characters except hyphens</li>
+                </ul>
+                <em>Example: my-valid-input-123</em>
+            </div>
+        </PggmTooltip>
+    </div>
+</div>
 
 <div class="demo-section">
     <PggmHeader Level="2">Basic Tooltip with Button Trigger</PggmHeader>
-    <p>Hover over the button to see the tooltip:</p>
-
-    <PggmTooltipTrigger Id="LumpsumButton" is="pggm-button" appearance="primary" TooltipId="LumpsumTooltip" CssClass="btn btn-primary">
+    
+    <PggmButton Id="LumpsumButton" is="pggm-button" appearance="primary">
         Lumpsum
-    </PggmTooltipTrigger>
+    </PggmButton>
 
     <PggmTooltip For="LumpsumButton" Id="LumpsumTooltip">
         <p>
@@ -25,7 +124,7 @@
 
 <div class="demo-section">
     <PggmHeader Level="2">Tooltip with Span Trigger</PggmHeader>
-    <p>Hover over the <PggmTooltipTrigger Id="SpanTrigger" tabindex="0" TooltipId="SpanTooltip" AsButton="false" Element="span" CssClass="text-decoration-underline text-primary">underlined text</PggmTooltipTrigger> to see the tooltip.</p>
+    <p>Hover over the <span id="SpanTrigger" tabindex="0"  class="text-decoration-underline text-primary">underlined text</span> to see the tooltip.</p>
 
     <PggmTooltip For="SpanTrigger" Id="SpanTooltip">
         <p>This tooltip is triggered by a span element!</p>
@@ -37,13 +136,13 @@
     <p>This section demonstrates multiple tooltips on the same page:</p>
     
     <div class="mb-3">
-        <PggmTooltipTrigger Id="InfoButton1" TooltipId="InfoTooltip1" CssClass="btn btn-info me-2">
+        <PggmButton Id="InfoButton1">
             Information 1
-        </PggmTooltipTrigger>
+        </PggmButton>
         
-        <PggmTooltipTrigger Id="InfoButton2" TooltipId="InfoTooltip2" CssClass="btn btn-warning">
+        <PggmButton Id="InfoButton2">
             Information 2
-        </PggmTooltipTrigger>
+        </PggmButton>
     </div>
 
     <PggmTooltip For="InfoButton1" Id="InfoTooltip1">
@@ -58,7 +157,7 @@
 
 <div class="demo-section">
     <PggmHeader Level="2">Tooltip with Link Trigger</PggmHeader>
-    <p>Click on this <PggmTooltipTrigger href="#" is="pggm-link" Id="LinkTrigger" TooltipId="LinkTooltip" AsButton="false" Element="a" CssClass="text-primary">link</PggmTooltipTrigger> to see the tooltip.</p>
+    <p>Click on this <a href="#" is="pggm-link" Id="LinkTrigger">link</a> to see the tooltip.</p>
 
     <PggmTooltip For="LinkTrigger" Id="LinkTooltip">
         <p>This tooltip is triggered by a link element.</p>
@@ -66,19 +165,244 @@
     </PggmTooltip>
 </div>
 
+<div class="demo-section">
+    <PggmHeader Level="2">Toggletip vs Tooltip Comparison</PggmHeader>
+    <p>Toggletips appear only on click and use dialog elements, while tooltips appear on hover/focus using the popover API:</p>
+    
+    <div class="comparison-container">
+        <div class="comparison-item">
+            <h3>Tooltip (Hover/Focus)</h3>
+            <p>Hover or focus on this button to see the tooltip:</p>
+            <PggmButton Id="hover-button">Hover Me</PggmButton>
+            <PggmTooltip For="hover-button" Position="above">
+                This tooltip appears on hover/focus and uses the popover API.
+            </PggmTooltip>
+        </div>
+        
+        <div class="comparison-item">
+            <h3>Toggletip (Click Only)</h3>
+            <p>Click this button to toggle the toggletip:</p>
+            
+            <PggmButton Id="click-button">Click Me</PggmButton>
+            <PggmToggletip For="click-button" Id="ClickToggletip" Position="above">
+                This toggletip appears only on click and uses a dialog element. Click again to close.
+            </PggmToggletip>
+        </div>
+    </div>
+    
+    <div class="behavior-explanation">
+        <h4>Key Differences:</h4>
+        <ul>
+            <li><strong>Tooltip:</strong> Shows on hover/focus, hides when mouse leaves or focus lost</li>
+            <li><strong>Toggletip:</strong> Shows/hides only on click, stays visible until clicked again or dismissed</li>
+            <li><strong>Implementation:</strong> Tooltip uses <code>&lt;div popover="auto"&gt;</code>, Toggletip uses <code>&lt;dialog&gt;</code> element</li>
+            <li><strong>Use case:</strong> Tooltips for quick help text, Toggletips for interactive content that needs to stay visible</li>
+            <li><strong>Accessibility:</strong> Both provide proper ARIA attributes and keyboard navigation</li>
+        </ul>
+        
+    </div>
+</div>
+
+<div class="demo-section">
+    <PggmHeader Level="2">Form Integration</PggmHeader>
+    <p>Comprehensive form example with tooltips for all fields:</p>
+    
+    <EditForm Model="formModel" OnValidSubmit="HandleSubmit">
+        <div class="form-row">
+            <div class="form-field">
+                <PggmLabel For="username">Username</PggmLabel>
+                <PggmInput Id="username" @bind-Value="formModel.Username" />
+                <PggmTooltip For="username" Position="after" Id="username-help">
+                    Username must be 3-20 characters and contain only letters, numbers, and underscores.
+                </PggmTooltip>
+            </div>
+            
+            <div class="form-field">
+                <PggmLabel For="email">Email Address</PggmLabel>
+                <PggmInput Id="email" Type="email" @bind-Value="formModel.Email" />
+                <PggmTooltip For="email" Position="after" Id="email-help">
+                    Please enter a valid email address (e.g., user@example.com)
+                </PggmTooltip>
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-field">
+                <PggmLabel For="password">Password</PggmLabel>
+                <PggmInput Id="password" Type="password" @bind-Value="formModel.Password" />
+                <PggmTooltip For="password" Position="below" Id="password-help">
+                    Password must be at least 8 characters long and contain uppercase, lowercase, and numbers.
+                </PggmTooltip>
+            </div>
+            
+            <div class="form-field">
+                <PggmLabel For="age">Age</PggmLabel>
+                <PggmInput Id="age" Type="number" @bind-Value="formModel.Age" />
+                <PggmTooltip For="age" Position="above" Id="age-help">
+                    Please enter your age in years (must be 18 or older)
+                </PggmTooltip>
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <PggmButton Type="submit" Id="submit-form">Create Account</PggmButton>
+            <PggmTooltip For="submit-form" Position="above">
+                All fields must be completed before submission
+            </PggmTooltip>
+        </div>
+    </EditForm>
+</div>
+
 <style>
     .demo-section {
         margin-bottom: 2rem;
         padding: 1rem;
         border: 1px solid #e0e0e0;
-        border-radius: 4px;
+        border-radius: 8px;
     }
     
     .text-decoration-underline {
         text-decoration: underline;
     }
+    
+    .form-field {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        min-width: 200px;
+        margin-bottom: 1rem;
+    }
+    
+    .form-row {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+    }
+    
+    .position-examples {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        margin-top: 1rem;
+    }
+    
+    .position-row {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+    }
+    
+    .button-group {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+        flex-wrap: wrap;
+    }
+    
+    .form-actions {
+        margin-top: 1.5rem;
+    }
+    
+    h2 {
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+    
+    code {
+        background-color: #f5f5f5;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-family: 'Courier New', monospace;
+    }
+    
+    .comparison-container {
+        display: flex;
+        gap: 2rem;
+        margin: 1rem 0;
+        flex-wrap: wrap;
+    }
+    
+    .comparison-item {
+        flex: 1;
+        min-width: 300px;
+        padding: 1rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
+    
+    .comparison-item h3 {
+        margin-top: 0;
+        color: #2c3e50;
+    }
+    
+    .behavior-explanation {
+        margin-top: 1.5rem;
+        padding: 1rem;
+        background-color: #e8f4fd;
+        border-left: 4px solid #3498db;
+        border-radius: 4px;
+    }
+    
+    .behavior-explanation h4 {
+        margin-top: 0;
+        color: #2c3e50;
+    }
+    
+    .behavior-explanation ul {
+        margin-bottom: 0;
+    }
+    
+    .behavior-explanation li {
+        margin-bottom: 0.5rem;
+    }
 </style>
 
 @code {
-    // No additional code needed for this demo
+    // Basic input field values
+    private string basicValue = "";
+    private string aboveValue = "";
+    private string belowValue = "";
+    private string beforeValue = "";
+    private string afterValue = "";
+    private string complexValue = "";
+    
+    // Form model for the comprehensive form example
+    private FormModel formModel = new();
+    
+    // Event handlers for button tooltips
+    private void HandleSave()
+    {
+        // Handle save action
+        Console.WriteLine("Save button clicked");
+    }
+    
+    private void HandleCancel()
+    {
+        // Handle cancel action
+        Console.WriteLine("Cancel button clicked");
+    }
+    
+    private void HandleHelp()
+    {
+        // Handle help action
+        Console.WriteLine("Help button clicked");
+    }
+    
+    // Form submission handler
+    private void HandleSubmit()
+    {
+        // Handle form submission
+        Console.WriteLine($"Form submitted with Username: {formModel.Username}, Email: {formModel.Email}");
+    }
+    
+    // Form model class
+    public class FormModel
+    {
+        public string Username { get; set; } = "";
+        public string Email { get; set; } = "";
+        public string Password { get; set; } = "";
+        public string Age { get; set; } = "";
+    }
 }
