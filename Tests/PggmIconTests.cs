@@ -1,13 +1,13 @@
-// PggmSliderTests.cs
+// PggmIconTests.cs
 using Xunit;
 using Bunit;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Tests
 {
-    public class PggmSliderTests : TestContext
+    public class PggmIconTests : TestContext
     {
-        public PggmSliderTests()
+        public PggmIconTests()
         {
             Services.AddSingleton<Pggm.Components.Services.PggmDesignSystemService>();
         }
@@ -15,7 +15,7 @@ namespace Tests
         [Fact]
         public void Should_Render_Correctly()
         {
-            var cut = RenderComponent<Pggm.Components.PggmSlider>();
+            var cut = RenderComponent<Pggm.Components.PggmIcon>();
             Assert.NotNull(cut.Markup);
         }
     }

@@ -1,13 +1,13 @@
-// PggmSliderTests.cs
+// PggmFileUploadTests.cs
 using Xunit;
 using Bunit;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Tests
 {
-    public class PggmSliderTests : TestContext
+    public class PggmFileUploadTests : TestContext
     {
-        public PggmSliderTests()
+        public PggmFileUploadTests()
         {
             Services.AddSingleton<Pggm.Components.Services.PggmDesignSystemService>();
         }
@@ -15,7 +15,7 @@ namespace Tests
         [Fact]
         public void Should_Render_Correctly()
         {
-            var cut = RenderComponent<Pggm.Components.PggmSlider>();
+            var cut = RenderComponent<Pggm.Components.PggmFileUpload>();
             Assert.NotNull(cut.Markup);
         }
     }
