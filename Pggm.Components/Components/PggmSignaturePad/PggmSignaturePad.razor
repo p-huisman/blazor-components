@@ -1,0 +1,67 @@
+
+@inherits PggmEventComponentBase
+@namespace Pggm.Components
+
+<pggm-signature-pad @ref="ElementRef" @attributes="GetAttributes()" @onchange="OnChangeHandler">
+  @ChildContent
+</pggm-signature-pad>
+
+@code {
+    public override string TagName => "pggm-signature-pad";
+
+    /// <summary>
+    /// The id attribute for the signature pad
+    /// </summary>
+    [Parameter] public string? Id { get; set; }
+
+    /// <summary>
+    /// The name attribute for the signature pad
+    /// </summary>
+    [Parameter] public string? Name { get; set; }
+
+    /// <summary>
+    /// Whether the signature pad is required
+    /// </summary>
+    [Parameter] public bool Required { get; set; } = false;
+
+    /// <summary>
+    /// The value of the signature pad (base64 string)
+    /// </summary>
+    [Parameter] public string? Value { get; set; }
+
+    /// <summary>
+    /// Event callback for when the signature changes
+    /// </summary>
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+
+    /// <summary>
+    /// Event callback for the change event
+    /// </summary>
+    [Parameter] public EventCallback<ChangeEventArgs> OnChange { get; set; }
+
+
+  private async Task OnChangeHandler(ChangeEventArgs args)
+  {
+    var newValue = args.Value?.ToString();
+    if (Value != newValue)
+    {
+      Value = newValue;
+      if (ValueChanged.HasDelegate)
+      {
+        await ValueChanged.InvokeAsync(Value);
+      }
+    }
+    if (OnChange.HasDelegate)
+    {
+      await OnChange.InvokeAsync(args);
+    }
+  }
+
+  protected override void AddComponentAttributes(Dictionary<string, object> attributes)
+  {
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, "id", Id);
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, Constants.AttributeNames.Name, Name);
+    AttributeHelper.SetBooleanAttribute(attributes, Constants.AttributeNames.Required, Required); 
+    AttributeHelper.SetAttributeIfNotEmpty(attributes, Constants.AttributeNames.Value, Value);
+  }
+}

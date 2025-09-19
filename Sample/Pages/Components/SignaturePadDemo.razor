@@ -1,0 +1,77 @@
+@page "/pggm-signature-pad"
+@using Pggm.Components
+@using Microsoft.AspNetCore.Components.Forms
+
+<PageTitle>PGGM Signature pad</PageTitle>
+
+<PggmHeader Level="1">Pggm Signature Pad Component</PggmHeader>
+
+<p>This page demonstrates the PGGM Signature Pad Component.</p>
+
+<div class="demo-section">
+    <PggmHeader Level="3">Basic Signature Pad</PggmHeader>
+
+  <EditForm Model="model" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <PggmFieldset>
+      <Label><PggmLabel For="HandtekeningVeld">Handtekening</PggmLabel></Label>
+      <Description><p>Gebruik je muis of touch om je handtekening te plaatsen.</p></Description>
+      <Error>
+        <PggmErrorMessage For="HandtekeningVeld" Validity="valueMissing">Handtekening is verplicht, plaats een handtekening.</PggmErrorMessage>
+        <PggmErrorMessage For="HandtekeningVeld" Validity="badInput">Ongeldige handtekening, plaats een juiste handtekening.</PggmErrorMessage>
+      </Error>
+      <ChildContent>
+        <PggmSignaturePad Id="HandtekeningVeld" Name="mySignature" Required="true" Value="@model.Signature"
+          ValueChanged="@OnSignatureChanged" />
+      </ChildContent>
+    </PggmFieldset>
+    <PggmButton Type="submit">Submit</PggmButton>
+  </EditForm>
+
+  @if (!string.IsNullOrEmpty(model.Signature))
+  {
+    <div class="mt-3">
+      <strong>Signature Value:</strong>
+      <pre class="signature-output">@model.Signature</pre>
+    </div>
+  }
+</div>
+
+@code {
+  private DemoModel model = new();
+
+  private void HandleValidSubmit()
+  {
+    // Handle form submit
+  }
+
+  private void OnSignatureChanged(string? signature)
+  {
+    model.Signature = signature;
+  }
+
+  public class DemoModel
+  {
+    public string? Signature { get; set; }
+  }
+
+}
+
+<style>
+.signature-output {
+  background-color: #f8f9fa;
+  border: 1px solid #d1d5db;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  font-family: monospace;
+  font-size: 1rem;
+  color: #333;
+  white-space: pre-wrap;
+  word-break: break-all;
+  margin-top: 0.5rem;
+  max-width: fit-content;
+  max-height: 200px;
+  overflow-x: scroll;
+}
+</style>
