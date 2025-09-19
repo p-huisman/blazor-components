@@ -38,7 +38,7 @@ namespace Pggm.Components.Tests
             // Assert
             var element = component.Find("pggm-tab-panel");
             var titleElement = component.Find("h3[slot='title']");
-            
+
             Assert.NotNull(element);
             Assert.NotNull(titleElement);
             Assert.Equal(title, titleElement.TextContent);
@@ -232,7 +232,7 @@ namespace Pggm.Components.Tests
             // Assert
             var element = component.Find("pggm-tab-panel");
             var children = element.Children;
-            
+
             // Title should be the first child
             Assert.True(children.Length >= 1);
             Assert.Equal("H3", children[0].TagName);

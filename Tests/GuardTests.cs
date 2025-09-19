@@ -224,7 +224,7 @@ public class GuardTests
         var max = 10;
 
         // Act & Assert
-        var exception = Assert.Throws<ArgumentOutOfRangeException>(() => 
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(() =>
             Guard.InRange(value >= min && value <= max, $"Value {value} must be between {min} and {max}"));
         Assert.Contains("Value 15 must be between 1 and 10", exception.Message);
     }
@@ -237,7 +237,7 @@ public class GuardTests
     public void Guard_Methods_CaptureCorrectParameterNames()
     {
         // This test verifies that CallerArgumentExpression works correctly
-        
+
         // Arrange
         string? nullString = null;
         object? nullObject = null;

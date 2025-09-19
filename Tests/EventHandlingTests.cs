@@ -99,7 +99,7 @@ namespace Pggm.Components.Tests
 
             // Act & Assert - Should not throw
             await testComponent.HandleEvent("unknown-event", "test-data");
-            
+
             // Verify unhandled event was called
             Assert.True(testComponent.UnhandledEventCalled);
             Assert.Equal("unknown-event", testComponent.LastUnhandledEventName);

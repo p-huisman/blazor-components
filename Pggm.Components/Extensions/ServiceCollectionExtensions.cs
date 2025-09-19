@@ -14,17 +14,17 @@ public class PggmComponentsOptions
     /// Enable development mode with additional logging and validation
     /// </summary>
     public bool EnableDevelopmentMode { get; set; } = false;
-    
+
     /// <summary>
     /// Enable component performance metrics
     /// </summary>
     public bool EnablePerformanceMetrics { get; set; } = false;
-    
+
     /// <summary>
     /// Custom CSS bundle path (optional)
     /// </summary>
     public string? CustomCssBundlePath { get; set; }
-    
+
     /// <summary>
     /// Custom JavaScript bundle path (optional)
     /// </summary>
@@ -45,7 +45,7 @@ public static class ServiceCollectionExtensions
     {
         return AddPggmComponents(services, _ => { });
     }
-    
+
     /// <summary>
     /// Adds PGGM Design System services to the service collection with configuration
     /// </summary>
@@ -56,10 +56,10 @@ public static class ServiceCollectionExtensions
     {
         var options = new PggmComponentsOptions();
         configureOptions(options);
-        
+
         services.TryAddSingleton(options);
         services.TryAddScoped<PggmDesignSystemService>();
-        
+
         return services;
     }
 }

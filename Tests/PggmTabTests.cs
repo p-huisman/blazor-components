@@ -197,7 +197,7 @@ namespace Pggm.Components.Tests
             // Assert
             var element = component.Find("pggm-tab");
             var tabPanels = component.FindAll("pggm-tab-panel");
-            
+
             Assert.Equal(2, tabPanels.Count);
             Assert.Contains("Content 1", element.InnerHtml);
             Assert.Contains("Content 2", element.InnerHtml);

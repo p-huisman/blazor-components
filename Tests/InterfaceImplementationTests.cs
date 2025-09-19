@@ -21,10 +21,10 @@ public class InterfaceImplementationTests : TestContext
     public class TestPggmComponent : PggmComponentBase
     {
         public override string TagName => "test-component";
-        
+
         // Parameterless constructor for Blazor rendering
         public TestPggmComponent() : this(null, null, null, null) { }
-        
+
         // Constructor for testing purposes
         public TestPggmComponent(string? cssClass = null, Dictionary<string, object>? additionalAttributes = null, RenderFragment? childContent = null, string? testAttribute = null)
         {
@@ -33,7 +33,7 @@ public class InterfaceImplementationTests : TestContext
             ChildContent = childContent;
             TestAttribute = testAttribute;
         }
-        
+
         protected override void AddComponentAttributes(Dictionary<string, object> attributes)
         {
             if (!string.IsNullOrEmpty(TestAttribute))
@@ -41,9 +41,9 @@ public class InterfaceImplementationTests : TestContext
                 attributes["test-attr"] = TestAttribute;
             }
         }
-        
+
         [Parameter] public string? TestAttribute { get; set; }
-        
+
         // Public method for testing protected GetAttributes
         public Dictionary<string, object> PublicGetAttributes() => GetAttributes();
     }
@@ -52,21 +52,21 @@ public class InterfaceImplementationTests : TestContext
     public class TestPggmEventComponent : PggmEventComponentBase
     {
         public override string TagName => "test-event-component";
-        
+
         public bool EventHandled { get; private set; }
         public string? LastEventName { get; private set; }
         public object? LastEventData { get; private set; }
-        
+
         protected override IEnumerable<string> GetEventNames()
         {
             yield return "test-event";
         }
-        
+
         public void RegisterTestHandler()
         {
             RegisterEventHandler("test-event", HandleTestEvent);
         }
-        
+
         private Task HandleTestEvent(object? eventData)
         {
             EventHandled = true;
@@ -74,7 +74,7 @@ public class InterfaceImplementationTests : TestContext
             LastEventData = eventData;
             return Task.CompletedTask;
         }
-        
+
         // Public method for testing protected RegisterEventHandler
         public void PublicRegisterEventHandler(string eventName, Func<object?, Task> handler)
         {
@@ -119,8 +119,8 @@ public class InterfaceImplementationTests : TestContext
 
         // Act
         var component = new TestPggmComponent(
-            cssClass: "test-class", 
-            additionalAttributes: additionalAttributes, 
+            cssClass: "test-class",
+            additionalAttributes: additionalAttributes,
             childContent: childContent);
 
         // Assert
@@ -166,7 +166,7 @@ public class InterfaceImplementationTests : TestContext
         // Arrange
         var component = new TestPggmEventComponent();
         component.RegisterTestHandler();
-        
+
         // Act
         await component.HandleEvent("test-event", "test-data");
 
@@ -181,7 +181,7 @@ public class InterfaceImplementationTests : TestContext
     {
         // Arrange
         var component = new TestPggmEventComponent();
-        
+
         // Act
         var result = await component.HandleCancelableEvent("unknown-event", null);
 
@@ -316,7 +316,7 @@ public class InterfaceImplementationTests : TestContext
 
         // Act & Assert - Should not throw
         await component.HandleEvent("unknown-event", null);
-        
+
         // Event should not be handled since no handler is registered
         Assert.False(component.EventHandled);
     }
@@ -326,7 +326,7 @@ public class InterfaceImplementationTests : TestContext
     {
         // Arrange
         var component = new TestPggmEventComponent();
-        
+
         // Register a handler that throws
         component.PublicRegisterEventHandler("error-event", _ => throw new InvalidOperationException("Test exception"));
 
@@ -354,7 +354,7 @@ public class InterfaceImplementationTests : TestContext
         Assert.Contains("test-attr", attributes1);
         Assert.Equal("class1", attributes1["class"]);
         Assert.Equal("attr1", attributes1["test-attr"]);
-        
+
         Assert.Contains("class", attributes2);
         Assert.Contains("test-attr", attributes2);
         Assert.Equal("class2", attributes2["class"]);

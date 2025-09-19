@@ -14,7 +14,7 @@ namespace Pggm.Components.Tests
         public PggmAccordionTests()
         {
             Services.AddScoped<PggmDesignSystemService>();
-            
+
             // Setup JS interop to handle calls from PggmDesignSystemService
             JSInterop.SetupVoid("PggmComponents.initialize");
             JSInterop.SetupVoid("PggmComponents.addEventListener", _ => true);
@@ -113,7 +113,7 @@ namespace Pggm.Components.Tests
             var accordion = component.Find("pggm-accordion");
             var accordionItem = component.Find("pggm-accordion-item");
             var titleSpan = component.Find("span[slot='header']");
-            
+
             Assert.NotNull(accordion);
             Assert.NotNull(accordionItem);
             Assert.NotNull(titleSpan);
@@ -127,7 +127,7 @@ namespace Pggm.Components.Tests
         public PggmAccordionItemTests()
         {
             Services.AddScoped<PggmDesignSystemService>();
-            
+
             // Setup JS interop to handle calls from PggmDesignSystemService
             JSInterop.SetupVoid("PggmComponents.initialize");
             JSInterop.SetupVoid("PggmComponents.addEventListener", _ => true);
@@ -279,7 +279,7 @@ namespace Pggm.Components.Tests
             // Assert
             var accordionItem = component.Find("pggm-accordion-item");
             var titleSpan = component.Find("span[slot='header']");
-            
+
             Assert.NotNull(accordionItem);
             Assert.NotNull(titleSpan);
             Assert.Contains("Test Title", component.Markup);
@@ -292,7 +292,7 @@ namespace Pggm.Components.Tests
         public PggmAccordionItemTitleTests()
         {
             Services.AddScoped<PggmDesignSystemService>();
-            
+
             // Setup JS interop to handle calls from PggmDesignSystemService
             JSInterop.SetupVoid("PggmComponents.initialize");
             JSInterop.SetupVoid("PggmComponents.addEventListener", _ => true);
@@ -323,7 +323,7 @@ namespace Pggm.Components.Tests
             // Assert
             var titleSpan = component.Find("span[slot='header']");
             var strongElement = titleSpan.QuerySelector("strong");
-            
+
             Assert.NotNull(titleSpan);
             Assert.NotNull(strongElement);
             Assert.Equal("Bold Title", strongElement.TextContent);
@@ -386,7 +386,7 @@ namespace Pggm.Components.Tests
             var titleSpan = component.Find("span[slot='header']");
             var icon = titleSpan.QuerySelector("i.icon-test");
             var badge = titleSpan.QuerySelector("span.badge");
-            
+
             Assert.NotNull(titleSpan);
             Assert.NotNull(icon);
             Assert.NotNull(badge);
@@ -400,7 +400,7 @@ namespace Pggm.Components.Tests
         public PggmAccordionIntegrationTests()
         {
             Services.AddScoped<PggmDesignSystemService>();
-            
+
             // Setup JS interop to handle calls from PggmDesignSystemService
             JSInterop.SetupVoid("PggmComponents.initialize");
             JSInterop.SetupVoid("PggmComponents.addEventListener", _ => true);
@@ -484,7 +484,7 @@ namespace Pggm.Components.Tests
                 {
                     // First accordion item
                     builder.OpenComponent<PggmAccordionItem>(0);
-                    builder.AddAttribute(1, "OnAccordionItemToggle", 
+                    builder.AddAttribute(1, "OnAccordionItemToggle",
                         EventCallback.Factory.Create<EventArgs>(this, () => firstItemToggleCount++));
                     builder.AddAttribute(2, "ChildContent", (RenderFragment)(itemBuilder =>
                     {
@@ -499,7 +499,7 @@ namespace Pggm.Components.Tests
 
                     // Second accordion item
                     builder.OpenComponent<PggmAccordionItem>(10);
-                    builder.AddAttribute(11, "OnAccordionItemToggle", 
+                    builder.AddAttribute(11, "OnAccordionItemToggle",
                         EventCallback.Factory.Create<EventArgs>(this, () => secondItemToggleCount++));
                     builder.AddAttribute(12, "ChildContent", (RenderFragment)(itemBuilder =>
                     {

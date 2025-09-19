@@ -45,7 +45,7 @@ namespace Pggm.Components.Tests
             stopwatch.Stop();
 
             // Assert - Performance should be reasonable (less than 100ms for 70k conversions)
-            Assert.True(stopwatch.ElapsedMilliseconds < 100, 
+            Assert.True(stopwatch.ElapsedMilliseconds < 100,
                 $"Performance test failed. Elapsed: {stopwatch.ElapsedMilliseconds}ms");
         }
 
@@ -75,7 +75,7 @@ namespace Pggm.Components.Tests
             stopwatch.Stop();
 
             // Assert - Second run should be significantly faster (or at least not slower)
-            Assert.True(secondRunTime <= firstRunTime * 1.5, 
+            Assert.True(secondRunTime <= firstRunTime * 1.5,
                 $"Caching not effective. First run: {firstRunTime}ms, Second run: {secondRunTime}ms");
         }
 
@@ -148,7 +148,7 @@ namespace Pggm.Components.Tests
                         AttributeHelper.SetAttributeIfNotEmpty(attributes, "empty-attr", "");
                         AttributeHelper.SetAttributeIfNotEmpty(attributes, "null-attr", null);
                         AttributeHelper.SetAttributeIfNotEmpty(attributes, "whitespace-attr", "   ");
-                        
+
                         allResults.Add(attributes);
                     }
                 }));
@@ -158,7 +158,7 @@ namespace Pggm.Components.Tests
 
             // Assert - All operations should complete successfully
             Assert.Equal(threadCount * iterationsPerThread, allResults.Count);
-            
+
             // Verify that each result has the expected attributes
             foreach (var result in allResults)
             {
@@ -196,7 +196,7 @@ namespace Pggm.Components.Tests
             stopwatch.Stop();
 
             // Assert - Should complete in reasonable time (less than 200ms for 5k builds)
-            Assert.True(stopwatch.ElapsedMilliseconds < 200, 
+            Assert.True(stopwatch.ElapsedMilliseconds < 200,
                 $"AttributeBuilder performance test failed. Elapsed: {stopwatch.ElapsedMilliseconds}ms");
         }
 
@@ -269,22 +269,22 @@ namespace Pggm.Components.Tests
             // Act - Generate attributes for all components
             var stopwatch = Stopwatch.StartNew();
             var allAttributes = new List<Dictionary<string, object>>();
-            
+
             foreach (var component in components)
             {
                 var attributes = component.GetTestAttributes();
                 allAttributes.Add(attributes);
             }
-            
+
             stopwatch.Stop();
 
             // Assert - Should complete efficiently
-            Assert.True(stopwatch.ElapsedMilliseconds < 100, 
+            Assert.True(stopwatch.ElapsedMilliseconds < 100,
                 $"GetAttributes performance test failed. Elapsed: {stopwatch.ElapsedMilliseconds}ms");
-            
+
             // Verify all attributes were generated correctly
             Assert.Equal(componentCount, allAttributes.Count);
-            
+
             for (int i = 0; i < componentCount; i++)
             {
                 var attrs = allAttributes[i];
@@ -334,7 +334,7 @@ namespace Pggm.Components.Tests
                             { "data-concurrent-id", index.ToString() },
                             { "data-timestamp", DateTime.UtcNow.Ticks.ToString() }
                         });
-                    
+
                     return component.GetTestAttributes();
                 }));
             }
@@ -343,11 +343,11 @@ namespace Pggm.Components.Tests
 
             // Assert - All components should be created successfully
             Assert.Equal(componentCount, results.Length);
-            
+
             // Verify uniqueness and correctness
             var uniqueIds = results.Select(r => r["data-concurrent-id"].ToString()).Distinct().ToList();
             Assert.Equal(componentCount, uniqueIds.Count);
-            
+
             // Verify all have correct class structure
             foreach (var result in results)
             {

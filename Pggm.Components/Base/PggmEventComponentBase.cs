@@ -16,7 +16,7 @@ public abstract class PggmEventComponentBase : PggmComponentBase, IPggmEventComp
     private bool _eventsInitialized;
 
     [Inject] protected ILogger<PggmEventComponentBase>? Logger { get; set; }
-    
+
     /// <summary>
     /// Dictionary of event handlers for this component
     /// </summary>
@@ -30,12 +30,12 @@ public abstract class PggmEventComponentBase : PggmComponentBase, IPggmEventComp
     protected override async Task InitializeWebComponentAsync()
     {
         await base.InitializeWebComponentAsync();
-        
+
         if (!_eventsInitialized)
         {
             // Create object reference for JS interop
             _objectReference = DotNetObjectReference.Create(this);
-            
+
             // Set up event listeners
             await SetupEventListenersAsync();
             _eventsInitialized = true;
@@ -49,7 +49,7 @@ public abstract class PggmEventComponentBase : PggmComponentBase, IPggmEventComp
     protected virtual async Task SetupEventListenersAsync()
     {
         var eventNames = GetEventNames().ToList();
-        
+
         foreach (var eventName in eventNames)
         {
             try
@@ -59,7 +59,7 @@ public abstract class PggmEventComponentBase : PggmComponentBase, IPggmEventComp
             }
             catch (Exception ex)
             {
-                Logger?.LogWarning(ex, "Failed to register event listener for {EventName} in component {ComponentType}", 
+                Logger?.LogWarning(ex, "Failed to register event listener for {EventName} in component {ComponentType}",
                     eventName, GetType().Name);
             }
         }
@@ -159,7 +159,7 @@ public abstract class PggmEventComponentBase : PggmComponentBase, IPggmEventComp
     protected virtual Task OnEventErrorAsync(string eventName, object? eventData, Exception exception)
     {
         // Log the error using proper logging instead of Console.WriteLine
-        Logger?.LogError(exception, "Error handling event '{EventName}' in component '{ComponentType}' with data: {EventData}", 
+        Logger?.LogError(exception, "Error handling event '{EventName}' in component '{ComponentType}' with data: {EventData}",
             eventName, GetType().Name, eventData);
         return Task.CompletedTask;
     }
@@ -185,7 +185,7 @@ public abstract class PggmEventComponentBase : PggmComponentBase, IPggmEventComp
     /// </summary>
     protected void RegisterEventHandler<T>(string eventName, Func<T?, Task> handler)
     {
-        EventHandlers[eventName] = eventData => 
+        EventHandlers[eventName] = eventData =>
         {
             var typedData = eventData is T data ? data : default(T);
             return handler(typedData);
@@ -197,7 +197,7 @@ public abstract class PggmEventComponentBase : PggmComponentBase, IPggmEventComp
     /// </summary>
     protected void RegisterCancelableEventHandler<T>(string eventName, Func<T?, Task<bool>> handler) where T : class, new()
     {
-        CancelableEventHandlers[eventName] = async eventData => 
+        CancelableEventHandlers[eventName] = async eventData =>
         {
             T? typedData = default(T);
             if (eventData != null)
@@ -211,10 +211,10 @@ public abstract class PggmEventComponentBase : PggmComponentBase, IPggmEventComp
                         ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles,
                         DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
                     };
-                    
+
                     // Always create a new instance and populate it from the event data
                     typedData = new T();
-                    
+
                     // Try to deserialize as JSON if it's a JsonElement
                     if (eventData is System.Text.Json.JsonElement jsonElement)
                     {
@@ -245,10 +245,10 @@ public abstract class PggmEventComponentBase : PggmComponentBase, IPggmEventComp
             {
                 typedData = new T(); // Create empty instance if no data
             }
-            
+
             // Call the handler and get the result
             var result = await handler(typedData);
-            
+
             // For CancelableEventArgs, check if Cancel property was modified
             if (typedData is CancelableEventArgs cancelableArgs)
             {
@@ -263,7 +263,7 @@ public abstract class PggmEventComponentBase : PggmComponentBase, IPggmEventComp
                     return result;
                 }
             }
-            
+
             return result;
         };
     }
@@ -287,10 +287,10 @@ public abstract class PggmEventComponentBase : PggmComponentBase, IPggmEventComp
                 try
                 {
                     var value = sourceProp.GetValue(eventData);
-                    
+
                     // Only copy primitive types and strings to avoid circular references
-                    if (value == null || 
-                        targetProp.PropertyType.IsPrimitive || 
+                    if (value == null ||
+                        targetProp.PropertyType.IsPrimitive ||
                         targetProp.PropertyType == typeof(string) ||
                         targetProp.PropertyType == typeof(bool) ||
                         targetProp.PropertyType == typeof(DateTime) ||
@@ -368,7 +368,7 @@ public abstract class PggmEventComponentBase : PggmComponentBase, IPggmEventComp
     protected override async ValueTask DisposeAsyncCore()
     {
         await base.DisposeAsyncCore();
-        
+
         // Clean up event listeners
         foreach (var eventName in _registeredEvents)
         {
@@ -381,9 +381,9 @@ public abstract class PggmEventComponentBase : PggmComponentBase, IPggmEventComp
                 Logger?.LogWarning(ex, "Failed to remove event listener for {EventName} during disposal", eventName);
             }
         }
-        
+
         _registeredEvents.Clear();
-        
+
         // Dispose object reference
         _objectReference?.Dispose();
         _objectReference = null;

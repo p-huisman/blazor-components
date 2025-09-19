@@ -26,7 +26,7 @@ namespace Pggm.Components.Tests
             var mockJSRuntime = new Mock<IJSRuntime>();
             services.AddSingleton(mockJSRuntime.Object);
             services.AddLogging();
-            
+
             services.AddPggmComponents(options =>
             {
                 options.EnableDevelopmentMode = true;
@@ -68,7 +68,7 @@ namespace Pggm.Components.Tests
             // Act & Assert - Component initialization should not throw
             var attributes = component.GetTestAttributes();
             Assert.NotNull(attributes);
-            
+
             // Verify component can handle attribute building
             Assert.True(attributes.ContainsKey("data-component"));
             Assert.Equal("integration-test", attributes["data-component"]);
@@ -101,7 +101,7 @@ namespace Pggm.Components.Tests
             Assert.NotEqual(attributes1["class"], attributes2["class"]);
             Assert.Equal("component-1 custom-class", attributes1["class"]);
             Assert.Equal("component-2 another-class", attributes2["class"]);
-            
+
             Assert.Equal("value1", attributes1["data-test"]);
             Assert.Equal("value2", attributes2["data-test"]);
         }
@@ -203,7 +203,7 @@ namespace Pggm.Components.Tests
                         {
                             { "data-index", index.ToString() }
                         });
-                    
+
                     var attributes = component.GetTestAttributes();
                     lock (components)
                     {
@@ -217,7 +217,7 @@ namespace Pggm.Components.Tests
 
             // Assert - All components should be created successfully
             Assert.Equal(10, components.Count);
-            
+
             // Verify each component has unique attributes
             for (int i = 0; i < components.Count; i++)
             {

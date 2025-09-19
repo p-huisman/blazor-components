@@ -44,7 +44,7 @@ public class PggmDesignSystemService : IAsyncDisposable
 
             // Call the global initialize function directly
             await _jsRuntime.InvokeVoidAsync("PggmComponents.initialize");
-            
+
             _isInitialized = true;
             _logger?.LogInformation("PGGM Design System initialized successfully");
             return true;
@@ -70,7 +70,7 @@ public class PggmDesignSystemService : IAsyncDisposable
     /// </summary>
     public async Task<bool> SetPropertyAsync(IJSObjectReference element, string property, object value)
     {
-        if (!_isInitialized) 
+        if (!_isInitialized)
         {
             _logger?.LogWarning("Cannot set property {Property}: Design system not initialized", property);
             return false;
@@ -93,7 +93,7 @@ public class PggmDesignSystemService : IAsyncDisposable
     /// </summary>
     public async Task<T?> GetPropertyAsync<T>(IJSObjectReference element, string property)
     {
-        if (!_isInitialized) 
+        if (!_isInitialized)
         {
             _logger?.LogWarning("Cannot get property {Property}: Design system not initialized", property);
             return default(T);
@@ -115,7 +115,7 @@ public class PggmDesignSystemService : IAsyncDisposable
     /// </summary>
     public async Task<bool> AddEventListenerAsync(ElementReference element, string eventName, DotNetObjectReference<object> callback)
     {
-        if (!_isInitialized) 
+        if (!_isInitialized)
         {
             _logger?.LogWarning("Cannot add event listener for {EventName}: Design system not initialized", eventName);
             return false;
@@ -138,7 +138,7 @@ public class PggmDesignSystemService : IAsyncDisposable
     /// </summary>
     public async Task<bool> RemoveEventListenerAsync(ElementReference element, string eventName)
     {
-        if (!_isInitialized) 
+        if (!_isInitialized)
         {
             _logger?.LogWarning("Cannot remove event listener for {EventName}: Design system not initialized", eventName);
             return false;

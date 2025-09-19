@@ -14,7 +14,7 @@ namespace Pggm.Components.Tests
         {
             // Arrange
             var services = new ServiceCollection();
-            
+
             // Add required dependencies
             var mockJSRuntime = new Mock<IJSRuntime>();
             services.AddSingleton(mockJSRuntime.Object);
@@ -25,7 +25,7 @@ namespace Pggm.Components.Tests
 
             // Assert
             Assert.Same(services, result);
-            
+
             // Verify the service is registered
             var serviceProvider = services.BuildServiceProvider();
             var designSystemService = serviceProvider.GetService<PggmDesignSystemService>();
@@ -65,7 +65,7 @@ namespace Pggm.Components.Tests
             // Assert
             var serviceProvider = services.BuildServiceProvider();
             var options = serviceProvider.GetService<PggmComponentsOptions>();
-            
+
             Assert.NotNull(options);
             Assert.True(options.EnableDevelopmentMode);
             Assert.True(options.EnablePerformanceMetrics);
@@ -85,7 +85,7 @@ namespace Pggm.Components.Tests
             // Assert
             var serviceProvider = services.BuildServiceProvider();
             var options = serviceProvider.GetService<PggmComponentsOptions>();
-            
+
             Assert.NotNull(options);
             Assert.False(options.EnableDevelopmentMode);
             Assert.False(options.EnablePerformanceMetrics);
@@ -113,7 +113,7 @@ namespace Pggm.Components.Tests
         {
             // Arrange
             var services = new ServiceCollection();
-            
+
             // Add required dependencies
             var mockJSRuntime = new Mock<IJSRuntime>();
             services.AddSingleton(mockJSRuntime.Object);
@@ -149,7 +149,7 @@ namespace Pggm.Components.Tests
             // Assert
             var serviceProvider = services.BuildServiceProvider();
             var options = serviceProvider.GetService<PggmComponentsOptions>();
-            
+
             Assert.NotNull(options);
             Assert.Equal(developmentMode, options.EnableDevelopmentMode);
             Assert.Equal(performanceMetrics, options.EnablePerformanceMetrics);

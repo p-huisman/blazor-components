@@ -353,7 +353,7 @@ public class AttributeBuilderTests
         Assert.Contains("bool-property", result);
         Assert.Contains("enum-property", result);
         Assert.Contains("int-property", result);
-        
+
         Assert.Equal("test-string", result["string-property"]);
         Assert.Equal(true, result["bool-property"]);
         Assert.Equal("second-value", result["enum-property"]);
@@ -389,7 +389,7 @@ public class AttributeBuilderTests
 
         // Assert
         Assert.NotNull(builder);
-        
+
         var result = builder.Build();
         Assert.Equal(4, result.Count);
         Assert.Contains("class", result);
@@ -442,7 +442,7 @@ public class AttributeBuilderTests
         // Assert
         Assert.NotSame(result1, result2);
         Assert.Equal(result1["test"], result2["test"]);
-        
+
         // Modify one result - should not affect the other
         result1["test"] = "modified";
         Assert.NotEqual(result1["test"], result2["test"]);

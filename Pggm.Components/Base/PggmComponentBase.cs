@@ -15,46 +15,46 @@ public abstract class PggmComponentBase : ComponentBase, IPggmComponent
 
     [Inject] protected IJSRuntime JSRuntime { get; set; } = default!;
     [Inject] protected PggmDesignSystemService DesignSystemService { get; set; } = default!;
-    
+
     /// <summary>
     /// The HTML tag name for the web component
     /// </summary>
     public abstract string TagName { get; }
-    
+
     /// <summary>
     /// Additional CSS classes to apply to the component
     /// </summary>
     [Parameter] public string? CssClass { get; set; }
-    
+
     /// <summary>
     /// Additional attributes to apply to the component
     /// </summary>
     [Parameter(CaptureUnmatchedValues = true)]
     public Dictionary<string, object>? AdditionalAttributes { get; set; }
-    
+
     /// <summary>
     /// Child content for the component
     /// </summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
-    
+
     /// <summary>
     /// Reference to the HTML element
     /// </summary>
     public ElementReference ElementRef { get; protected set; }
-    
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             Guard.NotNull(DesignSystemService, nameof(DesignSystemService));
             Guard.NotNull(JSRuntime, nameof(JSRuntime));
-            
+
             await DesignSystemService.InitializeAsync();
             await InitializeWebComponentAsync();
         }
         await base.OnAfterRenderAsync(firstRender);
     }
-    
+
     /// <summary>
     /// Initialize the web component with any required JavaScript
     /// </summary>
@@ -63,14 +63,14 @@ public abstract class PggmComponentBase : ComponentBase, IPggmComponent
         // Override in derived classes if needed
         await Task.CompletedTask;
     }
-    
+
     /// <summary>
     /// Gets all attributes to be applied to the component
     /// </summary>
     protected virtual Dictionary<string, object> GetAttributes()
     {
         var attributes = new Dictionary<string, object>();
-        
+
         // Add CSS classes
         var cssClasses = AttributeHelper.MergeCssClasses(CssClass, GetDefaultCssClasses());
         if (!string.IsNullOrEmpty(cssClasses))
@@ -80,7 +80,7 @@ public abstract class PggmComponentBase : ComponentBase, IPggmComponent
 
         // Add component-specific attributes
         AddComponentAttributes(attributes);
-        
+
         // Add additional attributes (these take precedence)
         if (AdditionalAttributes != null)
         {
@@ -108,7 +108,7 @@ public abstract class PggmComponentBase : ComponentBase, IPggmComponent
     {
         return null;
     }
-    
+
     /// <summary>
     /// Performs cleanup operations for the component
     /// Override in derived classes to add custom cleanup logic
@@ -117,7 +117,7 @@ public abstract class PggmComponentBase : ComponentBase, IPggmComponent
     {
         return ValueTask.CompletedTask;
     }
-    
+
     public virtual async ValueTask DisposeAsync()
     {
         if (!_disposed)
@@ -125,7 +125,7 @@ public abstract class PggmComponentBase : ComponentBase, IPggmComponent
             await DisposeAsyncCore();
             _disposed = true;
         }
-        
+
         GC.SuppressFinalize(this);
     }
 }

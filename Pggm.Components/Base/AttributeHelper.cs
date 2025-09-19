@@ -40,7 +40,7 @@ public static class AttributeHelper
     /// <summary>
     /// Set an enum attribute with kebab-case conversion
     /// </summary>
-    public static void SetEnumAttribute<T>(Dictionary<string, object> attributes, string attributeName, T? value) 
+    public static void SetEnumAttribute<T>(Dictionary<string, object> attributes, string attributeName, T? value)
         where T : struct, Enum
     {
         if (value.HasValue)
@@ -71,19 +71,19 @@ public static class AttributeHelper
             lock (_stringBuilder)
             {
                 _stringBuilder.Clear();
-                
+
                 for (int i = 0; i < key.Length; i++)
                 {
                     char c = key[i];
-                    
+
                     if (i > 0 && char.IsUpper(c))
                     {
                         _stringBuilder.Append('-');
                     }
-                    
+
                     _stringBuilder.Append(char.ToLowerInvariant(c));
                 }
-                
+
                 return _stringBuilder.ToString();
             }
         });
@@ -120,14 +120,14 @@ public static class AttributeHelper
         if (source == null) return;
 
         var properties = source.GetType().GetProperties();
-        
+
         foreach (var property in properties)
         {
             var value = property.GetValue(source);
             if (value != null)
             {
                 var attributeName = ConvertToKebabCase(property.Name);
-                
+
                 // Handle different value types appropriately
                 switch (value)
                 {

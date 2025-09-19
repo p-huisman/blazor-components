@@ -9,7 +9,7 @@ public interface IPggmEventComponent : IPggmComponent
     /// Handle an event from the web component
     /// </summary>
     Task HandleEvent(string eventName, object? eventData = null);
-    
+
     /// <summary>
     /// Handle a cancelable event from the web component
     /// </summary>
