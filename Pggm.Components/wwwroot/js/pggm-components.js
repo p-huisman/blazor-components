@@ -381,6 +381,10 @@ class PggmDesignSystem {
   }
 
   async _performInitialization() {
+    if(document.querySelector('script[data-pggm-components-skip-loading-default="true"]')){
+      this.isInitialized = true;
+      return true;
+    }
     try {
       // Load CSS tokens first
       this._loadCssTokens();
