@@ -1,0 +1,22 @@
+@namespace Pggm.Components
+@inherits PggmEventComponentBase
+
+<pggm-drawer @ref="ElementRef"
+             @attributes="GetAttributes()">
+  @if (HeaderContent != null)
+  {
+    <span slot="header">@HeaderContent</span>
+  }
+  @if (HeaderActions != null)
+  {
+    <span slot="header-actions">@HeaderActions</span>
+  }
+  @if (ChildContent != null)
+  {
+    @ChildContent
+  }
+  @if (Footer != null)
+  {
+    <span slot="footer">@Footer</span>
+  }
+</pggm-drawer>

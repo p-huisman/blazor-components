@@ -1,104 +1,117 @@
 @page "/pggm-button"
 
 @using Microsoft.AspNetCore.Components.Web
+@using Pggm.Components.Constants
+@using Pggm.Components.Sample.Components.ApiDocumentation
 
 <PageTitle>PGGM Pggm Button</PageTitle>
 
     
 
-<PggmHeader Level="1">PGGM Button</PggmHeader>
+<PggmHeading Level="1">PGGM Button</PggmHeading>
 
 <p>This page demonstrates the PGGM Button component with various configurations and interactions.</p>
 
-<section class="demo-section">
-    <PggmHeader Level="2">Basic PGGM Button Variants</PggmHeader>
-    <p>Different PGGM Button appearances available in the PGGM design system:</p>
+<DemoSection Title="Basic PGGM Button Variants" Code="@basicButtonSource">
+    <Description>
+        <p>The PGGM design system includes several button appearances to suit different use cases. Below are examples of the primary, secondary, tertiary, and sign-in button styles.</p>
+        <p>Different PGGM Button appearances available in the PGGM design system:</p>
+    </Description>
+    <Content>
+        <PggmStack Orientation="Orientation.Horizontal" HorizontalGap="16" Wrap="true">
+            <PggmButton Appearance="@ButtonAppearance.Primary" OnClick="@(() => HandlePggmButtonClick("Primary"))">
+                Primary
+            </PggmButton>
+            <PggmButton Appearance="@ButtonAppearance.Secondary" OnClick="@(() => HandlePggmButtonClick("Secondary"))">
+                Secondary
+            </PggmButton>
+            <PggmButton Appearance="@ButtonAppearance.Tertiary" OnClick="@(() => HandlePggmButtonClick("Tertiary"))">
+                Tertiary
+            </PggmButton>
+            <PggmButton Appearance="@ButtonAppearance.SignIn" OnClick="@(() => HandlePggmButtonClick("Sign In"))">
+                <PggmIcon Icon="user" Size="m" />Sign In
+            </PggmButton>
+        </PggmStack>
+    </Content>
+</DemoSection>
 
+<DemoSection Title="PggmButton States" Code="@statesSource">
+    <Description>
+        <p>PggmButtons in different states:</p>
+    </Description>
+
+    <Content>
     <div class="PggmButton-group">
-        <PggmButton Appearance="primary" OnClick="@(() => HandlePggmButtonClick("Primary"))">
-            Primary
-        </PggmButton>
-        <PggmButton Appearance="secondary" OnClick="@(() => HandlePggmButtonClick("Secondary"))">
-            Secondary
-        </PggmButton>
-        <PggmButton Appearance="tertiary" OnClick="@(() => HandlePggmButtonClick("Tertiary"))">
-            Tertiary
-        </PggmButton>
-        <PggmButton Appearance="sign-in" OnClick="@(() => HandlePggmButtonClick("Sign In"))">
-            <PggmIcon Icon="user" Size="m" />Sign In
-        </PggmButton>
-    </div>
-</section>
-
-<section class="demo-section">
-    <PggmHeader Level="2">PggmButton States</PggmHeader>
-    <p>PggmButtons in different states:</p>
-
-    <div class="PggmButton-group">
-        <PggmButton Appearance="primary" OnClick="@(() => HandlePggmButtonClick("Enabled"))">
+        <PggmButton Appearance="@ButtonAppearance.Primary" OnClick="@(() => HandlePggmButtonClick("Enabled"))">
             Enabled
         </PggmButton>
-        <PggmButton Appearance="primary" Disabled="true">
+        <PggmButton Appearance="@ButtonAppearance.Primary" Disabled="true">
             Disabled
         </PggmButton>
-        <PggmButton Appearance="secondary" Disabled="true">
+        <PggmButton Appearance="@ButtonAppearance.Secondary" Disabled="true">
             Disabled Secondary
         </PggmButton>
     </div>
-</section>
+    </Content>
+</DemoSection>
 
-<section class="demo-section">
-    <PggmHeader Level="2">PggmButton Types</PggmHeader>
-    <p>Different PggmButton types for forms:</p>
+<DemoSection Title="PggmButton Types" Code="@typesSource">
+    <Description>
+        <p>Different PggmButton types for forms:</p>
+    </Description>
 
+    <Content>
     <div class="form-example">
         <div class="PggmButton-group">
-            <PggmButton Type="PggmButton" Appearance="primary" OnClick="@(() => HandlePggmButtonClick("Regular"))">
+            <PggmButton Type="@ButtonType.Button" Appearance="@ButtonAppearance.Primary" OnClick="@(() => HandlePggmButtonClick("Regular"))">
                 Regular
             </PggmButton>
-            <PggmButton Type="submit" Appearance="primary" OnClick="@(() => HandlePggmButtonClick("Submit"))">
+            <PggmButton Type="@ButtonType.Submit" Appearance="@ButtonAppearance.Primary" OnClick="@(() => HandlePggmButtonClick("Submit"))">
                 Submit
             </PggmButton>
-            <PggmButton Type="reset" Appearance="secondary" OnClick="@(() => HandlePggmButtonClick("Reset"))">
+            <PggmButton Type="@ButtonType.Reset" Appearance="@ButtonAppearance.Secondary" OnClick="@(() => HandlePggmButtonClick("Reset"))">
                 Reset
             </PggmButton>
         </div>
     </div>
-</section>
+    </Content>
+</DemoSection>
 
-<section class="demo-section">
-    <PggmHeader Level="2">Interactive Examples</PggmHeader>
-    <p>PggmButtons with various interactive behaviors:</p>
+<DemoSection Title="Interactive Examples" Code="@interactiveSource">
+    <Description>
+        <p>PggmButtons with various interactive behaviors:</p>
+    </Description>
 
+    <Content>
     <div class="interactive-section">
         <div class="counter-example">
-            <PggmHeader Level="3">Counter Example</PggmHeader>
+            <PggmHeading Level="3">Counter Example</PggmHeading>
             <p>Current count: <strong>@counter</strong></p>
             <div class="PggmButton-group">
-                <PggmButton Appearance="primary" OnClick="IncrementCounter">
+                <PggmButton Appearance="@ButtonAppearance.Primary" OnClick="IncrementCounter">
                     Increment (+1)
                 </PggmButton>
-                <PggmButton Appearance="secondary" OnClick="DecrementCounter">
+                <PggmButton Appearance="@ButtonAppearance.Secondary" OnClick="DecrementCounter">
                     Decrement (-1)
                 </PggmButton>
-                <PggmButton Appearance="tertiary" OnClick="ResetCounter">
+                <PggmButton Appearance="@ButtonAppearance.Tertiary" OnClick="ResetCounter">
                     Reset
                 </PggmButton>
             </div>
         </div>
 
         <div class="toggle-example">
-            <PggmHeader Level="3">Toggle Example</PggmHeader>
+            <PggmHeading Level="3">Toggle Example</PggmHeading>
             <p>Toggle state: <strong>@(isToggled ? "ON" : "OFF")</strong></p>
-            <PggmButton Appearance="@(isToggled ? "primary" : "secondary")" OnClick="ToggleState">
+            <PggmButton Appearance="@((isToggled ? ButtonAppearance.Primary : ButtonAppearance.Secondary))" OnClick="ToggleState">
                 @(isToggled ? "Turn OFF" : "Turn ON")
             </PggmButton>
         </div>
 
         <div class="async-example">
-            <PggmHeader Level="3">Async Operation Example</PggmHeader>
+            <PggmHeading Level="3">Async Operation Example</PggmHeading>
             <p>Simulate async operations with loading states:</p>
-            <PggmButton Appearance="primary" Disabled="@isLoading" OnClick="SimulateAsyncOperation">
+            <PggmButton Appearance="@ButtonAppearance.Primary" Disabled="@isLoading" OnClick="SimulateAsyncOperation">
                 @(isLoading ? "Loading..." : "Start Async Operation")
             </PggmButton>
             @if (asyncMessage != null)
@@ -109,8 +122,8 @@
             }
         </div>
     </div>
-</section>
-
+    </Content>
+</DemoSection>
 
 @if (!string.IsNullOrEmpty(lastClickedPggmButton))
 {
@@ -118,6 +131,12 @@
         <strong>Last clicked:</strong> @lastClickedPggmButton at @lastClickTime.ToString("HH:mm:ss")
     </div>
 }
+
+<PggmHeading Level="2">API</PggmHeading>
+
+<PggmHeading Level="3">PggmButton</PggmHeading>
+<ApiDocumentation Properties="buttonProperties" Events="buttonEvents" />
+
 
 @code {
     private string lastClickedPggmButton = string.Empty;
@@ -177,20 +196,62 @@
         asyncMessage = null;
         StateHasChanged();
     }
+
+    private string basicButtonSource =
+        "<PggmStack Orientation='Orientation.Horizontal' HorizontalGap='16' Wrap='true'>\n" +
+        "    <PggmButton Appearance='@ButtonAppearance.Primary'>Primary</PggmButton>\n" +
+        "    <PggmButton Appearance='@ButtonAppearance.Secondary'>Secondary</PggmButton>\n" +
+        "    <PggmButton Appearance='@ButtonAppearance.Tertiary'>Tertiary</PggmButton>\n" +
+        "    <PggmButton Appearance='@ButtonAppearance.SignIn'><PggmIcon Icon='user' Size='m' />Sign In</PggmButton>\n" +
+        "</PggmStack>";
+
+    private string statesSource =
+        "<div class='PggmButton-group'>\n" +
+        "    <PggmButton Appearance='@ButtonAppearance.Primary'>Enabled</PggmButton>\n" +
+        "    <PggmButton Appearance='@ButtonAppearance.Primary' Disabled='true'>Disabled</PggmButton>\n" +
+        "    <PggmButton Appearance='@ButtonAppearance.Secondary' Disabled='true'>Disabled Secondary</PggmButton>\n" +
+        "</div>";
+
+    private string typesSource =
+        "<div class='form-example'>\n" +
+        "  <div class='PggmButton-group'>\n" +
+        "    <PggmButton Type='@ButtonType.Button' Appearance='@ButtonAppearance.Primary'>Regular</PggmButton>\n" +
+        "    <PggmButton Type='@ButtonType.Submit' Appearance='@ButtonAppearance.Primary'>Submit</PggmButton>\n" +
+        "    <PggmButton Type='@ButtonType.Reset' Appearance='@ButtonAppearance.Secondary'>Reset</PggmButton>\n" +
+        "  </div>\n" +
+        "</div>";
+
+    private string interactiveSource =
+        "<div class='interactive-section'>\n" +
+        "  <div class='counter-example'>\n" +
+        "    <PggmHeading Level='3'>Counter Example</PggmHeading>\n" +
+        "    <p>Current count: <strong>@counter</strong></p>\n" +
+        "    <PggmButton Appearance='@ButtonAppearance.Primary' OnClick='IncrementCounter'>Increment (+1)</PggmButton>\n" +
+        "  </div>\n" +
+        "  <div class='toggle-example'>\n" +
+        "    <PggmHeading Level='3'>Toggle Example</PggmHeading>\n" +
+        "    <PggmButton Appearance='@ButtonAppearance.Primary' OnClick='ToggleState'>Toggle</PggmButton>\n" +
+        "  </div>\n" +
+        "</div>";
+
+        private IEnumerable<ApiMember> buttonProperties = new[]
+    {
+        new ApiMember { Name = "Appearance", Type = "ButtonAppearance", DefaultValue = "ButtonAppearance.Primary", Description = "Type-safe enum specifying appearance: Primary (default), Secondary, Tertiary, SignIn." },
+        new ApiMember { Name = "Disabled", Type = "bool", DefaultValue = "false", Description = "When true, disables interaction and click handling." },
+        new ApiMember { Name = "Type", Type = "ButtonType", DefaultValue = "ButtonType.Button", Description = "Type-safe enum for HTML button type: Button (default), Submit, Reset." },
+        new ApiMember { Name = "ChildContent", Type = "RenderFragment?", DefaultValue = "null", Description = "Content rendered inside the button (text, icons, etc.)." }
+    };
+
+    private IEnumerable<ApiMember> buttonEvents = new[]
+    {
+        new ApiMember { Name = "OnClick", Type = "EventCallback<MouseEventArgs>", Description = "Invoked when the button is clicked." }
+    };
 }
 
 <style>
-    .demo-section {
-        margin-bottom: 2rem;
-        padding-bottom: 1.5rem;
-        border-bottom: 1px solid #e0e0e0;
-    }
+    /* demo-section styles are provided globally in wwwroot/css/custom-formatters.css */
 
-    .PggmButton-group {
-        display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
-    }
+    
 
     .interactive-section {
         display: grid;
@@ -244,20 +305,7 @@
         color: #155724;
     }
 
-    /* Custom PggmButton styles */
-    .large-PggmButton {
-        padding: 1rem 2rem !important;
-        font-size: 1.1rem !important;
-    }
-
-    .rounded-PggmButton {
-        border-radius: 25px !important;
-    }
-
-    .shadow-PggmButton {
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
-    }
-
+    
     .form-example {
         background-color: #f8f9fa;
         padding: 1rem;
@@ -266,10 +314,7 @@
     }
 
     @@media (max-width: 768px) {
-        .PggmButton-group {
-            flex-direction: column;
-        }
-
+       
         .interactive-section {
             grid-template-columns: 1fr;
         }

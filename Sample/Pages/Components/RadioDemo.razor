@@ -2,126 +2,202 @@
 
 <PageTitle>PGGM Radio</PageTitle>
 
-<PggmHeader Level="1">PGGM Radio</PggmHeader>
+@using System.ComponentModel.DataAnnotations
+@using Pggm.Components.Sample.Components.ApiDocumentation
+
+<PggmHeading Level="1">PGGM Radio</PggmHeading>
 
 <p>This page demonstrates the PGGM Radio component with various configurations and usage examples.</p>
 
-<div class="demo-section">
-    <PggmHeader Level="2">Basic Radio Button Group</PggmHeader>
+<DemoSection Title="Bindable Radio with PggmRadio" Code="@bindExampleSource">
+    <Content>
+    <p>Selected Bound: <strong>@selectedBound</strong></p>
+    
+    <PggmStack Orientation="Pggm.Components.Orientation.Horizontal" HorizontalGap="16">
+        <PggmRadio RadioValue="apple" @bind-Value="selectedBound">Apple</PggmRadio>
+        <PggmRadio RadioValue="banana" @bind-Value="selectedBound">Banana</PggmRadio>
+        <PggmRadio RadioValue="cherry" @bind-Value="selectedBound">Cherry</PggmRadio>
+    </PggmStack>
+    </Content>
+</DemoSection>
+
+<DemoSection Title="EditForm Example" Code="@editFormSource">
+    <Content>
+ 
+    <EditForm Model="formModel" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <PggmValidationSummary>
+            Het formulier bevat fouten, controleer en corrigeer deze
+        </PggmValidationSummary>
+        <PggmFieldset>
+            <PggmFieldsetLabel For="fruit">Kies je favoriete fruit:</PggmFieldsetLabel>
+            <PggmValidationMessage  For="() => formModel.Fruit">
+                <p>Kies een item</p>
+            </PggmValidationMessage>
+            <PggmStack VerticalGap="8">
+                <PggmRadio Description="If your want to be like steve jobs" RadioValue="apple" @bind-Value="formModel.Fruit" Name="fruit">Apple</PggmRadio>
+                <PggmRadio Description="If you want to be like bill gates" RadioValue="banana" @bind-Value="formModel.Fruit" Name="fruit">Banana</PggmRadio>
+                <PggmRadio Description="If you want to be like elon musk" RadioValue="cherry" @bind-Value="formModel.Fruit" Name="fruit">Cherry</PggmRadio>
+            </PggmStack>
+        </PggmFieldset>
+        <PggmButton Appearance="@ButtonAppearance.Primary" Type="@ButtonType.Submit">Submit</PggmButton>
+            
+        
+    </EditForm>
+
+    <p>Form model fruit: <strong>@formModel.Fruit</strong></p>
+    </Content>
+</DemoSection>
+
+
+<DemoSection Title="Basic Radio Button Group" Code="@basicRadioSource">
+    <Content>
     <p>Selected Option: <strong>@selectedOption1</strong></p>
     
-    <div class="radio-group">
-        <PggmRadio Name="option1" Value="option-a" Checked="@(selectedOption1 == "option-a")" ValueChanged="@(value => HandleOptionChange(value, 1))">
+    <PggmStack VerticalGap="8">
+        <PggmRadio Name="option1" RadioValue="option-a" @bind-Value="selectedOption1">
             Option A
         </PggmRadio>
         
-        <PggmRadio Name="option1" Value="option-b" Checked="@(selectedOption1 == "option-b")" ValueChanged="@(value => HandleOptionChange(value, 1))">
+        <PggmRadio Name="option1" RadioValue="option-b" @bind-Value="selectedOption1">
             Option B
         </PggmRadio>
         
-        <PggmRadio Name="option1" Value="option-c" Checked="@(selectedOption1 == "option-c")" ValueChanged="@(value => HandleOptionChange(value, 1))">
+        <PggmRadio Name="option1" RadioValue="option-c" @bind-Value="selectedOption1">
             Option C
         </PggmRadio>
-    </div>
-</div>
+    </PggmStack>
+    </Content>
+</DemoSection>
 
-<div class="demo-section">
-    <PggmHeader Level="2">Radio Buttons with Descriptions</PggmHeader>
+<DemoSection Title="Radio Buttons with Descriptions" Code="@planRadioSource">
+    <Content>
     <p>Selected Plan: <strong>@selectedPlan</strong></p>
     
-    <div class="radio-group">
-        <PggmRadio Name="plan" Value="basic" Checked="@(selectedPlan == "basic")" ValueChanged="@(value => selectedPlan = value)" Description="Perfect for small projects">
-            Basic Plan
-        </PggmRadio>
-        
-        <PggmRadio Name="plan" Value="professional" Checked="@(selectedPlan == "professional")" ValueChanged="@(value => selectedPlan = value)" Description="Best for growing businesses">
-            Professional Plan
-        </PggmRadio>
-        
-        <PggmRadio Name="plan" Value="enterprise" Checked="@(selectedPlan == "enterprise")" ValueChanged="@(value => selectedPlan = value)" Description="Advanced features for large organizations">
-            Enterprise Plan
-        </PggmRadio>
-    </div>
-</div>
+    <PggmStack VerticalGap="8">
+        <PggmRadio Name="plan" RadioValue="basic" @bind-Value="selectedPlan" Description="Perfect for small projects">Basic Plan</PggmRadio>
+        <PggmRadio Name="plan" RadioValue="professional" @bind-Value="selectedPlan" Description="Best for growing businesses">Professional Plan</PggmRadio>
+        <PggmRadio Name="plan" RadioValue="enterprise" @bind-Value="selectedPlan" Description="Advanced features for large organizations">Enterprise Plan</PggmRadio>
+    </PggmStack>
+    </Content>
+</DemoSection>
 
-<div class="demo-section">
-    <PggmHeader Level="2">Disabled Radio Buttons</PggmHeader>
+<DemoSection Title="Disabled Radio Buttons" Code="@disabledRadioSource">
+    <Content>
     <p>Selected Theme: <strong>@selectedTheme</strong></p>
     
-    <div class="radio-group">
-        <PggmRadio Name="theme" Value="light" Checked="@(selectedTheme == "light")" ValueChanged="@(value => selectedTheme = value)">
-            Light Theme
-        </PggmRadio>
-        
-        <PggmRadio Name="theme" Value="dark" Checked="@(selectedTheme == "dark")" ValueChanged="@(value => selectedTheme = value)">
-            Dark Theme
-        </PggmRadio>
-        
-        <PggmRadio Name="theme" Value="auto" Checked="@(selectedTheme == "auto")" ValueChanged="@(value => selectedTheme = value)" Disabled="true">
-            Auto Theme (Coming Soon)
-        </PggmRadio>
-    </div>
-</div>
+    <PggmStack VerticalGap="8">
+        <PggmRadio Name="theme" RadioValue="light" @bind-Value="selectedTheme">Light Theme</PggmRadio>
+        <PggmRadio Name="theme" RadioValue="dark" @bind-Value="selectedTheme">Dark Theme</PggmRadio>
+        <PggmRadio Name="theme" RadioValue="auto" @bind-Value="selectedTheme" Disabled="true">Auto Theme (Coming Soon)</PggmRadio>
+    </PggmStack>
+    </Content>
+</DemoSection>
 
-<div class="demo-section">
-    <PggmHeader Level="2">Required Radio Button Group</PggmHeader>
+<DemoSection Title="Required Radio Button Group" Code="@requiredRadioSource">
+    <Content>
     <p>Selected Priority: <strong>@selectedPriority</strong></p>
     
-    <div class="radio-group">
-        <PggmRadio Name="priority" Value="low" Required="true" Checked="@(selectedPriority == "low")" ValueChanged="@(value => selectedPriority = value)">
-            Low Priority
-        </PggmRadio>
-        
-        <PggmRadio Name="priority" Value="medium" Required="true" Checked="@(selectedPriority == "medium")" ValueChanged="@(value => selectedPriority = value)">
-            Medium Priority
-        </PggmRadio>
-        
-        <PggmRadio Name="priority" Value="high" Required="true" Checked="@(selectedPriority == "high")" ValueChanged="@(value => selectedPriority = value)">
-            High Priority
-        </PggmRadio>
-    </div>
-</div>
+    <PggmStack VerticalGap="8">
+        <PggmRadio Name="priority" RadioValue="low" Required="true" @bind-Value="selectedPriority">Low Priority</PggmRadio>
+        <PggmRadio Name="priority" RadioValue="medium" Required="true" @bind-Value="selectedPriority">Medium Priority</PggmRadio>
+        <PggmRadio Name="priority" RadioValue="high" Required="true" @bind-Value="selectedPriority">High Priority</PggmRadio>
+    </PggmStack>
+    </Content>
+</DemoSection>
+
+<PggmHeading Level="2">API</PggmHeading>
+<PggmHeading Level="3">PggmRadio</PggmHeading>
+<ApiDocumentation Properties="_properties" />
+
+
 
 @code {
     private string? selectedOption1 = "option-a";
     private string? selectedPlan = "basic";
     private string? selectedTheme = "light";
     private string? selectedPriority;
+    private string? selectedBound = "banana";
 
-    private void HandleOptionChange(string? value, int group)
+    private FormModel formModel = new FormModel();
+    private void HandleValidSubmit()
     {
-        if (group == 1)
-        {
-            selectedOption1 = value;
-            StateHasChanged();
-        }
     }
+
+    private class FormModel
+    {
+        [Required]
+        public string? Fruit { get; set; }
+    }
+
+    private string basicRadioSource = @"<PggmStack VerticalGap=""8"">
+  <PggmRadio Name=""option1"" RadioValue=""option-a"" @bind-Value=""selectedOption1"">Option A</PggmRadio>
+  <PggmRadio Name=""option1"" RadioValue=""option-b"" @bind-Value=""selectedOption1"">Option B</PggmRadio>
+  <PggmRadio Name=""option1"" RadioValue=""option-c"" @bind-Value=""selectedOption1"">Option C</PggmRadio>
+</PggmStack>";
+
+    private string planRadioSource = @"<PggmStack VerticalGap=""8"">
+  <PggmRadio Name=""plan"" RadioValue=""basic"" @bind-Value=""selectedPlan"" Description=""Perfect for small projects"">Basic Plan</PggmRadio>
+  <PggmRadio Name=""plan"" RadioValue=""professional"" @bind-Value=""selectedPlan"" Description=""Best for growing businesses"">Professional Plan</PggmRadio>
+  <PggmRadio Name=""plan"" RadioValue=""enterprise"" @bind-Value=""selectedPlan"" Description=""Advanced features for large organizations"">Enterprise Plan</PggmRadio>
+</PggmStack>";
+
+    private string disabledRadioSource = @"<PggmStack VerticalGap=""8"">
+  <PggmRadio Name=""theme"" RadioValue=""light"" @bind-Value=""selectedTheme"">Light Theme</PggmRadio>
+  <PggmRadio Name=""theme"" RadioValue=""dark"" @bind-Value=""selectedTheme"">Dark Theme</PggmRadio>
+  <PggmRadio Name=""theme"" RadioValue=""auto"" @bind-Value=""selectedTheme"" Disabled=""true"">Auto Theme (Coming Soon)</PggmRadio>
+</PggmStack>";
+
+    private string requiredRadioSource = @"<PggmStack VerticalGap=""8"">
+  <PggmRadio Name=""priority"" RadioValue=""low"" Required=""true"" @bind-Value=""selectedPriority"">Low Priority</PggmRadio>
+  <PggmRadio Name=""priority"" RadioValue=""medium"" Required=""true"" @bind-Value=""selectedPriority"">Medium Priority</PggmRadio>
+  <PggmRadio Name=""priority"" RadioValue=""high"" Required=""true"" @bind-Value=""selectedPriority"">High Priority</PggmRadio>
+</PggmStack>";
+
+    private string editFormSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<EditForm Model=\"formModel\" OnValidSubmit=\"HandleValidSubmit\">",
+        "    <DataAnnotationsValidator />",
+        "    <PggmValidationSummary>Het formulier bevat fouten, controleer en corrigeer deze</PggmValidationSummary>",
+        "    <PggmFieldset>",
+        "        <PggmFieldsetLabel For=\"fruit\">Kies je favoriete fruit:</PggmFieldsetLabel>",
+        "        <PggmValidationMessage For=\"() => formModel.Fruit\">",
+        "            <p>Kies een item</p>",
+        "        </PggmValidationMessage>",
+        "        <PggmStack VerticalGap=\"8\">",
+        "            <PggmRadio Description=\"If your want to be like steve jobs\" RadioValue=\"apple\" @bind-Value=\"formModel.Fruit\" Name=\"fruit\">Apple</PggmRadio>",
+        "            <PggmRadio Description=\"If you want to be like bill gates\" RadioValue=\"banana\" @bind-Value=\"formModel.Fruit\" Name=\"fruit\">Banana</PggmRadio>",
+        "            <PggmRadio Description=\"If you want to be like elon musk\" RadioValue=\"cherry\" @bind-Value=\"formModel.Fruit\" Name=\"fruit\">Cherry</PggmRadio>",
+        "        </PggmStack>",
+        "    </PggmFieldset>",
+        "    <PggmButton Appearance=\"@ButtonAppearance.Primary\" Type=\"@ButtonType.Submit\">Submit</PggmButton>",
+        "</EditForm>",
+        ((char)64) + "code {",
+        "    private FormModel formModel = new FormModel();",
+        "    private void HandleValidSubmit() { /* submit */ }",
+        " }");
+
+    private string bindExampleSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmStack Orientation=\"Pggm.Components.Orientation.Horizontal\" HorizontalGap=\"16\">",
+        "    <PggmRadio RadioValue=\"apple\" @bind-Value=\"selectedBound\">Apple</PggmRadio>",
+        "    <PggmRadio RadioValue=\"banana\" @bind-Value=\"selectedBound\">Banana</PggmRadio>",
+        "    <PggmRadio RadioValue=\"cherry\" @bind-Value=\"selectedBound\">Cherry</PggmRadio>",
+        "</PggmStack>",
+        ((char)64) + "code {",
+        "    private string? selectedBound = \"banana\";",
+        " }");
+
+    private IEnumerable<ApiMember> _properties = new[]
+    {
+        new ApiMember { Name = "Value", Type = "string?", DefaultValue = "null", Description = "The bound value for the radio input (use @bind-Value)." },
+        new ApiMember { Name = "ValueChanged", Type = "EventCallback<string?>", DefaultValue = "null", Description = "Event callback for value changes." },
+        new ApiMember { Name = "RadioValue", Type = "string?", DefaultValue = "null", Description = "The value represented by this radio option." },
+        new ApiMember { Name = "Name", Type = "string?", DefaultValue = "null", Description = "The name attribute for grouping radios." },
+        new ApiMember { Name = "Disabled", Type = "bool", DefaultValue = "false", Description = "Whether the radio is disabled." },
+        new ApiMember { Name = "Required", Type = "bool", DefaultValue = "false", Description = "Whether selection is required (in a group)." },
+        new ApiMember { Name = "Description", Type = "string?", DefaultValue = "null", Description = "Optional description text shown under the radio label." },
+        new ApiMember { Name = "ChildContent", Type = "RenderFragment?", DefaultValue = "null", Description = "Label/content for the radio." },
+        new ApiMember { Name = "AdditionalAttributes", Type = "Dictionary<string, object>?", DefaultValue = "null", Description = "Additional attributes splatted onto the underlying element." },
+    };
+
 }
 
-<style>
-    .demo-section {
-        margin-bottom: 2rem;
-        padding: 1rem;
-        border: 1px solid #e0e0e0;
-        border-radius: 4px;
-    }
-    
-    .demo-section h4 {
-        margin-top: 0;
-        color: #333;
-    }
-    
-    .radio-group {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-    }
-    
-    .demo-section p {
-        margin-bottom: 1rem;
-    }
-    
-    .demo-section p strong {
-        color: #0066cc;
-    }
-</style>

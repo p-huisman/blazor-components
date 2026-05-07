@@ -1,11 +1,13 @@
 // PggmFileUploadTests.cs
-using Xunit;
 using Bunit;
+
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Tests
+using Xunit;
+
+namespace Pggm.Components.Tests
 {
-    public class PggmFileUploadTests : TestContext
+    public class PggmFileUploadTests : PggmTestContext
     {
         public PggmFileUploadTests()
         {

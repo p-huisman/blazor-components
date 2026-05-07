@@ -1,33 +1,55 @@
+using System.Linq.Expressions;
+
 using Bunit;
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.DependencyInjection;
+
 using Pggm.Components;
 using Pggm.Components.Services;
+
 using Xunit;
 
 namespace Pggm.Components.Tests
 {
-    public class PggmInputTests : TestContext
+    public class PggmInputTests : PggmTestContext
     {
         public PggmInputTests()
         {
             Services.AddScoped<PggmDesignSystemService>();
         }
 
+        // Dummy backing field used to provide a ValueExpression for InputBase-derived component tests
+        private readonly string? _dummyValueInput = string.Empty;
+
+        private IRenderedComponent<PggmInput> RenderPggmInput(Action<ComponentParameterCollectionBuilder<PggmInput>>? configure = null)
+        {
+            return RenderComponent<PggmInput>(parameters =>
+            {
+                parameters.Add(p => p.ValueExpression, (Expression<Func<string>>)(() => _dummyValueInput!));
+                configure?.Invoke(parameters!);
+            });
+        }
+
         [Fact]
         public void PggmInput_RendersCorrectly()
         {
             // Arrange & Act
-            var component = RenderComponent<PggmInput>(parameters => parameters
+            // Provide ValueChanged to activate controlled (two-way bound) mode so that
+            // the Value parameter is forwarded to the underlying InputText element.
+            string? boundValue = "Test value";
+            var component = RenderPggmInput(parameters => parameters
                 .Add(p => p.Value, "Test value")
+                .Add(p => p.ValueChanged, (string v) => boundValue = v)
                 .Add(p => p.Placeholder, "Enter text"));
 
             // Assert
             var input = component.Find("input");
             Assert.NotNull(input);
             Assert.Equal("pggm-input", input.GetAttribute("is"));
-            Assert.Equal("text", input.GetAttribute("type"));
+            // Note: type="text" is the browser default, so PggmInput intentionally omits the attribute.
+            Assert.Null(input.GetAttribute("type"));
             Assert.Equal("Test value", input.GetAttribute("value"));
             Assert.Equal("Enter text", input.GetAttribute("placeholder"));
         }
@@ -36,7 +58,7 @@ namespace Pggm.Components.Tests
         public void PggmInput_SetsInputType()
         {
             // Arrange & Act
-            var component = RenderComponent<PggmInput>(parameters => parameters
+            var component = RenderPggmInput(parameters => parameters
                 .Add(p => p.Type, PggmInput.InputTypes.Email));
 
             // Assert
@@ -48,7 +70,7 @@ namespace Pggm.Components.Tests
         public void PggmInput_HandlesDisabledState()
         {
             // Arrange & Act
-            var component = RenderComponent<PggmInput>(parameters => parameters
+            var component = RenderPggmInput(parameters => parameters
                 .Add(p => p.Disabled, true));
 
             // Assert
@@ -60,7 +82,7 @@ namespace Pggm.Components.Tests
         public void PggmInput_HandlesRequiredState()
         {
             // Arrange & Act
-            var component = RenderComponent<PggmInput>(parameters => parameters
+            var component = RenderPggmInput(parameters => parameters
                 .Add(p => p.Required, true));
 
             // Assert
@@ -72,7 +94,7 @@ namespace Pggm.Components.Tests
         public void PggmInput_HandlesReadOnlyState()
         {
             // Arrange & Act
-            var component = RenderComponent<PggmInput>(parameters => parameters
+            var component = RenderPggmInput(parameters => parameters
                 .Add(p => p.ReadOnly, true));
 
             // Assert
@@ -84,7 +106,7 @@ namespace Pggm.Components.Tests
         public void PggmInput_SetsNameAttribute()
         {
             // Arrange & Act
-            var component = RenderComponent<PggmInput>(parameters => parameters
+            var component = RenderPggmInput(parameters => parameters
                 .Add(p => p.Name, "username"));
 
             // Assert
@@ -96,7 +118,7 @@ namespace Pggm.Components.Tests
         public void PggmInput_SetsMaxLengthAttribute()
         {
             // Arrange & Act
-            var component = RenderComponent<PggmInput>(parameters => parameters
+            var component = RenderPggmInput(parameters => parameters
                 .Add(p => p.MaxLength, 50));
 
             // Assert
@@ -108,7 +130,7 @@ namespace Pggm.Components.Tests
         public void PggmInput_SetsMinLengthAttribute()
         {
             // Arrange & Act
-            var component = RenderComponent<PggmInput>(parameters => parameters
+            var component = RenderPggmInput(parameters => parameters
                 .Add(p => p.MinLength, 3));
 
             // Assert
@@ -120,7 +142,7 @@ namespace Pggm.Components.Tests
         public void PggmInput_SetsPatternAttribute()
         {
             // Arrange & Act
-            var component = RenderComponent<PggmInput>(parameters => parameters
+            var component = RenderPggmInput(parameters => parameters
                 .Add(p => p.Pattern, @"[A-Za-z]+"));
 
             // Assert
@@ -132,7 +154,7 @@ namespace Pggm.Components.Tests
         public void PggmInput_SetsMinMaxStepForNumberInputs()
         {
             // Arrange & Act
-            var component = RenderComponent<PggmInput>(parameters => parameters
+            var component = RenderPggmInput(parameters => parameters
                 .Add(p => p.Type, PggmInput.InputTypes.Number)
                 .Add(p => p.Min, "0")
                 .Add(p => p.Max, "100")
@@ -151,9 +173,9 @@ namespace Pggm.Components.Tests
         {
             // Arrange
             string? newValue = "";
-            var component = RenderComponent<PggmInput>(parameters => parameters
+            var component = RenderPggmInput(parameters => parameters
                 .Add(p => p.Value, "Initial")
-                .Add(p => p.ValueChanged, (string? value) => newValue = value));
+                .Add(p => p.ValueChanged, (string value) => newValue = value));
 
             // Act
             var input = component.Find("input");
@@ -168,7 +190,7 @@ namespace Pggm.Components.Tests
         {
             // Arrange
             bool changeTriggered = false;
-            var component = RenderComponent<PggmInput>(parameters => parameters
+            var component = RenderPggmInput(parameters => parameters
                 .Add(p => p.OnChange, (ChangeEventArgs args) => changeTriggered = true));
 
             // Act
@@ -184,7 +206,7 @@ namespace Pggm.Components.Tests
         {
             // Arrange
             bool inputTriggered = false;
-            var component = RenderComponent<PggmInput>(parameters => parameters
+            var component = RenderPggmInput(parameters => parameters
                 .Add(p => p.OnInput, (ChangeEventArgs args) => inputTriggered = true));
 
             // Act

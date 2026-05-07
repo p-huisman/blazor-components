@@ -1,0 +1,563 @@
+@page "/pggm-combobox"
+@using System.ComponentModel.DataAnnotations
+@using Pggm.Components.Sample.Components.ApiDocumentation
+
+<PageTitle>PGGM Combobox</PageTitle>
+
+<PggmHeading Level="1">PGGM Combobox</PggmHeading>
+
+<p>
+    This page demonstrates the <code>PggmCombobox</code> and <code>PggmComboboxItem</code> Blazor wrappers
+    for the <code>pggm-combobox</code> web component. The combobox is a form-associated element and
+    supports full <code>EditForm</code> integration, <code>DataAnnotationsValidator</code>, and
+    <code>@@bind-Value</code> / <code>@@bind-Values</code> two-way binding.
+</p>
+
+<!-- ── 1. Basic single-select ──────────────────────────────────────────────── -->
+<DemoSection Title="Basic Single-Select" Code="@_basicSource">
+    <Description>
+        <p>Single-select combobox with <code>@@bind-Value</code> two-way binding. The selected value is displayed below the component.</p>
+    </Description>
+    <Content>
+        <PggmFieldset>
+            <PggmLabel slot="label" For="basic-combo">Land</PggmLabel>
+            <PggmCombobox TOption="object" Id="basic-combo" Name="basic-combo" @bind-Value="_basicValue" Placeholder="Kies een land...">
+                <PggmComboboxItem Value="nl">Nederland</PggmComboboxItem>
+                <PggmComboboxItem Value="de">Duitsland</PggmComboboxItem>
+                <PggmComboboxItem Value="be">België</PggmComboboxItem>
+                <PggmComboboxItem Value="fr">Frankrijk</PggmComboboxItem>
+                <PggmComboboxItem Value="uk">Verenigd Koninkrijk</PggmComboboxItem>
+            </PggmCombobox>
+        </PggmFieldset>
+        <p>Geselecteerde waarde: <strong>@(_basicValue ?? "—")</strong></p>
+    </Content>
+</DemoSection>
+
+<!-- ── 2. Disabled & Read-only states ─────────────────────────────────────── -->
+<DemoSection Title="Disabled &amp; Read-Only" Code="@_statesSource">
+    <Description>
+        <p>The <code>Disabled</code> and <code>ReadOnly</code> boolean parameters control interactivity.</p>
+    </Description>
+    <Content>
+        <PggmFieldset>
+            <PggmLabel slot="label">Uitgeschakeld</PggmLabel>
+            <PggmCombobox TOption="object" Disabled="true" Value="nl" Placeholder="Niet beschikbaar">
+                <PggmComboboxItem Value="nl">Nederland</PggmComboboxItem>
+            </PggmCombobox>
+        </PggmFieldset>
+
+        <PggmFieldset>
+            <PggmLabel slot="label">Alleen-lezen</PggmLabel>
+            <PggmCombobox TOption="object" ReadOnly="true" Value="de" Placeholder="Alleen lezen">
+                <PggmComboboxItem Value="de">Duitsland</PggmComboboxItem>
+            </PggmCombobox>
+        </PggmFieldset>
+    </Content>
+</DemoSection>
+
+<!-- ── 3. Clear button ───────────────────────────────────────────────────── -->
+<DemoSection Title="Clear Button" Code="@_withClearSource">
+    <Description>
+        <p>
+            Set <code>WithClear="true"</code> to render a clear button inside the combobox.
+            Clicking it fires a <code>change</code> event with an empty value, clearing the bound field.
+            Works in both single-select and multi-select mode.
+        </p>
+    </Description>
+    <Content>
+        <PggmFieldset>
+            <PggmLabel slot="label" For="wc-single">Land (single-select)</PggmLabel>
+            <PggmCombobox TOption="object" Id="wc-single" @bind-Value="_withClearValue" WithClear="true" Placeholder="Kies een land...">
+                <PggmComboboxItem Value="nl">Nederland</PggmComboboxItem>
+                <PggmComboboxItem Value="de">Duitsland</PggmComboboxItem>
+                <PggmComboboxItem Value="be">België</PggmComboboxItem>
+                <PggmComboboxItem Value="fr">Frankrijk</PggmComboboxItem>
+            </PggmCombobox>
+        </PggmFieldset>
+        <p>Geselecteerde waarde: <strong>@(_withClearValue ?? "—")</strong></p>
+
+        <PggmFieldset>
+            <PggmLabel slot="label" For="wc-multi">Programmeertalen (multi-select)</PggmLabel>
+            <PggmCombobox TOption="object" Id="wc-multi" Multiple="true" WithClear="true" @bind-Values="_withClearMultiValues" Placeholder="Kies talen...">
+                <PggmComboboxItem Value="csharp">C#</PggmComboboxItem>
+                <PggmComboboxItem Value="ts">TypeScript</PggmComboboxItem>
+                <PggmComboboxItem Value="python">Python</PggmComboboxItem>
+                <PggmComboboxItem Value="java">Java</PggmComboboxItem>
+            </PggmCombobox>
+        </PggmFieldset>
+        <p>Geselecteerde talen: <strong>@(_withClearMultiValues is { Length: > 0 } ? string.Join(", ", _withClearMultiValues) : "—")</strong></p>
+    </Content>
+</DemoSection>
+
+<!-- ── 4. Visible items ───────────────────────────────────────────────────── -->
+<DemoSection Title="Visible Items" Code="@_visibleItemsSource">
+    <Description>
+        <p>
+            The <code>VisibleItems</code> parameter maps to the <code>visible-items</code> attribute
+            and limits how many items are shown in the dropdown before scrolling begins.
+        </p>
+    </Description>
+    <Content>
+        <PggmFieldset>
+            <PggmLabel slot="label" For="vi-combo">Continent (max. 3 zichtbaar)</PggmLabel>
+            <PggmCombobox TOption="object" Id="vi-combo" @bind-Value="_visibleItemsValue" VisibleItems="3" Placeholder="Kies een continent...">
+                <PggmComboboxItem Value="af">Afrika</PggmComboboxItem>
+                <PggmComboboxItem Value="an">Antarctica</PggmComboboxItem>
+                <PggmComboboxItem Value="as">Azië</PggmComboboxItem>
+                <PggmComboboxItem Value="au">Australië</PggmComboboxItem>
+                <PggmComboboxItem Value="eu">Europa</PggmComboboxItem>
+                <PggmComboboxItem Value="na">Noord-Amerika</PggmComboboxItem>
+                <PggmComboboxItem Value="sa">Zuid-Amerika</PggmComboboxItem>
+            </PggmCombobox>
+        </PggmFieldset>
+        <p>Geselecteerde waarde: <strong>@(_visibleItemsValue ?? "—")</strong></p>
+    </Content>
+</DemoSection>
+
+<!-- ── 5. Multi-select with string[] binding ──────────────────────────────── -->
+<DemoSection Title="Multi-Select with string[] Binding" Code="@_multiSource">
+    <Description>
+        <p>
+            When <code>Multiple="true"</code> the component works with a <code>string[]</code> value.
+            Use <code>@@bind-Values</code> for two-way binding. The <code>Min</code> and <code>Max</code>
+            parameters restrict how many items may be selected; violations are reported on blur.
+        </p>
+    </Description>
+    <Content>
+        <PggmFieldset>
+            <PggmLabel slot="label" For="multi-combo">Programmeertalen (kies 1–3)</PggmLabel>
+            <PggmCombobox TOption="object" Id="multi-combo" Name="languages" Multiple="true" Min="1" Max="3"
+                          @bind-Values="_multiValues" Placeholder="Kies talen...">
+                <PggmComboboxItem Value="csharp">C#</PggmComboboxItem>
+                <PggmComboboxItem Value="ts">TypeScript</PggmComboboxItem>
+                <PggmComboboxItem Value="python">Python</PggmComboboxItem>
+                <PggmComboboxItem Value="java">Java</PggmComboboxItem>
+                <PggmComboboxItem Value="go">Go</PggmComboboxItem>
+                <PggmComboboxItem Value="rust">Rust</PggmComboboxItem>
+            </PggmCombobox>
+        </PggmFieldset>
+        <p>Geselecteerde talen: <strong>@(_multiValues is { Length: > 0 } ? string.Join(", ", _multiValues) : "—")</strong></p>
+    </Content>
+</DemoSection>
+
+<!-- ── 4. Event handling ───────────────────────────────────────────────────── -->
+<DemoSection Title="Event Handling" Code="@_eventsSource">
+    <Description>
+        <p>The combobox exposes <code>OnChange</code>, <code>OnFocus</code>, <code>OnBlur</code>, <code>OnOpen</code> and <code>OnClose</code> callbacks.</p>
+    </Description>
+    <Content>
+        <PggmFieldset>
+            <PggmLabel slot="label" For="event-combo">Afdeling</PggmLabel>
+            <PggmCombobox TOption="object" Id="event-combo" @bind-Value="_eventValue"
+                          Placeholder="Kies een afdeling..."
+                          OnChange="HandleChange"
+                          OnFocus="HandleFocus"
+                          OnBlur="HandleBlur"
+                          OnOpen="HandleOpen"
+                          OnClose="HandleClose">
+                <PggmComboboxItem Value="hr">Human Resources</PggmComboboxItem>
+                <PggmComboboxItem Value="it">IT</PggmComboboxItem>
+                <PggmComboboxItem Value="finance">Financiën</PggmComboboxItem>
+                <PggmComboboxItem Value="marketing">Marketing</PggmComboboxItem>
+            </PggmCombobox>
+        </PggmFieldset>
+        <p>Laatste event: <strong>@_lastEvent</strong></p>
+    </Content>
+</DemoSection>
+
+<!-- ── 5. EditForm — required / data annotations ──────────────────────────── -->
+<DemoSection Title="EditForm — Required Validation" Code="@_editFormSource">
+    <Description>
+        <p>
+            <code>PggmCombobox</code> inherits from <code>InputBase&lt;string&gt;</code> and participates
+            in <code>EditContext</code>. <code>[Required]</code> data annotations work out of the box.
+            The native browser validation popup is suppressed; errors appear via <code>PggmValidationMessage</code>.
+        </p>
+    </Description>
+    <Content>
+        <EditForm Model="_requiredModel" OnValidSubmit="HandleRequiredSubmit">
+            <DataAnnotationsValidator />
+            <PggmValidationSummary>
+                <p class="text-danger">Corrigeer de volgende fouten:</p>
+            </PggmValidationSummary>
+
+            <PggmFieldset>
+                <PggmLabel slot="label" For="ef-country">Land <span aria-hidden="true">*</span></PggmLabel>
+                <PggmValidationMessage slot="error" For="() => _requiredModel.Country" />
+                <PggmCombobox TOption="object" Id="ef-country" Name="ef-country" @bind-Value="_requiredModel.Country"
+                              Placeholder="Kies een land..." Required="true">
+                    <PggmComboboxItem Value="nl">Nederland</PggmComboboxItem>
+                    <PggmComboboxItem Value="de">Duitsland</PggmComboboxItem>
+                    <PggmComboboxItem Value="be">België</PggmComboboxItem>
+                    <PggmComboboxItem Value="fr">Frankrijk</PggmComboboxItem>
+                </PggmCombobox>
+            </PggmFieldset>
+
+            <PggmFieldset>
+                <PggmLabel slot="label" For="ef-dept">Afdeling <span aria-hidden="true">*</span></PggmLabel>
+                <PggmValidationMessage slot="error" For="() => _requiredModel.Department" />
+                <PggmCombobox TOption="object" Id="ef-dept" Name="ef-dept" @bind-Value="_requiredModel.Department"
+                              Placeholder="Kies een afdeling..." Required="true">
+                    <PggmComboboxItem Value="hr">Human Resources</PggmComboboxItem>
+                    <PggmComboboxItem Value="it">IT</PggmComboboxItem>
+                    <PggmComboboxItem Value="finance">Financiën</PggmComboboxItem>
+                </PggmCombobox>
+            </PggmFieldset>
+
+            <PggmButton Type="@ButtonType.Submit" Appearance="@ButtonAppearance.Primary">Verzenden</PggmButton>
+        </EditForm>
+
+        @if (_requiredSubmitted)
+        {
+            <div class="alert alert-success mt-2">
+                Formulier verzonden! Land: <strong>@_requiredModel.Country</strong>,
+                Afdeling: <strong>@_requiredModel.Department</strong>
+            </div>
+        }
+    </Content>
+</DemoSection>
+
+<!-- ── 6. EditForm — multi-select Min/Max validation ──────────────────────── -->
+<DemoSection Title="EditForm — Multi-Select Min/Max Validation" Code="@_minMaxSource">
+    <Description>
+        <p>
+            In multi-select mode the <code>Min</code> and <code>Max</code> parameters are enforced on blur
+            via a <code>ValidationMessageStore</code>. The error messages can be customised with
+            <code>MinValidationMessage</code> and <code>MaxValidationMessage</code>.
+        </p>
+    </Description>
+    <Content>
+        <EditForm Model="_minMaxModel" OnValidSubmit="HandleMinMaxSubmit">
+            <DataAnnotationsValidator />
+            <PggmValidationSummary>
+                <p class="text-danger">Corrigeer de volgende fouten:</p>
+            </PggmValidationSummary>
+
+            <PggmFieldset>
+                <PggmLabel slot="label" For="mm-skills">Vaardigheden (kies 2–4)</PggmLabel>
+                <PggmValidationMessage slot="error" For="() => _minMaxModel.Skills" />
+                <PggmCombobox TOption="object" Id="mm-skills" Name="mm-skills" Multiple="true"
+                              Min="2" Max="4"
+                              MinValidationMessage="Selecteer minimaal 2 vaardigheden."
+                              MaxValidationMessage="Selecteer maximaal 4 vaardigheden."
+                              Values="@_minMaxModel.Skills"
+                              ValuesChanged="HandleSkillsChanged"
+                              @bind-Value="_minMaxModel.SkillsJoined"
+                              Placeholder="Kies vaardigheden...">
+                    <PggmComboboxItem Value="blazor">Blazor</PggmComboboxItem>
+                    <PggmComboboxItem Value="csharp">C#</PggmComboboxItem>
+                    <PggmComboboxItem Value="ts">TypeScript</PggmComboboxItem>
+                    <PggmComboboxItem Value="css">CSS</PggmComboboxItem>
+                    <PggmComboboxItem Value="sql">SQL</PggmComboboxItem>
+                    <PggmComboboxItem Value="azure">Azure</PggmComboboxItem>
+                </PggmCombobox>
+            </PggmFieldset>
+
+            <PggmButton Type="@ButtonType.Submit" Appearance="@ButtonAppearance.Primary">Verzenden</PggmButton>
+        </EditForm>
+
+        @if (_minMaxSubmitted)
+        {
+            <div class="alert alert-success mt-2">
+                Formulier verzonden! Vaardigheden: <strong>@string.Join(", ", _minMaxModel.Skills ?? Array.Empty<string>())</strong>
+            </div>
+        }
+    </Content>
+</DemoSection>
+
+<!-- ── 7. PggmComboboxItem variations ─────────────────────────────────────── -->
+<DemoSection Title="PggmComboboxItem — Disabled & Pre-Selected" Code="@_itemsSource">
+    <Description>
+        <p>
+            <code>PggmComboboxItem</code> supports <code>Value</code>, <code>Disabled</code>
+            and <code>Selected</code> parameters.
+        </p>
+    </Description>
+    <Content>
+        <PggmCombobox TOption="object" @bind-Value="_itemsDemoValue" Placeholder="Kies een optie...">
+            <PggmComboboxItem Value="opt1" Selected="true">Optie 1 (voorgeselecteerd)</PggmComboboxItem>
+            <PggmComboboxItem Value="opt2">Optie 2</PggmComboboxItem>
+            <PggmComboboxItem Value="opt3" Disabled="true">Optie 3 (uitgeschakeld)</PggmComboboxItem>
+            <PggmComboboxItem Value="opt4">Optie 4</PggmComboboxItem>
+        </PggmCombobox>
+        <p>Geselecteerd: <strong>@(_itemsDemoValue ?? "—")</strong></p>
+    </Content>
+</DemoSection>
+<!-- ── 8. Data binding with TOption ──────────────────────────────────────────── -->
+<DemoSection Title="Data Binding with TOption" Code="@_tOptionSource">
+    <Description>
+        <p>
+            Pass a typed collection via <code>Items</code> and use <code>OptionValue</code>,
+            <code>OptionText</code> and <code>OptionDisabled</code> selectors to generate
+            <code>pggm-combobox-item</code> elements automatically.
+            <code>@@bind-SelectedOption</code> gives two-way binding to the full object.
+        </p>
+    </Description>
+    <Content>
+        <PggmFieldset>
+            <PggmLabel slot="label" For="to-combo">Medewerker</PggmLabel>
+            <PggmCombobox TOption="EmployeeOption"
+                          Id="to-combo"
+                          Items="@_employees"
+                          OptionValue="@(e => e.Id.ToString())"
+                          OptionText="@(e => e.Name)"
+                          OptionDisabled="@(e => e.Inactive)"
+                          Value="@(_selectedEmployee?.Id.ToString())"
+                          @bind-SelectedOption="_selectedEmployee"
+                          WithClear="true"
+                          Placeholder="Kies een medewerker..." />
+        </PggmFieldset>
+        <p>Geselecteerde medewerker: <strong>@(_selectedEmployee is null ? "—" : $"{_selectedEmployee.Name} (id {_selectedEmployee.Id})")</strong></p>
+    </Content>
+</DemoSection>
+<!-- ── API ─────────────────────────────────────────────────────────────────── -->
+<PggmHeading Level="2">API</PggmHeading>
+
+<PggmHeading Level="3">PggmCombobox</PggmHeading>
+<ApiDocumentation Properties="_comboboxProperties" Events="_comboboxEvents" />
+
+<PggmHeading Level="3">PggmComboboxItem</PggmHeading>
+<ApiDocumentation Properties="_itemProperties" Events="_itemEvents" />
+
+@code {
+    // ── State ──────────────────────────────────────────────────────────────────
+    private string? _basicValue;
+    private string[]? _multiValues;
+    private string? _withClearValue;
+    private string[]? _withClearMultiValues;
+    private string? _visibleItemsValue;
+    private string? _eventValue;
+    private string _lastEvent = "Geen";
+    private string? _itemsDemoValue = "opt1";
+
+    // ── TOption demo data ────────────────────────────────────────────────────────────
+    private EmployeeOption? _selectedEmployee;
+    private readonly List<EmployeeOption> _employees = new()
+    {
+        new EmployeeOption(1, "Anna de Vries",   false),
+        new EmployeeOption(2, "Bas Jansen",       false),
+        new EmployeeOption(3, "Carla Bakker",     false),
+        new EmployeeOption(4, "Dirk Smit",        true),
+        new EmployeeOption(5, "Eva van den Berg", false),
+    };
+
+    private record EmployeeOption(int Id, string Name, bool Inactive);
+
+    // ── EditForm models ────────────────────────────────────────────────────────
+    private RequiredFormModel _requiredModel = new();
+    private bool _requiredSubmitted;
+
+    private MinMaxFormModel _minMaxModel = new();
+    private bool _minMaxSubmitted;
+
+    private void HandleRequiredSubmit()
+    {
+        _requiredSubmitted = true;
+    }
+
+    private void HandleMinMaxSubmit()
+    {
+        _minMaxSubmitted = true;
+    }
+
+    private void HandleSkillsChanged(string[]? values)
+    {
+        _minMaxModel.Skills = values;
+        _minMaxModel.SkillsJoined = values is { Length: > 0 } ? string.Join(",", values) : null;
+    }
+
+    // ── Event handlers ─────────────────────────────────────────────────────────
+    private void HandleChange(ChangeEventArgs args) =>
+        _lastEvent = $"change → \"{args.Value}\" om {DateTime.Now:HH:mm:ss}";
+
+    private void HandleFocus(FocusEventArgs _) =>
+        _lastEvent = $"focus om {DateTime.Now:HH:mm:ss}";
+
+    private void HandleBlur(FocusEventArgs _) =>
+        _lastEvent = $"blur om {DateTime.Now:HH:mm:ss}";
+
+    private void HandleOpen() =>
+        _lastEvent = $"open om {DateTime.Now:HH:mm:ss}";
+
+    private void HandleClose() =>
+        _lastEvent = $"close om {DateTime.Now:HH:mm:ss}";
+
+    // ── Form models ────────────────────────────────────────────────────────────
+    private class RequiredFormModel
+    {
+        [Required(ErrorMessage = "Land is verplicht.")]
+        public string? Country { get; set; }
+
+        [Required(ErrorMessage = "Afdeling is verplicht.")]
+        public string? Department { get; set; }
+    }
+
+    private class MinMaxFormModel
+    {
+        // Joined string used by InputBase/[Required]; updated automatically by PggmCombobox.
+        [Required(ErrorMessage = "Selecteer minimaal één vaardigheid.")]
+        public string? SkillsJoined { get; set; }
+
+        public string[]? Skills { get; set; }
+    }
+
+    // ── Code snippets ──────────────────────────────────────────────────────────
+    private string _basicSource =
+        "<PggmCombobox @bind-Value=\"_value\" Placeholder=\"Kies een land...\">\n" +
+        "    <PggmComboboxItem Value=\"nl\">Nederland</PggmComboboxItem>\n" +
+        "    <PggmComboboxItem Value=\"de\">Duitsland</PggmComboboxItem>\n" +
+        "    <PggmComboboxItem Value=\"be\">België</PggmComboboxItem>\n" +
+        "</PggmCombobox>";
+
+    private string _statesSource =
+        "<PggmCombobox Disabled=\"true\" Value=\"nl\">\n" +
+        "    <PggmComboboxItem Value=\"nl\">Nederland</PggmComboboxItem>\n" +
+        "</PggmCombobox>\n\n" +
+        "<PggmCombobox ReadOnly=\"true\" Value=\"de\">\n" +
+        "    <PggmComboboxItem Value=\"de\">Duitsland</PggmComboboxItem>\n" +
+        "</PggmCombobox>";
+
+    private string _multiSource =
+        "<PggmCombobox Multiple=\"true\" Min=\"1\" Max=\"3\" @bind-Values=\"_values\"\n" +
+        "              Placeholder=\"Kies talen...\">\n" +
+        "    <PggmComboboxItem Value=\"csharp\">C#</PggmComboboxItem>\n" +
+        "    <PggmComboboxItem Value=\"ts\">TypeScript</PggmComboboxItem>\n" +
+        "    <PggmComboboxItem Value=\"python\">Python</PggmComboboxItem>\n" +
+        "</PggmCombobox>";
+
+    private string _eventsSource =
+        "<PggmCombobox @bind-Value=\"_value\"\n" +
+        "              OnChange=\"HandleChange\"\n" +
+        "              OnFocus=\"HandleFocus\"\n" +
+        "              OnBlur=\"HandleBlur\"\n" +
+        "              OnOpen=\"HandleOpen\"\n" +
+        "              OnClose=\"HandleClose\">\n" +
+        "    <PggmComboboxItem Value=\"hr\">Human Resources</PggmComboboxItem>\n" +
+        "</PggmCombobox>\n\n" +
+        "@code {\n" +
+        "    private void HandleChange(ChangeEventArgs args) { /* ... */ }\n" +
+        "    private void HandleFocus(FocusEventArgs _) { /* ... */ }\n" +
+        "    private void HandleBlur(FocusEventArgs _) { /* ... */ }\n" +
+        "    private void HandleOpen() { /* ... */ }\n" +
+        "    private void HandleClose() { /* ... */ }\n" +
+        "}";
+
+    private string _editFormSource =
+        "<EditForm Model=\"_model\" OnValidSubmit=\"HandleSubmit\">\n" +
+        "    <DataAnnotationsValidator />\n" +
+        "    <PggmFieldset>\n" +
+        "        <PggmLabel slot=\"label\">Land *</PggmLabel>\n" +
+        "        <PggmValidationMessage slot=\"error\" For=\"() => _model.Country\" />\n" +
+        "        <PggmCombobox @bind-Value=\"_model.Country\" Required=\"true\"\n" +
+        "                      Placeholder=\"Kies een land...\">\n" +
+        "            <PggmComboboxItem Value=\"nl\">Nederland</PggmComboboxItem>\n" +
+        "        </PggmCombobox>\n" +
+        "    </PggmFieldset>\n" +
+        "    <PggmButton Type=\"@ButtonType.Submit\">Verzenden</PggmButton>\n" +
+        "</EditForm>\n\n" +
+        "// Model:\n" +
+        "private class Model {\n" +
+        "    [Required] public string? Country { get; set; }\n" +
+        "}";
+
+    private string _minMaxSource =
+        "<PggmCombobox Multiple=\"true\" Min=\"2\" Max=\"4\"\n" +
+        "              MinValidationMessage=\"Selecteer minimaal 2 vaardigheden.\"\n" +
+        "              MaxValidationMessage=\"Selecteer maximaal 4 vaardigheden.\"\n" +
+        "              @bind-Values=\"_model.Skills\"\n" +
+        "              @bind-Value=\"_model.SkillsJoined\">\n" +
+        "    <PggmComboboxItem Value=\"blazor\">Blazor</PggmComboboxItem>\n" +
+        "    ...\n" +
+        "</PggmCombobox>\n\n" +
+        "// Model:\n" +
+        "private class Model {\n" +
+        "    [Required] public string? SkillsJoined { get; set; }\n" +
+        "    public string[]? Skills { get; set; }\n" +
+        "}";
+
+    private string _withClearSource =
+        "<PggmCombobox @bind-Value=\"_value\" WithClear=\"true\" Placeholder=\"Kies een land...\">\n" +
+        "    <PggmComboboxItem Value=\"nl\">Nederland</PggmComboboxItem>\n" +
+        "</PggmCombobox>\n\n" +
+        "<!-- multi-select -->\n" +
+        "<PggmCombobox Multiple=\"true\" WithClear=\"true\" @bind-Values=\"_values\" Placeholder=\"Kies talen...\">\n" +
+        "    <PggmComboboxItem Value=\"csharp\">C#</PggmComboboxItem>\n" +
+        "</PggmCombobox>";
+
+    private string _visibleItemsSource =
+        "<PggmCombobox @bind-Value=\"_value\" VisibleItems=\"3\" Placeholder=\"Kies een continent...\">\n" +
+        "    <PggmComboboxItem Value=\"af\">Afrika</PggmComboboxItem>\n" +
+        "    <PggmComboboxItem Value=\"as\">Azië</PggmComboboxItem>\n" +
+        "    <PggmComboboxItem Value=\"eu\">Europa</PggmComboboxItem>\n" +
+        "    <!-- more items ... -->\n" +
+        "</PggmCombobox>";
+    private string _tOptionSource =
+        "<PggmCombobox TOption=\"EmployeeOption\"\n" +
+        "              Items=\"@_employees\"\n" +
+        "              OptionValue=\"@(e => e.Id.ToString())\"\n" +
+        "              OptionText=\"@(e => e.Name)\"\n" +
+        "              OptionDisabled=\"@(e => e.Inactive)\"\n" +
+        "              Value=\"@(_selectedEmployee?.Id.ToString())\"\n" +
+        "              @bind-SelectedOption=\"_selectedEmployee\"\n" +
+        "              WithClear=\"true\">\n" +
+        "</PggmCombobox>\n\n" +
+        "private record EmployeeOption(int Id, string Name, bool Inactive);";
+    private string _itemsSource =
+        "<PggmCombobox @bind-Value=\"_value\">\n" +
+        "    <PggmComboboxItem Value=\"opt1\" Selected=\"true\">Optie 1 (voorgeselecteerd)</PggmComboboxItem>\n" +
+        "    <PggmComboboxItem Value=\"opt2\">Optie 2</PggmComboboxItem>\n" +
+        "    <PggmComboboxItem Value=\"opt3\" Disabled=\"true\">Optie 3 (uitgeschakeld)</PggmComboboxItem>\n" +
+        "</PggmCombobox>";
+
+    // ── API metadata ───────────────────────────────────────────────────────────
+    private IEnumerable<ApiMember> _comboboxProperties = new[]
+    {
+        new ApiMember { Name = "Value",                 Type = "string?",            DefaultValue = "",        Description = "Currently selected value (single-select). Use with @@bind-Value." },
+        new ApiMember { Name = "Values",                Type = "string[]?",          DefaultValue = "",        Description = "Currently selected values (multi-select). Use with @@bind-Values." },
+        new ApiMember { Name = "ValueExpression",       Type = "Expression<Func<string>>?", DefaultValue = "", Description = "Field identity expression for EditForm integration." },
+        new ApiMember { Name = "Name",                  Type = "string?",            DefaultValue = "",        Description = "Name attribute for form submission." },
+        new ApiMember { Name = "Id",                    Type = "string?",            DefaultValue = "auto",    Description = "Element id. Auto-generated when omitted." },
+        new ApiMember { Name = "Placeholder",           Type = "string?",            DefaultValue = "",        Description = "Placeholder text shown when nothing is selected." },
+        new ApiMember { Name = "Disabled",              Type = "bool",               DefaultValue = "false",   Description = "Disables the combobox." },
+        new ApiMember { Name = "ReadOnly",              Type = "bool",               DefaultValue = "false",   Description = "Makes the combobox read-only." },
+        new ApiMember { Name = "Required",              Type = "bool",               DefaultValue = "false",   Description = "Marks the field as required. Suppressed inside EditForm." },
+        new ApiMember { Name = "Multiple",              Type = "bool",               DefaultValue = "false",   Description = "Enables multi-select mode." },
+        new ApiMember { Name = "WithClear",              Type = "bool",               DefaultValue = "false",   Description = "Renders a clear button inside the combobox. Clicking it clears the selection." },
+        new ApiMember { Name = "VisibleItems",           Type = "int?",               DefaultValue = "",        Description = "Maximum number of items visible in the dropdown before scrolling. Maps to the visible-items attribute." },
+        new ApiMember { Name = "Open",                  Type = "bool",               DefaultValue = "false",   Description = "Controls whether the dropdown panel is open." },
+        new ApiMember { Name = "Min",                   Type = "int?",               DefaultValue = "",        Description = "Minimum number of selected items (multi-select). Validated on blur inside EditForm." },
+        new ApiMember { Name = "Max",                   Type = "int?",               DefaultValue = "",        Description = "Maximum number of selected items (multi-select). Validated on blur inside EditForm." },
+        new ApiMember { Name = "MinValidationMessage",  Type = "string?",            DefaultValue = "",        Description = "Custom error message for the Min constraint." },
+        new ApiMember { Name = "MaxValidationMessage",  Type = "string?",            DefaultValue = "",        Description = "Custom error message for the Max constraint." },
+        new ApiMember { Name = "ChildContent",          Type = "RenderFragment?",    DefaultValue = "",        Description = "PggmComboboxItem elements rendered inside the combobox." },
+        new ApiMember { Name = "Items",                 Type = "IEnumerable<TOption>?",   DefaultValue = "",    Description = "Data collection rendered as pggm-combobox-item elements. Requires OptionValue." },
+        new ApiMember { Name = "OptionValue",           Type = "Func<TOption, string?>?", DefaultValue = "",    Description = "Selector for the item value string." },
+        new ApiMember { Name = "OptionText",            Type = "Func<TOption, string?>?", DefaultValue = "",    Description = "Selector for the item display text." },
+        new ApiMember { Name = "OptionDisabled",        Type = "Func<TOption, bool>?",    DefaultValue = "",    Description = "Selector to disable individual items." },
+        new ApiMember { Name = "OptionTemplate",        Type = "RenderFragment<TOption>?",DefaultValue = "",    Description = "Custom render fragment per item. Overrides OptionText/OptionDisabled." },
+        new ApiMember { Name = "SelectedOption",        Type = "TOption?",           DefaultValue = "",        Description = "Currently selected item object (single-select). Use with @@bind-SelectedOption." },
+        new ApiMember { Name = "SelectedOptionChanged", Type = "EventCallback<TOption?>", DefaultValue = "",    Description = "Fired when the selected item object changes." },
+    };
+
+    private IEnumerable<ApiMember> _comboboxEvents = new[]
+    {
+        new ApiMember { Name = "OnChange",  Type = "EventCallback<ChangeEventArgs>", Description = "Fired when the selected value changes." },
+        new ApiMember { Name = "OnFocus",   Type = "EventCallback<FocusEventArgs>",  Description = "Fired when the combobox receives focus." },
+        new ApiMember { Name = "OnBlur",    Type = "EventCallback<FocusEventArgs>",  Description = "Fired when the combobox loses focus." },
+        new ApiMember { Name = "OnOpen",    Type = "EventCallback",                  Description = "Fired when the dropdown panel opens." },
+        new ApiMember { Name = "OnClose",   Type = "EventCallback",                  Description = "Fired when the dropdown panel closes." },
+    };
+
+    private IEnumerable<ApiMember> _itemProperties = new[]
+    {
+        new ApiMember { Name = "Value",    Type = "string?", DefaultValue = "",       Description = "The value submitted when this item is selected." },
+        new ApiMember { Name = "Disabled", Type = "bool",    DefaultValue = "false",  Description = "Disables the item so it cannot be selected." },
+        new ApiMember { Name = "Selected", Type = "bool",    DefaultValue = "false",  Description = "Pre-selects the item." },
+        new ApiMember { Name = "ChildContent", Type = "RenderFragment?", DefaultValue = "", Description = "Label content rendered inside the item." },
+    };
+
+    private IEnumerable<ApiMember> _itemEvents = new[]
+    {
+        new ApiMember { Name = "OnItemSelect", Type = "EventCallback<object?>", Description = "Fired when this item is selected." },
+    };
+}

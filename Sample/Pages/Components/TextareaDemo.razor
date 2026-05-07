@@ -4,12 +4,12 @@
 
 <PageTitle>PGGM Textarea</PageTitle>
 
-<PggmHeader Level="1">PGGM Textarea</PggmHeader>
+<PggmHeading Level="1">PGGM Textarea</PggmHeading>
 
 <p>This page demonstrates the PGGM Textarea component with various configurations and event handling.</p>
 
 <div class="demo-section">
-    <PggmHeader Level="4">Basic Textarea</PggmHeader>
+    <PggmHeading Level="4">Basic Textarea</PggmHeading>
     <PggmTextarea @bind-Value="@basicValue" 
                   Rows="4" 
                   Cols="50" 
@@ -18,7 +18,7 @@
 </div>
 
 <div class="demo-section">
-    <PggmHeader Level="4">Textarea with Character Limit</PggmHeader>
+    <PggmHeading Level="4">Textarea with Character Limit</PggmHeading>
     <PggmTextarea @bind-Value="@limitedValue" 
                   Rows="3" 
                   Cols="40" 
@@ -28,7 +28,7 @@
 </div>
 
 <div class="demo-section">
-    <PggmHeader Level="4">Required Textarea</PggmHeader>
+    <PggmHeading Level="4">Required Textarea</PggmHeading>
     <PggmTextarea @bind-Value="@requiredValue" 
                   Rows="3" 
                   Cols="40" 
@@ -38,7 +38,7 @@
 </div>
 
 <div class="demo-section">
-    <PggmHeader Level="4">Disabled Textarea</PggmHeader>
+    <PggmHeading Level="4">Disabled Textarea</PggmHeading>
     <PggmTextarea Value="This textarea is disabled and cannot be edited." 
                   Rows="2" 
                   Cols="40" 
@@ -46,7 +46,7 @@
 </div>
 
 <div class="demo-section">
-    <PggmHeader Level="4">ReadOnly Textarea</PggmHeader>
+    <PggmHeading Level="4">ReadOnly Textarea</PggmHeading>
     <PggmTextarea Value="This textarea is readonly and cannot be edited." 
                   Rows="2" 
                   Cols="40" 
@@ -54,7 +54,7 @@
 </div>
 
 <div class="demo-section">
-    <PggmHeader Level="4">Textarea with Hard Wrap</PggmHeader>
+    <PggmHeading Level="4">Textarea with Hard Wrap</PggmHeading>
     <PggmTextarea @bind-Value="@wrapValue" 
                   Rows="4" 
                   Cols="30" 
@@ -63,7 +63,7 @@
 </div>
 
 <div class="demo-section">
-    <PggmHeader Level="4">Event Handling</PggmHeader>
+    <PggmHeading Level="4">Event Handling</PggmHeading>
     <PggmTextarea @bind-Value="@eventValue" 
                   Rows="3" 
                   Cols="40" 
@@ -86,18 +86,12 @@
 </div>
 
 <style>
-    .demo-section {
-        margin-bottom: 2rem;
-        padding: 1rem;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-    }
-    
+    /* demo-section styles are provided globally in wwwroot/css/custom-formatters.css */
     .demo-section h4 {
         margin-top: 0;
         color: #333;
     }
-    
+
     .event-log {
         margin-top: 1rem;
         padding: 1rem;

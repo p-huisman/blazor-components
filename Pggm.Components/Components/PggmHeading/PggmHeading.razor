@@ -1,0 +1,32 @@
+@namespace Pggm.Components
+@inherits PggmComponentBase
+
+@{
+    var headingTag = GetHeadingTag();
+    var attributes = GetAttributes();
+    if (!string.IsNullOrEmpty(Size))
+    {
+        attributes["size"] = Size;
+    }
+}
+
+@if (headingTag == "h1")
+{
+    <h1 is="pggm-heading-1" @attributes="attributes">@ChildContent</h1>
+}
+else if (headingTag == "h2")
+{
+    <h2 is="pggm-heading-2" @attributes="attributes">@ChildContent</h2>
+}
+else if (headingTag == "h3")
+{
+    <h3 is="pggm-heading-3" @attributes="attributes">@ChildContent</h3>
+}
+else if (headingTag == "h4")
+{
+    <h4 is="pggm-heading-4" @attributes="attributes">@ChildContent</h4>
+}
+else if (headingTag == "h5")
+{
+    <h5 is="pggm-heading-5" @attributes="attributes">@ChildContent</h5>
+}

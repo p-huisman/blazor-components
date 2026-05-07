@@ -1,0 +1,31 @@
+.code-snippet {
+  font-family: var(--bs-font-monospace, "SFMono-Regular", Menlo, Monaco, "Roboto Mono", monospace);
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.code-snippet .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.375rem 0.5rem;
+  background: rgba(0,0,0,0.03);
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+}
+.code-snippet .title {
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+.code-snippet .copy-button {
+  background: transparent;
+  border: 1px solid rgba(0,0,0,0.06);
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.code-snippet pre {
+  margin: 0;
+  padding: 0.75rem;
+  overflow: auto;
+  background: #f7f7f8;
+}

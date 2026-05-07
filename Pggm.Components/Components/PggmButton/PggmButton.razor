@@ -1,45 +1,11 @@
-@inherits PggmComponentBase
 @namespace Pggm.Components
+@using Pggm.Components.Extensions
+@inherits PggmEventComponentBase
 
-<button is="pggm-button" @ref="ElementRef" @attributes="GetAttributes()" @onclick="OnClickHandler">
+<button is="pggm-button" @ref="ElementRef"
+        appearance="@Appearance.ToAttributeValue()"
+        disabled="@Disabled"
+        type="@Type.ToAttributeValue()"
+        @attributes="GetAttributes()">
   @ChildContent
 </button>
-
-@code {
-  public override string TagName => "button";
-
-  /// <summary>
-  /// The button variant (primary, secondary, etc.)
-  /// </summary>
-  [Parameter] public string? Appearance { get; set; }
-
-  /// <summary>
-  /// Whether the button is disabled
-  /// </summary>
-  [Parameter] public bool Disabled { get; set; }
-
-  /// <summary>
-  /// The button type (button, submit, reset)
-  /// </summary>
-  [Parameter] public string Type { get; set; } = "button";
-
-  /// <summary>
-  /// Event callback for button click
-  /// </summary>
-  [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
-
-  protected override void AddComponentAttributes(Dictionary<string, object> attributes)
-  {
-    AttributeHelper.SetAttributeIfNotEmpty(attributes, "appearance", Appearance);
-    AttributeHelper.SetBooleanAttribute(attributes, "disabled", Disabled);
-    attributes["type"] = Type;
-  }
-
-  private async Task OnClickHandler(MouseEventArgs args)
-  {
-    if (!Disabled && OnClick.HasDelegate)
-    {
-      await OnClick.InvokeAsync(args);
-    }
-  }
-}

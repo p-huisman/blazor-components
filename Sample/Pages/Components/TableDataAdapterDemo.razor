@@ -1,0 +1,369 @@
+@page "/pggm-table-data-adapter"
+@using Pggm.Components
+@using Pggm.Components.DataAdapters
+@using Pggm.Components.Sample.Components.ApiDocumentation
+
+<PageTitle>Table Data Adapter Demo</PageTitle>
+
+<PggmHeading Level="1">PGGM Table - Data Adapter Demo</PggmHeading>
+
+<p>
+    This page demonstrates <code>IPggmTableDataAdapter&lt;TItem&gt;</code>, the adapter pattern for
+    supplying paginated, sorted, and filtered data to a <code>PggmTable</code> from any source
+    (HTTP, EF Core, in-memory, etc.) without coupling the component to a specific data technology.
+</p>
+
+<hr />
+
+<DemoSection Title="In-memory adapter (no DI required)" Code="@_inMemoryAdapterCode" CodeBehind="@_inMemoryAdapterBehind">
+    <Description>
+        <p>
+            The simplest way to use the adapter: create an inline implementation of
+            <code>IPggmTableDataAdapter&lt;TItem&gt;</code> directly on the page. The adapter below
+            applies sorting, filtering, and pagination in memory.
+        </p>
+    </Description>
+    <Content>
+        @if (_loading)
+        {
+            <p><em>Loading…</em></p>
+        }
+        else if (_currentPage.TotalItemCount == 0)
+        {
+            <p>No results found.</p>
+        }
+        else
+        {
+            <p>
+                Showing <strong>@_currentPage.Items.Count</strong> of
+                <strong>@_currentPage.TotalItemCount</strong> employees
+                (page @(_currentPageIndex + 1) of @TotalPages).
+            </p>
+
+            <PggmTable
+                FilterLabel="Filter"
+                ClearLabel="Wissen"
+                Lang="nl"
+                IdField="id"
+                Selectable="true"
+                SelectType="single"
+                Adapter="@_adapter"
+                PageSize="@PageSize"
+                OnAdapterResult="OnTableAdapterResult"
+                OnSortChanged="OnTableSortChanged"
+                Data="@_currentPage.Items">
+
+                @* <PggmTh Field="id"         Type="number"                 Width="60"  TextAlign="right">ID</PggmTh> *@
+                <PggmTh Field="firstName"  Type="string" Sortable="true" Filterable="true" Width="150">First Name</PggmTh>
+                <PggmTh Field="lastName"   Type="string" Sortable="true" Filterable="true" Width="150">Last Name</PggmTh>
+                <PggmTh Field="department" Type="string"                 Filterable="true" Width="180">Department</PggmTh>
+                <PggmTh Field="salary"     Type="number" Sortable="true"                 Width="130" Format="currency" TextAlign="right">Salary</PggmTh>
+                <PggmTh Field="isActive"   Type="boolean"                                Width="90"  Format="boolean" TextAlign="center">Active</PggmTh>
+
+            </PggmTable>
+
+            <div style="display:flex; gap:0.5rem; margin-top:1rem; align-items:center;">
+                <button @onclick="PreviousPage" disabled="@(_currentPageIndex == 0)">← Previous</button>
+                <span>Page @(_currentPageIndex + 1) / @TotalPages</span>
+                <button @onclick="NextPage" disabled="@(_currentPageIndex >= TotalPages - 1)">Next →</button>
+                <label style="margin-left:1rem;">
+                    Filter name:
+                    <input type="text" @bind="_nameFilter" @bind:event="oninput" @bind:after="OnFilterChanged" placeholder="Search…" />
+                </label>
+                @if (_sortField is not null)
+                {
+                    <span style="margin-left:1rem; font-size:0.85rem; color:#666;">
+                        Sorted by <strong>@_sortField</strong> (@(_sortAscending ? "asc" : "desc"))
+                    </span>
+                }
+            </div>
+        }
+    </Content>
+</DemoSection>
+
+<hr />
+
+<PggmHeading Level="2">How to register the HTTP adapter (Program.cs)</PggmHeading>
+<p>
+    For remote data, register the built-in HTTP adapter in <code>Program.cs</code>:
+</p>
+<pre style="background:#f5f5f5;padding:1rem;border-radius:4px;overflow:auto;"><code>// 1. Ensure HttpClient is available (already present in Blazor WASM)
+builder.Services.AddHttpClient();
+
+// 2. Register the adapter for your DTO type
+builder.Services.AddPggmTableHttpAdapter&lt;EmployeeDto&gt;(options =&gt;
+{
+    options.BaseUrl          = "https://api.example.com/employees";
+    options.StartIndexParam  = "startIndex";   // default
+    options.CountParam       = "count";        // default
+    options.SortFieldParam   = "sortField";    // default
+    options.SortDirectionParam = "sortDirection"; // default
+
+    // Optional: custom response envelope mapping
+    // options.ResponseMapper = json =&gt; PggmTableResult&lt;EmployeeDto&gt;.From(
+    //     json.GetProperty("data").Deserialize&lt;EmployeeDto[]&gt;()!,
+    //     json.GetProperty("meta").GetProperty("total").GetInt32());
+});</code></pre>
+
+<p>Then inject and use on any page:</p>
+<pre style="background:#f5f5f5;padding:1rem;border-radius:4px;overflow:auto;"><code>@@inject IPggmTableDataAdapter&lt;EmployeeDto&gt; TableAdapter
+
+var result = await TableAdapter.GetItemsAsync(new PggmTableRequest
+{
+    StartIndex    = 0,
+    Count         = 20,
+    SortField     = "lastName",
+    SortAscending = true,
+    Filters       = new Dictionary&lt;string, string&gt; { ["department"] = "IT" },
+});
+
+// result.Items            → current page rows
+// result.TotalItemCount   → total across all pages</code></pre>
+
+<PggmHeading Level="2">API</PggmHeading>
+
+<PggmHeading Level="3">Pggm.Components.DataAdapters</PggmHeading>
+<ApiDocumentation Properties="adapterProperties" Events="adapterEvents" />
+
+@code {
+    // ─── Demo data ────────────────────────────────────────────────────────────
+
+    // Snippet for demo display
+    private string _inMemoryAdapterCode = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmTable",
+        "  FilterLabel=\"Filter\"",
+        "  ClearLabel=\"Wissen\"",
+        "  Lang=\"nl\"",
+        "  IdField=\"id\"",
+        "  Selectable=\"true\"",
+        "  SelectType=\"single\"",
+        "  Adapter=\"@_adapter\"",
+        "  PageSize=\"@PageSize\"",
+        "  OnAdapterResult=\"OnTableAdapterResult\"",
+        "  OnSortChanged=\"OnTableSortChanged\"",
+        "  Data=\"@_currentPage.Items\">",
+        "  <PggmTh Field=\"firstName\" Type=\"string\" Sortable=\"true\" Filterable=\"true\" Width=\"150\">First Name</PggmTh>",
+        "  <PggmTh Field=\"lastName\" Type=\"string\" Sortable=\"true\" Filterable=\"true\" Width=\"150\">Last Name</PggmTh>",
+        "  <PggmTh Field=\"department\" Type=\"string\" Filterable=\"true\" Width=\"180\">Department</PggmTh>",
+        "  <PggmTh Field=\"salary\" Type=\"number\" Sortable=\"true\" Width=\"130\" Format=\"currency\" TextAlign=\"right\">Salary</PggmTh>",
+        "  <PggmTh Field=\"isActive\" Type=\"boolean\" Width=\"90\" Format=\"boolean\" TextAlign=\"center\">Active</PggmTh>",
+        "</PggmTable>",
+        "<div style=\"display:flex; gap:0.5rem; margin-top:1rem; align-items:center;\">",
+        "  <button @onclick=\"PreviousPage\" disabled=\"@(_currentPageIndex == 0)\">← Previous</button>",
+        "  <span>Page @(_currentPageIndex + 1) / @TotalPages</span>",
+        "  <button @onclick=\"NextPage\" disabled=\"@(_currentPageIndex >= TotalPages - 1)\">Next →</button>",
+        "  <label style=\"margin-left:1rem;\">",
+        "    Filter name:",
+        "    <input type=\"text\" @bind=\"_nameFilter\" @bind:event=\"oninput\" @bind:after=\"OnFilterChanged\" placeholder=\"Search…\" />",
+        "  </label>",
+        "</div>");
+
+    // Code-behind snippet (state and handlers)
+    private string _inMemoryAdapterBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private record Employee(int Id, string FirstName, string LastName, string Department, decimal Salary, bool IsActive);",
+        "",
+        "// Sample data (omitted for brevity)" ,
+        "private readonly IPggmTableDataAdapter<object> _adapter = new InMemoryEmployeeAdapter();",
+        "private const int PageSize = 5;",
+        "private PggmTableResult<object> _currentPage = PggmTableResult<object>.Empty();",
+        "private bool _loading = true;",
+        "private int _currentPageIndex = 0;",
+        "private string? _sortField = null;",
+        "private bool _sortAscending = true;",
+        "private string _nameFilter = string.Empty;",
+        "private int TotalPages => (int)Math.Ceiling(_currentPage.TotalItemCount / (double)PageSize);",
+        "",
+        "protected override async Task OnInitializedAsync() => await RefreshAsync();",
+        "",
+        "private async Task RefreshAsync()",
+        "{",
+        "  _loading = true;",
+        "  // fetch page from adapter based on current filters/sort/page index",
+        "  _currentPage = await _adapter.GetItemsAsync(new PggmTableRequest",
+        "  {",
+        "    StartIndex = _currentPageIndex * PageSize,",
+        "    Count = PageSize,",
+        "    SortField = _sortField,",
+        "    SortAscending = _sortAscending,",
+        "    Filters = string.IsNullOrWhiteSpace(_nameFilter) ? null : new Dictionary<string,string> { [\"name\"] = _nameFilter },",
+        "  });",
+        "  _loading = false;",
+        "}",
+        "",
+        "private async Task PreviousPage() { if (_currentPageIndex > 0) { _currentPageIndex--; await RefreshAsync(); } }",
+        "private async Task NextPage() { if (_currentPageIndex < TotalPages - 1) { _currentPageIndex++; await RefreshAsync(); } }",
+        "",
+        "private async Task OnTableAdapterResult(PggmTableResult<object> result)",
+        "{",
+        "  _currentPage = result;",
+        "  _currentPageIndex = 0;",
+        "  await InvokeAsync(StateHasChanged);",
+        "}",
+        "",
+        "private Task OnTableSortChanged((string Field, bool Ascending) sort)",
+        "{",
+        "  _sortField = sort.Field;",
+        "  _sortAscending = sort.Ascending;",
+        "  return Task.CompletedTask;",
+        "}",
+        "",
+        "private async Task OnFilterChanged()",
+        "{",
+        "  _currentPageIndex = 0;",
+        "  await RefreshAsync();",
+        "}");
+
+    // API documentation for data adapters
+    private IEnumerable<ApiMember> adapterProperties = new[]
+    {
+        new ApiMember { Name = "GetItemsAsync", Type = "Task<PggmTableResult<TItem>>(PggmTableRequest)", Description = "Fetches a page of items according to the supplied request (start index, count, sort, filters)." },
+        new ApiMember { Name = "PggmTableRequest", Type = "class", Description = "Request DTO containing StartIndex, Count, SortField, SortAscending and Filters." },
+        new ApiMember { Name = "PggmTableResult<TItem>", Type = "class", Description = "Result DTO containing Items (current page) and TotalItemCount." }
+    };
+
+    private IEnumerable<ApiMember> adapterEvents = Array.Empty<ApiMember>();
+
+    private record Employee(int Id, string FirstName, string LastName, string Department, decimal Salary, bool IsActive);
+
+    private static readonly Employee[] AllEmployees =
+    [
+        new(1,  "Emma",    "de Vries",   "Engineering",   72_000, true),
+        new(2,  "Lars",    "Bakker",     "HR",            55_000, true),
+        new(3,  "Sophie",  "Janssen",    "Engineering",   68_000, false),
+        new(4,  "Daan",    "Smit",       "Finance",       61_000, true),
+        new(5,  "Nora",    "Mulder",     "Engineering",   74_000, true),
+        new(6,  "Finn",    "Peters",     "Support",       48_000, true),
+        new(7,  "Lena",    "van Dam",    "HR",            53_000, false),
+        new(8,  "Tobias",  "Visser",     "Finance",       66_000, true),
+        new(9,  "Mila",    "Bos",        "Engineering",   71_000, true),
+        new(10, "Jasper",  "Meijer",     "Support",       47_000, false),
+        new(11, "Rosa",    "Brouwer",    "Finance",       60_000, true),
+        new(12, "Noah",    "Dekker",     "Engineering",   69_000, true),
+        new(13, "Fleur",   "Kok",        "HR",            54_000, true),
+        new(14, "Bram",    "Berg",       "Support",       50_000, false),
+        new(15, "Eva",     "Schouten",   "Engineering",   77_000, true),
+    ];
+
+    // ─── In-memory adapter ────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Inline in-memory adapter — applies filtering, sorting, and pagination.
+    /// In real projects this would be a registered DI service.
+    /// </summary>
+    private sealed class InMemoryEmployeeAdapter : IPggmTableDataAdapter<object>
+    {
+        public Task<PggmTableResult<object>> GetItemsAsync(PggmTableRequest request)
+        {
+            IEnumerable<Employee> query = AllEmployees;
+
+            // Filtering
+            if (request.Filters is { Count: > 0 } && request.Filters.TryGetValue("name", out var nameFilter)
+                && !string.IsNullOrWhiteSpace(nameFilter))
+            {
+                query = query.Where(e =>
+                    e.FirstName.Contains(nameFilter, StringComparison.OrdinalIgnoreCase) ||
+                    e.LastName.Contains(nameFilter, StringComparison.OrdinalIgnoreCase));
+            }
+
+            var totalCount = query.Count();
+
+            // Sorting
+            query = request.SortField switch
+            {
+                "id"        => request.SortAscending ? query.OrderBy(e => e.Id)        : query.OrderByDescending(e => e.Id),
+                "firstName" => request.SortAscending ? query.OrderBy(e => e.FirstName) : query.OrderByDescending(e => e.FirstName),
+                "lastName"  => request.SortAscending ? query.OrderBy(e => e.LastName)  : query.OrderByDescending(e => e.LastName),
+                "salary"    => request.SortAscending ? query.OrderBy(e => e.Salary)    : query.OrderByDescending(e => e.Salary),
+                _           => query
+            };
+
+            // Pagination
+            var items = query
+                .Skip(request.StartIndex)
+                .Take(request.Count ?? int.MaxValue)
+                .Select(e => (object)new
+                {
+                    id         = e.Id,
+                    firstName  = e.FirstName,
+                    lastName   = e.LastName,
+                    department = e.Department,
+                    salary     = e.Salary,
+                    isActive   = e.IsActive,
+                })
+                .ToList();
+
+            return Task.FromResult(PggmTableResult<object>.From(items, totalCount));
+        }
+    }
+
+    // ─── State ────────────────────────────────────────────────────────────────
+
+    private readonly IPggmTableDataAdapter<object> _adapter = new InMemoryEmployeeAdapter();
+
+    private const int PageSize = 5;
+    private PggmTableResult<object> _currentPage = PggmTableResult<object>.Empty();
+    private bool _loading = true;
+
+    private int   _currentPageIndex = 0;
+    private string? _sortField       = null;
+    private bool  _sortAscending    = true;
+    private string _nameFilter      = string.Empty;
+
+    private int TotalPages => (int)Math.Ceiling(_currentPage.TotalItemCount / (double)PageSize);
+
+    // ─── Lifecycle ───────────────────────────────────────────────────────────
+
+    protected override async Task OnInitializedAsync() => await RefreshAsync();
+
+    private async Task RefreshAsync()
+    {
+        _loading = true;
+
+        var filters = string.IsNullOrWhiteSpace(_nameFilter)
+            ? null
+            : (IReadOnlyDictionary<string, string>)new Dictionary<string, string> { ["name"] = _nameFilter };
+
+        _currentPage = await _adapter.GetItemsAsync(new PggmTableRequest
+        {
+            StartIndex    = _currentPageIndex * PageSize,
+            Count         = PageSize,
+            SortField     = _sortField,
+            SortAscending = _sortAscending,
+            Filters       = filters,
+        });
+
+        _loading = false;
+    }
+
+    private async Task PreviousPage()
+    {
+        if (_currentPageIndex > 0) { _currentPageIndex--; await RefreshAsync(); }
+    }
+
+    private async Task NextPage()
+    {
+        if (_currentPageIndex < TotalPages - 1) { _currentPageIndex++; await RefreshAsync(); }
+    }
+
+    // Called by PggmTable wrapper after a column-header sort is handled by the adapter.
+    // Keeps the page's sort state and paging display in sync.
+    private async Task OnTableAdapterResult(PggmTableResult<object> result)
+    {
+        _currentPage = result;
+        _currentPageIndex = 0;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private Task OnTableSortChanged((string Field, bool Ascending) sort)
+    {
+        _sortField = sort.Field;
+        _sortAscending = sort.Ascending;
+        return Task.CompletedTask;
+    }
+
+    private async Task OnFilterChanged()
+    {
+        _currentPageIndex = 0;
+        await RefreshAsync();
+    }
+}

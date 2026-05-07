@@ -1,13 +1,15 @@
-using Pggm.Components.Base;
-using Pggm.Components.Builders;
-using Pggm.Components.Utilities;
-using Xunit;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+
+using Pggm.Components.Base;
+using Pggm.Components.Builders;
+using Pggm.Components.Utilities;
+
+using Xunit;
 
 namespace Pggm.Components.Tests
 {
@@ -127,51 +129,7 @@ namespace Pggm.Components.Tests
         }
 
         [Fact]
-        public async Task AttributeHelper_SetAttributeIfNotEmpty_ConcurrentAccess()
-        {
-            // Arrange
-            const int threadCount = 20;
-            const int iterationsPerThread = 100;
-            var tasks = new List<Task>();
-            var allResults = new ConcurrentBag<Dictionary<string, object>>();
-
-            // Act - Concurrent attribute setting
-            for (int t = 0; t < threadCount; t++)
-            {
-                var threadIndex = t;
-                tasks.Add(Task.Run(() =>
-                {
-                    for (int i = 0; i < iterationsPerThread; i++)
-                    {
-                        var attributes = new Dictionary<string, object>();
-                        AttributeHelper.SetAttributeIfNotEmpty(attributes, "test-attr", $"thread-{threadIndex}-value-{i}");
-                        AttributeHelper.SetAttributeIfNotEmpty(attributes, "empty-attr", "");
-                        AttributeHelper.SetAttributeIfNotEmpty(attributes, "null-attr", null);
-                        AttributeHelper.SetAttributeIfNotEmpty(attributes, "whitespace-attr", "   ");
-
-                        allResults.Add(attributes);
-                    }
-                }));
-            }
-
-            await Task.WhenAll(tasks.ToArray());
-
-            // Assert - All operations should complete successfully
-            Assert.Equal(threadCount * iterationsPerThread, allResults.Count);
-
-            // Verify that each result has the expected attributes
-            foreach (var result in allResults)
-            {
-                Assert.Equal(2, result.Count); // "test-attr" and "whitespace-attr" should be present
-                Assert.True(result.ContainsKey("test-attr"));
-                Assert.True(result.ContainsKey("whitespace-attr"));
-                Assert.StartsWith("thread-", result["test-attr"].ToString());
-                Assert.Equal("   ", result["whitespace-attr"]);
-            }
-        }
-
-        [Fact]
-        public void AttributeBuilder_Fluent_API_Performance()
+        public void AttributeBuilder_API_Performance()
         {
             // Arrange
             const int iterations = 5000;
@@ -191,7 +149,7 @@ namespace Pggm.Components.Tests
                     .Build();
 
                 // Ensure result is used
-                var count = result.Count;
+                _ = result.Count;
             }
             stopwatch.Stop();
 
@@ -294,27 +252,6 @@ namespace Pggm.Components.Tests
         }
 
         [Fact]
-        public void AttributeHelper_SetBooleanAttribute_EdgeCases()
-        {
-            // Arrange
-            var attributes = new Dictionary<string, object>();
-
-            // Act & Assert - Various boolean scenarios
-            AttributeHelper.SetBooleanAttribute(attributes, "true-value", true);
-            AttributeHelper.SetBooleanAttribute(attributes, "false-value", false);
-            AttributeHelper.SetBooleanAttribute(attributes, "nullable-true", ((bool?)true).GetValueOrDefault());
-            AttributeHelper.SetBooleanAttribute(attributes, "nullable-false", ((bool?)false).GetValueOrDefault());
-            AttributeHelper.SetBooleanAttribute(attributes, "nullable-null", ((bool?)null).GetValueOrDefault());
-
-            // Verify results
-            Assert.Equal(true, attributes["true-value"]);
-            Assert.False(attributes.ContainsKey("false-value")); // False values should not be added
-            Assert.Equal(true, attributes["nullable-true"]);
-            Assert.False(attributes.ContainsKey("nullable-false"));
-            Assert.False(attributes.ContainsKey("nullable-null"));
-        }
-
-        [Fact]
         public async Task ConcurrentComponent_Creation_And_AttributeGeneration()
         {
             // Arrange
@@ -362,9 +299,6 @@ namespace Pggm.Components.Tests
     public class TestPerformanceComponent : PggmComponentBase
     {
         public override string TagName => "test-performance";
-
-        // Parameterless constructor for Blazor rendering
-        public TestPerformanceComponent() : this(null, null) { }
 
         // Constructor for testing purposes
         public TestPerformanceComponent(string? cssClass = null, Dictionary<string, object>? additionalAttributes = null)

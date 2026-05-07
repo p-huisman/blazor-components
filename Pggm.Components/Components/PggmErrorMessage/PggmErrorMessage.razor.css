@@ -1,0 +1,6 @@
+::deep .pggm-error-message__content > :first-child {
+  margin-top: 0;
+}
+::deep .pggm-error-message__content > :last-child {
+  margin-bottom: 0;
+}

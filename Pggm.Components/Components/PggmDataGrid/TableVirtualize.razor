@@ -1,0 +1,97 @@
+@typeparam TItem
+@using Pggm.Components.Components.PggmDataGrid
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+
+<Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize TItem="TItem" @ref="_virtualizeRef" ItemsProvider="VirtualizeItemsProvider" ItemSize="@ItemSize" OverscanCount="@OverscanCount" Context="item" SpacerElement="tr">
+    @{ var rowContext = CreateRowContext(item); }
+    <tr data-row-index="@rowContext.RowIndex" class="@RowClassProvider?.Invoke(rowContext.Item, rowContext.RowIndex)">
+        @if (ChildContent is not null)
+        {
+            @ChildContent(rowContext)
+        }
+    </tr>
+</Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize>
+
+@code {
+    private Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize<TItem>? _virtualizeRef;
+    private int _batchStartIndex = 0;
+    private int _childCounter = 0;
+
+    [Parameter]
+    public GridItemsProvider<TItem>? ItemsProvider { get; set; }
+
+    [Parameter]
+    public int ItemSize { get; set; } = 40;
+
+    [Parameter]
+    public int OverscanCount { get; set; } = 3;
+
+    [Parameter]
+    public RenderFragment<RowContext>? ChildContent { get; set; }
+
+    public sealed class RowContext
+    {
+        public required TItem Item { get; init; }
+
+        public int RowIndex { get; init; }
+    }
+
+    public async ValueTask RefreshDataAsync()
+    {
+        if (_virtualizeRef is not null)
+        {
+            await _virtualizeRef.RefreshDataAsync();
+        }
+    }
+
+    private async ValueTask<ItemsProviderResult<TItem>> VirtualizeItemsProvider(ItemsProviderRequest request)
+    {
+        if (ItemsProvider is null)
+        {
+            return new ItemsProviderResult<TItem>(Array.Empty<TItem>(), 0);
+        }
+
+        var req = new GridItemsProviderRequest<TItem>
+        {
+            StartIndex = request.StartIndex,
+            Count = request.Count,
+            CancellationToken = request.CancellationToken
+        };
+
+        try
+        {
+            // record the batch start index so rendered rows can annotate logical indices
+            _batchStartIndex = req.StartIndex;
+            // reset child counter for this batch
+            _childCounter = 0;
+
+            var res = await ItemsProvider(req);
+            return new ItemsProviderResult<TItem>(res.Items ?? Array.Empty<TItem>(), res.TotalItemCount);
+        }
+        catch (OperationCanceledException)
+        {
+            return new ItemsProviderResult<TItem>(Array.Empty<TItem>(), 0);
+        }
+        catch (Exception)
+        {
+            return new ItemsProviderResult<TItem>(Array.Empty<TItem>(), 0);
+        }
+    }
+    private int GetNextLogicalIndex()
+    {
+        var localIndex = System.Threading.Interlocked.Increment(ref _childCounter) - 1;
+        return _batchStartIndex + localIndex;
+    }
+
+    private RowContext CreateRowContext(TItem item)
+    {
+        return new RowContext
+        {
+            Item = item,
+            RowIndex = GetNextLogicalIndex()
+        };
+    }
+
+    [Parameter]
+    public Func<TItem, int, string?>? RowClassProvider { get; set; }
+}

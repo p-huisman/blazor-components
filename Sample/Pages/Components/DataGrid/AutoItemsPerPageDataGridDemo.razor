@@ -1,0 +1,225 @@
+@page "/pggm-datagrid-auto-items-per-page"
+@using Pggm.Components.Components.PggmDataGrid
+@using Pggm.Components.Enums
+
+<PageTitle>DataGrid Auto Items Per Page Demo</PageTitle>
+
+<PggmHeading Level="1">PGGM DataGrid - Auto Items Per Page</PggmHeading>
+
+<p>
+    Setting <code>AutoItemsPerPage="true"</code> on <code>PggmDataGrid</code> automatically adjusts
+    the number of rows displayed per page to fill the available vertical space. Resize the browser
+    window vertically to see the page size adapt in real time.
+</p>
+<p>
+    This requires a <code>Pagination</code> state and a container with a CSS-constrained height
+    (e.g. the page's <code>main</code> scroll area). Use <code>AutoItemsPerPageRowHeight</code>
+    (default <code>40</code>) to match your actual row height in pixels.
+</p>
+
+<DemoSection Title="Auto Items Per Page" Code="@_source">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <span>
+            Showing page <strong>@(_pagination.PageIndex + 1)</strong> &nbsp;·&nbsp;
+            <strong>@_pagination.PageSize</strong> rows per page
+            (auto-calculated from available height)
+        </span>
+        <div style="display: flex; gap: 8px;">
+            <button class="pggm-btn" @onclick="PrevPage" disabled="@(_pagination.PageIndex == 0)">← Prev</button>
+            <button class="pggm-btn" @onclick="NextPage" disabled="@(!HasNextPage)">Next →</button>
+        </div>
+    </div>
+
+    <PggmDataGrid @ref="_grid"
+                  TGridItem="Employee"
+                  Items="@_employees.AsQueryable()"
+                  Pagination="_pagination"
+                  AutoItemsPerPage="true"
+                  AutoItemsPerPageRowHeight="41"
+                  OnAutoItemsPerPageChanged="@(_ => StateHasChanged())">
+        <PropertyColumn TGridItem="Employee" TProp="string"  Title="Name"       Value="@(x => x.Name)"       Index="0" SortByExpression="@(x => x.Name)" IsDefaultSortColumn="true" />
+        <PropertyColumn TGridItem="Employee" TProp="string"  Title="Department" Value="@(x => x.Department)"  Index="1" SortByExpression="@(x => x.Department)" />
+        <PropertyColumn TGridItem="Employee" TProp="string"  Title="Location"   Value="@(x => x.Location)"    Index="2" SortByExpression="@(x => x.Location)" />
+        <PropertyColumn TGridItem="Employee" TProp="string"  Title="Role"       Value="@(x => x.Role)"        Index="3" />
+        <PropertyColumn TGridItem="Employee" TProp="decimal" Title="Salary"     Value="@(x => x.Salary)"
+                        Index="4" Width="120px"
+                        Alignment="Pggm.Components.Components.PggmDataGrid.ColumnAlignment.Right" />
+    </PggmDataGrid>
+</DemoSection>
+
+<DemoSection Title="Auto Items Per Page inside a Vertical Splitter" Code="@_splitterSource">
+    <p>
+        The grid sits inside the <strong>bottom panel</strong> of a vertical splitter. Because the
+        panel is wrapped in a <code>div</code> with <code>overflow-y: auto; height: 100%</code>, the
+        JS observer tracks <em>that panel's height</em> instead of the full page scroll area. Drag
+        the splitter divider up or down — the page size adapts automatically.
+    </p>
+    <div style="height: 500px; border: 1px solid var(--color-border, #ccc); border-radius: 4px; overflow: hidden;">
+        <PggmSplitter Orientation="SplitterOrientation.Vertical" @bind-Position="_splitterPos" style="height: 100%;">
+            <StartContent>
+                @* Flex column so the grid fills the remaining height after the toolbar.
+                   min-height:0 prevents the flex child from overflowing its panel. *@
+                <div style="display: flex; flex-direction: column; height: 100%;">
+                    
+                    @* overflow-y:auto + flex:1 + min-height:0 gives this div a finite height
+                       that the ResizeObserver can track as the splitter is dragged. *@
+                    <div style="flex: 1; min-height: 0; overflow-y: auto;">
+                        <PggmDataGrid @ref="_splitterGrid"
+                                      TGridItem="Employee"
+                                      Items="@_employees.AsQueryable()"
+                                      SingleSelect="true"
+                                      Pagination="@_splitterPagination"
+                                      AutoItemsPerPage="true"
+                                      AutoItemsPerPageRowHeight="41"
+                                      OnAutoItemsPerPageChanged="@(_ => StateHasChanged())"
+                                      SelectedItemsChangedCallback="@EventCallback.Factory.Create(this, StateHasChanged)">
+                            <SelectColumn TGridItem="Employee" Index="0" />
+                            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Name"       Value="@(x => x.Name)"       Index="1" SortByExpression="@(x => x.Name)" IsDefaultSortColumn="true" />
+                            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Department" Value="@(x => x.Department)"  Index="2" />
+                            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Location"   Value="@(x => x.Location)"    Index="3" />
+                            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Role"       Value="@(x => x.Role)"        Index="4" />
+                            <PropertyColumn TGridItem="Employee" TProp="decimal" Title="Salary"     Value="@(x => x.Salary)"
+                                            Index="5" Width="120px"
+                                            Alignment="Pggm.Components.Components.PggmDataGrid.ColumnAlignment.Right" />
+                        </PggmDataGrid>
+                    </div>
+                    <PggmPaginator State="@_splitterPagination" NumericNavigation="true" />
+                </div>
+            </StartContent>
+            <EndContent>
+                <div style="padding: 1rem; overflow-y: auto; height: 100%; box-sizing: border-box;">
+                    <PggmHeading Level="3">Top panel</PggmHeading>
+
+                    @if (_splitterGrid?.SelectedItems?.Any() == true)
+                    {
+                        <span>@_splitterGrid.SelectedItems.First().Name</span>
+                    }
+                    else
+                    {
+                        <span>None</span>
+                    }
+                    
+                    <p>This panel can hold any content — a form, a detail view, etc.</p>
+                    <p>Drag the horizontal divider to shrink or grow the bottom panel and watch the row count change.</p>
+                </div>
+                
+            </EndContent>
+        </PggmSplitter>
+    </div>
+</DemoSection>
+
+@code {
+    private sealed record Employee(string Name, string Department, string Location, string Role, decimal Salary);
+
+    private PggmDataGrid<Employee>? _grid;
+    private PaginationState _pagination = new() { PageIndex = 0, PageSize = 10 };
+
+    private bool HasNextPage =>
+        _pagination.PageSize > 0 &&
+        (_pagination.PageIndex + 1) * _pagination.PageSize < _employees.Count;
+
+    private async Task PrevPage()
+    {
+        if (_grid is null || _pagination.PageIndex == 0) return;
+        await _grid.SetPageAsync(_pagination.PageIndex - 1);
+    }
+
+    private async Task NextPage()
+    {
+        if (_grid is null || !HasNextPage) return;
+        await _grid.SetPageAsync(_pagination.PageIndex + 1);
+    }
+
+    private static readonly List<Employee> _employees =
+    [
+        new("Alice Jansen",      "Engineering",  "Amsterdam",    "Senior Engineer",       95_000m),
+        new("Bob de Vries",      "Engineering",  "Rotterdam",    "Engineer",              75_000m),
+        new("Carla Smit",        "Product",      "Amsterdam",    "Product Manager",       90_000m),
+        new("David Bakker",      "Design",       "Utrecht",      "UX Designer",           72_000m),
+        new("Eva Mulder",        "Engineering",  "Den Haag",     "Tech Lead",            110_000m),
+        new("Frank Visser",      "HR",           "Amsterdam",    "HR Business Partner",   68_000m),
+        new("Greta Linden",      "Finance",      "Rotterdam",    "Financial Analyst",     80_000m),
+        new("Hans Peters",       "Engineering",  "Eindhoven",    "Junior Engineer",       58_000m),
+        new("Iris Groot",        "Product",      "Amsterdam",    "Product Owner",         88_000m),
+        new("Jan Willems",       "Design",       "Utrecht",      "Visual Designer",       65_000m),
+        new("Karen van Dam",     "Engineering",  "Amsterdam",    "Staff Engineer",       120_000m),
+        new("Lars Hoekstra",     "Marketing",    "Rotterdam",    "Marketing Manager",     82_000m),
+        new("Miriam Kok",        "Finance",      "Amsterdam",    "Controller",            91_000m),
+        new("Niels van Berg",    "Engineering",  "Utrecht",      "DevOps Engineer",       85_000m),
+        new("Olivia de Boer",    "HR",           "Den Haag",     "HR Manager",            74_000m),
+        new("Pieter Hendriks",   "Product",      "Rotterdam",    "Business Analyst",      78_000m),
+        new("Quinn Janssen",     "Design",       "Amsterdam",    "Lead Designer",         95_000m),
+        new("Rosa Vermeer",      "Engineering",  "Eindhoven",    "QA Engineer",           67_000m),
+        new("Sander Brouwer",    "Marketing",    "Amsterdam",    "Growth Hacker",         70_000m),
+        new("Tessa van Loon",    "Finance",      "Rotterdam",    "Financial Planner",     77_000m),
+        new("Ugo Fontaine",      "Engineering",  "Amsterdam",    "Backend Developer",     83_000m),
+        new("Vera Dijkstra",     "Product",      "Utrecht",      "Product Designer",      86_000m),
+        new("Wouter Maas",       "HR",           "Eindhoven",    "Recruiter",             60_000m),
+        new("Xander Post",       "Engineering",  "Amsterdam",    "Frontend Developer",    79_000m),
+        new("Yvonne Kuijpers",   "Finance",      "Den Haag",     "Accountant",            71_000m),
+        new("Zara el Amrani",    "Marketing",    "Rotterdam",    "Content Strategist",    66_000m),
+        new("Aaron Smeets",      "Engineering",  "Amsterdam",    "Platform Engineer",     97_000m),
+        new("Bianca Rovers",     "Design",       "Utrecht",      "UX Researcher",         73_000m),
+        new("Cas Verhoeven",     "Product",      "Amsterdam",    "Product Lead",          99_000m),
+        new("Diana Koster",      "Engineering",  "Rotterdam",    "Mobile Developer",      81_000m),
+    ];
+
+    private static readonly string _source = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmDataGrid TGridItem=\"Employee\"",
+        "              Items=\"@_employees.AsQueryable()\"",
+        "              Pagination=\"_pagination\"",
+        "              AutoItemsPerPage=\"true\"",
+        "              AutoItemsPerPageRowHeight=\"41\">",
+        "    <PropertyColumn Title=\"Name\"       Value=\"@(x => x.Name)\"       Index=\"0\" />",
+        "    <PropertyColumn Title=\"Department\" Value=\"@(x => x.Department)\"  Index=\"1\" />",
+        "    <PropertyColumn Title=\"Location\"   Value=\"@(x => x.Location)\"    Index=\"2\" />",
+        "    <PropertyColumn Title=\"Role\"       Value=\"@(x => x.Role)\"        Index=\"3\" />",
+        "    <PropertyColumn Title=\"Salary\"     Value=\"@(x => x.Salary)\"      Index=\"4\" />",
+        "</PggmDataGrid>",
+        "",
+        "@code {",
+        "    private PaginationState _pagination = new() { PageIndex = 0, PageSize = 10 };",
+        "}"
+    );
+
+    // ── Splitter demo ──────────────────────────────────────────────────────────
+
+    private PggmDataGrid<Employee>? _splitterGrid;
+    private PaginationState _splitterPagination = new() { PageIndex = 0, PageSize = 5 };
+    private double _splitterPos = 0.4;
+
+    private bool HasNextPageSplitter =>
+        _splitterPagination.PageSize > 0 &&
+        (_splitterPagination.PageIndex + 1) * _splitterPagination.PageSize < _employees.Count;
+
+    private async Task PrevPageSplitter()
+    {
+        if (_splitterGrid is null || _splitterPagination.PageIndex == 0) return;
+        await _splitterGrid.SetPageAsync(_splitterPagination.PageIndex - 1);
+    }
+
+    private async Task NextPageSplitter()
+    {
+        if (_splitterGrid is null || !HasNextPageSplitter) return;
+        await _splitterGrid.SetPageAsync(_splitterPagination.PageIndex + 1);
+    }
+
+    private static readonly string _splitterSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<!-- The bottom panel needs overflow-y: auto so the ResizeObserver",
+        "     tracks the panel height rather than the full page. -->",
+        "<div style=\"height: 500px; overflow: hidden;\">",
+        "  <PggmSplitter Orientation=\"SplitterOrientation.Vertical\" @bind-Position=\"_pos\">",
+        "    <StartContent><!-- top panel content --></StartContent>",
+        "    <EndContent>",
+        "      <div style=\"overflow-y: auto; height: 100%;\">",
+        "        <PggmDataGrid TGridItem=\"Employee\"",
+        "                      Items=\"@_employees.AsQueryable()\"",
+        "                      Pagination=\"_pagination\"",
+        "                      AutoItemsPerPage=\"true\"",
+        "                      AutoItemsPerPageRowHeight=\"41\" />",
+        "      </div>",
+        "    </EndContent>",
+        "  </PggmSplitter>",
+        "</div>"
+    );
+}

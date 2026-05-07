@@ -1,0 +1,21 @@
+@namespace Pggm.Components
+@inherits PggmEventComponentInputBase<string>
+
+<pggm-input-bsn @ref="ElementRef"
+    value="@CurrentValue"
+    name="@Name"
+    placeholder="@Placeholder"
+    form="@Form"
+    autocomplete="@AutoComplete"
+    error-message="@ErrorMessage"
+    id="@(Id ?? DataId)"
+    data-id="@DataId"
+    disabled="@Disabled"
+    readonly="@ReadOnly"
+    auto-format="@AutoFormat"
+    validate-on-input="@ValidateOnInput"
+    required="@(EditContext == null && Required)"
+    show-validation="@(EditContext == null && ShowValidation)"
+    @attributes="GetAttributes()">
+  @ChildContent
+</pggm-input-bsn>

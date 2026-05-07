@@ -1,0 +1,12 @@
+{
+  "name": "pggm-components-ts",
+  "private": true,
+  "scripts": {
+    "build": "tsc --noEmit && esbuild ts/pggm-components.ts --bundle --minify --format=iife --outfile=wwwroot/js/pggm-components.js --target=es2020",
+    "watch": "esbuild ts/pggm-components.ts --bundle --minify --format=iife --outfile=wwwroot/js/pggm-components.js --target=es2020 --watch"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "typescript": "^5.8.0"
+  }
+}

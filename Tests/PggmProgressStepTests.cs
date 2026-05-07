@@ -1,7 +1,9 @@
 // PggmProgressStepTests.cs
-using Xunit;
 using Bunit;
+
 using Microsoft.Extensions.DependencyInjection;
+
+using Xunit;
 
 namespace Tests
 {
@@ -10,6 +12,8 @@ namespace Tests
         public PggmProgressStepTests()
         {
             Services.AddSingleton<Pggm.Components.Services.PggmDesignSystemService>();
+            JSInterop.SetupVoid("PggmComponents.initialize", _ => true);
+            JSInterop.SetupVoid("PggmComponents.loadScript", _ => true);
         }
 
         [Fact]

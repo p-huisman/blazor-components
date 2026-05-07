@@ -1,0 +1,232 @@
+@page "/pggm-validation-message"
+@using System.ComponentModel.DataAnnotations
+@using Pggm.Components.Sample.Components.ApiDocumentation
+
+<PageTitle>PGGM Validation Message</PageTitle>
+
+<PggmHeading Level="1">PGGM Validation Message</PggmHeading>
+
+<p>
+    The <code>PggmValidationMessage</code> component displays field-level validation error messages
+    inside an <code>EditForm</code>. It subscribes to the cascading <code>EditContext</code> and
+    shows the first validation message for the bound field when the form is validated.
+    Use the <code>For</code> parameter to identify the field, and optionally provide
+    <code>ChildContent</code> to replace the default message text with custom markup.
+</p>
+
+<DemoSection Title="Basic Field Validation" Code="@_basicSource" CodeBehind="@_basicBehind">
+    <Content>
+        <EditForm Model="_basicModel" OnValidSubmit="() => { _basicSubmitted = true; _basicModel = new(); }">
+            <DataAnnotationsValidator />
+
+            <PggmFieldset>
+                <PggmLabel slot="label" For="basic-name">Naam</PggmLabel>
+                <PggmValidationMessage slot="error" For="() => _basicModel.Name" />
+                <PggmInput Id="basic-name" @bind-Value="_basicModel.Name" Name="basic-name"
+                           Placeholder="Vul uw naam in" Required="true" />
+            </PggmFieldset>
+
+            <PggmFieldset>
+                <PggmLabel slot="label" For="basic-email">E-mailadres</PggmLabel>
+                <PggmValidationMessage slot="error" For="() => _basicModel.Email" />
+                <PggmInput Id="basic-email" @bind-Value="_basicModel.Email" Name="basic-email"
+                           Type="email" Placeholder="naam@voorbeeld.nl" Required="true" />
+            </PggmFieldset>
+
+            <PggmButton Type="@ButtonType.Submit" Appearance="@ButtonAppearance.Primary">Verzenden</PggmButton>
+        </EditForm>
+
+        @if (_basicSubmitted)
+        {
+            <div class="alert alert-success mt-2">Formulier verzonden!</div>
+        }
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Custom Message Content" Code="@_customSource" CodeBehind="@_customBehind">
+    <Content>
+        <p class="text-muted">
+            When <code>ChildContent</code> is provided it replaces the default message text,
+            allowing rich HTML error markup.
+        </p>
+        <EditForm Model="_customModel" OnValidSubmit="() => { _customSubmitted = true; _customModel = new(); }">
+            <DataAnnotationsValidator />
+
+            <PggmFieldset>
+                <PggmLabel slot="label" For="custom-name">Naam</PggmLabel>
+                <PggmValidationMessage slot="error" For="() => _customModel.Name">
+                    <p>Vul een geldige <strong>naam</strong> in (minimaal 2 tekens).</p>
+                </PggmValidationMessage>
+                <PggmInput Id="custom-name" @bind-Value="_customModel.Name" Name="custom-name"
+                           Placeholder="Vul uw naam in" Required="true" />
+            </PggmFieldset>
+
+            <PggmFieldset>
+                <PggmLabel slot="label" For="custom-age">Leeftijd</PggmLabel>
+                <PggmValidationMessage slot="error" For="() => _customModel.Age">
+                    <p>Leeftijd moet <strong>tussen 18 en 120</strong> zijn.</p>
+                </PggmValidationMessage>
+                <PggmInput Id="custom-age" @bind-Value="_customModel.AgeText" Name="custom-age"
+                           Type="number" Placeholder="18" Required="true" />
+            </PggmFieldset>
+
+            <PggmButton Type="@ButtonType.Submit" Appearance="@ButtonAppearance.Primary">Verzenden</PggmButton>
+        </EditForm>
+
+        @if (_customSubmitted)
+        {
+            <div class="alert alert-success mt-2">Formulier verzonden!</div>
+        }
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Multiple Validators per Field" Code="@_multiSource" CodeBehind="@_multiBehind">
+    <Content>
+        <p class="text-muted">
+            <code>PggmValidationMessage</code> shows the <em>first</em> message produced by the
+            <code>EditContext</code>&rsquo;s validator pipeline. All standard
+            <code>DataAnnotations</code> attributes are supported.
+        </p>
+        <EditForm Model="_multiModel" OnValidSubmit="() => { _multiSubmitted = true; _multiModel = new(); }">
+            <DataAnnotationsValidator />
+            <PggmFieldset>
+                <PggmLabel slot="label" For="multi-username">Gebruikersnaam</PggmLabel>
+                <PggmValidationMessage slot="error" For="() => _multiModel.Username" />
+                <PggmInput Id="multi-username" @bind-Value="_multiModel.Username" Name="multi-username"
+                           Placeholder="6–20 tekens, alleen letters/cijfers" Required="true" />
+                <span slot="description">Mag geen spaties bevatten.</span>
+            </PggmFieldset>
+
+            <PggmFieldset>
+                <PggmLabel slot="label" For="multi-postal">Postcode</PggmLabel>
+                <PggmValidationMessage slot="error" For="() => _multiModel.PostalCode" />
+                <PggmInput Id="multi-postal" @bind-Value="_multiModel.PostalCode" Name="multi-postal"
+                           Placeholder="1234 AB" Required="true" />
+            </PggmFieldset>
+
+            <PggmButton Type="@ButtonType.Submit" Appearance="@ButtonAppearance.Primary">Verzenden</PggmButton>
+        </EditForm>
+
+        @if (_multiSubmitted)
+        {
+            <div class="alert alert-success mt-2">Formulier verzonden!</div>
+        }
+    </Content>
+</DemoSection>
+
+<PggmHeading Level="2">API</PggmHeading>
+<PggmHeading Level="3">PggmValidationMessage&lt;TField&gt;</PggmHeading>
+<ApiDocumentation Properties="_properties" />
+
+@code {
+
+    // ── Basic demo ───────────────────────────────────────────────────────────
+    private BasicModel _basicModel = new();
+    private bool _basicSubmitted;
+
+    public class BasicModel
+    {
+        [Required(ErrorMessage = "Naam is verplicht.")]
+        public string? Name { get; set; }
+
+        [Required(ErrorMessage = "E-mailadres is verplicht.")]
+        [EmailAddress(ErrorMessage = "Vul een geldig e-mailadres in.")]
+        public string? Email { get; set; }
+    }
+
+    // ── Custom content demo ──────────────────────────────────────────────────
+    private CustomModel _customModel = new();
+    private bool _customSubmitted;
+
+    public class CustomModel
+    {
+        [Required(ErrorMessage = "Naam is verplicht.")]
+        [MinLength(2, ErrorMessage = "Naam moet minimaal 2 tekens bevatten.")]
+        public string? Name { get; set; }
+
+        [Range(18, 120, ErrorMessage = "Leeftijd moet tussen 18 en 120 zijn.")]
+        public int Age { get; set; }
+
+        // Proxy property to allow string input binding for the numeric field
+        public string? AgeText
+        {
+            get => Age == 0 ? null : Age.ToString();
+            set => Age = int.TryParse(value, out var v) ? v : 0;
+        }
+    }
+
+    // ── Multiple validators demo ─────────────────────────────────────────────
+    private MultiModel _multiModel = new();
+    private bool _multiSubmitted;
+
+    public class MultiModel
+    {
+        [Required(ErrorMessage = "Gebruikersnaam is verplicht.")]
+        [MinLength(6, ErrorMessage = "Gebruikersnaam moet minimaal 6 tekens bevatten.")]
+        [MaxLength(20, ErrorMessage = "Gebruikersnaam mag maximaal 20 tekens bevatten.")]
+        [RegularExpression(@"^\w+$", ErrorMessage = "Gebruikersnaam mag alleen letters en cijfers bevatten.")]
+        public string? Username { get; set; }
+
+        [Required(ErrorMessage = "Postcode is verplicht.")]
+        [RegularExpression(@"^\d{4}\s?[A-Za-z]{2}$", ErrorMessage = "Postcode moet het formaat 1234 AB hebben.")]
+        public string? PostalCode { get; set; }
+    }
+
+    // ── API table ────────────────────────────────────────────────────────────
+    private IEnumerable<ApiMember> _properties = new[]
+    {
+        new ApiMember { Name = "For",         Type = "Expression<Func<TField>>?", DefaultValue = "null",  Description = "Required. Identifies the model field whose validation messages are displayed." },
+        new ApiMember { Name = "ChildContent", Type = "RenderFragment?",          DefaultValue = "null",  Description = "Optional custom markup rendered instead of the default validation message text." },
+        new ApiMember { Name = "CssClass",    Type = "string?",                  DefaultValue = "null",  Description = "Additional CSS classes applied to the root element." },
+        new ApiMember { Name = "AdditionalAttributes", Type = "Dictionary<string,object>?", DefaultValue = "null", Description = "Splatted onto the underlying pggm-error-message element." },
+    };
+
+    // ── Code snippets ────────────────────────────────────────────────────────
+    private string _basicSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<EditForm Model=\"_model\" OnValidSubmit=\"HandleSubmit\">",
+        "  <DataAnnotationsValidator />",
+        "  <PggmFieldset>",
+        "    <PggmLabel slot=\"label\" For=\"name\">Naam</PggmLabel>",
+        "    <PggmValidationMessage slot=\"error\" For=\"() => _model.Name\" />",
+        "    <PggmInput Id=\"name\" @bind-Value=\"_model.Name\" Name=\"name\" Required=\"true\" />",
+        "  </PggmFieldset>",
+        "  <PggmButton Type=\"@ButtonType.Submit\" Appearance=\"@ButtonAppearance.Primary\">Verzenden</PggmButton>",
+        "</EditForm>");
+
+    private string _basicBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private BasicModel _model = new();",
+        "",
+        "public class BasicModel",
+        "{",
+        "    [Required(ErrorMessage = \"Naam is verplicht.\")]",
+        "    public string? Name { get; set; }",
+        "}");
+
+    private string _customSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmValidationMessage slot=\"error\" For=\"() => _model.Name\">",
+        "    <p>Vul een geldige <strong>naam</strong> in (minimaal 2 tekens).</p>",
+        "</PggmValidationMessage>");
+
+    private string _customBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "public class CustomModel",
+        "{",
+        "    [Required]",
+        "    [MinLength(2)]",
+        "    public string? Name { get; set; }",
+        "}");
+
+    private string _multiSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmValidationMessage slot=\"error\" For=\"() => _model.Username\" />",
+        "",
+        "public class MultiModel",
+        "{",
+        "    [Required(ErrorMessage = \"Gebruikersnaam is verplicht.\")]",
+        "    [MinLength(6)]",
+        "    [MaxLength(20)]",
+        "    [RegularExpression(@\"^\\w+$\", ErrorMessage = \"Alleen letters en cijfers.\")]",
+        "    public string? Username { get; set; }",
+        "}");
+
+    private string _multiBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "// PggmValidationMessage shows the first message produced by the validator.");
+}

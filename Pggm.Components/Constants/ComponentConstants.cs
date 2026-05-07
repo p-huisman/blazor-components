@@ -28,42 +28,22 @@ public static class EventNames
 
     // Button events
     public const string Click = "click";
+
+    // Splitter events
+    public const string SplitterResize = "splitterResize";
 }
 
 /// <summary>
-/// Constants for PGGM component attribute names
+/// Common attribute name constants used across components
 /// </summary>
 public static class AttributeNames
 {
-    // Common attributes
-    public const string Appearance = "appearance";
+    public const string Value = "value";
+    public const string Placeholder = "placeholder";
+    public const string Name = "name";
     public const string Disabled = "disabled";
     public const string Required = "required";
     public const string ReadOnly = "readonly";
-
-    // Form attributes
-    public const string Name = "name";
-    public const string Value = "value";
-    public const string Placeholder = "placeholder";
-
-    // Layout attributes
-    public const string Size = "size";
-    public const string Variant = "variant";
-
-    // Accordion attributes
-    public const string AllowMultiple = "allow-multiple";
-
-    // Dialog attributes
-    public const string Open = "open";
-    public const string Modal = "modal";
-
-    // Slider attributes
-    public const string SnapValues = "snap-values";
-    public const string FractionDigits = "fraction-digits";
-    public const string EnableSnap = "enable-snap";
-    public const string HideTooltip = "hide-tooltip";
-    public const string TooltipEditable = "tooltip-editable";
-    public const string Step = "step";
 }
 
 /// <summary>
@@ -92,17 +72,6 @@ public static class CssClasses
 /// </summary>
 public static class ComponentValues
 {
-    /// <summary>
-    /// Button appearance values
-    /// </summary>
-    public static class ButtonAppearance
-    {
-        public const string Primary = "primary";
-        public const string Secondary = "secondary";
-        public const string Tertiary = "tertiary";
-        public const string Ghost = "ghost";
-        public const string Danger = "danger";
-    }
 
     /// <summary>
     /// Alert severity values
@@ -126,14 +95,27 @@ public static class ComponentValues
     }
 
     /// <summary>
+    /// Button appearance values
+    /// </summary>
+    public static class ButtonAppearance
+    {
+        public const string Primary = "primary";
+        public const string Secondary = "secondary";
+        public const string Tertiary = "tertiary";
+        public const string Ghost = "ghost";
+        public const string Danger = "danger";
+    }
+
+    /// <summary>
     /// Icon size values
     /// </summary>
     public static class IconSize
     {
-        public const string Small = "s";
-        public const string Medium = "m";
-        public const string Large = "l";
-        public const string ExtraLarge = "xl";
+        public const string Small = "small";
+        public const string Medium = "medium";
+        public const string Large = "large";
+        // Keep the ExtraLarge identifier for compatibility, but map to "large"
+        public const string ExtraLarge = "large";
     }
 
     /// <summary>
@@ -159,3 +141,4 @@ public static class ComponentValues
         public const string Users = "users";
     }
 }
+

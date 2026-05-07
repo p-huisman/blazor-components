@@ -1,4 +1,14 @@
 
+/* until fundamentals not provide icon sizes we add theme here  */
+:root {
+    --pggm-responsive-components-icons-large-width: 24px;
+    --pggm-responsive-components-icons-large-height: 24px;
+    --pggm-responsive-components-icons-medium-width: 20px;
+    --pggm-responsive-components-icons-medium-height: 20px;
+    --pggm-responsive-components-icons-small-width: 16px;
+    --pggm-responsive-components-icons-small-height: 16px;
+}
+
 #blazor-error-ui {
   background: lightyellow;
   bottom: 0;
@@ -75,6 +85,51 @@ body {
   overflow: hidden;
 }
 
-pggm-fieldset [slot="description"] > * {
+pggm-fieldset [slot="label"],
+pggm-fieldset [slot="description"] {
   margin: 0;
+  display: inline-block;
+}
+pggm-fieldset [slot="label"] > *:first-child,
+pggm-fieldset [slot="description"] > *:first-child {
+  margin-top: 0;
+}
+pggm-fieldset [slot="label"] > *:last-child,
+pggm-fieldset [slot="description"] > *:last-child {
+  margin-bottom: 0; 
+}
+
+pggm-dialog{
+  z-index: 4000;
+}
+
+/* Virtualized DataGrid row/cell styling (layout-level, demo-specific) */
+.pggm-data-grid-virtual-body {
+  width: 100%;
+}
+.pggm-data-grid-virtual-body .pggm-data-grid-row {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  border-bottom: 1px solid #e6e6e6;
+  padding: 8px 12px;
+  background: white;
+}
+.pggm-data-grid-virtual-body .pggm-data-grid-row:nth-child(even) {
+  background: #fbfbfb;
+}
+.pggm-data-grid-virtual-body .pggm-data-grid-row > div {
+  padding: 0 8px;
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pggm-data-grid-virtual-body .pggm-data-grid-row > div:first-child {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
 }

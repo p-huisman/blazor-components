@@ -1,0 +1,260 @@
+@page "/pggm-validation-summary"
+@using System.ComponentModel.DataAnnotations
+@using Pggm.Components.Sample.Components.ApiDocumentation
+
+<PageTitle>PGGM Validation Summary</PageTitle>
+
+<PggmHeading Level="1">PGGM Validation Summary</PggmHeading>
+
+<p>
+    The <code>PggmValidationSummary</code> component displays a consolidated list of all validation
+    errors for an <code>EditForm</code>, similar to the built-in <code>ValidationSummary</code> but
+    rendered as a PGGM design-system <code>pggm-error-message</code> element.
+    Place it once at the top of a form, add a <code>DataAnnotationsValidator</code>, and the
+    summary will automatically appear after the first failed submit attempt.
+    Use <code>ChildContent</code> to render a custom heading or introduction message above the list.
+</p>
+
+<DemoSection Title="Basic Validation Summary" Code="@_basicSource" CodeBehind="@_basicBehind">
+    <Content>
+        <EditForm Model="_basicModel" OnValidSubmit="() => { _basicSubmitted = true; _basicModel = new(); }">
+            <DataAnnotationsValidator />
+
+            <PggmValidationSummary>
+                <p>Het formulier bevat <strong>fouten</strong>. Controleer onderstaande velden:</p>
+            </PggmValidationSummary>
+
+            <PggmFieldset>
+                <PggmLabel slot="label" For="basic-firstname">Voornaam</PggmLabel>
+                <PggmInput Id="basic-firstname" @bind-Value="_basicModel.FirstName" Name="basic-firstname"
+                           Placeholder="Vul uw voornaam in" Required="true" />
+            </PggmFieldset>
+
+            <PggmFieldset>
+                <PggmLabel slot="label" For="basic-lastname">Achternaam</PggmLabel>
+                <PggmInput Id="basic-lastname" @bind-Value="_basicModel.LastName" Name="basic-lastname"
+                           Placeholder="Vul uw achternaam in" Required="true" />
+            </PggmFieldset>
+
+            <PggmFieldset>
+                <PggmLabel slot="label" For="basic-email">E-mailadres</PggmLabel>
+                <PggmInput Id="basic-email" @bind-Value="_basicModel.Email" Name="basic-email"
+                           Type="email" Placeholder="naam@voorbeeld.nl" Required="true" />
+            </PggmFieldset>
+
+            <PggmButton Type="@ButtonType.Submit" Appearance="@ButtonAppearance.Primary">Verzenden</PggmButton>
+        </EditForm>
+
+        @if (_basicSubmitted)
+        {
+            <div class="alert alert-success mt-2">Formulier verzonden!</div>
+        }
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Summary Combined with Per-Field Messages" Code="@_combinedSource" CodeBehind="@_combinedBehind">
+    <Content>
+        <p class="text-muted">
+            <code>PggmValidationSummary</code> and <code>PggmValidationMessage</code> can be used
+            together: the summary acts as an overview at the top, while per-field messages provide
+            inline context next to each input.
+        </p>
+        <EditForm Model="_combinedModel" OnValidSubmit="() => { _combinedSubmitted = true; _combinedModel = new(); }">
+            <DataAnnotationsValidator />
+
+            <PggmValidationSummary>
+                <p>Corrigeer de volgende <strong>fouten</strong>:</p>
+            </PggmValidationSummary>
+
+            <PggmFieldset>
+                <PggmLabel slot="label" For="combined-username">Gebruikersnaam</PggmLabel>
+                <PggmValidationMessage slot="error" For="() => _combinedModel.Username">
+                    <p>Kies een geldige <strong>gebruikersnaam</strong> (6–20 tekens, geen spaties).</p>
+                </PggmValidationMessage>
+                <PggmInput Id="combined-username" @bind-Value="_combinedModel.Username"
+                           Name="combined-username" Placeholder="6–20 tekens" Required="true" />
+            </PggmFieldset>
+
+            <PggmFieldset>
+                <PggmLabel slot="label" For="combined-password">Wachtwoord</PggmLabel>
+                <PggmValidationMessage slot="error" For="() => _combinedModel.Password">
+                    <p>Wachtwoord moet <strong>minimaal 8 tekens</strong> bevatten.</p>
+                </PggmValidationMessage>
+                <PggmInput Id="combined-password" @bind-Value="_combinedModel.Password"
+                           Name="combined-password" Type="password"
+                           Placeholder="Minimaal 8 tekens" Required="true" />
+            </PggmFieldset>
+
+            <PggmFieldset>
+                <PggmLabel slot="label" For="combined-confirm">Wachtwoord bevestigen</PggmLabel>
+                <PggmValidationMessage slot="error" For="() => _combinedModel.ConfirmPassword" />
+                <PggmInput Id="combined-confirm" @bind-Value="_combinedModel.ConfirmPassword"
+                           Name="combined-confirm" Type="password"
+                           Placeholder="Herhaal wachtwoord" Required="true" />
+            </PggmFieldset>
+
+            <PggmButton Type="@ButtonType.Submit" Appearance="@ButtonAppearance.Primary">Registreren</PggmButton>
+        </EditForm>
+
+        @if (_combinedSubmitted)
+        {
+            <div class="alert alert-success mt-2">Registratie geslaagd!</div>
+        }
+    </Content>
+</DemoSection>
+
+<DemoSection Title="ShowSummary = false (Header Only)" Code="@_noListSource" CodeBehind="@_noListBehind">
+    <Content>
+        <p class="text-muted">
+            When <code>ShowSummary="false"</code> the error list is suppressed and only the
+            <code>ChildContent</code> banner is shown. This is useful when per-field messages
+            alone are enough and you only want a generic alert at the top.
+        </p>
+        <EditForm Model="_noListModel" OnValidSubmit="() => { _noListSubmitted = true; _noListModel = new(); }">
+            <DataAnnotationsValidator />
+
+            <PggmValidationSummary ShowSummary="false">
+                <p>Er zijn fouten gevonden in het formulier.</p>
+            </PggmValidationSummary>
+
+            <PggmFieldset>
+                <PggmLabel slot="label" For="nolist-name">Naam</PggmLabel>
+                <PggmValidationMessage slot="error" For="() => _noListModel.Name" />
+                <PggmInput Id="nolist-name" @bind-Value="_noListModel.Name" Name="nolist-name"
+                           Placeholder="Vul uw naam in" Required="true" />
+            </PggmFieldset>
+
+            <PggmButton Type="@ButtonType.Submit" Appearance="@ButtonAppearance.Primary">Verzenden</PggmButton>
+        </EditForm>
+
+        @if (_noListSubmitted)
+        {
+            <div class="alert alert-success mt-2">Formulier verzonden!</div>
+        }
+    </Content>
+</DemoSection>
+
+<PggmHeading Level="2">API</PggmHeading>
+<PggmHeading Level="3">PggmValidationSummary</PggmHeading>
+<ApiDocumentation Properties="_properties" />
+
+@code {
+
+    // ── Basic demo ───────────────────────────────────────────────────────────
+    private BasicModel _basicModel = new();
+    private bool _basicSubmitted;
+
+    public class BasicModel
+    {
+        [Required(ErrorMessage = "Voornaam is verplicht.")]
+        public string? FirstName { get; set; }
+
+        [Required(ErrorMessage = "Achternaam is verplicht.")]
+        public string? LastName { get; set; }
+
+        [Required(ErrorMessage = "E-mailadres is verplicht.")]
+        [EmailAddress(ErrorMessage = "Vul een geldig e-mailadres in.")]
+        public string? Email { get; set; }
+    }
+
+    // ── Combined demo ────────────────────────────────────────────────────────
+    private CombinedModel _combinedModel = new();
+    private bool _combinedSubmitted;
+
+    public class CombinedModel
+    {
+        [Required(ErrorMessage = "Gebruikersnaam is verplicht.")]
+        [MinLength(6, ErrorMessage = "Gebruikersnaam moet minimaal 6 tekens bevatten.")]
+        [MaxLength(20, ErrorMessage = "Gebruikersnaam mag maximaal 20 tekens bevatten.")]
+        [RegularExpression(@"^\S+$", ErrorMessage = "Gebruikersnaam mag geen spaties bevatten.")]
+        public string? Username { get; set; }
+
+        [Required(ErrorMessage = "Wachtwoord is verplicht.")]
+        [MinLength(8, ErrorMessage = "Wachtwoord moet minimaal 8 tekens bevatten.")]
+        public string? Password { get; set; }
+
+        [Required(ErrorMessage = "Bevestig uw wachtwoord.")]
+        [Compare(nameof(Password), ErrorMessage = "Wachtwoorden komen niet overeen.")]
+        public string? ConfirmPassword { get; set; }
+    }
+
+    // ── ShowSummary=false demo ───────────────────────────────────────────────
+    private NoListModel _noListModel = new();
+    private bool _noListSubmitted;
+
+    public class NoListModel
+    {
+        [Required(ErrorMessage = "Naam is verplicht.")]
+        public string? Name { get; set; }
+    }
+
+    // ── API table ────────────────────────────────────────────────────────────
+    private IEnumerable<ApiMember> _properties = new[]
+    {
+        new ApiMember { Name = "ShowSummary",  Type = "bool",             DefaultValue = "true",  Description = "When true, renders the list of validation messages below the ChildContent." },
+        new ApiMember { Name = "ChildContent", Type = "RenderFragment?",  DefaultValue = "null",  Description = "Optional header markup displayed above the message list (e.g. an introductory sentence)." },
+        new ApiMember { Name = "CssClass",     Type = "string?",          DefaultValue = "null",  Description = "Additional CSS classes applied to the root pggm-error-message element." },
+    };
+
+    // ── Code snippets ────────────────────────────────────────────────────────
+    private string _basicSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<EditForm Model=\"_model\" OnValidSubmit=\"HandleSubmit\">",
+        "  <DataAnnotationsValidator />",
+        "  <PggmValidationSummary>",
+        "    <p>Het formulier bevat <strong>fouten</strong>. Controleer onderstaande velden:</p>",
+        "  </PggmValidationSummary>",
+        "  <!-- form fields -->",
+        "  <PggmButton Type=\"@ButtonType.Submit\" Appearance=\"@ButtonAppearance.Primary\">Verzenden</PggmButton>",
+        "</EditForm>");
+
+    private string _basicBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private BasicModel _model = new();",
+        "",
+        "public class BasicModel",
+        "{",
+        "    [Required(ErrorMessage = \"Voornaam is verplicht.\")]",
+        "    public string? FirstName { get; set; }",
+        "",
+        "    [Required(ErrorMessage = \"E-mailadres is verplicht.\")]",
+        "    [EmailAddress(ErrorMessage = \"Vul een geldig e-mailadres in.\")]",
+        "    public string? Email { get; set; }",
+        "}");
+
+    private string _combinedSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<!-- Summary at the top -->",
+        "<PggmValidationSummary>",
+        "    <p>Corrigeer de volgende <strong>fouten</strong>:</p>",
+        "</PggmValidationSummary>",
+        "",
+        "<!-- Per-field message inline -->",
+        "<PggmFieldset>",
+        "    <PggmLabel slot=\"label\" For=\"username\">Gebruikersnaam</PggmLabel>",
+        "    <PggmValidationMessage slot=\"error\" For=\"() => _model.Username\">",
+        "        <p>Kies een geldige <strong>gebruikersnaam</strong>.</p>",
+        "    </PggmValidationMessage>",
+        "    <PggmInput Id=\"username\" @bind-Value=\"_model.Username\" Name=\"username\" Required=\"true\" />",
+        "</PggmFieldset>");
+
+    private string _combinedBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "public class CombinedModel",
+        "{",
+        "    [Required] [MinLength(6)] [MaxLength(20)]",
+        "    public string? Username { get; set; }",
+        "",
+        "    [Required] [MinLength(8)]",
+        "    public string? Password { get; set; }",
+        "",
+        "    [Required] [Compare(nameof(Password))]",
+        "    public string? ConfirmPassword { get; set; }",
+        "}");
+
+    private string _noListSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<!-- Only shows the banner, not the list -->",
+        "<PggmValidationSummary ShowSummary=\"false\">",
+        "    <p>Er zijn fouten gevonden in het formulier.</p>",
+        "</PggmValidationSummary>");
+
+    private string _noListBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "// ShowSummary=\"false\" suppresses the <ul> list;",
+        "// combine with per-field PggmValidationMessage for inline errors.");
+}

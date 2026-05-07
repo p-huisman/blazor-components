@@ -1,0 +1,388 @@
+@page "/pggm-bank-account-input"
+@using Microsoft.AspNetCore.Components
+@inject NavigationManager NavigationManager
+
+<PageTitle>PGGM Bank Account Input</PageTitle>
+
+<PggmHeading Level="1">PGGM Bank Account Input</PggmHeading>
+
+<p>This page demonstrates the PGGM Bank Account Input component with various configurations for different countries and bank account formats.</p>
+
+<div class="demo-section">
+    <PggmHeading Level="2">Basic Bank Account Examples</PggmHeading>
+
+    <div class="form-group">
+        <PggmLabel For="bankAccount1">Basic Bank Account Input:</PggmLabel>
+        <PggmErrorMessage For="bankAccount1"
+            Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.CustomError}")">
+            Vul een geldig rekeningnummer in
+        </PggmErrorMessage>
+        <PggmBankAccountInput @bind-Value="@bankAccountValue1" Name="bankAccount1" Id="bankAccount1" 
+            LandenEndpoint="@($"{NavigationManager.BaseUri}api/financieel-landen.json")" />
+        <p class="value-display">Current value: @(bankAccountValue1 ?? "null")</p>
+    </div>
+
+    <div class="form-group">
+        <PggmLabel For="bankAccount2">Required Bank Account Input:</PggmLabel>
+        <PggmErrorMessage For="bankAccount2"
+            Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.CustomError}")">
+            Dit veld is verplicht
+        </PggmErrorMessage>
+        <PggmBankAccountInput @bind-Value="@bankAccountValue2" Name="bankAccount2" Id="bankAccount2" Required="true" 
+            LandenEndpoint="@($"{NavigationManager.BaseUri}api/financieel-landen.json")" />
+        <p class="value-display">Current value: @(bankAccountValue2 ?? "null")</p>
+    </div>
+
+    <div class="form-group">
+        <PggmLabel For="bankAccount3">Disabled Bank Account Input:</PggmLabel>
+        <PggmBankAccountInput @bind-Value="@bankAccountValue3" Name="bankAccount3" Id="bankAccount3" Disabled="true" 
+            LandenEndpoint="@($"{NavigationManager.BaseUri}api/financieel-landen.json")" />
+        <p class="value-display">Current value: @bankAccountValue3</p>
+    </div>
+</div>
+
+<div class="demo-section">
+    <PggmHeading Level="2">Country-Specific Examples</PggmHeading>
+
+    <div class="form-group">
+        <PggmLabel For="bankAccountNL">Dutch Bank Account (NL):</PggmLabel>
+        <PggmErrorMessage For="bankAccountNL"
+            Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.CustomError}")">
+            Vul een geldig Nederlands rekeningnummer in
+        </PggmErrorMessage>
+        <PggmBankAccountInput @bind-Value="@bankAccountValueNL" Name="bankAccountNL" Id="bankAccountNL" 
+            Country="NL" Required="true" 
+            LandenEndpoint="@($"{NavigationManager.BaseUri}api/financieel-landen.json")" />
+        <p class="value-display">Current value: @(bankAccountValueNL ?? "null")</p>
+        <p class="info-text">Example: NL91 ABNA 0417 1643 00</p>
+    </div>
+
+    <div class="form-group">
+        <PggmLabel For="bankAccountDE">German Bank Account (DE):</PggmLabel>
+        <PggmErrorMessage For="bankAccountDE"
+            Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.CustomError}")">
+            Please enter a valid German bank account
+        </PggmErrorMessage>
+        <PggmBankAccountInput @bind-Value="@bankAccountValueDE" Name="bankAccountDE" Id="bankAccountDE" 
+            Country="DE" Required="true" 
+            LandenEndpoint="@($"{NavigationManager.BaseUri}api/financieel-landen.json")" />
+        <p class="value-display">Current value: @(bankAccountValueDE ?? "null")</p>
+        <p class="info-text">Example: DE89 3704 0044 0532 0130 00</p>
+    </div>
+
+    <div class="form-group">
+        <PggmLabel For="bankAccountBE">Belgian Bank Account (BE):</PggmLabel>
+        <PggmErrorMessage For="bankAccountBE"
+            Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.CustomError}")">
+            Please enter a valid Belgian bank account
+        </PggmErrorMessage>
+        <PggmBankAccountInput @bind-Value="@bankAccountValueBE" Name="bankAccountBE" Id="bankAccountBE" 
+            Country="BE" Required="true" 
+            LandenEndpoint="@($"{NavigationManager.BaseUri}api/financieel-landen.json")" />
+        <p class="value-display">Current value: @(bankAccountValueBE ?? "null")</p>
+        <p class="info-text">Example: BE68 5390 0754 7034</p>
+    </div>
+</div>
+
+<div class="demo-section">
+    <PggmHeading Level="2">Bank Account with Event Handling</PggmHeading>
+
+    <div class="form-group">
+        <PggmLabel For="bankAccount4">Bank Account with Events:</PggmLabel>
+        <PggmErrorMessage For="bankAccount4"
+            Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.CustomError}")">
+            Vul een geldig rekeningnummer in
+        </PggmErrorMessage>
+        <PggmBankAccountInput @bind-Value="@bankAccountValue4" Name="bankAccount4" Id="bankAccount4"
+            Country="NL"
+            Required="true"
+            LandenEndpoint="@($"{NavigationManager.BaseUri}api/financieel-landen.json")"
+            OnInput="@OnBankAccountInput"
+            OnChange="@OnBankAccountChange"
+            OnFocus="@OnBankAccountFocus"
+            OnBlur="@OnBankAccountBlur"
+            OnValidationChanged="@OnValidationChanged" />
+        <p class="value-display">Current value: @(bankAccountValue4 ?? "null")</p>
+        @if (!string.IsNullOrEmpty(eventMessage))
+        {
+            <p class="event-message">@eventMessage</p>
+        }
+        @if (validationState.HasValue)
+        {
+            <p class="validation-message">
+                Bank account is: <strong>@(validationState.Value ? "VALID" : "INVALID")</strong>
+            </p>
+        }
+    </div>
+</div>
+
+<div class="demo-section">
+    <PggmHeading Level="2">Form Example</PggmHeading>
+
+    <EditForm Model="@formModel" OnValidSubmit="@HandleSubmit">
+        <div class="form-group">
+            <PggmLabel For="primaryAccount">Primary Bank Account:</PggmLabel>
+            <PggmErrorMessage For="primaryAccount"
+                Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.CustomError}")">
+                Primary account is required
+            </PggmErrorMessage>
+            <PggmBankAccountInput @bind-Value="@formModel.PrimaryAccount" 
+                Name="primaryAccount" Id="primaryAccount"
+                Country="NL" Required="true" 
+                LandenEndpoint="@($"{NavigationManager.BaseUri}api/financieel-landen.json")" />
+        </div>
+
+        <div class="form-group">
+            <PggmLabel For="savingsAccount">Savings Account (Optional):</PggmLabel>
+            <PggmErrorMessage For="savingsAccount"
+                Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.CustomError}")">
+                Invalid savings account
+            </PggmErrorMessage>
+            <PggmBankAccountInput @bind-Value="@formModel.SavingsAccount" 
+                Name="savingsAccount" Id="savingsAccount"
+                Country="NL" 
+                LandenEndpoint="@($"{NavigationManager.BaseUri}api/financieel-landen.json")" />
+        </div>
+
+        <div class="form-actions">
+            <PggmButton Type="@ButtonType.Submit">Submit Form</PggmButton>
+            <PggmButton Type="@ButtonType.Button" Appearance="@ButtonAppearance.Secondary" @onclick="ResetForm">Reset</PggmButton>
+        </div>
+    </EditForm>
+
+    @if (formSubmitted)
+    {
+        <div class="success-message">
+            <PggmNotification Type="success" Open="true">
+                <h3 slot="header">Form Submitted Successfully!</h3>
+                <p><strong>Primary Account:</strong> @formModel.PrimaryAccount</p>
+                @if (!string.IsNullOrEmpty(formModel.SavingsAccount))
+                {
+                    <p><strong>Savings Account:</strong> @formModel.SavingsAccount</p>
+                }
+            </PggmNotification>
+        </div>
+    }
+</div>
+
+<div class="demo-section">
+    <PggmHeading Level="2">Parsed Bank Account Data</PggmHeading>
+    
+    <div class="form-group">
+        <PggmLabel For="bankAccount5">Bank Account to Parse:</PggmLabel>
+        <PggmBankAccountInput @bind-Value="@bankAccountValue5" Name="bankAccount5" Id="bankAccount5" 
+            Country="NL" 
+            LandenEndpoint="@($"{NavigationManager.BaseUri}api/financieel-landen.json")"
+            OnChange="@ParseBankAccount" />
+    </div>
+
+    @if (parsedBankAccount != null)
+    {
+        <div class="parsed-data">
+            <h4>Parsed Bank Account Data:</h4>
+            <pre>@parsedBankAccount</pre>
+        </div>
+    }
+</div>
+
+<div class="demo-section">
+    <PggmHeading Level="2">Custom Endpoint Example</PggmHeading>
+    
+    <div class="form-group">
+        <PggmLabel For="customEndpoint">Bank Account with Custom Endpoint:</PggmLabel>
+        <PggmErrorMessage For="customEndpoint"
+            Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.CustomError}")">
+            Invalid bank account
+        </PggmErrorMessage>
+        <PggmBankAccountInput @bind-Value="@customEndpointValue" Name="customEndpoint" Id="customEndpoint"
+            LandenEndpoint="@($"{NavigationManager.BaseUri}api/financieel-landen.json")"
+            Country="NL" />
+        <p class="value-display">Current value: @(customEndpointValue ?? "null")</p>
+        <p class="info-text">Using custom landen endpoint for country data</p>
+    </div>
+</div>
+
+<style>
+    /* demo-section styles are provided globally in wwwroot/css/custom-formatters.css */
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+
+    .value-display {
+        margin-top: 8px;
+        padding: 8px;
+        background-color: #f5f5f5;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 0.9em;
+        word-break: break-all;
+    }
+
+    .event-message {
+        color: #0066cc;
+        font-style: italic;
+        margin-top: 8px;
+        padding: 8px;
+        background-color: #e3f2fd;
+        border-radius: 4px;
+    }
+
+    .validation-message {
+        margin-top: 8px;
+        padding: 8px;
+        background-color: #f0f0f0;
+        border-radius: 4px;
+    }
+
+    .validation-message strong {
+        color: #4caf50;
+    }
+
+    .info-text {
+        font-size: 0.9em;
+        color: #666;
+        margin-top: 5px;
+        font-style: italic;
+    }
+
+    .form-actions {
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .success-message {
+        margin-top: 20px;
+    }
+
+    .parsed-data {
+        margin-top: 15px;
+        padding: 15px;
+        background-color: #f9f9f9;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+    }
+
+    .parsed-data h4 {
+        margin-top: 0;
+        margin-bottom: 10px;
+    }
+
+    .parsed-data pre {
+        background-color: #fff;
+        padding: 10px;
+        border-radius: 4px;
+        border: 1px solid #e0e0e0;
+        overflow-x: auto;
+    }
+</style>
+
+@code {
+    // Basic examples
+    private string? bankAccountValue1;
+    private string? bankAccountValue2;
+    private string? bankAccountValue3 = "{\"accountNumber\":\"NL91ABNA0417164300\",\"country\":\"NL\"}";
+    
+    // Country-specific examples
+    private string? bankAccountValueNL;
+    private string? bankAccountValueDE;
+    private string? bankAccountValueBE;
+    
+    // Event handling example
+    private string? bankAccountValue4;
+    private string eventMessage = "";
+    private bool? validationState;
+
+    // Parse example
+    private string? bankAccountValue5;
+    private string? parsedBankAccount;
+
+    // Custom endpoint example
+    private string? customEndpointValue;
+
+    // Form example
+    private BankAccountFormModel formModel = new();
+    private bool formSubmitted = false;
+
+    private void OnBankAccountInput(ChangeEventArgs args)
+    {
+        eventMessage = $"Input event fired - Value length: {args.Value?.ToString()?.Length ?? 0}";
+        StateHasChanged();
+    }
+
+    private void OnBankAccountChange(ChangeEventArgs args)
+    {
+        eventMessage = $"Change event fired - Value: {(string.IsNullOrEmpty(args.Value?.ToString()) ? "empty" : "has data")}";
+        StateHasChanged();
+    }
+
+    private void OnBankAccountFocus(FocusEventArgs args)
+    {
+        eventMessage = "Bank account input focused";
+        StateHasChanged();
+    }
+
+    private void OnBankAccountBlur(FocusEventArgs args)
+    {
+        eventMessage = "Bank account input blurred";
+        StateHasChanged();
+    }
+
+    private void OnValidationChanged(bool isValid)
+    {
+        validationState = isValid;
+        eventMessage = $"Validation changed: {(isValid ? "Valid" : "Invalid")}";
+        StateHasChanged();
+    }
+
+    private void ParseBankAccount(ChangeEventArgs args)
+    {
+        try
+        {
+            if (!string.IsNullOrEmpty(bankAccountValue5))
+            {
+                // Pretty print the JSON
+                var json = System.Text.Json.JsonDocument.Parse(bankAccountValue5);
+                parsedBankAccount = System.Text.Json.JsonSerializer.Serialize(json, new System.Text.Json.JsonSerializerOptions 
+                { 
+                    WriteIndented = true 
+                });
+            }
+            else
+            {
+                parsedBankAccount = null;
+            }
+        }
+        catch (Exception ex)
+        {
+            parsedBankAccount = $"Error parsing bank account: {ex.Message}";
+        }
+        StateHasChanged();
+    }
+
+    private void HandleSubmit()
+    {
+        formSubmitted = true;
+        StateHasChanged();
+    }
+
+    private void ResetForm()
+    {
+        formModel = new();
+        formSubmitted = false;
+        StateHasChanged();
+    }
+
+    public class BankAccountFormModel
+    {
+        public string? PrimaryAccount { get; set; }
+        public string? SavingsAccount { get; set; }
+    }
+}

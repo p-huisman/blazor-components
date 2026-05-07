@@ -1,0 +1,140 @@
+@page "/pggm-datagrid-remote-data"
+@using Pggm.Components.Components.PggmDataGrid
+@using Pggm.Components.Sample.Components.DemoSection
+@using Pggm.Components.Sample.Services
+@inject OpenFdaService FdaService
+
+<PageTitle>PGGM DataGrid — Remote Data</PageTitle>
+
+<PggmHeading Level="1">PGGM DataGrid - Remote Data</PggmHeading>
+
+<p>
+    This demo connects to the public <a href="https://open.fda.gov/apis/food/enforcement/" target="_blank" rel="noopener noreferrer">OpenFDA Food Enforcement database</a>
+    using an <code>ItemsProvider</code> to load only the visible page of data from the server.
+    Sorting and filtering are applied server-side.
+</p>
+
+<DemoSection Title="Remote data (OpenFDA)" Code="@_source">
+    <div style="margin-bottom: 12px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+        <label for="stateFilter" style="font-weight: 600;">State filter:</label>
+        <input id="stateFilter" type="text" placeholder="e.g. NY" maxlength="2"
+               style="width: 64px; padding: 4px 8px; border: 1px solid #ccc; border-radius: 4px;"
+               @bind="_stateFilter" @bind:event="oninput" @onkeydown="OnFilterKeyDown" />
+        <button class="pggm-btn" @onclick="ApplyFilter">Search</button>
+        <button class="pggm-btn" @onclick="ClearFilter">Clear</button>
+        @if (_totalCount > 0)
+        {
+            <span>Total: <strong>@_totalCount.ToString("N0")</strong> results found</span>
+        }
+        @if (_isLoading)
+        {
+            <span style="font-style: italic; color: #666;">Loading…</span>
+        }
+        @if (!string.IsNullOrEmpty(_error))
+        {
+            <span style="color: #c00;">@_error</span>
+        }
+    </div>
+
+    <PggmDataGrid @ref="_grid" TGridItem="FoodEnforcementItem" ItemsProvider="@LoadItemsAsync" EnableVirtualization="true" Height="500px">
+        <PropertyColumn TGridItem="FoodEnforcementItem" TProp="string" Title="Recall #"
+                        Value="@(x => x.RecallNumber)" Index="0" Width="130px" />
+        <PropertyColumn TGridItem="FoodEnforcementItem" TProp="string" Title="State"
+                        Value="@(x => x.State)" Index="1" Width="70px" />
+        <PropertyColumn TGridItem="FoodEnforcementItem" TProp="string" Title="City"
+                        Value="@(x => x.City)" Index="2" Width="140px" />
+        <PropertyColumn TGridItem="FoodEnforcementItem" TProp="string" Title="Firm"
+                        Value="@(x => x.RecallingFirm)" Index="3" />
+        <PropertyColumn TGridItem="FoodEnforcementItem" TProp="string" Title="Status"
+                        Value="@(x => x.Status)" Index="4" Width="110px" />
+        <PropertyColumn TGridItem="FoodEnforcementItem" TProp="string" Title="Date"
+                        Value="@(x => x.RecallInitiationDate)" SortByExpression="@(x => x.RecallInitiationDate)" Index="5" Width="100px" />
+    </PggmDataGrid>
+</DemoSection>
+
+@code {
+    private PggmDataGrid<FoodEnforcementItem>? _grid;
+    private string _stateFilter = string.Empty;
+    private string _activeFilter = string.Empty;
+    private int _totalCount;
+    private bool _isLoading;
+    private string _error = string.Empty;
+
+    private async ValueTask<GridItemsProviderResult<FoodEnforcementItem>> LoadItemsAsync(GridItemsProviderRequest<FoodEnforcementItem> req)
+    {
+        _isLoading = true;
+        _error = string.Empty;
+
+        // Only recall_initiation_date is a sortable (date) field in OpenFDA; text fields return 400
+        string? sortField = req.SortByColumn?.Title?.ToLowerInvariant() switch
+        {
+            "date" => "recall_initiation_date",
+            _ => null
+        };
+
+        try
+        {
+            var result = await FdaService.GetItemsAsync(
+                req.StartIndex,
+                req.Count ?? 20,
+                sortField,
+                req.SortByAscending,
+                _activeFilter,
+                req.CancellationToken);
+
+            _totalCount = result.TotalItemCount;
+            return result;
+        }
+        catch (OperationCanceledException)
+        {
+            return GridItemsProviderResult.From(new System.Collections.Generic.List<FoodEnforcementItem>(), _totalCount);
+        }
+        catch (Exception ex)
+        {
+            _error = $"Failed to load data: {ex.Message}";
+            return GridItemsProviderResult.From(new System.Collections.Generic.List<FoodEnforcementItem>(), 0);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private async Task ApplyFilter()
+    {
+        _activeFilter = _stateFilter.Trim().ToUpperInvariant();
+        _totalCount = 0;
+        await RefreshGrid();
+    }
+
+    private async Task ClearFilter()
+    {
+        _stateFilter = string.Empty;
+        _activeFilter = string.Empty;
+        _totalCount = 0;
+        await RefreshGrid();
+    }
+
+    private async Task OnFilterKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter") await ApplyFilter();
+    }
+
+    private async Task RefreshGrid()
+    {
+        if (_grid is not null)
+            await _grid.RefreshDataAsync(CancellationToken.None);
+    }
+
+    private readonly string _source = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "@inject OpenFdaService FdaService",
+        "",
+        "<PggmDataGrid TGridItem=\"FoodEnforcementItem\" ItemsProvider=\"@LoadItemsAsync\" EnableVirtualization=\"true\">",
+        "    <PropertyColumn Title=\"Recall #\" Value=\"@(x => x.RecallNumber)\" Index=\"0\" />",
+        "    <PropertyColumn Title=\"State\" Value=\"@(x => x.State)\" Index=\"1\" />",
+        "    <PropertyColumn Title=\"City\" Value=\"@(x => x.City)\" Index=\"2\" />",
+        "    <PropertyColumn Title=\"Firm\" Value=\"@(x => x.RecallingFirm)\" Index=\"3\" />",
+        "    <PropertyColumn Title=\"Status\" Value=\"@(x => x.Status)\" Index=\"4\" />",
+        "    <PropertyColumn Title=\"Date\" Value=\"@(x => x.RecallInitiationDate)\" SortByExpression=\"@(x => x.RecallInitiationDate)\" Index=\"5\" />",
+        "</PggmDataGrid>");
+}

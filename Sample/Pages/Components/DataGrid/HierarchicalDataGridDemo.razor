@@ -1,0 +1,161 @@
+@page "/pggm-datagrid-hierarchical"
+@using Pggm.Components.Components.PggmDataGrid
+
+<PageTitle>PGGM DataGrid - Hierarchical</PageTitle>
+
+<PggmHeading Level="1">PGGM DataGrid — Hierarchical</PggmHeading>
+
+<p>
+    The hierarchical (tree) data grid allows rows to be grouped into a parent–child structure.
+    Rows that implement <code>IHierarchicalGridItem</code> via the
+    <code>HierarchicalGridItem&lt;TItem, TGridItem&gt;</code> base class gain expand/collapse
+    toggles in the column marked with <code>HierarchicalToggle="true"</code>.
+    Use <code>HierarchicalGridUtilities.OrderHierarchically</code> to convert a flat list into
+    the required depth-first display order.
+</p>
+
+<DemoSection Title="Organisational hierarchy" Code="@_razorSource" CodeBehind="@_csSource">
+    <PggmDataGrid TGridItem="OrgGridItem" Items="@_gridItems.AsQueryable()">
+        <PropertyColumn TGridItem="OrgGridItem" TProp="string" Title="Name"
+                        Value="@(x => x.Item.Name)" HierarchicalToggle="true" Index="0" />
+        <PropertyColumn TGridItem="OrgGridItem" TProp="string" Title="Role"
+                        Value="@(x => x.Item.Role)" Index="1" Width="160px" />
+        <PropertyColumn TGridItem="OrgGridItem" TProp="int" Title="Headcount"
+                        Value="@(x => x.Item.Headcount)" Index="2" Width="120px"
+                        Alignment="Pggm.Components.Components.PggmDataGrid.ColumnAlignment.Right" />
+    </PggmDataGrid>
+</DemoSection>
+
+<DemoSection Title="Initially collapsed" Code="@_collapsedRazorSource" CodeBehind="@_collapsedCsSource">
+    <p>
+        By default all rows start expanded. Setting <code>IsCollapsed = true</code> on an item
+        (or passing <code>item =&gt; true</code> as the <em>isCollapsed</em> selector to
+        <code>OrderHierarchically</code>) makes it start collapsed. Children are hidden until
+        the user expands the row.
+    </p>
+    <PggmDataGrid TGridItem="OrgGridItem" Items="@_collapsedGridItems.AsQueryable()">
+        <PropertyColumn TGridItem="OrgGridItem" TProp="string" Title="Name"
+                        Value="@(x => x.Item.Name)" HierarchicalToggle="true" Index="0" />
+        <PropertyColumn TGridItem="OrgGridItem" TProp="string" Title="Role"
+                        Value="@(x => x.Item.Role)" Index="1" Width="160px" />
+        <PropertyColumn TGridItem="OrgGridItem" TProp="int" Title="Headcount"
+                        Value="@(x => x.Item.Headcount)" Index="2" Width="120px"
+                        Alignment="Pggm.Components.Components.PggmDataGrid.ColumnAlignment.Right" />
+    </PggmDataGrid>
+</DemoSection>
+
+@code {
+    // ── Data model ──────────────────────────────────────────────────────────
+
+    private sealed record OrgItem(string Id, string? ParentId, string Name, string Role, int Headcount);
+
+    private sealed class OrgGridItem : HierarchicalGridItem<OrgItem, OrgGridItem>
+    {
+    }
+
+    // ── Grid state ──────────────────────────────────────────────────────────
+
+    private List<OrgGridItem> _gridItems = [];
+    private List<OrgGridItem> _collapsedGridItems = [];
+
+    protected override void OnInitialized()
+    {
+        var flat = new List<OrgGridItem>
+        {
+            // Root: two divisions
+            new() { Item = new("div-eng",  null,      "Engineering",          "Division",    320) },
+            new() { Item = new("div-ops",  null,      "Operations",           "Division",    180) },
+
+            // Engineering → departments
+            new() { Item = new("dep-fe",   "div-eng", "Frontend",             "Department",   80) },
+            new() { Item = new("dep-be",   "div-eng", "Backend",              "Department",  120) },
+            new() { Item = new("dep-qa",   "div-eng", "Quality Assurance",    "Department",   60) },
+            new() { Item = new("dep-sec",  "div-eng", "Security",             "Department",   60) },
+
+            // Operations → departments
+            new() { Item = new("dep-hr",   "div-ops", "Human Resources",      "Department",   40) },
+            new() { Item = new("dep-fin",  "div-ops", "Finance",              "Department",   50) },
+            new() { Item = new("dep-itop", "div-ops", "IT Operations",        "Department",   90) },
+
+            // Frontend → teams
+            new() { Item = new("team-web",    "dep-fe",  "Web Platform",      "Team",         25) },
+            new() { Item = new("team-design", "dep-fe",  "Design System",     "Team",         20) },
+            new() { Item = new("team-mobile", "dep-fe",  "Mobile",            "Team",         35) },
+
+            // Backend → teams
+            new() { Item = new("team-api",    "dep-be",  "API Gateway",       "Team",         30) },
+            new() { Item = new("team-data",   "dep-be",  "Data Platform",     "Team",         45) },
+            new() { Item = new("team-infra",  "dep-be",  "Infrastructure",    "Team",         45) },
+
+            // IT Operations → teams
+            new() { Item = new("team-sre",    "dep-itop","Site Reliability",  "Team",         30) },
+            new() { Item = new("team-netops", "dep-itop","Network Ops",       "Team",         60) },
+        };
+
+        _gridItems = HierarchicalGridUtilities.OrderHierarchically<OrgGridItem, OrgItem>(
+            flat,
+            item => item.Id,
+            item => item.ParentId,
+            item => false);
+
+        // Same data, but all nodes start collapsed — children are hidden until expanded.
+        var flatCollapsed = flat.Select(x => new OrgGridItem { Item = x.Item }).ToList();
+        _collapsedGridItems = HierarchicalGridUtilities.OrderHierarchically<OrgGridItem, OrgItem>(
+            flatCollapsed,
+            item => item.Id,
+            item => item.ParentId,
+            item => true);   // <-- isCollapsed selector returns true for every node
+    }
+
+    // ── Code snippets ────────────────────────────────────────────────────────
+
+    private readonly string _razorSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmDataGrid TGridItem=\"OrgGridItem\" Items=\"@_gridItems.AsQueryable()\">",
+        "    <PropertyColumn TGridItem=\"OrgGridItem\" TProp=\"string\" Title=\"Name\"",
+        "                    Value=\"@(x => x.Item.Name)\" HierarchicalToggle=\"true\" Index=\"0\" />",
+        "    <PropertyColumn TGridItem=\"OrgGridItem\" TProp=\"string\" Title=\"Role\"",
+        "                    Value=\"@(x => x.Item.Role)\" Index=\"1\" Width=\"160px\" />",
+        "    <PropertyColumn TGridItem=\"OrgGridItem\" TProp=\"int\" Title=\"Headcount\"",
+        "                    Value=\"@(x => x.Item.Headcount)\" Index=\"2\" Width=\"120px\" />",
+        "</PggmDataGrid>");
+
+    private readonly string _csSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private sealed record OrgItem(string Id, string? ParentId, string Name, string Role, int Headcount);",
+        "",
+        "private sealed class OrgGridItem : HierarchicalGridItem<OrgItem, OrgGridItem> { }",
+        "",
+        "private List<OrgGridItem> _gridItems = [];",
+        "",
+        "protected override void OnInitialized()",
+        "{",
+        "    var flat = new List<OrgGridItem> { /* ... */ };",
+        "",
+        "    _gridItems = HierarchicalGridUtilities.OrderHierarchically<OrgGridItem, OrgItem>(",
+        "        flat,",
+        "        item => item.Id,",
+        "        item => item.ParentId,",
+        "        item => false);",
+        "}");
+
+    private readonly string _collapsedRazorSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmDataGrid TGridItem=\"OrgGridItem\" Items=\"@_collapsedGridItems.AsQueryable()\">",
+        "    <PropertyColumn TGridItem=\"OrgGridItem\" TProp=\"string\" Title=\"Name\"",
+        "                    Value=\"@(x => x.Item.Name)\" HierarchicalToggle=\"true\" Index=\"0\" />",
+        "    <PropertyColumn TGridItem=\"OrgGridItem\" TProp=\"string\" Title=\"Role\"",
+        "                    Value=\"@(x => x.Item.Role)\" Index=\"1\" Width=\"160px\" />",
+        "    <PropertyColumn TGridItem=\"OrgGridItem\" TProp=\"int\" Title=\"Headcount\"",
+        "                    Value=\"@(x => x.Item.Headcount)\" Index=\"2\" Width=\"120px\" />",
+        "</PggmDataGrid>");
+
+    private readonly string _collapsedCsSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "// Pass `item => true` as the isCollapsed selector — every node starts collapsed.",
+        "_collapsedGridItems = HierarchicalGridUtilities.OrderHierarchically<OrgGridItem, OrgItem>(",
+        "    flat,",
+        "    item => item.Id,",
+        "    item => item.ParentId,",
+        "    item => true);",
+        "",
+        "// Alternatively, set IsCollapsed individually after building the list:",
+        "foreach (var node in items.Where(n => n.Depth == 0))",
+        "    node.IsCollapsed = true;");
+}

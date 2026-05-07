@@ -1,0 +1,16 @@
+@namespace Pggm.Components
+
+<pggm-error-message class="pggm-validation-summary" @attributes="GetAttributes()">
+    <div class="pggm-validation-summary__content">
+        @ChildContent
+        @if (ShowSummary && _submitted && _visibleMessages.Any())
+        {    
+            <ul class="pggm-validation-summary__list">
+                @foreach (var m in _visibleMessages)
+                {
+                    <li class="pggm-validation-summary__list-item">@m.Text</li>
+                }
+            </ul>
+        }
+    </div>
+</pggm-error-message>

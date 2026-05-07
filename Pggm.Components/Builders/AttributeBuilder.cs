@@ -3,7 +3,7 @@ using Pggm.Components.Base;
 namespace Pggm.Components.Builders;
 
 /// <summary>
-/// Fluent builder for component attributes
+/// Builder for component attributes
 /// </summary>
 public class AttributeBuilder
 {
@@ -47,7 +47,10 @@ public class AttributeBuilder
     /// </summary>
     public AttributeBuilder SetBooleanAttribute(string name, bool value)
     {
-        AttributeHelper.SetBooleanAttribute(_attributes, name, value);
+        if (value)
+            _attributes[name] = true;
+        else
+            _attributes.Remove(name);
         return this;
     }
 
@@ -56,16 +59,41 @@ public class AttributeBuilder
     /// </summary>
     public AttributeBuilder SetEnumAttribute<T>(string name, T? value) where T : struct, Enum
     {
-        AttributeHelper.SetEnumAttribute(_attributes, name, value);
+        if (value.HasValue)
+            _attributes[name] = AttributeHelper.ConvertToKebabCase(value.Value.ToString());
         return this;
     }
 
     /// <summary>
-    /// Set multiple attributes from an object
+    /// Set multiple attributes from an object using reflection
     /// </summary>
     public AttributeBuilder FromObject(object source)
     {
-        AttributeHelper.SetAttributesFromObject(_attributes, source);
+        if (source == null) return this;
+        var properties = source.GetType().GetProperties();
+        foreach (var property in properties)
+        {
+            var val = property.GetValue(source);
+            if (val != null)
+            {
+                var attrName = AttributeHelper.ConvertToKebabCase(property.Name);
+                switch (val)
+                {
+                    case bool boolValue:
+                        if (boolValue) _attributes[attrName] = true; else _attributes.Remove(attrName);
+                        break;
+                    case string stringValue when !string.IsNullOrEmpty(stringValue):
+                        _attributes[attrName] = stringValue;
+                        break;
+                    case Enum enumValue:
+                        _attributes[attrName] = AttributeHelper.ConvertToKebabCase(enumValue.ToString());
+                        break;
+                    default:
+                        _attributes[attrName] = val;
+                        break;
+                }
+            }
+        }
         return this;
     }
 

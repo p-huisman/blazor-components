@@ -3,74 +3,66 @@
 
 <PageTitle>PGGM Fieldset</PageTitle>
 
-<PggmHeader Level="1">PGGM Fieldset</PggmHeader>
+<PggmHeading Level="1">PGGM Fieldset</PggmHeading>
 
 <p>This page demonstrates the PGGM Fieldset component with various configurations.</p>
 
-<div class="demo-section">
-    <PggmHeader Level="3">Basic Fieldset with Label, Description and Error Messages</PggmHeader>
-    
+<DemoSection Title="Basic Fieldset with Label, Description and Error Messages" Code="@basicFieldsetSource" CodeBehind="@basicFieldsetBehind">
     <PggmFieldset>
-        <Label>
-            <PggmLabel For="TextInput1">Naam</PggmLabel>
-        </Label>
-        <Description>
+        <PggmFieldsetLabel For="TextInput1">Naam</PggmFieldsetLabel>
+        <PggmFieldsetDescription>
             <p>Vul uw naam in.</p>
-        </Description>
-        <Error>
+        </PggmFieldsetDescription>
+        <PggmFieldsetError>
             <PggmErrorMessage slot="error" For="TextInput1" Validity="valueMissing">
                 Naam is een verplicht veld. Vul uw naam in.
             </PggmErrorMessage>
             <PggmErrorMessage slot="error" For="TextInput1" Validity="tooShort">
                 De naam is te kort. De naam moet tenminste 2 tekens lang zijn. Vul uw naam in.
             </PggmErrorMessage>
-        </Error>
-        <ChildContent>
-            <PggmInput Type="text" id="TextInput1" Required="true" MinLength="2" />
-        </ChildContent>
+        </PggmFieldsetError>
+        <PggmInput Type="text" id="TextInput1" Required="true" MinLength="2" />
     </PggmFieldset>
-</div>
+</DemoSection>
 
-<div class="demo-section">
-    <PggmHeader Level="3">Simple Fieldset with Only Label</PggmHeader>
-    
+<DemoSection Title="Simple Fieldset with Only Label" Code="@simpleFieldsetSource" CodeBehind="@simpleFieldsetBehind">
     <PggmFieldset>
-        <Label>
-            <PggmLabel For="TextInput2">Email</PggmLabel>
-        </Label>
-        <ChildContent>
-            <PggmInput Type="email" id="TextInput2" />
-        </ChildContent>
+        <PggmFieldsetLabel For="TextInput2">Email</PggmFieldsetLabel>
+        <PggmInput Type="email" id="TextInput2" />
     </PggmFieldset>
-</div>
+</DemoSection>
 
-<div class="demo-section">
-    <PggmHeader Level="3">Fieldset with Description Only</PggmHeader>
-    
+<DemoSection Title="Fieldset with Description Only" Code="@descriptionFieldsetSource" CodeBehind="@descriptionFieldsetBehind">
     <PggmFieldset>
-        <Description>
+        <PggmFieldsetDescription>
             <p>Vul een geldig telefoonnummer in (optioneel).</p>
-        </Description>
-        <ChildContent>
-            <PggmInput Type="tel" id="TextInput3" Placeholder="06-12345678" />
-        </ChildContent>
+        </PggmFieldsetDescription>
+        <PggmInput Type="tel" id="TextInput3" Placeholder="06-12345678" />
     </PggmFieldset>
-</div>
+</DemoSection>
 
 @code {
     // You can add interactive demo logic here if needed
 }
 
-<style>
-    .demo-section {
-        margin: 2rem 0;
-        padding: 1rem;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-    }
-    
-    .demo-section h3 {
-        margin-top: 0;
-        color: #333;
-    }
-</style>
+@code {
+    private string basicFieldsetSource =
+        "<PggmFieldset>\n  <PggmFieldsetLabel For='TextInput1'>Naam</PggmFieldsetLabel>\n  <PggmFieldsetDescription>\n    <p>Vul uw naam in.</p>\n  </PggmFieldsetDescription>\n  <PggmFieldsetError>\n    <PggmErrorMessage slot='error' For='TextInput1' Validity='valueMissing'>Naam is een verplicht veld. Vul uw naam in.</PggmErrorMessage>\n    <PggmErrorMessage slot='error' For='TextInput1' Validity='tooShort'>De naam is te kort. De naam moet tenminste 2 tekens lang zijn. Vul uw naam in.</PggmErrorMessage>\n  </PggmFieldsetError>\n  <PggmInput Type='text' id='TextInput1' Required='true' MinLength='2' />\n</PggmFieldset>";
+
+    private string basicFieldsetBehind =
+        "// Fieldset wraps label, description, errors and input elements";
+
+    private string simpleFieldsetSource =
+        "<PggmFieldset>\n  <PggmFieldsetLabel For='TextInput2'>Email</PggmFieldsetLabel>\n  <PggmInput Type='email' id='TextInput2' />\n</PggmFieldset>";
+
+    private string simpleFieldsetBehind =
+        "// Simple fieldset example";
+
+    private string descriptionFieldsetSource =
+        "<PggmFieldset>\n  <PggmFieldsetDescription>\n    <p>Vul een geldig telefoonnummer in (optioneel).</p>\n  </PggmFieldsetDescription>\n  <PggmInput Type='tel' id='TextInput3' Placeholder='06-12345678' />\n</PggmFieldset>";
+
+    private string descriptionFieldsetBehind =
+        "// Description-only fieldset";
+
+    // no LabelItems; use <PggmFieldsetLabel> element directly in markup
+}

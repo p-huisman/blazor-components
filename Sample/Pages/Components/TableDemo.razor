@@ -1,254 +1,365 @@
 @page "/pggm-table"
 @using Pggm.Components
+@using Pggm.Components.Sample.Components.DemoSection
+@using Pggm.Components.Sample.Components.ApiDocumentation
+@using System.Linq
 
 <PageTitle>Advanced Table Example</PageTitle>
 
-<PggmHeader Level="1">Advanced PGGM Table Examples</PggmHeader>
+<PggmHeading Level="1">PGGM Table - Advanced Examples</PggmHeading>
 
-<PggmHeader Level="2">Local Data Table</PggmHeader>
-<p>This table uses local data with sorting, filtering, and single selection.</p>
+<PggmHeading Level="2">Local Data</PggmHeading>
 
-<PggmTable 
-  FilterLabel="Filter instellen" 
-  ClearLabel="Filter wissen" 
-  Lang="nl" 
-  IdField="id" 
-  Selectable="true" 
-  SelectType="single"
-  Data="@employeeData">
-  
-  <PggmTh 
-    Sortable="true" 
-    Filterable="true" 
-    Field="firstName" 
-    Width="150" 
-    Type="string" 
-    Format="string">
-    First Name
-  </PggmTh>
-  
-  <PggmTh 
-    Sortable="true" 
-    Filterable="true" 
-    Field="lastName" 
-    Width="150" 
-    Type="string" 
-    Format="string">
-    Last Name
-  </PggmTh>
-  
-  <PggmTh 
-    Filterable="true" 
-    Field="department" 
-    Width="200" 
-    Type="string" 
-    Format="string">
-    Department
-  </PggmTh>
-  
-  <PggmTh 
-    Sortable="true" 
-    Format="date" 
-    TextAlign="center" 
-    Type="date" 
-    Field="hireDate" 
-    Width="auto">
-    Hire Date
-  </PggmTh>
-  
-  <PggmTh 
-    TextAlign="right" 
-    Sortable="true" 
-    Format="currency" 
-    Type="number" 
-    Field="salary" 
-    Width="auto">
-    Annual Salary
-  </PggmTh>
-  
-  <PggmTh 
-    TextAlign="center" 
-    Sortable="true" 
-    Field="isActive" 
-    Width="100" 
-    Type="boolean" 
-    Format="boolean">
-    Active
-  </PggmTh>
-  
-</PggmTable>
+<DemoSection Title="Single-Select Table" Code="@_singleSelectCode">
+    <Description>
+        <p>Local data with sorting, filtering, and single row selection. The selected employee ID is shown below the table.</p>
+    </Description>
+    <Content>
+        <PggmTable
+            FilterLabel="Filter instellen"
+            ClearLabel="Filter wissen"
+            Lang="nl"
+            IdField="id"
+            Selectable="true"
+            SelectType="single"
+            OnSelectionChanged="ids => { _selectedEmployeeId = ids.FirstOrDefault(); }"
+            Data="@employeeData">
 
-<hr />
+            <PggmTh Sortable="true" Filterable="true" Field="firstName" Width="150" Type="string" Format="string">First Name</PggmTh>
+            <PggmTh Sortable="true" Filterable="true" Field="lastName"  Width="150" Type="string" Format="string">Last Name</PggmTh>
+            <PggmTh Filterable="true"                 Field="department" Width="200" Type="string" Format="string">Department</PggmTh>
+            <PggmTh Sortable="true" Format="date"     Field="hireDate"  Width="auto" Type="date"   TextAlign="center">Hire Date</PggmTh>
+            <PggmTh Sortable="true" Format="currency" Field="salary"    Width="auto" Type="number" TextAlign="right">Annual Salary</PggmTh>
+            <PggmTh Sortable="true" Format="boolean"  Field="isActive"  Width="100"  Type="boolean" TextAlign="center">Active</PggmTh>
+        </PggmTable>
 
-<PggmHeader Level="2">Remote Data Table simple</PggmHeader>
-<p>This table would fetch data from a remote endpoint.</p>
+        @if (!string.IsNullOrEmpty(_selectedEmployeeId))
+        {
+            <p style="margin-top:.5rem;">Selected employee ID: <strong>@_selectedEmployeeId</strong></p>
+        }
+    </Content>
+</DemoSection>
 
- 
-<!-- Simple remote mode example -->
-<PggmHeader Level="3">Simple Remote Mode</PggmHeader>
-<PggmTable 
-  RemoteUrl="https://jsonplaceholder.typicode.com/users" 
-  Remote="simple"
-  FilterLabel="Filter users" 
-  ClearLabel="Clear filters" 
-  Lang="en" 
-  IdField="id" 
-  Selectable="true" 
-  SelectType="multiple">
-  
-  <PggmTh Field="name" Type="string" Sortable="true" Filterable="true" Width="200">
-    Name
-  </PggmTh>
-  
-  <PggmTh Field="email" Type="string" Filterable="true" Width="250">
-    Email
-  </PggmTh>
-  
-  <PggmTh Field="address.city" Type="string" Filterable="true" Width="150">
-    City
-  </PggmTh>
-  
-  <PggmTh Field="company.name" Type="string" Filterable="true" Width="200">
-    Company
-  </PggmTh>
-  
-</PggmTable>
+<DemoSection Title="Multi-Select Table" Code="@_multiSelectCode">
+    <Description>
+        <p>Local data with multiple row selection using checkboxes. Selected project IDs are shown below.</p>
+    </Description>
+    <Content>
+        <PggmTable
+            FilterLabel="Filter projects"
+            ClearLabel="Clear filters"
+            Lang="nl"
+            IdField="projectId"
+            Selectable="true"
+            SelectType="multiple"
+            Data="@projectData"
+            OnSelectionChanged="ids => { _selectedProjectIds = ids; }">
 
+            <PggmTh Sortable="true" Filterable="true" Field="projectName" Width="200" Type="string"  Format="string">Project Name</PggmTh>
+            <PggmTh Filterable="true"                 Field="client"      Width="150" Type="string"  Format="string">Client</PggmTh>
+            <PggmTh Sortable="true" Format="date"     Field="startDate"   Width="120" Type="date"    TextAlign="center">Start Date</PggmTh>
+            <PggmTh Sortable="true" Format="date"     Field="endDate"     Width="120" Type="date"    TextAlign="center">End Date</PggmTh>
+            <PggmTh Sortable="true" Format="currency" Field="budget"      Width="auto" Type="number" TextAlign="right">Budget</PggmTh>
+            <PggmTh Filterable="true"                 Field="status"      Width="100" Type="string"  Format="string">Status</PggmTh>
+        </PggmTable>
 
+        @if (_selectedProjectIds.Length > 0)
+        {
+            <p style="margin-top:.5rem;">Selected project IDs: <strong>@string.Join(", ", _selectedProjectIds)</strong></p>
+        }
+    </Content>
+</DemoSection>
 
-<!-- Cursor-based pagination example -->
-<PggmHeader Level="3">Cursor Remote Mode</PggmHeader>
-<p>Currently commented out</p>
-@*
-<PggmTable 
-  RemoteUrl="https://api.example.com/employees" 
-  Remote="cursor"
-  FilterLabel="Filter employees" 
-  ClearLabel="Clear filters" 
-  Lang="nl" 
-  IdField="employeeId" 
-  Selectable="true" 
-  SelectType="single">
-  
-  <PggmTh Field="firstName" Type="string" Sortable="true" Filterable="true">
-    First Name
-  </PggmTh>
-  
-  <PggmTh Field="lastName" Type="string" Sortable="true" Filterable="true">
-    Last Name
-  </PggmTh>
-  
-  <PggmTh Field="department" Type="string" Filterable="true">
-    Department
-  </PggmTh>
-  
-</PggmTable>
-*@
+<DemoSection Title="Two-Way Selection Binding" Code="@_twoWayCode">
+    <Description>
+        <p>Demonstrating two-way binding with the <code>Selected</code> parameter. Click the buttons to programmatically update the selection from the parent.</p>
+    </Description>
+    <Content>
+        <div style="display:flex; gap:0.5rem; margin-bottom:1rem;">
+            <button @onclick="() => _twoWaySelected = Enumerable.Range(1, 6).Select(i => i.ToString()).ToArray()">Select All Employees</button>
+            <button @onclick="() => _twoWaySelected = []">Clear Selection</button>
+        </div>
 
-<!-- Offset-based pagination example -->
-<PggmHeader Level="3">Offset Remote Mode</PggmHeader>
-<p>Currently commented out</p>
-@*
-<PggmTable 
-  RemoteUrl="https://api.example.com/products" 
-  Remote="offset"
-  FilterLabel="Filter products" 
-  ClearLabel="Clear filters" 
-  Lang="en" 
-  IdField="productId" 
-  Selectable="true" 
-  SelectType="multiple">
-  
-  <PggmTh Field="name" Type="string" Sortable="true" Filterable="true">
-    Product Name
-  </PggmTh>
-  
-  <PggmTh Field="price" Type="number" Format="currency" Sortable="true" TextAlign="right">
-    Price
-  </PggmTh>
-  
-  <PggmTh Field="category" Type="string" Filterable="true">
-    Category
-  </PggmTh>
-  
-</PggmTable>
-*@
+        <PggmTable
+            FilterLabel="Filter employees"
+            ClearLabel="Clear filters"
+            Lang="nl"
+            IdField="id"
+            Selectable="true"
+            SelectType="multiple"
+            Data="@employeeData"
+            @bind-Selected="_twoWaySelected">
 
-<hr />
+            <PggmTh Sortable="true" Filterable="true" Field="firstName" Width="150" Type="string" Format="string">First Name</PggmTh>
+            <PggmTh Sortable="true" Filterable="true" Field="lastName"  Width="150" Type="string" Format="string">Last Name</PggmTh>
+            <PggmTh Filterable="true"                 Field="department" Width="200" Type="string" Format="string">Department</PggmTh>
+            <PggmTh Sortable="true" Format="currency" Field="salary"    Width="auto" Type="number" TextAlign="right">Annual Salary</PggmTh>
+        </PggmTable>
 
-<PggmHeader Level="2">Multi-Select Table</PggmHeader>
-<p>This table allows multiple row selection.</p>
+        @if (_twoWaySelected.Length > 0)
+        {
+            <p style="margin-top:.5rem;">Selected employee IDs: <strong>@string.Join(", ", _twoWaySelected)</strong></p>
+            <p style="font-size:0.9rem; color:#666;">Selection can be updated by clicking checkboxes in the table or using the buttons above.</p>
+        }
+    </Content>
+</DemoSection>
 
-<PggmTable 
-  FilterLabel="Filter projects" 
-  ClearLabel="Clear filters" 
-  Lang="nl" 
-  IdField="projectId" 
-  Selectable="true" 
-  SelectType="multiple"
-  Data="@projectData">
-  
-  <PggmTh 
-    Sortable="true" 
-    Filterable="true" 
-    Field="projectName" 
-    Width="200" 
-    Type="string" 
-    Format="string">
-    Project Name
-  </PggmTh>
-  
-  <PggmTh 
-    Filterable="true" 
-    Field="client" 
-    Width="150" 
-    Type="string" 
-    Format="string">
-    Client
-  </PggmTh>
-  
-  <PggmTh 
-    Sortable="true" 
-    Format="date" 
-    TextAlign="center" 
-    Type="date" 
-    Field="startDate" 
-    Width="120">
-    Start Date
-  </PggmTh>
-  
-  <PggmTh 
-    Sortable="true" 
-    Format="date" 
-    TextAlign="center" 
-    Type="date" 
-    Field="endDate" 
-    Width="120">
-    End Date
-  </PggmTh>
-  
-  <PggmTh 
-    TextAlign="right" 
-    Sortable="true" 
-    Format="currency" 
-    Type="number" 
-    Field="budget" 
-    Width="auto">
-    Budget
-  </PggmTh>
-  
-  <PggmTh 
-    Filterable="true" 
-    Field="status" 
-    Width="100" 
-    Type="string" 
-    Format="string">
-    Status
-  </PggmTh>
-  
-</PggmTable>
+<DemoSection Title="Two-Way Selection Binding (Single Select)" Code="@_twoWaySingleCode">
+    <Description>
+        <p>Single-select two-way binding with the <code>Selected</code> parameter. Only one row can be selected at a time. Use the buttons to programmatically change the selection.</p>
+    </Description>
+    <Content>
+        <div style="display:flex; gap:0.5rem; margin-bottom:1rem;">
+            <button @onclick="() => _twoWaySingleSelected = SelectEmployee(1)">Select John Doe</button>
+            <button @onclick="() => _twoWaySingleSelected = SelectEmployee(4)">Select Alice Brown</button>
+            <button @onclick="() => _twoWaySingleSelected = new string[] { }">Clear Selection</button>
+        </div>
+
+        <PggmTable
+            FilterLabel="Filter employees"
+            ClearLabel="Clear filters"
+            Lang="nl"
+            IdField="id"
+            Selectable="true"
+            SelectType="single"
+            Data="@employeeData"
+            @bind-Selected="_twoWaySingleSelected">
+
+            <PggmTh Sortable="true" Filterable="true" Field="firstName" Width="150" Type="string" Format="string">First Name</PggmTh>
+            <PggmTh Sortable="true" Filterable="true" Field="lastName"  Width="150" Type="string" Format="string">Last Name</PggmTh>
+            <PggmTh Filterable="true"                 Field="department" Width="200" Type="string" Format="string">Department</PggmTh>
+            <PggmTh Sortable="true" Format="currency" Field="salary"    Width="auto" Type="number" TextAlign="right">Annual Salary</PggmTh>
+        </PggmTable>
+
+        @if (_twoWaySingleSelected.Length > 0)
+        {
+            <p style="margin-top:.5rem;">Selected employee ID: <strong>@_twoWaySingleSelected[0]</strong></p>
+            <p style="font-size:0.9rem; color:#666;">Selection can be updated by clicking a row in the table or using the buttons above.</p>
+        }
+    </Content>
+</DemoSection>
+
+<PggmHeading Level="2">Remote Data</PggmHeading>
+
+<DemoSection Title="Simple Remote Mode" Code="@_remoteSimpleCode">
+    <Description>
+        <p>Data fetched automatically from a remote endpoint using <code>Remote="simple"</code>. The response must be a plain JSON array.</p>
+    </Description>
+    <Content>
+        <PggmTable
+            RemoteUrl="https://jsonplaceholder.typicode.com/users"
+            Remote="simple"
+            FilterLabel="Filter users"
+            ClearLabel="Clear filters"
+            Lang="en"
+            IdField="id"
+            Selectable="true"
+            SelectType="multiple">
+
+            <PggmTh Field="name"         Type="string" Sortable="true"  Filterable="true" Width="200">Name</PggmTh>
+            <PggmTh Field="email"        Type="string"                  Filterable="true" Width="250">Email</PggmTh>
+            <PggmTh Field="address.city" Type="string"                  Filterable="true" Width="150">City</PggmTh>
+            <PggmTh Field="company.name" Type="string"                  Filterable="true" Width="200">Company</PggmTh>
+        </PggmTable>
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Cursor Remote Mode">
+    <Description>
+        <p>Cursor-based pagination — not yet wired to a live endpoint. Uncomment the table markup to use it.</p>
+    </Description>
+    <Content>
+        <p><em>Currently commented out — replace the URL with a real cursor-based API.</em></p>
+        @*
+        <PggmTable
+            RemoteUrl="https://api.example.com/employees"
+            Remote="cursor"
+            FilterLabel="Filter employees"
+            ClearLabel="Clear filters"
+            Lang="nl"
+            IdField="employeeId"
+            Selectable="true"
+            SelectType="single">
+            <PggmTh Field="firstName"  Type="string" Sortable="true" Filterable="true">First Name</PggmTh>
+            <PggmTh Field="lastName"   Type="string" Sortable="true" Filterable="true">Last Name</PggmTh>
+            <PggmTh Field="department" Type="string"                 Filterable="true">Department</PggmTh>
+        </PggmTable>
+        *@
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Offset Remote Mode">
+    <Description>
+        <p>Offset-based pagination — not yet wired to a live endpoint. Uncomment the table markup to use it.</p>
+    </Description>
+    <Content>
+        <p><em>Currently commented out — replace the URL with a real offset-based API.</em></p>
+        @*
+        <PggmTable
+            RemoteUrl="https://api.example.com/products"
+            Remote="offset"
+            FilterLabel="Filter products"
+            ClearLabel="Clear filters"
+            Lang="en"
+            IdField="productId"
+            Selectable="true"
+            SelectType="multiple">
+            <PggmTh Field="name"     Type="string" Sortable="true" Filterable="true">Product Name</PggmTh>
+            <PggmTh Field="price"    Type="number" Format="currency" Sortable="true" TextAlign="right">Price</PggmTh>
+            <PggmTh Field="category" Type="string"                  Filterable="true">Category</PggmTh>
+        </PggmTable>
+        *@
+    </Content>
+</DemoSection>
+
+<PggmHeading Level="2">API</PggmHeading>
+
+<PggmHeading Level="3">PggmTable</PggmHeading>
+<ApiDocumentation Properties="tableProperties" Events="tableEvents" />
 
 @code {
+        // Code snippets shown in demo sections (use SnippetBuilder for safe escaping)
+        private string _singleSelectCode = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmTable",
+        "  FilterLabel=\"Filter instellen\"",
+        "  ClearLabel=\"Filter wissen\"",
+        "  Lang=\"nl\"",
+        "  IdField=\"id\"",
+        "  Selectable=\"true\"",
+        "  SelectType=\"single\"",
+        "  OnSelectionChanged=\"ids => { _selectedEmployeeId = ids.FirstOrDefault(); }\"",
+        "  Data=\"@employeeData\">",
+        "  <PggmTh Sortable=\"true\" Filterable=\"true\" Field=\"firstName\" Width=\"150\" Type=\"string\" Format=\"string\">First Name</PggmTh>",
+        "  <PggmTh Sortable=\"true\" Filterable=\"true\" Field=\"lastName\"  Width=\"150\" Type=\"string\" Format=\"string\">Last Name</PggmTh>",
+        "  <PggmTh Filterable=\"true\" Field=\"department\" Width=\"200\" Type=\"string\" Format=\"string\">Department</PggmTh>",
+        "  <PggmTh Sortable=\"true\" Format=\"date\" Field=\"hireDate\" Width=\"auto\" Type=\"date\" TextAlign=\"center\">Hire Date</PggmTh>",
+        "  <PggmTh Sortable=\"true\" Format=\"currency\" Field=\"salary\" Width=\"auto\" Type=\"number\" TextAlign=\"right\">Annual Salary</PggmTh>",
+        "  <PggmTh Sortable=\"true\" Format=\"boolean\" Field=\"isActive\" Width=\"100\" Type=\"boolean\" TextAlign=\"center\">Active</PggmTh>",
+        "</PggmTable>",
+        "@if (!string.IsNullOrEmpty(_selectedEmployeeId))",
+        "{",
+        "  <p style=\"margin-top:.5rem;\">Selected employee ID: <strong>@_selectedEmployeeId</strong></p>",
+        "}");
+
+        private string _multiSelectCode = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmTable",
+        "  FilterLabel=\"Filter projects\"",
+        "  ClearLabel=\"Clear filters\"",
+        "  Lang=\"nl\"",
+        "  IdField=\"projectId\"",
+        "  Selectable=\"true\"",
+        "  SelectType=\"multiple\"",
+        "  Data=\"@projectData\"",
+        "  OnSelectionChanged=\"ids => { _selectedProjectIds = ids; }\">",
+        "  <PggmTh Sortable=\"true\" Filterable=\"true\" Field=\"projectName\" Width=\"200\" Type=\"string\"  Format=\"string\">Project Name</PggmTh>",
+        "  <PggmTh Filterable=\"true\" Field=\"client\" Width=\"150\" Type=\"string\"  Format=\"string\">Client</PggmTh>",
+        "  <PggmTh Sortable=\"true\" Format=\"date\" Field=\"startDate\" Width=\"120\" Type=\"date\" TextAlign=\"center\">Start Date</PggmTh>",
+        "  <PggmTh Sortable=\"true\" Format=\"date\" Field=\"endDate\" Width=\"120\" Type=\"date\" TextAlign=\"center\">End Date</PggmTh>",
+        "  <PggmTh Sortable=\"true\" Format=\"currency\" Field=\"budget\" Width=\"auto\" Type=\"number\" TextAlign=\"right\">Budget</PggmTh>",
+        "  <PggmTh Filterable=\"true\" Field=\"status\" Width=\"100\" Type=\"string\"  Format=\"string\">Status</PggmTh>",
+        "</PggmTable>",
+        "@if (_selectedProjectIds.Length > 0)",
+        "{",
+        "  <p style=\"margin-top:.5rem;\">Selected project IDs: <strong>@string.Join(\", \", _selectedProjectIds)</strong></p>",
+        "}");
+
+        private string _twoWayCode = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<div style=\"display:flex; gap:0.5rem; margin-bottom:1rem;\">",
+        "  <button @onclick=\"() => _twoWaySelected = Enumerable.Range(1, 6).Select(i => i.ToString()).ToArray()\">Select All Employees</button>",
+        "  <button @onclick=\"() => _twoWaySelected = []\">Clear Selection</button>",
+        "</div>",
+        "",
+        "<PggmTable",
+        "  FilterLabel=\"Filter employees\"",
+        "  ClearLabel=\"Clear filters\"",
+        "  Lang=\"nl\"",
+        "  IdField=\"id\"",
+        "  Selectable=\"true\"",
+        "  SelectType=\"multiple\"",
+        "  Data=\"@employeeData\"",
+        "  @bind-Selected=\"_twoWaySelected\">",
+        "  <PggmTh Sortable=\"true\" Filterable=\"true\" Field=\"firstName\" Width=\"150\" Type=\"string\" Format=\"string\">First Name</PggmTh>",
+        "  <PggmTh Sortable=\"true\" Filterable=\"true\" Field=\"lastName\"  Width=\"150\" Type=\"string\" Format=\"string\">Last Name</PggmTh>",
+        "  <PggmTh Filterable=\"true\" Field=\"department\" Width=\"200\" Type=\"string\" Format=\"string\">Department</PggmTh>",
+        "  <PggmTh Sortable=\"true\" Format=\"currency\" Field=\"salary\" Width=\"auto\" Type=\"number\" TextAlign=\"right\">Annual Salary</PggmTh>",
+        "</PggmTable>",
+        "@if (_twoWaySelected.Length > 0)",
+        "{",
+        "  <p style=\"margin-top:.5rem;\">Selected employee IDs: <strong>@string.Join(\", \", _twoWaySelected)</strong></p>",
+        "  <p style=\"font-size:0.9rem; color:#666;\">Selection can be updated by clicking checkboxes in the table or using the buttons above.</p>",
+        "}");
+
+        private string _twoWaySingleCode = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<div style=\"display:flex; gap:0.5rem; margin-bottom:1rem;\">",
+        "  <button @onclick=\"() => _twoWaySingleSelected = SelectEmployee(1)\">Select John Doe</button>",
+        "  <button @onclick=\"() => _twoWaySingleSelected = SelectEmployee(4)\">Select Alice Brown</button>",
+        "  <button @onclick=\"() => _twoWaySingleSelected = new string[] { }\">Clear Selection</button>",
+        "</div>",
+        "",
+        "<PggmTable",
+        "  FilterLabel=\"Filter employees\"",
+        "  ClearLabel=\"Clear filters\"",
+        "  Lang=\"nl\"",
+        "  IdField=\"id\"",
+        "  Selectable=\"true\"",
+        "  SelectType=\"single\"",
+        "  Data=\"@employeeData\"",
+        "  @bind-Selected=\"_twoWaySingleSelected\">",
+        "  <PggmTh Sortable=\"true\" Filterable=\"true\" Field=\"firstName\" Width=\"150\" Type=\"string\" Format=\"string\">First Name</PggmTh>",
+        "  <PggmTh Sortable=\"true\" Filterable=\"true\" Field=\"lastName\"  Width=\"150\" Type=\"string\" Format=\"string\">Last Name</PggmTh>",
+        "  <PggmTh Filterable=\"true\" Field=\"department\" Width=\"200\" Type=\"string\" Format=\"string\">Department</PggmTh>",
+        "  <PggmTh Sortable=\"true\" Format=\"currency\" Field=\"salary\" Width=\"auto\" Type=\"number\" TextAlign=\"right\">Annual Salary</PggmTh>",
+        "</PggmTable>",
+        "@if (_twoWaySingleSelected.Length > 0)",
+        "{",
+        "  <p style=\"margin-top:.5rem;\">Selected employee ID: <strong>@_twoWaySingleSelected[0]</strong></p>",
+        "  <p style=\"font-size:0.9rem; color:#666;\">Selection can be updated by clicking a row in the table or using the buttons above.</p>",
+        "}");
+
+        private string _remoteSimpleCode = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmTable",
+        "  RemoteUrl=\"https://jsonplaceholder.typicode.com/users\"",
+        "  Remote=\"simple\"",
+        "  FilterLabel=\"Filter users\"",
+        "  ClearLabel=\"Clear filters\"",
+        "  Lang=\"en\"",
+        "  IdField=\"id\"",
+        "  Selectable=\"true\"",
+        "  SelectType=\"multiple\">",
+        "  <PggmTh Field=\"name\" Type=\"string\" Sortable=\"true\" Filterable=\"true\" Width=\"200\">Name</PggmTh>",
+        "  <PggmTh Field=\"email\" Type=\"string\" Filterable=\"true\" Width=\"250\">Email</PggmTh>",
+        "  <PggmTh Field=\"address.city\" Type=\"string\" Filterable=\"true\" Width=\"150\">City</PggmTh>",
+        "  <PggmTh Field=\"company.name\" Type=\"string\" Filterable=\"true\" Width=\"200\">Company</PggmTh>",
+        "</PggmTable>");
+
+        private string[] _selectedProjectIds = [];
+        private string? _selectedEmployeeId = null;
+        private string[] _twoWaySelected = ["1", "3", "5"];
+        private string[] _twoWaySingleSelected = ["2"];
+
+        // API documentation entries for PggmTable
+        private IEnumerable<ApiMember> tableProperties = new[]
+        {
+            new ApiMember { Name = "Data", Type = "IEnumerable<object>", Description = "Local data source for the table rows (used when Adapter/Remote is not set)." },
+            new ApiMember { Name = "Adapter", Type = "IPggmTableDataAdapter<T>", Description = "Server-side adapter for paging, sorting and filtering." },
+            new ApiMember { Name = "RemoteUrl", Type = "string", Description = "URL for remote data fetching when using Remote modes." },
+            new ApiMember { Name = "Remote", Type = "string", Description = "Remote mode: 'simple', 'cursor' or 'offset'." },
+            new ApiMember { Name = "IdField", Type = "string", Description = "Name of the id field on each data item." },
+            new ApiMember { Name = "Selectable", Type = "bool", Description = "Enables row selection UI (checkboxes or radio)." },
+            new ApiMember { Name = "SelectType", Type = "'single'|'multiple'", Description = "Selection mode: single or multiple." },
+            new ApiMember { Name = "Selected", Type = "string[]", Description = "(Optional) Bound selected ids for two-way selection binding." },
+            new ApiMember { Name = "PageSize", Type = "int", Description = "Number of rows per page when using Adapter or Remote pagination." },
+            new ApiMember { Name = "FilterLabel / ClearLabel", Type = "string", Description = "Localized labels for the filter UI." },
+            new ApiMember { Name = "Lang", Type = "string", Description = "Language code used for localized labels/text." }
+        };
+
+        private IEnumerable<ApiMember> tableEvents = new[]
+        {
+            new ApiMember { Name = "OnSelectionChanged", Type = "EventCallback<string[]>", Description = "Invoked when the selection changes; provides array of selected ids." },
+            new ApiMember { Name = "OnSortChanged", Type = "EventCallback<(string Field, bool Ascending)>", Description = "Invoked when user changes sorting on a column." },
+            new ApiMember { Name = "OnAdapterResult", Type = "EventCallback<PggmTableResult<object>>", Description = "Used by adapter mode to deliver fetched page results back to the parent." }
+        };
+
   private object[] employeeData = new object[]
   {
     new
@@ -366,4 +477,6 @@
       status = "Planning"
     }
   };
+
+  private string[] SelectEmployee(int id) => new[] { id.ToString() };
 }

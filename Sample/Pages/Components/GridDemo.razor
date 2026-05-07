@@ -1,0 +1,178 @@
+@page "/pggm-grid"
+
+@using Pggm.Components
+@using Pggm.Components.Sample.Components.DemoSection
+@using Pggm.Components.Sample.Components.ApiDocumentation
+
+<PageTitle>PGGM Grid</PageTitle>
+
+<PggmHeading Level="1">PGGM Grid</PggmHeading>
+
+<p>This page demonstrates the `PggmGrid` and `PggmGridItem` components.</p>
+
+<DemoSection Title="Basic Grid" Code="@basicGridSource">
+    <Description>
+        <p>A simple grid with column/row gaps and a few items demonstrating column spans.</p>
+    </Description>
+
+    <Content>
+        <PggmGrid Columns="4" ColumnGap="16" RowGap="16" Class="demo-grid">
+            <PggmGridItem ColumnSpan="2">
+                <div class="card">Item 1 — span 2</div>
+            </PggmGridItem>
+            <PggmGridItem>
+                <div class="card">Item 2</div>
+            </PggmGridItem>
+            <PggmGridItem ColumnSpan="3">
+                <div class="card">Item 3 — span 3</div>
+            </PggmGridItem>
+            <PggmGridItem Hidden="GridItemHidden.Sm | GridItemHidden.Xs">
+                 <div class="card">Hidden on small and extra-small screens</div>
+            </PggmGridItem>
+        </PggmGrid>
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Responsive Column Spans" Code="@responsiveSpanSource">
+    <Description>
+        <p>Each grid item uses a different <code>*ColumnSpan</code> parameter for each breakpoint. Resize the window to see the spans change responsively.</p>
+    </Description>
+    <Content>
+        <PggmGrid Columns="4" ColumnGap="16" RowGap="16" Class="demo-grid">
+            <PggmGridItem XsColumnSpan="4" SmColumnSpan="2" MdColumnSpan="1" LgColumnSpan="1">
+                <div class="card">Item 1<br />xs:4, sm:2, md+:1</div>
+            </PggmGridItem>
+            <PggmGridItem XsColumnSpan="4" SmColumnSpan="2" MdColumnSpan="2" LgColumnSpan="1">
+                <div class="card">Item 2<br />xs:4, sm:2, md:2, lg+:1</div>
+            </PggmGridItem>
+            <PggmGridItem XsColumnSpan="4" SmColumnSpan="4" MdColumnSpan="1" LgColumnSpan="2">
+                <div class="card">Item 3<br />xs:4, sm:4, md:1, lg+:2</div>
+            </PggmGridItem>
+            <PggmGridItem ColumnSpan="1">
+                <div class="card">Item 4<br />Always span 1</div>
+            </PggmGridItem>
+        </PggmGrid>
+    </Content>
+</DemoSection>
+
+
+<DemoSection Title="Template-driven Grid (Items + ItemTemplate)" Code="@templateGridSource" CodeBehind="@templateGridBehind">
+    <Description>
+        <p>Render a collection using the `Items` parameter and `ItemTemplate`.</p>
+    </Description>
+
+    <Content>
+        <PggmGrid Columns="3" ColumnGap="12" Items="items">
+            <ItemTemplate Context="it">
+                <PggmGridItem>
+                    <div class="card">@it</div>
+                </PggmGridItem>
+            </ItemTemplate>
+        </PggmGrid>
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Responsive Hiding" Code="@responsiveSource">
+    <Description>
+        <p>Use the `Hidden` parameter on items to hide them at specific breakpoints.</p>
+    </Description>
+
+    <Content>
+        <PggmGrid Columns="4" ColumnGap="12">
+            <PggmGridItem>Always visible</PggmGridItem>
+            <PggmGridItem Hidden="GridItemHidden.Xs">Hidden on extra-small</PggmGridItem>
+            <PggmGridItem Hidden="GridItemHidden.Sm">Hidden on small</PggmGridItem>
+            <PggmGridItem Hidden="GridItemHidden.Md">Hidden on medium</PggmGridItem>
+        </PggmGrid>
+    </Content>
+</DemoSection>
+
+<PggmHeading Level="2">API</PggmHeading>
+
+<PggmHeading Level="3">PggmGrid</PggmHeading>
+<ApiDocumentation Properties="gridProperties" />
+
+<PggmHeading Level="3">PggmGridItem</PggmHeading>
+<ApiDocumentation Properties="gridItemProperties" />
+
+@code {
+    private string basicGridSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmGrid Columns=\"4\" ColumnGap=\"16\" RowGap=\"16\" Class=\"demo-grid\">",
+        "  <PggmGridItem ColumnSpan=\"2\">",
+        "    <div class=\"card\">Item 1 — span 2</div>",
+        "  </PggmGridItem>",
+        "  <PggmGridItem>",
+        "    <div class=\"card\">Item 2</div>",
+        "  </PggmGridItem>",
+        "  <PggmGridItem ColumnSpan=\"3\">",
+        "    <div class=\"card\">Item 3 — span 3</div>",
+        "  </PggmGridItem>",
+        "  <PggmGridItem Hidden=\"GridItemHidden.Sm | GridItemHidden.Xs\">",
+        "    <div class=\"card\">Hidden on small and extra-small screens</div>",
+        "  </PggmGridItem>",
+        "</PggmGrid>");
+
+    private string templateGridSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmGrid Columns=\"3\" ColumnGap=\"12\" Items=\"items\">",
+        "  <ItemTemplate Context=\"it\">",
+        "    <PggmGridItem>",
+        "      @it",
+        "    </PggmGridItem>",
+        "  </ItemTemplate>",
+        "</PggmGrid>");
+
+    private string responsiveSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmGrid Columns=\"4\" ColumnGap=\"12\">",
+        "  <PggmGridItem>Always visible</PggmGridItem>",
+        "  <PggmGridItem Hidden=\"GridItemHidden.Xs\">Hidden on extra-small</PggmGridItem>",
+        "  <PggmGridItem Hidden=\"GridItemHidden.Sm\">Hidden on small</PggmGridItem>",
+        "</PggmGrid>");
+
+    private IEnumerable<string> items = new[] { "One", "Two", "Three", "Four", "Five", "Six" };
+
+    private string templateGridBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private IEnumerable<string> items = new[] { \"One\", \"Two\", \"Three\", \"Four\", \"Five\", \"Six\" };",
+        "");
+
+    private IEnumerable<ApiMember> gridProperties = new[]
+    {
+        new ApiMember { Name = "Columns", Type = "int?", DefaultValue = "12", Description = "Number of columns. If not set, grid auto-fits." },
+        new ApiMember { Name = "ColumnGap", Type = "int?", DefaultValue = "16", Description = "Column gap in pixels." },
+        new ApiMember { Name = "RowGap", Type = "int?", DefaultValue = "16", Description = "Row gap in pixels." },
+        new ApiMember { Name = "Items", Type = "IEnumerable<object>?", DefaultValue = "null", Description = "Optional collection of items to render with ItemTemplate." },
+        new ApiMember { Name = "ItemTemplate", Type = "RenderFragment<object>?", DefaultValue = "null", Description = "Template used to render each item when `Items` is provided." },
+        new ApiMember { Name = "ChildContent", Type = "RenderFragment?", DefaultValue = "null", Description = "Child content rendered inside the grid (PggmGridItem children)." }
+    };
+
+    private IEnumerable<ApiMember> gridItemProperties = new[]
+    {
+        new ApiMember { Name = "ColumnSpan", Type = "int?", DefaultValue = "null", Description = "Number of columns to span." },
+        new ApiMember { Name = "RowSpan", Type = "int?", DefaultValue = "null", Description = "Number of rows to span." },
+        new ApiMember { Name = "Hidden", Type = "GridItemHidden", DefaultValue = "GridItemHidden.None", Description = "Breakpoint at which this item is hidden." },
+        new ApiMember { Name = "ChildContent", Type = "RenderFragment?", DefaultValue = "null", Description = "Content rendered inside the grid item." }
+    };
+
+        private string responsiveSpanSource = @"<PggmGrid Columns=""4"" ColumnGap=""16"" RowGap=""16"" Class=""demo-grid"">
+    <PggmGridItem XsColumnSpan=""4"" SmColumnSpan=""2"" MdColumnSpan=""1"" LgColumnSpan=""1"">
+        <div class=""card"">Item 1<br />xs:4, sm:2, md+:1</div>
+    </PggmGridItem>
+    <PggmGridItem XsColumnSpan=""4"" SmColumnSpan=""2"" MdColumnSpan=""2"" LgColumnSpan=""1"">
+        <div class=""card"">Item 2<br />xs:4, sm:2, md:2, lg+:1</div>
+    </PggmGridItem>
+    <PggmGridItem XsColumnSpan=""4"" SmColumnSpan=""4"" MdColumnSpan=""1"" LgColumnSpan=""2"">
+        <div class=""card"">Item 3<br />xs:4, sm:4, md:1, lg+:2</div>
+    </PggmGridItem>
+    <PggmGridItem ColumnSpan=""1"">
+        <div class=""card"">Item 4<br />Always span 1</div>
+    </PggmGridItem>
+</PggmGrid>";
+}
+
+<style>
+    .demo-grid .card {
+        padding: 1rem;
+        border: 1px solid #e1e1e1;
+        border-radius: 6px;
+        background: #fff;
+    }
+</style>

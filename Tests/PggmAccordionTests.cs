@@ -1,11 +1,15 @@
-using Bunit;
-using Microsoft.Extensions.DependencyInjection;
-using Pggm.Components;
-using Pggm.Components.Services;
-using Xunit;
-using Microsoft.AspNetCore.Components;
 using System;
 using System.Threading.Tasks;
+
+using Bunit;
+
+using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.DependencyInjection;
+
+using Pggm.Components;
+using Pggm.Components.Services;
+
+using Xunit;
 
 namespace Pggm.Components.Tests
 {

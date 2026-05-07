@@ -1,0 +1,19 @@
+.pggm-stack-vertical {
+    display: flex;
+    flex-direction: column;
+}
+
+.pggm-stack-horizontal {
+    display: flex;
+    flex-direction: row;
+}
+
+.pggm-stack-vertical[reverse] {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.pggm-stack-horizontal[reverse] {
+    display: flex;
+    flex-direction: row-reverse;
+}

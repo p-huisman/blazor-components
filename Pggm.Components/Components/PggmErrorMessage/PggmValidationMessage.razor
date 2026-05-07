@@ -1,0 +1,16 @@
+@namespace Pggm.Components
+@inherits PggmComponentBase
+@typeparam TField
+
+<pggm-error-message class="pggm-validation-message" @ref="ElementRef" @attributes="GetAttributes()">
+	<div class="pggm-validation-message__content">
+		@if (ChildContent != null)
+		{
+			@ChildContent
+		}
+		else
+		{
+			@CurrentMessage
+		}
+	</div>
+</pggm-error-message>

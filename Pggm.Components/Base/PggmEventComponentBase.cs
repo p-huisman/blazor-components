@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 using Microsoft.Extensions.Logging;
+using Microsoft.JSInterop;
+
 using Pggm.Components.Interfaces;
 using Pggm.Components.Models.Wizard;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Pggm.Components.Base;
 
@@ -11,21 +14,13 @@ namespace Pggm.Components.Base;
 /// </summary>
 public abstract class PggmEventComponentBase : PggmComponentBase, IPggmEventComponent
 {
-    private DotNetObjectReference<PggmEventComponentBase>? _objectReference;
-    private readonly List<string> _registeredEvents = new();
+    private PggmEventListenerManager<PggmEventComponentBase>? _eventManager;
     private bool _eventsInitialized;
+    private bool _disposed;
 
     [Inject] protected ILogger<PggmEventComponentBase>? Logger { get; set; }
 
-    /// <summary>
-    /// Dictionary of event handlers for this component
-    /// </summary>
-    protected virtual Dictionary<string, Func<object?, Task>> EventHandlers { get; } = new();
-
-    /// <summary>
-    /// Dictionary of cancelable event handlers for this component
-    /// </summary>
-    protected virtual Dictionary<string, Func<object?, Task<bool>>> CancelableEventHandlers { get; } = new();
+    private readonly PggmEventHandlerRegistry _handlerRegistry = new();
 
     protected override async Task InitializeWebComponentAsync()
     {
@@ -33,10 +28,8 @@ public abstract class PggmEventComponentBase : PggmComponentBase, IPggmEventComp
 
         if (!_eventsInitialized)
         {
-            // Create object reference for JS interop
-            _objectReference = DotNetObjectReference.Create(this);
-
-            // Set up event listeners
+            // Create helper to manage event listeners and object reference
+            _eventManager = new PggmEventListenerManager<PggmEventComponentBase>(JSRuntime, Logger, ElementRef, this);
             await SetupEventListenersAsync();
             _eventsInitialized = true;
         }
@@ -48,19 +41,42 @@ public abstract class PggmEventComponentBase : PggmComponentBase, IPggmEventComp
     /// </summary>
     protected virtual async Task SetupEventListenersAsync()
     {
-        var eventNames = GetEventNames().ToList();
+        var nonCancelable = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var cancelable = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        foreach (var eventName in eventNames)
+        foreach (var e in GetEventNames() ?? Array.Empty<string>()) nonCancelable.Add(e);
+
+        foreach (var e in _handlerRegistry.GetHandlersSnapshot().Keys) nonCancelable.Add(e);
+        foreach (var e in _handlerRegistry.GetCancelableHandlersSnapshot().Keys) cancelable.Add(e);
+
+        // If an event is in both sets, prefer cancelable handling
+        nonCancelable.RemoveWhere(n => cancelable.Contains(n));
+
+        // Register non-cancelable events in batch
+        if (nonCancelable.Count > 0)
         {
             try
             {
-                await AddEventListenerAsync(eventName);
-                _registeredEvents.Add(eventName);
+                if (_eventManager != null)
+                    await _eventManager.AddEventListenersAsync(nonCancelable, nameof(HandleEvent));
             }
             catch (Exception ex)
             {
-                Logger?.LogWarning(ex, "Failed to register event listener for {EventName} in component {ComponentType}",
-                    eventName, GetType().Name);
+                Logger?.LogWarning(ex, "Failed to register event listeners in component {ComponentType}", GetType().Name);
+            }
+        }
+
+        // Register cancelable events in batch
+        if (cancelable.Count > 0)
+        {
+            try
+            {
+                if (_eventManager != null)
+                    await _eventManager.AddCancelableEventListenersAsync(cancelable, nameof(HandleCancelableEvent));
+            }
+            catch (Exception ex)
+            {
+                Logger?.LogWarning(ex, "Failed to register cancelable event listeners in component {ComponentType}", GetType().Name);
             }
         }
     }
@@ -79,15 +95,8 @@ public abstract class PggmEventComponentBase : PggmComponentBase, IPggmEventComp
     /// </summary>
     protected async Task AddEventListenerAsync(string eventName)
     {
-        if (_objectReference == null) return;
-
-        await JSRuntime.InvokeVoidAsync(
-            "PggmComponents.addEventListener",
-            ElementRef,
-            eventName,
-            _objectReference,
-            nameof(HandleEvent)
-        );
+        if (_eventManager == null) return;
+        await _eventManager.AddEventListenerAsync(eventName, nameof(HandleEvent));
     }
 
     /// <summary>
@@ -96,16 +105,22 @@ public abstract class PggmEventComponentBase : PggmComponentBase, IPggmEventComp
     [JSInvokable]
     public async Task HandleEvent(string eventName, object? eventData = null)
     {
+        // Check if component is disposed
+        if (_disposed)
+        {
+            return; // Silently ignore events after disposal
+        }
         try
         {
-            if (EventHandlers.TryGetValue(eventName, out var handler))
+            // Dispatch via central registry (overridden virtual dictionaries are migrated into registry at init)
+            if (_handlerRegistry.TryGetHandler(eventName, out var handler))
             {
-                await handler(eventData);
+                await handler!(eventData);
+                return;
             }
-            else
-            {
-                await OnUnhandledEventAsync(eventName, eventData);
-            }
+
+            // No handler found
+            await OnUnhandledEventAsync(eventName, eventData);
         }
         catch (Exception ex)
         {
@@ -120,18 +135,21 @@ public abstract class PggmEventComponentBase : PggmComponentBase, IPggmEventComp
     [JSInvokable]
     public async Task<bool> HandleCancelableEvent(string eventName, object? eventData = null)
     {
+        // Check if component is disposed
+        if (_disposed)
+        {
+            return true; // Allow event to proceed if component is disposed
+        }
         try
         {
-            if (CancelableEventHandlers.TryGetValue(eventName, out var handler))
+            // Dispatch via central registry for cancelable handlers
+            if (_handlerRegistry.TryGetCancelableHandler(eventName, out var handler))
             {
-                var result = await handler(eventData);
-                return result;
+                return await handler!(eventData);
             }
-            else
-            {
-                await OnUnhandledEventAsync(eventName, eventData);
-                return true; // Don't cancel if no handler
-            }
+
+            await OnUnhandledEventAsync(eventName, eventData);
+            return true; // Don't cancel if no handler
         }
         catch (Exception ex)
         {
@@ -169,7 +187,7 @@ public abstract class PggmEventComponentBase : PggmComponentBase, IPggmEventComp
     /// </summary>
     protected void RegisterEventHandler(string eventName, Func<object?, Task> handler)
     {
-        EventHandlers[eventName] = handler;
+        _handlerRegistry.Register(eventName, handler);
     }
 
     /// <summary>
@@ -177,7 +195,7 @@ public abstract class PggmEventComponentBase : PggmComponentBase, IPggmEventComp
     /// </summary>
     protected void RegisterEventHandler(string eventName, Func<Task> handler)
     {
-        EventHandlers[eventName] = _ => handler();
+        _handlerRegistry.Register(eventName, handler);
     }
 
     /// <summary>
@@ -185,11 +203,7 @@ public abstract class PggmEventComponentBase : PggmComponentBase, IPggmEventComp
     /// </summary>
     protected void RegisterEventHandler<T>(string eventName, Func<T?, Task> handler)
     {
-        EventHandlers[eventName] = eventData =>
-        {
-            var typedData = eventData is T data ? data : default(T);
-            return handler(typedData);
-        };
+        _handlerRegistry.RegisterTyped(eventName, handler);
     }
 
     /// <summary>
@@ -197,149 +211,37 @@ public abstract class PggmEventComponentBase : PggmComponentBase, IPggmEventComp
     /// </summary>
     protected void RegisterCancelableEventHandler<T>(string eventName, Func<T?, Task<bool>> handler) where T : class, new()
     {
-        CancelableEventHandlers[eventName] = async eventData =>
-        {
-            T? typedData = default(T);
-            if (eventData != null)
-            {
-                try
-                {
-                    // Configure JSON options for case-insensitive property matching
-                    var options = new System.Text.Json.JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true,
-                        ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles,
-                        DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
-                    };
-
-                    // Always create a new instance and populate it from the event data
-                    typedData = new T();
-
-                    // Try to deserialize as JSON if it's a JsonElement
-                    if (eventData is System.Text.Json.JsonElement jsonElement)
-                    {
-                        var tempData = System.Text.Json.JsonSerializer.Deserialize<T>(jsonElement.GetRawText(), options);
-                        if (tempData != null)
-                        {
-                            // Copy properties from deserialized data to our instance
-                            CopyProperties(tempData, typedData);
-                        }
-                    }
-                    else if (eventData is T directCast)
-                    {
-                        typedData = directCast;
-                    }
-                    else
-                    {
-                        // Use safe property copying instead of JSON serialization
-                        typedData = SafeConvertEventData<T>(eventData);
-                    }
-                }
-                catch (Exception)
-                {
-                    // Silent fallback to empty instance on deserialization error
-                    typedData = new T();
-                }
-            }
-            else
-            {
-                typedData = new T(); // Create empty instance if no data
-            }
-
-            // Call the handler and get the result
-            var result = await handler(typedData);
-
-            // For CancelableEventArgs, check if Cancel property was modified
-            if (typedData is CancelableEventArgs cancelableArgs)
-            {
-                // If Cancel was set to true, return false (cancel the event)
-                // If Cancel was set to false, use the handler's return value
-                if (cancelableArgs.Cancel)
-                {
-                    return false;
-                }
-                else
-                {
-                    return result;
-                }
-            }
-
-            return result;
-        };
+        _handlerRegistry.RegisterCancelableTyped<T>(eventName, handler);
     }
 
     /// <summary>
-    /// Safely convert event data to the target type without JSON serialization
+    /// Unregister an event handler from the registry
     /// </summary>
+    protected void UnregisterEventHandler(string eventName)
+    {
+        _handlerRegistry.Unregister(eventName);
+    }
+
+    /// <summary>
+    /// Unregister a cancelable event handler from the registry
+    /// </summary>
+    protected void UnregisterCancelableEventHandler(string eventName)
+    {
+        _handlerRegistry.UnregisterCancelable(eventName);
+    }
+
+    private static T DeserializeEventData<T>(object? eventData) where T : class, new()
+    {
+        return PggmEventDataConverter.DeserializeEventData<T>(eventData);
+    }
+
+    // Backwards-compatible helper used by tests and some callers that expect
+    // a non-JSON 'safe convert' method available on the type. For simplicity
+    // forward to the shared converter which includes the same safe-convert
+    // behavior as the original implementation.
     private static T SafeConvertEventData<T>(object eventData) where T : class, new()
     {
-        var result = new T();
-        var sourceType = eventData.GetType();
-        var targetType = typeof(T);
-
-        foreach (var targetProp in targetType.GetProperties())
-        {
-            if (!targetProp.CanWrite) continue;
-
-            var sourceProp = sourceType.GetProperty(targetProp.Name);
-            if (sourceProp != null && sourceProp.CanRead)
-            {
-                try
-                {
-                    var value = sourceProp.GetValue(eventData);
-
-                    // Only copy primitive types and strings to avoid circular references
-                    if (value == null ||
-                        targetProp.PropertyType.IsPrimitive ||
-                        targetProp.PropertyType == typeof(string) ||
-                        targetProp.PropertyType == typeof(bool) ||
-                        targetProp.PropertyType == typeof(DateTime) ||
-                        targetProp.PropertyType.IsEnum)
-                    {
-                        if (value != null && targetProp.PropertyType.IsAssignableFrom(sourceProp.PropertyType))
-                        {
-                            targetProp.SetValue(result, value);
-                        }
-                        else if (value != null)
-                        {
-                            // Try to convert the value
-                            var convertedValue = Convert.ChangeType(value, targetProp.PropertyType);
-                            targetProp.SetValue(result, convertedValue);
-                        }
-                    }
-                }
-                catch (Exception)
-                {
-                    // Skip property on error
-                    continue;
-                }
-            }
-        }
-
-        return result;
-    }
-
-    /// <summary>
-    /// Copy properties between objects
-    /// </summary>
-    private static void CopyProperties<T>(T source, T target) where T : class
-    {
-        foreach (var prop in typeof(T).GetProperties())
-        {
-            if (prop.CanWrite && prop.CanRead)
-            {
-                try
-                {
-                    var value = prop.GetValue(source);
-                    prop.SetValue(target, value);
-                }
-                catch (Exception)
-                {
-                    // Skip property on error
-                    continue;
-                }
-            }
-        }
+        return PggmEventDataConverter.DeserializeEventData<T>(eventData);
     }
 
     /// <summary>
@@ -347,17 +249,10 @@ public abstract class PggmEventComponentBase : PggmComponentBase, IPggmEventComp
     /// </summary>
     protected async Task AddCancelableEventListenerAsync(string eventName)
     {
-        if (_objectReference == null) return;
-
+        if (_eventManager == null) return;
         try
         {
-            await JSRuntime.InvokeVoidAsync(
-                "PggmComponents.addCancelableEventListener",
-                ElementRef,
-                eventName,
-                _objectReference,
-                nameof(HandleCancelableEvent)
-            );
+            await _eventManager.AddCancelableEventListenerAsync(eventName, nameof(HandleCancelableEvent));
         }
         catch (Exception ex)
         {
@@ -367,25 +262,31 @@ public abstract class PggmEventComponentBase : PggmComponentBase, IPggmEventComp
 
     protected override async ValueTask DisposeAsyncCore()
     {
+        // Mark as disposed first to prevent further event handling
+        _disposed = true;
+
         await base.DisposeAsyncCore();
 
-        // Clean up event listeners
-        foreach (var eventName in _registeredEvents)
+        // Clean up event listeners only if the element reference is valid
+        if (!string.IsNullOrEmpty(ElementRef.Id))
         {
+            // Delegate removal to the event manager
             try
             {
-                await JSRuntime.InvokeVoidAsync("PggmComponents.removeEventListener", ElementRef, eventName);
+                if (_eventManager != null)
+                {
+                    await _eventManager.DisposeAsync();
+                }
             }
-            catch (Exception ex)
+            catch
             {
-                Logger?.LogWarning(ex, "Failed to remove event listener for {EventName} during disposal", eventName);
+                // Silent fail for cleanup
             }
         }
 
-        _registeredEvents.Clear();
+        _eventsInitialized = false;
 
         // Dispose object reference
-        _objectReference?.Dispose();
-        _objectReference = null;
+        _eventManager = null;
     }
 }

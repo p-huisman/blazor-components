@@ -6,6 +6,7 @@
   --pggm-accordion-item-border-width: 1px;
   --pggm-accordion-item-content-padding-block-start: 0px;
   --pggm-accordion-item-header-icon-border-radius: 99999px;
+  --pggm-accordion-item-header-title-string: String value;
   --pggm-button-icon-hover-border-color: rgba(0, 0, 0, 0);
   --pggm-button-primary-border-color: rgba(0, 0, 0, 0);
   --pggm-button-primary-active-border-color: rgba(0, 0, 0, 0);
@@ -28,6 +29,8 @@
   --pggm-checkbox-indeterminate-active-border-color: rgba(0, 0, 0, 0);
   --pggm-checkbox-indeterminate-hover-border-color: rgba(0, 0, 0, 0);
   --pggm-checkbox-indeterminate-invalid-border-color: rgba(0, 0, 0, 0);
+  --pggm-heading-sm-large-margin-block-end: 0px;
+  --pggm-heading-sm-small-margin-block-end: 0px;
   --pggm-link-text-decoration-thickness: auto;
   --pggm-link-text-underline-offset: auto;
   --pggm-link-text-decoration: underline;
@@ -38,14 +41,11 @@
   --pggm-radio-checked-active-border-color: rgba(0, 0, 0, 0);
   --pggm-radio-checked-disabled-border-color: rgba(0, 0, 0, 0);
   --pggm-radio-checked-invalid-border-color: rgba(0, 0, 0, 0);
-  --pggm-select-max-inline-size: 488px;
   --pggm-table-header-background-color: rgba(0, 0, 0, 0);
   --pggm-table-footer-background-color: rgba(0, 0, 0, 0);
   --pggm-table-row-background-color: rgba(0, 0, 0, 0);
   --pggm-table-container-box-shadow-offset-x: 0px;
   --pggm-text-input-content-line-height: 1;
-  --pggm-text-input-max-inline-size: 488px;
-  --pggm-textarea-max-inline-size: 400px;
   --pggm-textarea-border-radius: 0px;
   --pggm-textarea-border-bottom-width: 0px;
   --pggm-tooltip-box-shadow-offset-x: 0px;
@@ -175,18 +175,16 @@
   --pggm-focus-border-radius: 4px;
   --pggm-focus-outline-offset: 1px;
   --pggm-focus-outline-style: solid;
-  --pggm-accordion-item-border-radius: var(--pggm-border-radius-sm);
+  --pggm-form-control-max-width: 488px;
+  --pggm-accordion-item-border-radius: var(--pggm-border-radius-md);
   --pggm-accordion-item-padding-inline-start: var(--pggm-space-inline-lg);
   --pggm-accordion-item-padding-inline-end: var(--pggm-space-inline-lg);
   --pggm-accordion-item-content-padding-block-end: var(--pggm-space-block-2xs);
   --pggm-accordion-item-header-column-gap: var(--pggm-space-inline-xs);
-  --pggm-accordion-item-header-padding-block-start: var(--pggm-space-block-2xs);
-  --pggm-accordion-item-header-padding-block-end: var(--pggm-space-block-2xs);
   --pggm-accordion-item-header-icon-color: var(--pggm-color-green-700);
   --pggm-accordion-item-header-icon-background-color: var(--pggm-color-gray-100);
   --pggm-accordion-item-header-title-padding-block-start: var(--pggm-space-block-2xs);
   --pggm-accordion-item-header-title-padding-block-end: var(--pggm-space-block-2xs);
-  --pggm-accordion-row-gap: var(--pggm-space-block-xl);
   --pggm-button-icon-hover-color: var(--pggm-color-white);
   --pggm-button-primary-color: var(--pggm-color-white);
   --pggm-button-primary-active-color: var(--pggm-color-white);
@@ -228,27 +226,45 @@
   --pggm-form-field-label-optional-font-size: var(--pggm-typography-font-size-sm);
   --pggm-form-field-label-column-gap: var(--pggm-space-column-sm);
   --pggm-form-field-label-row-gap: var(--pggm-space-row-xs);
-  --pggm-form-field-invalid-border-inline-start-width: var(--pggm-border-width-md);
-  --pggm-heading-2xl-large-font-size: var(--pggm-typography-font-size-4xl);
-  --pggm-heading-2xl-small-font-size: var(--pggm-typography-font-size-3xl);
-  --pggm-heading-2xl-line-height: var(--pggm-typography-line-height-sm);
-  --pggm-heading-xl-large-font-size: var(--pggm-typography-font-size-2xl);
-  --pggm-heading-xl-small-font-size: var(--pggm-typography-font-size-2xl);
-  --pggm-heading-xl-line-height: var(--pggm-typography-line-height-sm);
-  --pggm-heading-lg-large-font-size: var(--pggm-typography-font-size-xl);
-  --pggm-heading-lg-small-font-size: var(--pggm-typography-font-size-xl);
-  --pggm-heading-lg-line-height: var(--pggm-typography-line-height-md);
-  --pggm-heading-md-large-font-size: var(--pggm-typography-font-size-lg);
-  --pggm-heading-md-small-font-size: var(--pggm-typography-font-size-lg);
-  --pggm-heading-md-line-height: var(--pggm-typography-line-height-md);
-  --pggm-heading-sm-large-font-size: var(--pggm-typography-font-size-sm);
-  --pggm-heading-sm-small-font-size: var(--pggm-typography-font-size-sm);
-  --pggm-heading-sm-line-height: var(--pggm-typography-line-height-md);
+  --pggm-form-field-row-gap: var(--pggm-space-row-xs);
+  --pggm-form-field-margin-block-end: var(--pggm-space-block-lg);
+  --pggm-form-field-max-width: var(--pggm-form-control-max-width);
+  --pggm-form-field-labels-row-gap: var(--pggm-space-row-xs);
+  --pggm-form-field-labels-column-gap: var(--pggm-space-column-xs);
+  --pggm-form-field-fields-row-gap: var(--pggm-space-row-xs);
+  --pggm-form-field-fields-column-gap: var(--pggm-space-column-xs);
   --pggm-heading-color: var(--pggm-color-gray-800); /** Standaard kleur voor titels. */
   --pggm-heading-font-family: var(--pggm-typography-font-family-primary); /** Standaard lettertype voor titels. */
   --pggm-heading-font-weight: var(--pggm-typography-font-weight-medium); /** Standaard lettergewicht voor titels. */
   --pggm-heading-strong-font-weight: var(--pggm-typography-font-weight-semibold); /** Steviger lettergewicht voor titels. */
   --pggm-heading-line-height: var(--pggm-typography-line-height-sm);
+  --pggm-heading-sm-large-font-size: var(--pggm-typography-font-size-base);
+  --pggm-heading-sm-large-line-height: var(--pggm-typography-line-height-md);
+  --pggm-heading-sm-small-font-size: var(--pggm-typography-font-size-base);
+  --pggm-heading-sm-small-line-height: var(--pggm-typography-line-height-md);
+  --pggm-heading-md-large-font-size: var(--pggm-typography-font-size-lg);
+  --pggm-heading-md-large-line-height: var(--pggm-typography-line-height-md);
+  --pggm-heading-md-large-margin-block-end: var(--pggm-space-block-xs);
+  --pggm-heading-md-small-font-size: var(--pggm-typography-font-size-lg);
+  --pggm-heading-md-small-line-height: var(--pggm-typography-line-height-md);
+  --pggm-heading-md-small-margin-block-end: var(--pggm-space-block-2xs);
+  --pggm-heading-lg-large-font-size: var(--pggm-typography-font-size-xl);
+  --pggm-heading-lg-large-line-height: var(--pggm-typography-line-height-md);
+  --pggm-heading-lg-large-margin-block-end: var(--pggm-space-block-lg);
+  --pggm-heading-lg-small-font-size: var(--pggm-typography-font-size-xl);
+  --pggm-heading-lg-small-line-height: var(--pggm-typography-line-height-md);
+  --pggm-heading-xl-small-font-size: var(--pggm-typography-font-size-2xl);
+  --pggm-heading-xl-small-line-height: var(--pggm-typography-line-height-sm);
+  --pggm-heading-xl-small-margin-block-end: var(--pggm-space-block-lg);
+  --pggm-heading-xl-large-font-size: var(--pggm-typography-font-size-2xl);
+  --pggm-heading-xl-large-line-height: var(--pggm-typography-line-height-sm);
+  --pggm-heading-xl-large-margin-block-end: var(--pggm-space-block-xl);
+  --pggm-heading-2xl-small-font-size: var(--pggm-typography-font-size-3xl);
+  --pggm-heading-2xl-small-line-height: var(--pggm-typography-line-height-sm);
+  --pggm-heading-2xl-small-margin-block-end: var(--pggm-space-block-xl);
+  --pggm-heading-2xl-large-font-size: var(--pggm-typography-font-size-4xl);
+  --pggm-heading-2xl-large-line-height: var(--pggm-typography-line-height-sm);
+  --pggm-heading-2xl-large-margin-block-end: var(--pggm-space-block-2xl);
   --pggm-link-standalone-color: var(--pggm-color-gray-800);
   --pggm-link-standalone-font-weight: var(--pggm-typography-font-weight-semibold);
   --pggm-link-visited-color: var(--pggm-color-blue-500);
@@ -277,6 +293,7 @@
   --pggm-radio-border-radius: var(--pggm-border-radius-round);
   --pggm-radio-option-column-gap: var(--pggm-space-column-xs);
   --pggm-radio-label-row-gap: var(--pggm-space-row-xs);
+  --pggm-select-max-width: var(--pggm-form-control-max-width);
   --pggm-select-padding-block-end: var(--pggm-space-block-sm);
   --pggm-select-padding-block-start: var(--pggm-space-block-sm);
   --pggm-select-row-gap: var(--pggm-space-row-sm);
@@ -310,7 +327,9 @@
   --pggm-tabs-border-radius: var(--pggm-border-radius-sm);
   --pggm-tabs-text-underline: var(--pggm-border-width-sm);
   --pggm-text-input-border-radius: var(--pggm-border-radius-sm);
+  --pggm-text-input-max-width: var(--pggm-form-control-max-width);
   --pggm-text-input-row-gap: var(--pggm-space-row-xs);
+  --pggm-textarea-max-width: var(--pggm-form-control-max-width);
   --pggm-textarea-padding-inline-end: var(--pggm-space-inline-sm);
   --pggm-textarea-padding-inline-start: var(--pggm-space-inline-sm);
   --pggm-tooltip-background-color: var(--pggm-color-white);
@@ -340,8 +359,13 @@
   --pggm-box-shadow-color-lg: var(--pggm-color-alpha-dark-100);
   --pggm-root-background-color: var(--pggm-color-gray-50); /** Standaard achtergrondkleur. */
   --pggm-container-background-color: var(--pggm-color-white); /** Standaard kleur voor de achtergrond van een component die content groepeert. */
-  --pggm-container-border-color: var(--pggm-color-gray-500); /** Standaard kleur voor de rand rondom een component die content groepeert. */
+  --pggm-container-border-color: var(--pggm-color-gray-200); /** Standaard kleur voor de rand rondom een component die content groepeert. */
   --pggm-container-border-width: var(--pggm-border-width-sm); /** Standaard breedte voor de rand rondom een component die content groepeert. */
+  --pggm-container-border-radius: var(--pggm-border-radius-md);
+  --pggm-container-padding-inline-start: var(--pggm-space-inline-lg);
+  --pggm-container-padding-inline-end: var(--pggm-space-inline-lg);
+  --pggm-container-padding-block-start: var(--pggm-space-block-xl);
+  --pggm-container-padding-block-end: var(--pggm-space-block-xl);
   --pggm-document-color: var(--pggm-color-gray-800); /** Standard color for text (and icons). */
   --pggm-document-subtle-color: var(--pggm-color-gray-600); /** Subtiele kleur voor tekst (en iconen). */
   --pggm-document-font-family: var(--pggm-typography-font-family-secondary); /** Standard font family for text. */
@@ -395,14 +419,22 @@
   --pggm-icon-functional-size: var(--pggm-size-icon-md); /** Standaard grootte voor functionele iconen. */
   --pggm-icon-remarkable-size: var(--pggm-size-icon-lg);
   --pggm-icon-notifiction-size: var(--pggm-size-icon-xl);
+  --pggm-white-space-2xs: var(--pggm-space-block-2xs);
+  --pggm-white-space-xs: var(--pggm-space-block-xs);
+  --pggm-white-space-sm: var(--pggm-space-block-sm);
+  --pggm-white-space-lg: var(--pggm-space-block-lg);
+  --pggm-white-space-xl: var(--pggm-space-block-xl);
+  --pggm-white-space-2xl: var(--pggm-space-block-2xl);
+  --pggm-white-space-3xl: var(--pggm-space-block-3xl);
+  --pggm-accordion-row-gap: var(--pggm-space-block-md);
   --pggm-accordion-item-background-color: var(--pggm-container-background-color);
   --pggm-accordion-item-border-color: var(--pggm-line-border-color);
   --pggm-accordion-item-padding-block-start: var(--pggm-space-block-md);
   --pggm-accordion-item-padding-block-end: var(--pggm-space-block-md);
   --pggm-accordion-item-row-gap: var(--pggm-space-inline-md);
+  --pggm-accordion-item-disabled-background-color: var(--pggm-form-control-disabled-background-color);
   --pggm-accordion-item-header-icon-size: var(--pggm-icon-remarkable-size);
   --pggm-accordion-item-header-title-font-family: var(--pggm-heading-font-family);
-  --pggm-accordion-item-header-title-font-size: var(--pggm-heading-lg-large-font-size);
   --pggm-accordion-item-header-title-line-height: var(--pggm-heading-line-height);
   --pggm-accordion-item-header-title-color: var(--pggm-heading-color);
   --pggm-accordion-item-hover-border-color: var(--pggm-line-hover-border-color);
@@ -467,23 +499,43 @@
   --pggm-form-field-label-font-family: var(--pggm-document-font-family);
   --pggm-form-field-label-font-weight: var(--pggm-document-strong-font-weight);
   --pggm-form-field-label-line-height: var(--pggm-document-line-height);
-  --pggm-form-field-invalid-padding-inline-start: var(--pggm-space-inline-md);
-  --pggm-form-field-invalid-border-inline-start-color: var(--pggm-feedback-negative-border-color);
-  --pggm-heading-2xl-color: var(--pggm-heading-color);
-  --pggm-heading-2xl-font-family: var(--pggm-heading-font-family);
-  --pggm-heading-2xl-font-weight: var(--pggm-heading-strong-font-weight);
-  --pggm-heading-xl-color: var(--pggm-heading-color);
-  --pggm-heading-xl-font-family: var(--pggm-heading-font-family);
-  --pggm-heading-xl-font-weight: var(--pggm-heading-strong-font-weight);
-  --pggm-heading-lg-color: var(--pggm-heading-color);
-  --pggm-heading-lg-font-family: var(--pggm-heading-font-family);
-  --pggm-heading-lg-font-weight: var(--pggm-heading-font-weight);
-  --pggm-heading-md-color: var(--pggm-heading-color);
-  --pggm-heading-md-font-family: var(--pggm-heading-font-family);
-  --pggm-heading-md-font-weight: var(--pggm-heading-font-weight);
-  --pggm-heading-sm-color: var(--pggm-heading-color);
-  --pggm-heading-sm-font-family: var(--pggm-heading-font-family);
-  --pggm-heading-sm-font-weight: var(--pggm-heading-font-weight);
+  --pggm-heading-h1-color: var(--pggm-heading-color);
+  --pggm-heading-h1-font-family: var(--pggm-heading-font-family);
+  --pggm-heading-h1-font-weight: var(--pggm-heading-strong-font-weight);
+  --pggm-heading-h1-large-font-size: var(--pggm-heading-2xl-large-font-size);
+  --pggm-heading-h1-large-line-height: var(--pggm-heading-2xl-large-line-height);
+  --pggm-heading-h1-large-margin-block-end: var(--pggm-white-space-lg);
+  --pggm-heading-h1-small-font-size: var(--pggm-heading-2xl-small-margin-block-end);
+  --pggm-heading-h1-small-line-height: var(--pggm-heading-2xl-small-line-height);
+  --pggm-heading-h2-color: var(--pggm-heading-color);
+  --pggm-heading-h2-font-family: var(--pggm-heading-font-family);
+  --pggm-heading-h2-font-weight: var(--pggm-heading-strong-font-weight);
+  --pggm-heading-h2-large-font-size: var(--pggm-heading-xl-large-font-size);
+  --pggm-heading-h2-large-line-height: var(--pggm-heading-xl-large-line-height);
+  --pggm-heading-h2-small-font-size: var(--pggm-heading-xl-small-font-size);
+  --pggm-heading-h2-small-line-height: var(--pggm-heading-xl-small-line-height);
+  --pggm-heading-h3-color: var(--pggm-heading-color);
+  --pggm-heading-h3-font-family: var(--pggm-heading-font-family);
+  --pggm-heading-h3-font-weight: var(--pggm-heading-font-weight);
+  --pggm-heading-h3-large-font-size: var(--pggm-heading-lg-large-font-size);
+  --pggm-heading-h3-large-line-height: var(--pggm-heading-lg-large-line-height);
+  --pggm-heading-h3-small-font-size: var(--pggm-heading-lg-small-font-size);
+  --pggm-heading-h3-small-line-height: var(--pggm-heading-lg-small-line-height);
+  --pggm-heading-h4-color: var(--pggm-heading-color);
+  --pggm-heading-h4-font-family: var(--pggm-heading-font-family);
+  --pggm-heading-h4-font-weight: var(--pggm-heading-font-weight);
+  --pggm-heading-h4-large-font-size: var(--pggm-heading-md-large-font-size);
+  --pggm-heading-h4-large-line-height: var(--pggm-heading-md-large-line-height);
+  --pggm-heading-h4-small-font-size: var(--pggm-heading-md-small-font-size);
+  --pggm-heading-h4-small-line-height: var(--pggm-heading-md-small-line-height);
+  --pggm-heading-h5-color: var(--pggm-heading-color);
+  --pggm-heading-h5-font-family: var(--pggm-heading-font-family);
+  --pggm-heading-h5-font-weight: var(--pggm-heading-font-weight);
+  --pggm-heading-h5-large-font-size: var(--pggm-heading-sm-large-font-size);
+  --pggm-heading-h5-large-line-height: var(--pggm-heading-sm-large-line-height);
+  --pggm-heading-h5-small-font-size: var(--pggm-heading-sm-small-font-size);
+  --pggm-heading-h5-small-line-height: var(--pggm-heading-sm-small-line-height);
+  --pggm-heading-lg-small-margin-block-end: var(--pggm-space-block-md);
   --pggm-link-icon-color: var(--pggm-interaction-color);
   --pggm-link-color: var(--pggm-interaction-color);
   --pggm-link-standalone-icon-color: var(--pggm-interaction-color);
@@ -671,8 +723,8 @@
   --pggm-tooltip-padding-inline-start: var(--pggm-space-inline-md);
   --pggm-tooltip-font-family: var(--pggm-document-font-family);
   --pggm-tooltip-font-weight: var(--pggm-document-font-weight);
-  --pggm-tooltip-line-height: var(--pggm-document-line-height);
   --pggm-tooltip-box-shadow-color: var(--pggm-box-shadow-color-sm);
+  --pggm-tooltip-line-height: var(--pggm-document-line-height);
   --pggm-unordered-list-color: var(--pggm-document-color);
   --pggm-unordered-list-font-family: var(--pggm-document-font-family);
   --pggm-unordered-list-font-weight: var(--pggm-document-font-weight);
@@ -682,7 +734,9 @@
   --pggm-form-control-active-accent-color: var(--pggm-interaction-active-color); /** Standaard kleur bij een active (on press) state voor form controls die gebruik maken van CSS accent-color property  */
   --pggm-form-control-hover-accent-color: var(--pggm-interaction-hover-color); /** Standaard kleur bij een hover state voor form controls die gebruik maken van CSS accent-color property  */
   --pggm-form-control-invalid-border-color: var(--pggm-feedback-negative-border-color); /** Standaard kleur voor rand rondom form controls bij een invalid state.  */
-  --pggm-accordion-item-header-title-font-weight: var(--pggm-heading-lg-font-weight);
+  --pggm-white-space-md: var(--pggm-space-block-md);
+  --pggm-accordion-item-header-title-font-size: var(--pggm-heading-h3-large-font-size);
+  --pggm-accordion-item-header-title-font-weight: var(--pggm-heading-h3-font-weight);
   --pggm-button-font-size: var(--pggm-document-font-size);
   --pggm-checkbox-invalid-border-color: var(--pggm-form-control-invalid-border-color);
   --pggm-checkbox-checked-background-color: var(--pggm-form-control-accent-color);
@@ -694,6 +748,15 @@
   --pggm-checkbox-option-label-font-size: var(--pggm-document-font-size);
   --pggm-form-field-error-message-font-size: var(--pggm-document-font-size);
   --pggm-form-field-label-font-size: var(--pggm-document-font-size);
+  --pggm-heading-h1-small-margin-block-end: var(--pggm-white-space-md);
+  --pggm-heading-h2-large-margin-block-end: var(--pggm-white-space-md);
+  --pggm-heading-h2-small-margin-block-end: var(--pggm-white-space-md);
+  --pggm-heading-h3-large-margin-block-end: var(--pggm-white-space-md);
+  --pggm-heading-h3-small-margin-block-end: var(--pggm-white-space-md);
+  --pggm-heading-h4-large-margin-block-end: var(--pggm-white-space-md);
+  --pggm-heading-h4-small-margin-block-end: var(--pggm-white-space-md);
+  --pggm-heading-h5-large-margin-block-end: var(--pggm-white-space-md);
+  --pggm-heading-h5-small-margin-block-end: var(--pggm-white-space-md);
   --pggm-link-font-size: var(--pggm-document-font-size);
   --pggm-ordered-list-font-size: var(--pggm-document-font-size);
   --pggm-paragraph-font-size: var(--pggm-document-font-size);

@@ -1,0 +1,325 @@
+@using Pggm.Components.Base
+@using Microsoft.AspNetCore.Components.Rendering
+@inherits PggmComponentBase
+@typeparam TGridItem
+@using Pggm.Components.Components.PggmDataGrid
+
+
+<div class="pggm-data-grid @(EnableVirtualization ? "pggm-data-grid--virtualized" : "") @(AutoItemsPerPage ? "pggm-data-grid--auto-height" : "") @(InternalContext.Columns.Any(c => c is SelectColumn<TGridItem>) || InternalContext.SingleSelect ? "pggm-data-grid--selectable" : "") @(InternalContext.SingleSelect ? "pggm-data-grid--single-selectable" : "")"
+    id="@_gridId" @ref="_rootElement" role="grid" aria-label="@AriaLabel" @onkeydown="HandleGridKeyDown">
+    <CascadingValue Value="InternalContext">
+        @ChildContent
+    </CascadingValue>
+
+    @if (EnableVirtualization && _columnsRendered)
+    {
+        <table class="pggm-data-grid-table pggm-data-grid-table--virtualized">
+            <thead>
+                <tr role="row">
+                    @foreach (var headerCol in InternalContext.Columns.OrderBy(c => c.Index))
+                    {
+                        <th role="columnheader" aria-sort="@GetAriaSort(headerCol)" class="column-header @(IsColumnResizable(headerCol) ? "resizable" : "") @GetStickyClass(headerCol) @headerCol.Class @(headerCol.Alignment == ColumnAlignment.Center ? "pggm-align-center" : headerCol.Alignment == ColumnAlignment.Right ? "pggm-align-right" : "pggm-align-left")"
+                            col-index="@headerCol.Index" data-min-width="@(IsColumnResizable(headerCol) && !string.IsNullOrWhiteSpace(headerCol.MinWidth) ? headerCol.MinWidth : null)" data-width="@(!string.IsNullOrWhiteSpace(headerCol.Width) ? headerCol.Width : (!string.IsNullOrWhiteSpace(headerCol.MinWidth) ? headerCol.MinWidth : null))">
+                            @if (headerCol is SelectColumn<TGridItem>)
+                            {
+                                <div @onfocusin="() => OnHeaderFocus(headerCol.Index)">
+                                    @headerCol.HeaderTitleContent
+                                </div>
+                            }
+                            else
+                            {
+                                <button class="pggm-grid-header-button" @onfocusin="() => OnHeaderFocus(headerCol.Index)" @onclick="async () => await OnHeaderClicked(headerCol)">
+
+                                    @if (headerCol.Sortable == true || headerCol.IsDefaultSortColumn || headerCol.SortBy is not
+                                                            null)
+                                    {
+                                        @if (headerCol == _currentSortColumn)
+                                        {
+                                            @if (_currentSortAscending)
+                                            {
+                                                <svg width="16" height="16" class="sortable-asc" viewBox="0 0 24 24" fill="none"
+                                                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M4 6l7 0"></path>
+                                                    <path d="M4 12l7 0"></path>
+                                                    <path d="M4 18l9 0"></path>
+                                                    <path d="M15 9l3 -3l3 3"></path>
+                                                    <path d="M18 6l0 12"></path>
+                                                </svg>
+
+                                            }
+                                            else
+                                            {
+                                                <svg width="16" height="16" class="sortable-desc" viewBox="0 0 24 24" fill="none"
+                                                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M4 6l9 0"></path>
+                                                    <path d="M4 12l7 0"></path>
+                                                    <path d="M4 18l7 0"></path>
+                                                    <path d="M15 15l3 3l3 -3"></path>
+                                                    <path d="M18 6l0 12"></path>
+                                                </svg>
+
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <svg width="16" height="16" class="sortable" viewBox="0 0 24 24" fill="none"
+                                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M3 9l4 -4l4 4m-4 -4v14"></path>
+                                                <path d="M21 15l-4 4l-4 -4m4 4v-14"></path>
+                                            </svg>
+                                        }
+                                    }
+                                    <span class="pggm-grid-header-title">@headerCol.Title</span>
+                                </button>
+                            }
+                            @if (IsColumnResizable(headerCol))
+                            {
+                                <div class="resize-handle"></div>
+                            }
+                        </th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @if (EffectiveLoadingValue)
+                {
+                    @_renderLoadingContent
+                }
+                else if (_hasLoadedData && _totalItemCount == 0)
+                {
+                    @_renderEmptyContent
+                }
+                else
+                {
+                    <TableVirtualize TItem="TGridItem" @ref="_tableVirtualizeRef" ItemsProvider="ProvideGridItemsAsync"
+                                     ItemSize="@VirtualizeItemSize" OverscanCount="@VirtualizeOverscanCount" Context="rowContext"
+                                     RowClassProvider="@((item, idx) => InternalContext.IsSelected(item) ? "pggm-data-grid-row--selected" : null)">
+                        @{ 
+                            var item = rowContext.Item;
+                            var rowCapture = rowContext.RowIndex;
+                            TrackVirtualizedItem(rowCapture, item);
+                        }
+                        @foreach (var col in InternalContext.Columns.OrderBy(c => c.Index))
+                        {
+                            var colCapture = col;
+                                if (colCapture.HierarchicalToggle && item is IHierarchicalGridItem hierarchicalItem)
+                            {
+                                var indent = hierarchicalItem.Depth * 16;
+                                <td id="@($"{_gridId}-r{rowCapture}-c{colCapture.Index}")" role="gridcell" data-col-index="@colCapture.Index" class="@GetStickyClass(colCapture) @colCapture.Class @( !string.IsNullOrWhiteSpace(colCapture.Width) ? "nowrap" : "") @(colCapture.Alignment == ColumnAlignment.Center ? "pggm-align-center" : colCapture.Alignment == ColumnAlignment.Right ? "pggm-align-right" : "pggm-align-left")" @onclick="() => OnRowClicked(item)">
+                                    <span class="pggm-hierarchical-toggle-container" data-indent="@indent">
+                                        <span class="pggm-hierarchical-expander @(hierarchicalItem.HasChildren ? (hierarchicalItem.IsCollapsed ? "pggm-hierarchical-collapsed" : "pggm-hierarchical-expanded") : "pggm-hierarchical-leaf")">
+                                            @if (hierarchicalItem.HasChildren)
+                                            {
+                                                <button class="pggm-hierarchical-expand-button"
+                                                        aria-label="@(hierarchicalItem.IsCollapsed ? "Expand row" : "Collapse row")"
+                                                        @onclick:stopPropagation="true"
+                                                        @onclick="async () => await ToggleExpandedAsync(item)">
+                                                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
+                                                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                         aria-hidden="true">
+                                                        <path d="M4 2l4 4-4 4" />
+                                                    </svg>
+                                                </button>
+                                            }
+                                        </span>
+                                        @colCapture.CellContentFragment(item)
+                                    </span>
+                                </td>
+                            }
+                            else if (colCapture is SelectColumn<TGridItem> || colCapture.GetType().Name.StartsWith("PropertyColumn"))
+                            {
+                                <td id="@($"{_gridId}-r{rowCapture}-c{colCapture.Index}")" role="gridcell" data-col-index="@colCapture.Index" class="@GetStickyClass(colCapture) @colCapture.Class @( !string.IsNullOrWhiteSpace(colCapture.Width) ? "nowrap" : "") @(colCapture.Alignment == ColumnAlignment.Center ? "pggm-align-center" : colCapture.Alignment == ColumnAlignment.Right ? "pggm-align-right" : "pggm-align-left")" @onclick="() => OnRowClicked(item)">
+                                    @colCapture.CellContentFragment(item)
+                                </td>
+                            }
+                                else
+                            {
+                                <td id="@($"{_gridId}-r{rowCapture}-c{colCapture.Index}")" role="gridcell" data-col-index="@colCapture.Index" class="@GetStickyClass(colCapture) @colCapture.Class @( !string.IsNullOrWhiteSpace(colCapture.Width) ? "nowrap" : "") @(colCapture.Alignment == ColumnAlignment.Center ? "pggm-align-center" : colCapture.Alignment == ColumnAlignment.Right ? "pggm-align-right" : "pggm-align-left")">
+                                    @colCapture.CellContentFragment(item)
+                                </td>
+                            }
+                        }
+                    </TableVirtualize>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <table class="pggm-data-grid-table">
+            <thead>
+                <tr role="row">
+                        @foreach (var col in InternalContext.Columns.OrderBy(c => c.Index))
+                    {
+                        <th role="columnheader" aria-sort="@GetAriaSort(col)" class="column-header @(IsColumnResizable(col) ? "resizable" : "") @GetStickyClass(col) @col.Class @(col.Alignment == ColumnAlignment.Center ? "pggm-align-center" : col.Alignment == ColumnAlignment.Right ? "pggm-align-right" : "pggm-align-left")"
+                            col-index="@col.Index" data-min-width="@(IsColumnResizable(col) && !string.IsNullOrWhiteSpace(col.MinWidth) ? col.MinWidth : null)" data-width="@(!string.IsNullOrWhiteSpace(col.Width) ? col.Width : (!string.IsNullOrWhiteSpace(col.MinWidth) ? col.MinWidth : null))">
+                            @if (col is SelectColumn<TGridItem>)
+                            {
+                                <div @onfocusin="() => OnHeaderFocus(col.Index)">
+                                    @col.HeaderTitleContent
+                                </div>
+                            }
+                            else
+                            {
+                                <button class="pggm-grid-header-button" @onfocusin="() => OnHeaderFocus(col.Index)" @onclick="async () => await OnHeaderClicked(col)">
+
+                                    @if (col.Sortable == true || col.IsDefaultSortColumn || col.SortBy is not null)
+                                    {
+                                        @if (col == _currentSortColumn)
+                                        {
+                                            @if (_currentSortAscending)
+                                            {
+                                                <svg width="16" height="16" class="sortable-asc" viewBox="0 0 24 24" fill="none"
+                                                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M4 6l7 0"></path>
+                                                    <path d="M4 12l7 0"></path>
+                                                    <path d="M4 18l9 0"></path>
+                                                    <path d="M15 9l3 -3l3 3"></path>
+                                                    <path d="M18 6l0 12"></path>
+                                                </svg>
+                                            }
+                                            else
+                                            {
+                                                <svg width="16" height="16" class="sortable-desc" viewBox="0 0 24 24" fill="none"
+                                                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M4 6l9 0"></path>
+                                                    <path d="M4 12l7 0"></path>
+                                                    <path d="M4 18l7 0"></path>
+                                                    <path d="M15 15l3 3l3 -3"></path>
+                                                    <path d="M18 6l0 12"></path>
+                                                </svg>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <svg width="16" height="16" class="sortable" viewBox="0 0 24 24" fill="none"
+                                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M3 9l4 -4l4 4m-4 -4v14"></path>
+                                                <path d="M21 15l-4 4l-4 -4m4 4v-14"></path>
+                                            </svg>
+                                        }
+                                    }
+                                    <span class="pggm-grid-header-title">@col.Title</span>
+                                </button>
+                            }
+                            @if (IsColumnResizable(col))
+                            {
+                                <div class="resize-handle"></div>
+                            }
+                        </th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @if (EffectiveLoadingValue)
+                {
+                    @_renderLoadingContent
+                }
+                else if (_hasLoadedData && _itemsToRender is not null && !_itemsToRender.Any())
+                {
+                    @_renderEmptyContent
+                }
+                else if (_itemsToRender is not null)
+                {
+                    int _rowIndex = 0;
+                    foreach (var item in _itemsToRender)
+                    {
+                        @if (item is IHierarchicalGridItem hiddenCheck && hiddenCheck.IsHidden)
+                        {
+                            continue;
+                        }
+                        var rowCapture = _rowIndex;
+                        <tr role="row" data-row-index="@rowCapture" class="@(InternalContext.IsSelected(item) ? "pggm-data-grid-row--selected" : null)">
+                            @foreach (var col in InternalContext.Columns.OrderBy(c => c.Index))
+                            {
+                                // col is already loop-local per inner foreach iteration.
+                                var colCapture = col;
+                                if (colCapture.HierarchicalToggle && item is IHierarchicalGridItem hierarchicalItem)
+                                {
+                                    var indent = hierarchicalItem.Depth * 16;
+                                    <td role="gridcell" class="@GetStickyClass(colCapture) @colCapture.Class @( !string.IsNullOrWhiteSpace(colCapture.Width) ? "nowrap" : "") @(colCapture.Alignment == ColumnAlignment.Center ? "pggm-align-center" : colCapture.Alignment == ColumnAlignment.Right ? "pggm-align-right" : "pggm-align-left")" @onclick="() => OnRowClicked(item)">
+                                        <span class="pggm-hierarchical-toggle-container" data-indent="@indent">
+                                            <span class="pggm-hierarchical-expander @(hierarchicalItem.HasChildren ? (hierarchicalItem.IsCollapsed ? "pggm-hierarchical-collapsed" : "pggm-hierarchical-expanded") : "pggm-hierarchical-leaf")">
+                                                @if (hierarchicalItem.HasChildren)
+                                                {
+                                                    <button class="pggm-hierarchical-expand-button"
+                                                            aria-label="@(hierarchicalItem.IsCollapsed ? "Expand row" : "Collapse row")"
+                                                            @onclick:stopPropagation="true"
+                                                            @onclick="async () => await ToggleExpandedAsync(item)">
+                                                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
+                                                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                             aria-hidden="true">
+                                                            <path d="M4 2l4 4-4 4" />
+                                                        </svg>
+                                                    </button>
+                                                }
+                                            </span>
+                                            @colCapture.CellContentFragment(item)
+                                        </span>
+                                    </td>
+                                }
+                                else if (colCapture is SelectColumn<TGridItem> || colCapture.GetType().Name.StartsWith("PropertyColumn"))
+                                {
+                                    <td id="@($"{_gridId}-r{rowCapture}-c{colCapture.Index}")" role="gridcell" tabindex="@GetTabIndex(rowCapture, colCapture.Index)" @onfocusin="() => _focusManager.SetActive(rowCapture, colCapture.Index)" class="@GetStickyClass(colCapture) @colCapture.Class @( !string.IsNullOrWhiteSpace(colCapture.Width) ? "nowrap" : "") @(colCapture.Alignment == ColumnAlignment.Center ? "pggm-align-center" : colCapture.Alignment == ColumnAlignment.Right ? "pggm-align-right" : "pggm-align-left")" @onclick="() => OnRowClicked(item)">
+                                        @colCapture.CellContentFragment(item)
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td id="@($"{_gridId}-r{rowCapture}-c{colCapture.Index}")" role="gridcell" tabindex="@GetTabIndex(rowCapture, colCapture.Index)" @onfocusin="() => _focusManager.SetActive(rowCapture, colCapture.Index)" class="@GetStickyClass(colCapture) @colCapture.Class @( !string.IsNullOrWhiteSpace(colCapture.Width) ? "nowrap" : "") @(colCapture.Alignment == ColumnAlignment.Center ? "pggm-align-center" : colCapture.Alignment == ColumnAlignment.Right ? "pggm-align-right" : "pggm-align-left")">
+                                        @colCapture.CellContentFragment(item)
+                                    </td>
+                                }
+                            }
+                        @{ _rowIndex++; }
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+@code {
+    private void RenderEmptyContent(RenderTreeBuilder __builder)
+    {
+        var colspan = InternalContext.Columns.Count.ToString();
+
+        <tr class="pggm-data-grid-empty-row">
+            <td class="pggm-data-grid-empty-cell" colspan="@colspan">
+                @if (EmptyContent is null)
+                {
+                    @("No data to show!")
+                }
+                else
+                {
+                    @EmptyContent
+                }
+            </td>
+        </tr>
+    }
+
+    private void RenderLoadingContent(RenderTreeBuilder __builder)
+    {
+        var colspan = InternalContext.Columns.Count.ToString();
+
+        <tr class="pggm-data-grid-loading-row">
+            <td class="pggm-data-grid-loading-cell" colspan="@colspan">
+                @if (LoadingContent is null)
+                {
+                    <span>Loading...</span>
+                }
+                else
+                {
+                    @LoadingContent
+                }
+            </td>
+        </tr>
+    }
+}

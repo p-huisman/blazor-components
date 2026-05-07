@@ -1,0 +1,67 @@
+/* Nav item styles are global (not scoped) because NavLink is a Blazor
+   component — Blazor CSS isolation only scopes HTML elements, not
+   component instances, so scoped CSS never reaches the rendered <a>. */
+
+.nav-item {
+    display: block;
+    padding: 0 1rem;
+    line-height: var(--nav-item-height);
+    min-height: var(--nav-item-height);
+    font-size: var(--nav-font-size-l2);
+    font-family: var(--nav-font-family);
+    font-weight: 400;
+    color: var(--nav-text-main);
+    text-decoration: none;
+    border-left: 4px solid transparent;
+    transition: var(--nav-transition);
+    box-sizing: border-box;
+}
+
+.nav-item.nav-item--l3 {
+    padding-left: calc(1rem + var(--nav-indent-l3));
+    font-size: var(--nav-font-size-l3);
+    color: var(--nav-text-secondary);
+}
+
+.nav-item-text-only {
+    font-weight: 600;
+    color: var(--nav-text-main);
+    text-transform: uppercase;
+}
+
+.nav-item:hover {
+    background-color: var(--nav-hover-bg);
+    color: var(--nav-text-main);
+}
+
+.nav-item.nav-item--l3:hover {
+    background-color: var(--nav-hover-bg);
+    color: var(--nav-text-main);
+}
+
+.nav-item.nav-item--l3.nav-item-text-only:hover {
+    background-color: transparent;
+}
+
+.nav-item:focus-visible {
+    outline: 2px solid var(--nav-accent-green);
+    outline-offset: -2px;
+}
+
+.nav-item.active {
+    border-left-color: var(--nav-accent-green);
+    background-color: var(--nav-active-bg);
+}
+
+.nav-item__label {
+    margin-left: calc(24px + 0.5rem);
+}
+
+.nav-item.nav-item--l3 .nav-item__label {
+    margin-left: 0.5rem;
+}
+
+.nav-item.active .nav-item__label {
+    color: var(--nav-text-main);
+    font-weight: 600;
+}

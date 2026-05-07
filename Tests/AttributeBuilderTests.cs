@@ -1,4 +1,5 @@
 using Pggm.Components.Builders;
+
 using Xunit;
 
 namespace Pggm.Components.Tests;
@@ -226,7 +227,7 @@ public class AttributeBuilderTests
 
         // Assert
         Assert.Contains("disabled", result);
-        Assert.Equal(true, result["disabled"]);
+        Assert.True((bool)result["disabled"]);
     }
 
     [Fact]
@@ -259,15 +260,15 @@ public class AttributeBuilderTests
         Assert.Contains("disabled", result);
         Assert.Contains("readonly", result);
         Assert.DoesNotContain("required", result);
-        Assert.Equal(true, result["disabled"]);
-        Assert.Equal(true, result["readonly"]);
+        Assert.True((bool)result["disabled"]);
+        Assert.True((bool)result["readonly"]);
     }
 
     #endregion
 
     #region Enum Attribute Tests
 
-    public enum TestEnum
+    public enum Test
     {
         FirstValue,
         SecondValue,
@@ -281,7 +282,7 @@ public class AttributeBuilderTests
         var builder = AttributeBuilder.Create();
 
         // Act
-        var result = builder.SetEnumAttribute<TestEnum>("appearance", TestEnum.FirstValue).Build();
+        var result = builder.SetEnumAttribute<Test>("appearance", Test.FirstValue).Build();
 
         // Assert
         Assert.Contains("appearance", result);
@@ -295,7 +296,7 @@ public class AttributeBuilderTests
         var builder = AttributeBuilder.Create();
 
         // Act
-        var result = builder.SetEnumAttribute<TestEnum>("appearance", null).Build();
+        var result = builder.SetEnumAttribute<Test>("appearance", null).Build();
 
         // Assert
         Assert.DoesNotContain("appearance", result);
@@ -309,8 +310,8 @@ public class AttributeBuilderTests
 
         // Act
         var result = builder
-            .SetEnumAttribute<TestEnum>("first", TestEnum.FirstValue)
-            .SetEnumAttribute<TestEnum>("second", TestEnum.SecondValue)
+            .SetEnumAttribute<Test>("first", Test.FirstValue)
+            .SetEnumAttribute<Test>("second", Test.SecondValue)
             .Build();
 
         // Assert
@@ -328,7 +329,7 @@ public class AttributeBuilderTests
     {
         public string? StringProperty { get; set; }
         public bool BoolProperty { get; set; }
-        public TestEnum EnumProperty { get; set; }
+        public Test EnumProperty { get; set; }
         public int IntProperty { get; set; }
     }
 
@@ -341,7 +342,7 @@ public class AttributeBuilderTests
         {
             StringProperty = "test-string",
             BoolProperty = true,
-            EnumProperty = TestEnum.SecondValue,
+            EnumProperty = Test.SecondValue,
             IntProperty = 42
         };
 
@@ -355,7 +356,7 @@ public class AttributeBuilderTests
         Assert.Contains("int-property", result);
 
         Assert.Equal("test-string", result["string-property"]);
-        Assert.Equal(true, result["bool-property"]);
+        Assert.True((bool)result["bool-property"]);
         Assert.Equal("second-value", result["enum-property"]);
         Assert.Equal(42, result["int-property"]);
     }
@@ -375,17 +376,17 @@ public class AttributeBuilderTests
 
     #endregion
 
-    #region Fluent API Tests
+    #region API Tests
 
     [Fact]
-    public void FluentAPI_ChainsMethods_ReturnsCorrectBuilder()
+    public void API_ChainsMethods_ReturnsCorrectBuilder()
     {
         // Arrange & Act
         var builder = AttributeBuilder.Create()
             .AddClass("test-class")
             .SetAttribute("data-test", "test-value")
             .SetBooleanAttribute("disabled", true)
-            .SetEnumAttribute<TestEnum>("appearance", TestEnum.FirstValue);
+            .SetEnumAttribute<Test>("appearance", Test.FirstValue);
 
         // Assert
         Assert.NotNull(builder);
@@ -399,7 +400,7 @@ public class AttributeBuilderTests
     }
 
     [Fact]
-    public void FluentAPI_ComplexChaining_ProducesCorrectResult()
+    public void API_ComplexChaining_ProducesCorrectResult()
     {
         // Arrange & Act
         var result = AttributeBuilder.Create()
@@ -410,7 +411,7 @@ public class AttributeBuilderTests
             .SetAttribute("data-testid", "component-test")
             .SetBooleanAttribute("disabled", false)
             .SetBooleanAttribute("required", true)
-            .SetEnumAttribute<TestEnum>("size", TestEnum.SecondValue)
+            .SetEnumAttribute<Test>("size", Test.SecondValue)
             .Build();
 
         // Assert
@@ -418,7 +419,7 @@ public class AttributeBuilderTests
         Assert.Equal("base-class conditional-class", result["class"]);
         Assert.Equal("test-id", result["id"]);
         Assert.Equal("component-test", result["data-testid"]);
-        Assert.Equal(true, result["required"]);
+        Assert.True((bool)result["required"]);
         Assert.Equal("second-value", result["size"]);
         Assert.DoesNotContain("disabled", result);
         Assert.DoesNotContain("hidden-class", result["class"].ToString());

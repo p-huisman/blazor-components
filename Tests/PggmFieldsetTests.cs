@@ -1,11 +1,13 @@
 // PggmFieldsetTests.cs
-using Xunit;
 using Bunit;
+
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Tests
+using Xunit;
+
+namespace Pggm.Components.Tests
 {
-    public class PggmFieldsetTests : TestContext
+    public class PggmFieldsetTests : PggmTestContext
     {
         public PggmFieldsetTests()
         {

@@ -1,0 +1,372 @@
+@page "/pggm-address-input"
+@using Microsoft.AspNetCore.Components
+@inject NavigationManager NavigationManager
+
+<PageTitle>PGGM Address Input</PageTitle>
+
+<PggmHeading Level="1">PGGM Address Input</PggmHeading>
+
+<p>This page demonstrates the PGGM Address Input component with various configurations for Dutch and foreign addresses.</p>
+
+<div class="demo-section">
+    <PggmHeading Level="2">Dutch Address Examples</PggmHeading>
+
+    <div class="form-group">
+        <PggmLabel For="address1">Basic Dutch Address Input:</PggmLabel>
+        <PggmErrorMessage For="address1"
+            Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.CustomError}")">
+            Vul een geldig adres in
+        </PggmErrorMessage>
+        <PggmAddressInput @bind-Value="@addressValue1" Name="address1" Id="address1" 
+            LandenEndpoint="@($"{NavigationManager.BaseUri}api/topography-landen.json")"
+            AdresEndpoint="@($"{NavigationManager.BaseUri}api/adres.json")" />
+        <p class="value-display">Current value: @(addressValue1 ?? "null")</p>
+    </div>
+
+    <div class="form-group">
+        <PggmLabel For="address2">Required Dutch Address Input:</PggmLabel>
+        <PggmErrorMessage For="address2"
+            Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.CustomError}")">
+            Dit veld is verplicht
+        </PggmErrorMessage>
+        <PggmAddressInput @bind-Value="@addressValue2" Name="address2" Id="address2" Required="true" 
+            LandenEndpoint="@($"{NavigationManager.BaseUri}api/topography-landen.json")"
+            AdresEndpoint="@($"{NavigationManager.BaseUri}api/adres.json")" />
+        <p class="value-display">Current value: @(addressValue2 ?? "null")</p>
+    </div>
+
+    <div class="form-group">
+        <PggmLabel For="address3">Dutch Address with Autocomplete:</PggmLabel>
+        <PggmErrorMessage For="address3"
+            Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.CustomError}")">
+            Vul een geldig adres in
+        </PggmErrorMessage>
+        <PggmAddressInput @bind-Value="@addressValue3" Name="address3" Id="address3" 
+            Autocomplete="true" Required="true" 
+            LandenEndpoint="@($"{NavigationManager.BaseUri}api/topography-landen.json")"
+            AdresEndpoint="@($"{NavigationManager.BaseUri}api/adres.json")" />
+        <p class="value-display">Current value: @(addressValue3 ?? "null")</p>
+        <p class="info-text">Try entering a postal code and house number for autocomplete</p>
+    </div>
+
+    <div class="form-group">
+        <PggmLabel For="address4">Disabled Address Input:</PggmLabel>
+        <PggmAddressInput @bind-Value="@addressValue4" Name="address4" Id="address4" Disabled="true" 
+            LandenEndpoint="@($"{NavigationManager.BaseUri}api/topography-landen.json")"
+            AdresEndpoint="@($"{NavigationManager.BaseUri}api/adres.json")" />
+        <p class="value-display">Current value: @addressValue4</p>
+    </div>
+</div>
+
+<div class="demo-section">
+    <PggmHeading Level="2">Foreign Address Examples</PggmHeading>
+
+    <div class="form-group">
+        <PggmLabel For="address5">Foreign/International Address:</PggmLabel>
+        <PggmErrorMessage For="address5"
+            Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.CustomError}")">
+            Please enter a valid address
+        </PggmErrorMessage>
+        <PggmAddressInput @bind-Value="@addressValue5" Name="address5" Id="address5" 
+            Foreign="true" Required="true" 
+            LandenEndpoint="@($"{NavigationManager.BaseUri}api/topography-landen.json")"
+            AdresEndpoint="@($"{NavigationManager.BaseUri}api/adres.json")" />
+        <p class="value-display">Current value: @(addressValue5 ?? "null")</p>
+    </div>
+
+    <div class="form-group">
+        <PggmLabel For="address6">Foreign Address with Autocomplete:</PggmLabel>
+        <PggmErrorMessage For="address6"
+            Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.CustomError}")">
+            Please enter a valid address
+        </PggmErrorMessage>
+        <PggmAddressInput @bind-Value="@addressValue6" Name="address6" Id="address6" 
+            Foreign="true" Autocomplete="true" Required="true" 
+            LandenEndpoint="@($"{NavigationManager.BaseUri}api/topography-landen.json")"
+            AdresEndpoint="@($"{NavigationManager.BaseUri}api/adres.json")" />
+        <p class="value-display">Current value: @(addressValue6 ?? "null")</p>
+    </div>
+</div>
+
+<div class="demo-section">
+    <PggmHeading Level="2">Address with Event Handling</PggmHeading>
+
+    <div class="form-group">
+        <PggmLabel For="address7">Address with Events:</PggmLabel>
+        <PggmErrorMessage For="address7"
+            Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.CustomError}")">
+            Vul een geldig adres in
+        </PggmErrorMessage>
+        <PggmAddressInput @bind-Value="@addressValue7" Name="address7" Id="address7"
+            Required="true"
+            LandenEndpoint="@($"{NavigationManager.BaseUri}api/topography-landen.json")"
+            AdresEndpoint="@($"{NavigationManager.BaseUri}api/adres.json")"
+            OnInput="@OnAddressInput"
+            OnChange="@OnAddressChange"
+            OnFocus="@OnAddressFocus"
+            OnBlur="@OnAddressBlur"
+            OnValidationChanged="@OnValidationChanged" />
+        <p class="value-display">Current value: @(addressValue7 ?? "null")</p>
+        @if (!string.IsNullOrEmpty(eventMessage))
+        {
+            <p class="event-message">@eventMessage</p>
+        }
+        @if (validationState.HasValue)
+        {
+            <p class="validation-message">
+                Address is: <strong>@(validationState.Value ? "VALID" : "INVALID")</strong>
+            </p>
+        }
+    </div>
+</div>
+
+<div class="demo-section">
+    <PggmHeading Level="2">Form Example</PggmHeading>
+
+    <EditForm Model="@formModel" OnValidSubmit="@HandleSubmit">
+        <div class="form-group">
+            <PggmLabel For="billingAddress">Billing Address:</PggmLabel>
+            <PggmErrorMessage For="billingAddress"
+                Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.CustomError}")">
+                Billing address is required
+            </PggmErrorMessage>
+            <PggmAddressInput @bind-Value="@formModel.BillingAddress" 
+                Name="billingAddress" Id="billingAddress"
+                Required="true" Autocomplete="true" 
+                LandenEndpoint="@($"{NavigationManager.BaseUri}api/topography-landen.json")"
+                AdresEndpoint="@($"{NavigationManager.BaseUri}api/adres.json")" />
+        </div>
+
+        <div class="form-group">
+            <PggmLabel For="shippingAddress">Shipping Address (Foreign):</PggmLabel>
+            <PggmErrorMessage For="shippingAddress"
+                Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.CustomError}")">
+                Shipping address is required
+            </PggmErrorMessage>
+            <PggmAddressInput @bind-Value="@formModel.ShippingAddress" 
+                Name="shippingAddress" Id="shippingAddress"
+                Foreign="true" Required="true" Autocomplete="true" 
+                LandenEndpoint="@($"{NavigationManager.BaseUri}api/topography-landen.json")"
+                AdresEndpoint="@($"{NavigationManager.BaseUri}api/adres.json")" />
+        </div>
+
+        <div class="form-actions">
+            <PggmButton Type="@ButtonType.Submit">Submit Form</PggmButton>
+            <PggmButton Type="@ButtonType.Button" Appearance="@ButtonAppearance.Secondary" @onclick="ResetForm">Reset</PggmButton>
+        </div>
+    </EditForm>
+
+    @if (formSubmitted)
+    {
+        <div class="success-message">
+            <PggmNotification Type="success" Open="true">
+                <h3 slot="header">Form Submitted Successfully!</h3>
+                <p><strong>Billing Address:</strong> @formModel.BillingAddress</p>
+                <p><strong>Shipping Address:</strong> @formModel.ShippingAddress</p>
+            </PggmNotification>
+        </div>
+    }
+</div>
+
+<div class="demo-section">
+    <PggmHeading Level="2">Parsed Address Data</PggmHeading>
+    
+    <div class="form-group">
+        <PggmLabel For="address8">Address to Parse:</PggmLabel>
+        <PggmAddressInput @bind-Value="@addressValue8" Name="address8" Id="address8" 
+            Autocomplete="true" 
+            LandenEndpoint="@($"{NavigationManager.BaseUri}api/topography-landen.json")"
+            AdresEndpoint="@($"{NavigationManager.BaseUri}api/adres.json")"
+            OnChange="@ParseAddress" />
+    </div>
+
+    @if (parsedAddress != null)
+    {
+        <div class="parsed-data">
+            <h4>Parsed Address Data:</h4>
+            <pre>@parsedAddress</pre>
+        </div>
+    }
+</div>
+
+<style>
+    /* demo-section styles are provided globally in wwwroot/css/custom-formatters.css */
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+
+    .value-display {
+        margin-top: 8px;
+        padding: 8px;
+        background-color: #f5f5f5;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 0.9em;
+        word-break: break-all;
+    }
+
+    .event-message {
+        color: #0066cc;
+        font-style: italic;
+        margin-top: 8px;
+        padding: 8px;
+        background-color: #e3f2fd;
+        border-radius: 4px;
+    }
+
+    .validation-message {
+        margin-top: 8px;
+        padding: 8px;
+        background-color: #f0f0f0;
+        border-radius: 4px;
+    }
+
+    .validation-message strong {
+        color: #4caf50;
+    }
+
+    .info-text {
+        font-size: 0.9em;
+        color: #666;
+        margin-top: 5px;
+        font-style: italic;
+    }
+
+    .form-actions {
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .success-message {
+        margin-top: 20px;
+    }
+
+    .parsed-data {
+        margin-top: 15px;
+        padding: 15px;
+        background-color: #f9f9f9;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+    }
+
+    .parsed-data h4 {
+        margin-top: 0;
+        margin-bottom: 10px;
+    }
+
+    .parsed-data pre {
+        background-color: #fff;
+        padding: 10px;
+        border-radius: 4px;
+        border: 1px solid #e0e0e0;
+        overflow-x: auto;
+    }
+</style>
+
+@code {
+    // Basic examples
+    private string? addressValue1;
+    private string? addressValue2;
+    private string? addressValue3;
+    private string? addressValue4 = "{\"postalCode\":\"1011AA\",\"houseNumber\":\"1\",\"street\":\"Dam\",\"city\":\"Amsterdam\"}";
+    
+    // Foreign address examples
+    private string? addressValue5;
+    private string? addressValue6;
+    
+    // Event handling example
+    private string? addressValue7;
+    private string eventMessage = "";
+    private bool? validationState;
+
+    // Parse example
+    private string? addressValue8;
+    private string? parsedAddress;
+
+    // Form example
+    private AddressFormModel formModel = new();
+    private bool formSubmitted = false;
+
+    private void OnAddressInput(ChangeEventArgs args)
+    {
+        eventMessage = $"Input event fired - Value length: {args.Value?.ToString()?.Length ?? 0}";
+        StateHasChanged();
+    }
+
+    private void OnAddressChange(ChangeEventArgs args)
+    {
+        eventMessage = $"Change event fired - Value: {(string.IsNullOrEmpty(args.Value?.ToString()) ? "empty" : "has data")}";
+        StateHasChanged();
+    }
+
+    private void OnAddressFocus(FocusEventArgs args)
+    {
+        eventMessage = "Address input focused";
+        StateHasChanged();
+    }
+
+    private void OnAddressBlur(FocusEventArgs args)
+    {
+        eventMessage = "Address input blurred";
+        StateHasChanged();
+    }
+
+    private void OnValidationChanged(bool isValid)
+    {
+        validationState = isValid;
+        eventMessage = $"Validation changed: {(isValid ? "Valid" : "Invalid")}";
+        StateHasChanged();
+    }
+
+    private void ParseAddress(ChangeEventArgs args)
+    {
+        try
+        {
+            if (!string.IsNullOrEmpty(addressValue8))
+            {
+                // Pretty print the JSON
+                var json = System.Text.Json.JsonDocument.Parse(addressValue8);
+                parsedAddress = System.Text.Json.JsonSerializer.Serialize(json, new System.Text.Json.JsonSerializerOptions 
+                { 
+                    WriteIndented = true 
+                });
+            }
+            else
+            {
+                parsedAddress = null;
+            }
+        }
+        catch (Exception ex)
+        {
+            parsedAddress = $"Error parsing address: {ex.Message}";
+        }
+        StateHasChanged();
+    }
+
+    private void HandleSubmit()
+    {
+        formSubmitted = true;
+        StateHasChanged();
+    }
+
+    private void ResetForm()
+    {
+        formModel = new();
+        formSubmitted = false;
+        StateHasChanged();
+    }
+
+    public class AddressFormModel
+    {
+        public string? BillingAddress { get; set; }
+        public string? ShippingAddress { get; set; }
+    }
+}

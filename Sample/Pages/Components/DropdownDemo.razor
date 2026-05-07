@@ -1,0 +1,107 @@
+@page "/pggm-dropdown"
+
+@using Pggm.Components.Enums
+@using Pggm.Components.Sample.Components.ApiDocumentation
+@using System.Text.Json
+
+<PageTitle>PGGM Dropdown</PageTitle>
+
+<PggmHeading Level="1">PGGM Dropdown</PggmHeading>
+
+<p>This page demonstrates the PGGM Dropdown web component via the Blazor wrapper `PggmDropdown` and `PggmDropdownItem`.</p>
+
+<DemoSection Title="Basic Dropdown" Code="@_basicSource">
+    <Description>
+        <p>A simple dropdown with iconed items and a submenu. Selection is reported below.</p>
+    </Description>
+    <Content>
+        <PggmDropdown OnSelect="HandleSelect" OnOpen="HandleOpen" OnClose="HandleClose">
+            <PggmButton slot="trigger" Appearance="@ButtonAppearance.Primary">Open Dropdown</PggmButton>
+
+            <PggmDropdownItem Value="open-file">
+                <PggmIcon Icon="pencil" Size="Small" slot="icon" />
+                Open file
+                <span slot="details">Ctrl+O</span>
+            </PggmDropdownItem>
+
+            <PggmDropdownItem Value="option-2">
+                <PggmIcon Icon="copy" Size="Small" slot="icon" />
+                Option 2
+            </PggmDropdownItem>
+
+            <PggmDropdownItem Value="option-3">
+                <PggmIcon Icon="eraser" Size="Small" slot="icon" />
+                Option 3
+            </PggmDropdownItem>
+
+            <PggmDropdownItem Value="option-4">
+                <PggmIcon Icon="calendar" Size="Small" slot="icon" />
+                Option 4
+                <div slot="submenu">
+                    <PggmDropdownItem Value="sub-1">Sub-option 1</PggmDropdownItem>
+                    <PggmDropdownItem Value="sub-2">Sub-option 2</PggmDropdownItem>
+                </div>
+            </PggmDropdownItem>
+        </PggmDropdown>
+
+        <div class="mt-3">Selected: @Selected</div>
+    </Content>
+</DemoSection>
+
+<PggmHeading Level="2">API</PggmHeading>
+<PggmHeading Level="3">PggmDropdown</PggmHeading>
+<ApiDocumentation Properties="_properties" Events="_events" />
+
+@code {
+    private string? Selected;
+
+    private string _basicSource =
+        "<PggmDropdown OnSelect=\"HandleSelect\">\n" +
+        "  <PggmButton slot=\"trigger\" Appearance=\"@ButtonAppearance.Primary\">Open Dropdown</PggmButton>\n" +
+        "  <PggmDropdownItem Value=\"open-file\">Open file</PggmDropdownItem>\n" +
+        "  <PggmDropdownItem Value=\"option-2\">Option 2</PggmDropdownItem>\n" +
+        "  <PggmDropdownItem Value=\"option-3\">Option 3</PggmDropdownItem>\n" +
+        "  <PggmDropdownItem Value=\"option-4\">\n" +
+        "    Option 4\n" +
+        "    <div slot=\"submenu\">\n" +
+        "      <PggmDropdownItem Value=\"sub-1\">Sub-option 1</PggmDropdownItem>\n" +
+        "      <PggmDropdownItem Value=\"sub-2\">Sub-option 2</PggmDropdownItem>\n" +
+        "    </div>\n" +
+        "  </PggmDropdownItem>\n" +
+        "</PggmDropdown>";
+
+    private Task HandleSelect(object? detail)
+    {
+        if (detail is JsonElement je)
+        {
+            if (je.ValueKind == JsonValueKind.Object)
+            {
+                if (je.TryGetProperty("item", out var item) && item.ValueKind == JsonValueKind.Object)
+                {
+                    if (item.TryGetProperty("value", out var val) && val.ValueKind != JsonValueKind.Null)
+                    {
+                        Selected = val.GetString();
+                        return Task.CompletedTask;
+                    }
+                    if (item.TryGetProperty("textContent", out var text) && text.ValueKind != JsonValueKind.Null)
+                    {
+                        Selected = text.GetString();
+                        return Task.CompletedTask;
+                    }
+                }
+            }
+
+            Selected = je.ToString();
+            return Task.CompletedTask;
+        }
+
+        Selected = detail?.ToString();
+        return Task.CompletedTask;
+    }
+
+    private Task HandleOpen() => Task.CompletedTask;
+    private Task HandleClose() => Task.CompletedTask;
+
+    private IEnumerable<ApiMember> _properties = Array.Empty<ApiMember>();
+    private IEnumerable<ApiMember> _events = Array.Empty<ApiMember>();
+}

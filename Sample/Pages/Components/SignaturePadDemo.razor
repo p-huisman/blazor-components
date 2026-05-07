@@ -4,29 +4,27 @@
 
 <PageTitle>PGGM Signature pad</PageTitle>
 
-<PggmHeader Level="1">Pggm Signature Pad Component</PggmHeader>
+<PggmHeading Level="1">Pggm Signature Pad</PggmHeading>
 
 <p>This page demonstrates the PGGM Signature Pad Component.</p>
 
 <div class="demo-section">
-    <PggmHeader Level="3">Basic Signature Pad</PggmHeader>
+    <PggmHeading Level="3">Basic Signature Pad</PggmHeading>
 
   <EditForm Model="model" OnValidSubmit="HandleValidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <PggmFieldset>
-      <Label><PggmLabel For="HandtekeningVeld">Handtekening</PggmLabel></Label>
-      <Description><p>Gebruik je muis of touch om je handtekening te plaatsen.</p></Description>
-      <Error>
+      <PggmFieldsetLabel For="HandtekeningVeld">Handtekening</PggmFieldsetLabel>
+      <PggmFieldsetDescription><p>Gebruik je muis of touch om je handtekening te plaatsen.</p></PggmFieldsetDescription>
+      <PggmFieldsetError>
         <PggmErrorMessage For="HandtekeningVeld" Validity="valueMissing">Handtekening is verplicht, plaats een handtekening.</PggmErrorMessage>
         <PggmErrorMessage For="HandtekeningVeld" Validity="badInput">Ongeldige handtekening, plaats een juiste handtekening.</PggmErrorMessage>
-      </Error>
-      <ChildContent>
+      </PggmFieldsetError>
         <PggmSignaturePad Id="HandtekeningVeld" Name="mySignature" Required="true" Value="@model.Signature"
           ValueChanged="@OnSignatureChanged" />
-      </ChildContent>
     </PggmFieldset>
-    <PggmButton Type="submit">Submit</PggmButton>
+    <PggmButton Type="@ButtonType.Submit">Submit</PggmButton>
   </EditForm>
 
   @if (!string.IsNullOrEmpty(model.Signature))
@@ -36,6 +34,24 @@
       <pre class="signature-output">@model.Signature</pre>
     </div>
   }
+</div>
+
+<div class="demo-section">
+    <PggmHeading Level="3">Signature Pad with Buttons</PggmHeading>
+
+    <PggmHeading Level="4">With Erase Button</PggmHeading>
+    <PggmSignaturePad Id="signatureErase" Buttons="erase" />
+
+    <PggmHeading Level="4">With Undo and Redo Buttons</PggmHeading>
+    <PggmSignaturePad Id="signatureUndoRedo" Buttons="undo,redo" />
+
+    <PggmHeading Level="4">With All Buttons</PggmHeading>
+    <PggmSignaturePad Id="signatureAll" Buttons="erase,undo,redo" />
+</div>
+
+<div class="demo-section">
+    <PggmHeading Level="3">Disabled Signature Pad</PggmHeading>
+    <PggmSignaturePad Id="signatureDisabled" Disabled="true" />
 </div>
 
 @code {
@@ -56,6 +72,10 @@
     public string? Signature { get; set; }
   }
 
+}
+
+@code {
+  // Use <PggmFieldsetLabel> in markup for label rendering
 }
 
 <style>

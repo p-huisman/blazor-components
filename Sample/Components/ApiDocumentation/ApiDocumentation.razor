@@ -1,0 +1,140 @@
+@using System.Collections
+@using System.Collections.Generic
+@using Pggm.Components.Sample.Components.ApiDocumentation
+
+@if ((Attributes?.Any() ?? false) || (Properties?.Any() ?? false) || (PublicProperties?.Any() ?? false) || (Methods?.Any() ?? false) || (Events?.Any() ?? false))
+{
+    <div class="api-documentation">
+        @if (Attributes?.Any() ?? false)
+        {
+            <PggmHeading Level="4">Attributes</PggmHeading>
+            @RenderTable(Attributes)
+        }
+
+        @if (Properties?.Any() ?? false)
+        {
+            <PggmHeading Level="4">Properties</PggmHeading>
+            @RenderTable(Properties)
+        }
+
+        @if (Methods?.Any() ?? false)
+        {
+            <PggmHeading Level="4">Methods</PggmHeading>
+            @foreach (var m in Methods)
+            {
+                <div class="api-method">
+                    <div class="api-signature"><strong>@m.Signature ?? m.Name</strong></div>
+                    <div class="api-description">@((m.Description ?? string.Empty))</div>
+                    @if (m.Parameters?.Any() ?? false)
+                    {
+                        <table class="table table-sm api-params">
+                            <thead>
+                                <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
+                            </thead>
+                            <tbody>
+                            @foreach (var p in m.Parameters)
+                            {
+                                <tr>
+                                    <td>@p.Name</td>
+                                    <td>@p.Type</td>
+                                    <td>@p.Description</td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            }
+        }
+
+        @if (PublicProperties?.Any() ?? false)
+        {
+            <PggmHeading Level="4">Public Properties</PggmHeading>
+            @RenderTable(PublicProperties)
+        }
+
+        @if (Events?.Any() ?? false)
+        {
+            <PggmHeading Level="4">Events</PggmHeading>
+            @RenderTable(Events)
+        }
+    </div>
+}
+
+@code {
+    [Parameter] public IEnumerable<ApiMember>? Attributes { get; set; }
+    [Parameter] public IEnumerable<ApiMember>? Properties { get; set; }
+    [Parameter] public IEnumerable<ApiMember>? PublicProperties { get; set; }
+    [Parameter] public IEnumerable<ApiMember>? Methods { get; set; }
+    [Parameter] public IEnumerable<ApiMember>? Events { get; set; }
+
+    private RenderFragment RenderTable(IEnumerable<ApiMember>? items) => builder =>
+    {
+        if (items == null) return;
+        builder.OpenElement(0, "table");
+        builder.AddAttribute(1, "class", "table table-sm api-table");
+        builder.OpenElement(2, "thead");
+        builder.OpenElement(3, "tr");
+        builder.AddMarkupContent(4, "<th>Name</th><th>Type</th><th>Default</th><th>Description</th>");
+        builder.CloseElement();
+        builder.CloseElement();
+        builder.OpenElement(5, "tbody");
+        var seq = 6;
+        foreach (var item in items)
+        {
+            builder.OpenElement(seq++, "tr");
+            builder.OpenElement(seq++, "td"); builder.AddContent(seq++, item.Name); builder.CloseElement();
+            builder.OpenElement(seq++, "td"); builder.AddContent(seq++, item.Type); builder.CloseElement();
+            builder.OpenElement(seq++, "td"); builder.AddContent(seq++, item.DefaultValue); builder.CloseElement();
+            builder.OpenElement(seq++, "td"); builder.AddContent(seq++, item.Description); builder.CloseElement();
+            builder.CloseElement();
+        }
+        builder.CloseElement();
+        builder.CloseElement();
+    };
+}
+
+<style>
+    .api-documentation { margin: 1.25rem 0; }
+
+    .api-table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed; /* keep columns proportionate */
+        margin-bottom: 1rem;
+    }
+
+    .api-table thead th {
+        text-align: left;
+        font-weight: 600;
+        padding: 0.6rem 0.75rem;
+        border-bottom: 2px solid #e1e1e1;
+        vertical-align: bottom;
+        background: transparent;
+    }
+
+    .api-table tbody td {
+        padding: 0.65rem 0.75rem;
+        border-bottom: 1px solid #f0f0f0;
+        vertical-align: top;
+        color: #333;
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    /* Suggested column widths: Name, Type, Default, Description */
+    .api-table th:nth-child(1), .api-table td:nth-child(1) { width: 18%; }
+    .api-table th:nth-child(2), .api-table td:nth-child(2) { width: 15%; }
+    .api-table th:nth-child(3), .api-table td:nth-child(3) { width: 12%; }
+    .api-table th:nth-child(4), .api-table td:nth-child(4) { width: 55%; }
+
+    .api-signature { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace; margin-bottom: .5rem; display:block; }
+    .api-description { margin-bottom: .75rem; color: #444; }
+
+    .api-params { width: 100%; margin-top: .5rem; border-collapse: collapse; }
+    .api-params th { text-align: left; padding: .4rem .6rem; border-bottom: 1px solid #e9e9e9; font-weight:600; }
+    .api-params td { padding: .45rem .6rem; border-bottom: 1px solid #f4f4f4; }
+
+    /* small visual helpers */
+    .api-method { margin-bottom: 1rem; padding-bottom: .5rem; }
+</style>

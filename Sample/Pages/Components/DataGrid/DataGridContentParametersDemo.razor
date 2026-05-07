@@ -1,0 +1,90 @@
+@page "/pggm-data-grid-content-parameters-demo"
+@using System.Linq
+@using Pggm.Components.Components.PggmDataGrid
+@inject IJSRuntime JS
+
+<PageTitle>PGGM DataGrid — Content Parameters</PageTitle>
+
+<PggmHeading Level="1">PGGM DataGrid - Content Parameters</PggmHeading>
+<p>
+    This page demonstrates the use of content parameters in the PggmDataGrid component. Content parameters allow you to customize the rendering of specific parts of the DataGrid, such as the empty content and loading content.
+</p>
+
+<div style="display:flex;gap:8px;margin-bottom:16px;">
+    <PggmButton OnClick="SimulateLoading">Simulate Loading</PggmButton>
+    <PggmButton OnClick="SimulateEmpty">Simulate Empty</PggmButton>
+    <PggmButton OnClick="LoadData">Load Data</PggmButton>
+</div>
+
+<PggmDataGrid TGridItem="Person" Items="@_people.AsQueryable()" Loading="@_isLoading">
+    <ChildContent>
+        <PropertyColumn TGridItem="Person" TProp="int" Title="Id" Value="@(p => p.Id)" Index="0" />
+        <PropertyColumn TGridItem="Person" TProp="string" Title="Name" Value="@(p => p.Name)" Index="1" />
+        <PropertyColumn TGridItem="Person" TProp="int" Title="Age" Value="@(p => p.Age)" Index="2" />
+    </ChildContent>
+    <EmptyContent>
+        <div>
+            <p>No data available.</p>
+        </div>
+    </EmptyContent>
+    <LoadingContent>
+        <div>
+            <p>Loading data, please wait...</p>
+        </div>
+    </LoadingContent>
+</PggmDataGrid>
+
+@code {
+    private List<Person> _people = new();
+    private bool _isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(2000);
+        _people = new List<Person>
+        {
+            new Person { Id = 1, Name = "Alice", Age = 30 },
+            new Person { Id = 2, Name = "Bob", Age = 25 },
+            new Person { Id = 3, Name = "Charlie", Age = 35 }
+        };
+        _isLoading = false;
+    }
+
+    private async Task SimulateLoading()
+    {
+        _isLoading = true;
+        _people = new();
+        await Task.Delay(2000);
+        _people = new List<Person>
+        {
+            new Person { Id = 1, Name = "Alice", Age = 30 },
+            new Person { Id = 2, Name = "Bob", Age = 25 },
+            new Person { Id = 3, Name = "Charlie", Age = 35 }
+        };
+        _isLoading = false;
+    }
+
+    private void SimulateEmpty()
+    {
+        _isLoading = false;
+        _people = new();
+    }
+
+    private void LoadData()
+    {
+        _isLoading = false;
+        _people = new List<Person>
+        {
+            new Person { Id = 1, Name = "Alice", Age = 30 },
+            new Person { Id = 2, Name = "Bob", Age = 25 },
+            new Person { Id = 3, Name = "Charlie", Age = 35 }
+        };
+    }
+
+    public class Person
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public int Age { get; set; }
+    }
+}

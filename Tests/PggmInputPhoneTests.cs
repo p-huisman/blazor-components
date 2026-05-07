@@ -1,7 +1,9 @@
 // PggmInputPhoneTests.cs
-using Xunit;
 using Bunit;
+
 using Microsoft.Extensions.DependencyInjection;
+
+using Xunit;
 
 namespace Tests
 {
@@ -10,6 +12,7 @@ namespace Tests
         public PggmInputPhoneTests()
         {
             Services.AddSingleton<Pggm.Components.Services.PggmDesignSystemService>();
+            JSInterop.SetupVoid("PggmComponents.setProperty", _ => true);
         }
 
         [Fact]

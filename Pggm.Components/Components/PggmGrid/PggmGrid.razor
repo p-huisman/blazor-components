@@ -1,0 +1,15 @@
+@namespace Pggm.Components
+
+<div class="pggm-grid @Class" style="@StyleValue" @attributes="AdditionalAttributes">
+    @if (Items != null && ItemTemplate != null)
+    {
+        foreach (var item in Items)
+        {
+            @ItemTemplate(item)
+        }
+    }
+    else
+    {
+        @ChildContent
+    }
+</div>

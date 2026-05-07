@@ -1,0 +1,9 @@
+<div class="nav-section">
+    <span class="nav-section-header">@Title</span>
+    @ChildContent
+</div>
+
+@code {
+    [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

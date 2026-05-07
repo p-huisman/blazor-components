@@ -1,5 +1,6 @@
 @inherits PggmComponentBase
 @namespace Pggm.Components
+@using System.Linq.Expressions
 
 <input is="pggm-input" @ref="ElementRef" @attributes="GetAttributes()" 
        @onchange="OnChangeHandler" 
@@ -18,7 +19,12 @@
     /// <summary>
     /// Event callback for when the input value changes (two-way binding)
     /// </summary>
-    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+
+    /// <summary>
+    /// Expression for the bound value (used by EditForm integration)
+    /// </summary>
+    [Parameter] public Expression<Func<string>>? ValueExpression { get; set; }
 
     /// <summary>
     /// The input type (text, email, password, etc.)
@@ -102,7 +108,10 @@
 
     protected override void AddComponentAttributes(Dictionary<string, object> attributes)
     {
-        AttributeHelper.SetAttributeIfNotEmpty(attributes, "type", Type);
+        if (!string.Equals(Type, "text", StringComparison.OrdinalIgnoreCase))
+        {
+            AttributeHelper.SetAttributeIfNotEmpty(attributes, "type", Type);
+        }
         AttributeHelper.SetAttributeIfNotEmpty(attributes, Constants.AttributeNames.Value, Value);
         AttributeHelper.SetAttributeIfNotEmpty(attributes, Constants.AttributeNames.Placeholder, Placeholder);
         AttributeHelper.SetAttributeIfNotEmpty(attributes, Constants.AttributeNames.Name, Name);

@@ -1,7 +1,9 @@
 // PggmSelectTests.cs
-using Xunit;
 using Bunit;
+
 using Microsoft.Extensions.DependencyInjection;
+
+using Xunit;
 
 namespace Tests
 {
@@ -15,7 +17,7 @@ namespace Tests
         [Fact]
         public void Should_Render_Correctly()
         {
-            var cut = RenderComponent<Pggm.Components.PggmSelect>();
+            var cut = RenderComponent<Pggm.Components.PggmSelect<string>>();
             Assert.NotNull(cut.Markup);
         }
     }

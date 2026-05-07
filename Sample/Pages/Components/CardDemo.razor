@@ -1,0 +1,265 @@
+@page "/pggm-card"
+@using Pggm.Components.Sample.Components.ApiDocumentation
+@using Pggm.Components.Sample.Utilities
+
+<PageTitle>PGGM Card</PageTitle>
+
+<PggmHeading Level="1">PGGM Card</PggmHeading>
+
+<p>This page demonstrates the PggmCard component, a versatile container that supports vertical and horizontal layouts,
+    optional borders, and named slots for media, header, footer, and actions.</p>
+
+    <DemoSection Title="Basic Card" Code="@basicCardSource">
+        <Description>
+            <p>A simple vertical card with header and body content:</p>
+        </Description>
+        <Content>
+            <div style="max-width: 400px;">
+                <PggmCard>
+                    <HeaderContent>
+                        <strong>Card Title</strong>
+                    </HeaderContent>
+                    <ChildContent>
+                        <p>This is the main body content of the card. You can place any content here.</p>
+                    </ChildContent>
+                </PggmCard>
+            </div>
+        </Content>
+    </DemoSection>
+
+    <DemoSection Title="Bordered Card" Code="@borderedCardSource">
+        <Description>
+            <p>Cards can have a visible border by setting <code>Border="true"</code>:</p>
+        </Description>
+        <Content>
+            <div style="max-width: 400px;">
+                <PggmCard Border="true">
+                    <HeaderContent>
+                        <strong>Bordered Card</strong>
+                    </HeaderContent>
+                    <ChildContent>
+                        <p>This card has a border applied using the PGGM design token.</p>
+                    </ChildContent>
+                </PggmCard>
+            </div>
+        </Content>
+    </DemoSection>
+
+    <DemoSection Title="Card with Header Slots" Code="@headerSlotsSource">
+        <Description>
+            <p>Use <code>HeaderIconContent</code> and <code>HeaderActionContent</code> to enrich the header row:</p>
+        </Description>
+        <Content>
+            <div style="max-width: 400px;">
+                <PggmCard Border="true">
+                    <HeaderIconContent>
+                        <PggmIcon Icon="pencil" Size="m" />
+                    </HeaderIconContent>
+                    <HeaderContent>
+                        <strong>Notifications</strong>
+                    </HeaderContent>
+                    <HeaderActionContent>
+                        <PggmLink Href="#">View all</PggmLink>
+                    </HeaderActionContent>
+                    <ChildContent>
+                        <p>You have 3 unread notifications.</p>
+                    </ChildContent>
+                </PggmCard>
+            </div>
+        </Content>
+    </DemoSection>
+
+    <DemoSection Title="Card with Footer" Code="@footerSource">
+        <Description>
+            <p>Use <code>FooterContent</code> to place action buttons or summary content at the bottom of the card:</p>
+        </Description>
+        <Content>
+            <div style="max-width: 400px;">
+                <PggmCard Border="true">
+                    <HeaderContent>
+                        <strong>Card with Footer</strong>
+                    </HeaderContent>
+                    <ChildContent>
+                        <p>This card has a footer area with action buttons.</p>
+                    </ChildContent>
+                    <FooterContent>
+                        <PggmStack Orientation="Orientation.Horizontal" HorizontalGap="8">
+                            <PggmButton Appearance="@ButtonAppearance.Primary">Confirm</PggmButton>
+                            <PggmButton Appearance="@ButtonAppearance.Secondary">Cancel</PggmButton>
+                        </PggmStack>
+                    </FooterContent>
+                </PggmCard>
+            </div>
+        </Content>
+    </DemoSection>
+
+    <DemoSection Title="Horizontal Card" Code="@horizontalSource">
+    
+        <Description>
+            <p>Set <code>Orientation="Orientation.Horizontal"</code> to arrange content side by side. Use
+                <code>ActionContent</code> for the action area on the right:</p>
+            </Description>
+            <Content>
+                <PggmCard Orientation="Orientation.Horizontal" Border="true">
+                    
+                    <HeaderContent>
+                        <strong>Card Title</strong>
+                    </HeaderContent>
+                    <ChildContent>
+                        <p>This is the main body content of the card. You can place any content here.</p>
+                    </ChildContent>
+                
+                    <ActionContent>
+                        <PggmButton Appearance="@ButtonAppearance.Primary">Action</PggmButton>
+                    </ActionContent>
+                </PggmCard>
+            </Content>
+        </DemoSection>
+
+        <DemoSection Title="Card with Media" Code="@mediaSource">
+            <Description>
+                <p>Place an image with <code>slot="media"</code> in <code>ChildContent</code> to use the media slot directly,
+                    which preserves the PGGM design system's responsive border-radius and full-width styling:</p>
+                </Description>
+                <Content>
+                    <div style="max-width: 400px;">
+                        <PggmCard Border="true">
+                            <ChildContent>
+                                <img slot="media" src="https://placehold.co/400x150" alt="Card media" />
+                                <p>This card has an image in the media slot placed above the content.</p>
+                            </ChildContent>
+                        </PggmCard>
+                    </div>
+                </Content>
+            </DemoSection>
+
+            <DemoSection Title="Card Grid" Code="@cardGridSource">
+                <Description>
+                    <p>Cards work well inside a grid or stack layout:</p>
+                </Description>
+                <Content>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem;">
+                        @foreach (var item in _sampleItems)
+                        {
+                            <PggmCard Border="true">
+                                <HeaderContent>
+                                    <strong>@item.Title</strong>
+                                </HeaderContent>
+                                <ChildContent>
+                                    <p>@item.Description</p>
+                                </ChildContent>
+                                <FooterContent>
+                                    <PggmLink Href="#">Read more</PggmLink>
+                                </FooterContent>
+                            </PggmCard>
+                        }
+                    </div>
+                </Content>
+            </DemoSection>
+
+<PggmHeading Level="2">API</PggmHeading>
+<ApiDocumentation Properties="_properties" />
+
+@code {
+    private readonly IEnumerable<(string Title, string Description)> _sampleItems =
+    [
+        ("Pension Planning", "Understand your retirement options and projected pension benefits."),
+        ("Investment Overview", "Review your current investment portfolio and allocation."),
+        ("Documents", "Access your annual statements and policy documents.")
+    ];
+
+    // ── Code snippets ────────────────────────────────────────────────────────
+
+    private string basicCardSource = SnippetBuilder.Build(
+        "<PggmCard>",
+        "  <HeaderContent>",
+        "    <strong>Card Title</strong>",
+        "  </HeaderContent>",
+        "  <ChildContent>",
+        "    <p>This is the main body content of the card.</p>",
+        "  </ChildContent>",
+        "</PggmCard>");
+
+    private string borderedCardSource = SnippetBuilder.Build(
+        "<PggmCard Border=\"true\">",
+        "  <HeaderContent>",
+        "    <strong>Bordered Card</strong>",
+        "  </HeaderContent>",
+        "  <ChildContent>",
+        "    <p>This card has a border applied using the PGGM design token.</p>",
+        "  </ChildContent>",
+        "</PggmCard>");
+
+    private string headerSlotsSource = SnippetBuilder.Build(
+        "<PggmCard Border=\"true\">",
+        "  <HeaderIconContent>",
+        "    <PggmIcon Icon=\"pencil\" Size=\"m\" />",
+        "  </HeaderIconContent>",
+        "  <HeaderContent>",
+        "    <strong>Notifications</strong>",
+        "  </HeaderContent>",
+        "  <HeaderActionContent>",
+        "    <PggmLink Href=\"#\">View all</PggmLink>",
+        "  </HeaderActionContent>",
+        "  <ChildContent>",
+        "    <p>You have 3 unread notifications.</p>",
+        "  </ChildContent>",
+        "</PggmCard>");
+
+    private string footerSource = SnippetBuilder.Build(
+        "<PggmCard Border=\"true\">",
+        "  <HeaderContent><strong>Card with Footer</strong></HeaderContent>",
+        "  <ChildContent>",
+        "    <p>This card has a footer area with action buttons.</p>",
+        "  </ChildContent>",
+        "  <FooterContent>",
+        "    <PggmStack Orientation=\"Orientation.Horizontal\" HorizontalGap=\"8\">",
+        "      <PggmButton Appearance=\"@ButtonAppearance.Primary\">Confirm</PggmButton>",
+        "      <PggmButton Appearance=\"@ButtonAppearance.Secondary\">Cancel</PggmButton>",
+        "    </PggmStack>",
+        "  </FooterContent>",
+        "</PggmCard>");
+
+    private string horizontalSource = SnippetBuilder.Build(
+        "<PggmCard Orientation=\"Orientation.Horizontal\" Border=\"true\">",
+        "  <ChildContent>",
+        "    <strong>Horizontal Card</strong>",
+        "    <p>Content flows in a row with optional action at the end.</p>",
+        "  </ChildContent>",
+        "  <ActionContent>",
+        "    <PggmButton Appearance=\"@ButtonAppearance.Primary\">Action</PggmButton>",
+        "  </ActionContent>",
+        "</PggmCard>");
+
+    private string mediaSource = SnippetBuilder.Build(
+        "<PggmCard Border=\"true\">",
+        "  <ChildContent>",
+        "    <img slot=\"media\" src=\"...\" alt=\"Card media\" />",
+        "    <p>Card content below the media image.</p>",
+        "  </ChildContent>",
+        "</PggmCard>");
+
+    private string cardGridSource = SnippetBuilder.Build(
+        "<div style=\"display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem;\">",
+        "  <PggmCard Border=\"true\">",
+        "    <HeaderContent><strong>Title</strong></HeaderContent>",
+        "    <ChildContent><p>Description text.</p></ChildContent>",
+        "    <FooterContent><PggmLink Href=\"#\">Read more</PggmLink></FooterContent>",
+        "  </PggmCard>",
+        "</div>");
+
+    // ── API table ────────────────────────────────────────────────────────────
+
+    private IEnumerable<ApiMember> _properties =
+    [
+        new ApiMember { Name = "Border", Type = "bool", DefaultValue = "false", Description = "Displays a border around the card using the PGGM container border token." },
+        new ApiMember { Name = "Orientation", Type = "Orientation", DefaultValue = "Vertical", Description = "Controls the layout direction. Vertical stacks content top-to-bottom; Horizontal places content side by side." },
+        new ApiMember { Name = "ChildContent", Type = "RenderFragment", DefaultValue = "null", Description = "Default slot content. Also used to place elements with slot attributes (e.g. <img slot=\"media\">)." },
+        new ApiMember { Name = "MediaContent", Type = "RenderFragment", DefaultValue = "null", Description = "Content for the media slot (renders at the top for vertical, side for horizontal cards)." },
+        new ApiMember { Name = "HeaderContent", Type = "RenderFragment", DefaultValue = "null", Description = "Content for the card header slot (title text or heading component)." },
+        new ApiMember { Name = "HeaderIconContent", Type = "RenderFragment", DefaultValue = "null", Description = "Icon content displayed before the header text." },
+        new ApiMember { Name = "HeaderActionContent", Type = "RenderFragment", DefaultValue = "null", Description = "Action element (e.g. a link or button) displayed in the header row." },
+        new ApiMember { Name = "FooterContent", Type = "RenderFragment", DefaultValue = "null", Description = "Content for the card footer slot, pinned to the bottom of the card." },
+        new ApiMember { Name = "ActionContent", Type = "RenderFragment", DefaultValue = "null", Description = "Action area rendered at the end of a horizontal card." },
+    ];
+}

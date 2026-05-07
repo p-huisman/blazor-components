@@ -1,0 +1,277 @@
+@page "/pggm-input-bsn"
+@using Microsoft.AspNetCore.Components
+@using System.ComponentModel.DataAnnotations
+@using Pggm.Components.Sample.Components.ApiDocumentation
+
+<PageTitle>PGGM Input BSN</PageTitle>
+
+
+<PggmHeading Level="1">PGGM Input BSN</PggmHeading>
+
+<p>This page demonstrates the PGGM BSN (Dutch Social Security Number) input component with various configurations and features.</p>
+
+<DemoSection Title="BSN Input Examples" Code="@basicBsnSource" CodeBehind="@basicBsnBehind">
+    <Description>
+        <p>Common BSN input usages and variations.</p>
+    </Description>
+    <Content>
+        <PggmFieldset>
+            <PggmLabel slot="label" For="bsn1">Basic BSN Input:</PggmLabel>
+            <PggmErrorMessage slot="error" For="bsn1"
+                Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.CustomError}")">
+                <p>Vul een geldig <strong>BSN</strong> in</p>
+            </PggmErrorMessage>
+            <PggmInputBsn @bind-Value="@bsnValue1" Placeholder="Enter your BSN" Name="bsn1" Id="bsn1" />
+            <p slot="description">Current value: @bsnValue1</p>
+        </PggmFieldset>
+
+        <PggmFieldset>
+            <PggmLabel slot="label" For="bsn2">Required BSN Input:</PggmLabel>
+            <PggmErrorMessage slot="error" For="bsn2"
+                Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.CustomError}")">
+                <p>Vul een geldig <strong>BSN</strong> in</p>        
+            </PggmErrorMessage>
+            <PggmInputBsn @bind-Value="@bsnValue2" Placeholder="123456789" Name="bsn2" Id="bsn2"
+                Required="true" ErrorMessage="Please enter a valid BSN" />
+            <p slot="description">Current value: @bsnValue2</p>
+        </PggmFieldset>
+
+        <PggmFieldset>
+            <PggmLabel slot="label" For="bsn3">Disabled BSN Input:</PggmLabel>
+            <PggmInputBsn @bind-Value="@bsnValue3" Placeholder="Disabled input" Name="bsn3" Id="bsn3" Disabled="true" />
+        </PggmFieldset>
+
+        <PggmFieldset>
+            <PggmLabel slot="label" For="bsn4">BSN with Event Handling:</PggmLabel>
+            <PggmErrorMessage slot="error" For="bsn4"
+                Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.CustomError}")">
+                <p>Vul een geldig <strong>BSN</strong> in</p>    
+            </PggmErrorMessage>
+            <PggmInputBsn @bind-Value="@bsnValue4" Placeholder="Enter BSN with validation" Name="bsn4" Id="bsn4"
+                OnInput="@OnBsnInput" OnChange="@OnBsnChange" OnFocus="@OnBsnFocus" OnBlur="@OnBsnBlur"
+                OnInvalid="@OnBsnInvalid" />
+            <p slot="description">Current value: @bsnValue4</p>
+            @if (!string.IsNullOrEmpty(eventMessage))
+            {
+                <p slot="description" class="event-message">@eventMessage</p>
+            }
+        </PggmFieldset>
+
+        <PggmFieldset>
+            <PggmLabel slot="label" For="bsn5">BSN with Custom Formatting Options:</PggmLabel>
+            <PggmErrorMessage slot="error" For="bsn5"
+                Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.CustomError}")">
+                <p>Vul een geldig <strong>BSN</strong> in</p>
+            </PggmErrorMessage>
+            <PggmInputBsn @bind-Value="@bsnValue5" Placeholder="No auto-formatting" Name="bsn5" Id="bsn5"
+                AutoFormat="false" ValidateOnInput="false" />
+            <p slot="description">Current value: @bsnValue5</p>
+            <small slot="description">Auto-formatting and real-time validation disabled</small>
+        </PggmFieldset>
+
+        <PggmFieldset>
+            <PggmLabel slot="label" For="bsn6">ReadOnly BSN Input:</PggmLabel>
+            <PggmInputBsn @bind-Value="@bsnValue6" Name="bsn6" Id="bsn6" ReadOnly="true" />
+            <small slot="description">This field is read-only</small>
+        </PggmFieldset>
+
+        <CodeSnippet Title="BSN with Event Handling" Language="razor" Code="@eventBsnSource" />
+    </Content>
+</DemoSection>
+
+<DemoSection Title="EditForm Example" Code="@editFormBsnSource" CodeBehind="@editFormBsnBehind">
+    <Description>
+        <p>Example showing <code>EditForm</code> integration with <code>PggmInputBsn</code> and data-annotation validation.</p>
+    </Description>
+    <Content>
+        <EditForm Model="@formModel" OnValidSubmit="HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <PggmValidationSummary>
+                <p>Er zijn fouten in het formulier. Corrigeer deze en probeer het opnieuw.</p>
+            </PggmValidationSummary>
+            <PggmFieldset>
+                <PggmLabel slot="label" For="bsnForm">BSN (8-9 digits):</PggmLabel>
+                <PggmInputBsn @bind-Value="@formModel.Bsn" Name="bsnForm" Id="bsnForm" Required Placeholder="123456789" />
+                <PggmValidationMessage slot="error"  For="() => formModel.Bsn" />
+            </PggmFieldset>
+            <PggmButton Type="@ButtonType.Submit">Submit</PggmButton>
+            
+        </EditForm>
+
+        @if (submittedBsn is not null)
+        {
+            <p>Submitted BSN: @submittedBsn</p>
+        }
+    </Content>
+</DemoSection>
+
+<PggmHeading Level="2">API</PggmHeading>
+
+<PggmHeading Level="3">PggmInputBsn</PggmHeading>
+<ApiDocumentation Properties="bsnProperties" Events="bsnEvents" />
+
+<style>
+    /* demo-section styles are provided globally in wwwroot/css/custom-formatters.css */
+
+
+    .event-message {
+        color: #0066cc;
+        font-style: italic;
+        margin-top: 5px;
+    }
+
+    .form-group small {
+        display: block;
+        margin-top: 5px;
+        color: #666;
+        font-style: italic;
+    }
+
+    .demo-section ul {
+        margin: 10px 0;
+        padding-left: 20px;
+    }
+
+    .demo-section li {
+        margin-bottom: 5px;
+    }
+
+    .demo-section h3 {
+        margin-top: 20px;
+        margin-bottom: 10px;
+        color: #333;
+    }
+</style>
+
+@code {
+    private string? bsnValue1;
+    private string? bsnValue2;
+    private string? bsnValue3 = "123456789"; // Pre-filled for disabled demo
+    private string? bsnValue4;
+    private string? bsnValue5;
+    private string? bsnValue6 = "987654321"; // Pre-filled for readonly demo
+    private string eventMessage = "";
+
+    private void OnBsnInput(ChangeEventArgs args)
+    {
+        eventMessage = $"Input event fired: {args.Value}";
+        StateHasChanged();
+    }
+
+    private void OnBsnChange(ChangeEventArgs args)
+    {
+        eventMessage = $"Change event fired: {args.Value}";
+        StateHasChanged();
+    }
+
+    private void OnBsnFocus(FocusEventArgs args)
+    {
+        eventMessage = "BSN input focused";
+        StateHasChanged();
+    }
+
+    private void OnBsnBlur(FocusEventArgs args)
+    {
+        eventMessage = "BSN input blurred";
+        StateHasChanged();
+    }
+
+    private void OnBsnInvalid(EventArgs args)
+    {
+        eventMessage = "Invalid BSN detected!";
+        StateHasChanged();
+    }
+
+    // EditForm demo model and handlers
+    private BsnModel formModel = new();
+    private string? submittedBsn;
+
+    private void HandleValidSubmit()
+    {
+        submittedBsn = formModel.Bsn;
+    }
+
+    private class BsnModel
+    {
+        [Required(ErrorMessage = "BSN is verplicht")]
+        [PggmValidation("Vul een geldig BSN in!!!")]
+        public string? Bsn { get; set; }
+    }
+
+    // Code snippets for demo page
+    private string basicBsnSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmFieldset>",
+        "  <PggmLabel slot=\"label\" For=\"bsn1\">Basic BSN Input:</PggmLabel>",
+        "  <PggmErrorMessage For=\"bsn1\" Validity=\"${PggmErrorMessage.ValidityStates.ValueMissing} ${PggmErrorMessage.ValidityStates.CustomError}\">Vul een geldig BSN in</PggmErrorMessage>",
+        "  <PggmInputBsn @bind-Value=\"@bsnValue1\" Placeholder=\"Enter your BSN\" Name=\"bsn1\" Id=\"bsn1\" />",
+        "  <p slot=\"description\">Current value: @bsnValue1</p>",
+        "</PggmFieldset>");
+
+    private string eventBsnSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmFieldset>",
+        "  <PggmLabel slot=\"label\" For=\"bsn4\">BSN with Event Handling:</PggmLabel>",
+        "  <PggmErrorMessage slot=\"error\" For=\"bsn4\" Validity=\"${PggmErrorMessage.ValidityStates.ValueMissing} ${PggmErrorMessage.ValidityStates.CustomError}\">Vul een geldig BSN in</PggmErrorMessage>",
+        "  <PggmInputBsn @bind-Value=\"@bsnValue4\" Placeholder=\"Enter BSN with validation\" Name=\"bsn4\" Id=\"bsn4\" OnInput=\"@OnBsnInput\" OnChange=\"@OnBsnChange\" OnFocus=\"@OnBsnFocus\" OnBlur=\"@OnBsnBlur\" OnInvalid=\"@OnBsnInvalid\" />",
+        "  <p slot=\"description\">Current value: @bsnValue4</p>",
+        "  <p slot=\"description\" class=\"event-message\">@eventMessage</p>",
+        "</PggmFieldset>",
+        "@code {",
+        "  private string? bsnValue4;",
+        "  private string eventMessage = \"\";",
+        "  private void OnBsnInput(ChangeEventArgs args) { eventMessage = $\"Input event fired: {args.Value}\"; }",
+        "  private void OnBsnChange(ChangeEventArgs args) { eventMessage = $\"Change event fired: {args.Value}\"; }",
+        "  private void OnBsnFocus(Microsoft.AspNetCore.Components.Web.FocusEventArgs args) { eventMessage = \"BSN input focused\"; }",
+        "  private void OnBsnBlur(Microsoft.AspNetCore.Components.Web.FocusEventArgs args) { eventMessage = \"BSN input blurred\"; }",
+        "  private void OnBsnInvalid(System.EventArgs args) { eventMessage = \"Invalid BSN detected!\"; }",
+        "}");
+
+    private string editFormBsnSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<EditForm Model=\"@formModel\" OnValidSubmit=\"HandleValidSubmit\">",
+        "  <DataAnnotationsValidator />",
+        "  <PggmValidationSummary>",
+        "    <p>Er zijn fouten in het formulier. Corrigeer deze en probeer het opnieuw.</p>",
+        "  </PggmValidationSummary>",
+        "  <PggmFieldset>",
+        "    <PggmLabel slot=\"label\" For=\"bsnForm\">BSN (8-9 digits):</PggmLabel>",
+        "    <PggmInputBsn @bind-Value=\"@formModel.Bsn\" Name=\"bsnForm\" Id=\"bsnForm\" Required Placeholder=\"123456789\" />",
+        "    <PggmValidationMessage slot=\"error\" For=\"() => formModel.Bsn\" />",
+        "  </PggmFieldset>",
+        "  <PggmButton Type=\"@ButtonType.Submit\">Submit</PggmButton>",
+        "</EditForm>");
+
+    private string basicBsnBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private string? bsnValue1;"
+    );
+
+    private string editFormBsnBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private BsnModel formModel = new();",
+        "private string? submittedBsn;",
+        "private void HandleValidSubmit() { submittedBsn = formModel.Bsn; }",
+        "",
+        "private class BsnModel {",
+        "  [Required(ErrorMessage = \"BSN is verplicht\")]",
+        "  [PggmValidation(\"Vul een geldig BSN in\")]",
+        "  public string? Bsn { get; set; }",
+        "}"
+    );
+
+    private IEnumerable<ApiMember> bsnProperties = new[]
+    {
+        new ApiMember { Name = "Value", Type = "string?", DefaultValue = "null", Description = "Bound value of the input (two-way binding)." },
+        new ApiMember { Name = "Name", Type = "string?", DefaultValue = "null", Description = "Name attribute for the underlying input element." },
+        new ApiMember { Name = "Placeholder", Type = "string?", DefaultValue = "null", Description = "Placeholder text shown when empty." },
+        new ApiMember { Name = "AutoFormat", Type = "bool", DefaultValue = "true", Description = "Whether input is auto-formatted as the user types." },
+        new ApiMember { Name = "ValidateOnInput", Type = "bool", DefaultValue = "true", Description = "Whether validation runs on input events." },
+        new ApiMember { Name = "Required", Type = "bool", DefaultValue = "false", Description = "Whether the input is required for form validation." },
+        new ApiMember { Name = "ReadOnly", Type = "bool", DefaultValue = "false", Description = "When true, the input is read-only." },
+        new ApiMember { Name = "Disabled", Type = "bool", DefaultValue = "false", Description = "When true, the input is disabled." }
+    };
+
+    private IEnumerable<ApiMember> bsnEvents = new[]
+    {
+        new ApiMember { Name = "OnChange", Type = "EventCallback<ChangeEventArgs>", Description = "Invoked when the input value changes (on blur)." },
+        new ApiMember { Name = "OnInput", Type = "EventCallback<ChangeEventArgs>", Description = "Invoked on every input (keystroke)." },
+        new ApiMember { Name = "OnFocus", Type = "EventCallback<FocusEventArgs>", Description = "Invoked when the input gains focus." },
+        new ApiMember { Name = "OnBlur", Type = "EventCallback<FocusEventArgs>", Description = "Invoked when the input loses focus." }
+    };
+}

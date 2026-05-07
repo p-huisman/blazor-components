@@ -1,0 +1,110 @@
+@page "/pggm-datagrid-resizable-columns"
+@using Pggm.Components.Components.PggmDataGrid
+
+<PageTitle>PGGM DataGrid — Resizable Columns</PageTitle>
+
+<PggmHeading Level="1">PGGM DataGrid - Resizable Columns</PggmHeading>
+
+<p>
+    Setting <code>ResizableColumns="true"</code> on <code>PggmDataGrid</code> adds a drag handle
+    to every column header. Columns can also be made resizable individually by setting
+    <code>Resizable="true"</code> on a specific column while leaving the grid-level flag off.
+    The <code>MinWidth</code> parameter (default <code>50px</code>) prevents a column from being
+    dragged narrower than the specified value.
+</p>
+
+<DemoSection Title="All columns resizable" Code="@_allSource">
+    <PggmDataGrid TGridItem="Employee" Items="@_employees.AsQueryable()" ResizableColumns="true">
+        <PropertyColumn TGridItem="Employee" TProp="string" Title="Name" Value="@(x => x.Name)" Index="0"
+                        MinWidth="180px" />
+        <PropertyColumn TGridItem="Employee" TProp="string" Title="Department" Value="@(x => x.Department)" Index="1"
+                        MinWidth="80px" />
+        <PropertyColumn TGridItem="Employee" TProp="string" Title="Location" Value="@(x => x.Location)" Index="2"
+                        MinWidth="120px" />
+        <PropertyColumn TGridItem="Employee" TProp="string" Title="Role" Value="@(x => x.Role)" Index="3"
+                        MinWidth="120px" />
+        <PropertyColumn TGridItem="Employee" TProp="decimal" Title="Salary" Value="@(x => x.Salary)" Index="4"
+                        Width="120px" MinWidth="80px" Alignment="Pggm.Components.Components.PggmDataGrid.ColumnAlignment.Right" />
+    </PggmDataGrid>
+</DemoSection>
+
+<DemoSection Title="Per-column resize" Code="@_perColumnSource">
+    <p>Only the <strong>Name</strong> and <strong>Department</strong> columns are resizable here.</p>
+    <PggmDataGrid TGridItem="Employee" Items="@_employees.AsQueryable()">
+        <PropertyColumn TGridItem="Employee" TProp="string" Title="Name" Value="@(x => x.Name)" Index="0"
+                        Resizable="true" MinWidth="180px" />
+        <PropertyColumn TGridItem="Employee" TProp="string" Title="Department" Value="@(x => x.Department)" Index="1"
+                        Resizable="true" MinWidth="80px" />
+        <PropertyColumn TGridItem="Employee" TProp="string" Title="Location" Value="@(x => x.Location)" Index="2"
+                        Width="140px" />
+        <PropertyColumn TGridItem="Employee" TProp="string" Title="Role" Value="@(x => x.Role)" Index="3"
+                        Width="140px" />
+        <PropertyColumn TGridItem="Employee" TProp="decimal" Title="Salary" Value="@(x => x.Salary)" Index="4"
+                        Width="120px" Alignment="Pggm.Components.Components.PggmDataGrid.ColumnAlignment.Right" />
+    </PggmDataGrid>
+</DemoSection>
+
+<DemoSection Title="Resizable + sortable" Code="@_sortSource">
+    <PggmDataGrid TGridItem="Employee" Items="@_employees.AsQueryable()" ResizableColumns="true">
+        <PropertyColumn TGridItem="Employee" TProp="string" Title="Name" Value="@(x => x.Name)"
+                        SortByExpression="@(x => x.Name)" Index="0" IsDefaultSortColumn="true" />
+        <PropertyColumn TGridItem="Employee" TProp="string" Title="Department" Value="@(x => x.Department)"
+                        SortByExpression="@(x => x.Department)" Index="1" />
+        <PropertyColumn TGridItem="Employee" TProp="string" Title="Location" Value="@(x => x.Location)"
+                        SortByExpression="@(x => x.Location)" Index="2" />
+        <PropertyColumn TGridItem="Employee" TProp="string" Title="Role" Value="@(x => x.Role)"
+                        SortByExpression="@(x => x.Role)" Index="3" />
+        <PropertyColumn TGridItem="Employee" TProp="decimal" Title="Salary" Value="@(x => x.Salary)"
+                        SortByExpression="@(x => x.Salary)" Index="4" Width="120px"
+                        Alignment="Pggm.Components.Components.PggmDataGrid.ColumnAlignment.Right" />
+    </PggmDataGrid>
+</DemoSection>
+
+@code {
+    private sealed record Employee(string Name, string Department, string Location, string Role, decimal Salary);
+
+    private static readonly List<Employee> _employees =
+    [
+        new("Alice Jansen", "Engineering", "Amsterdam", "Senior Engineer", 95_000m),
+        new("Bob de Vries", "Engineering", "Rotterdam", "Engineer", 75_000m),
+        new("Carla Smit", "Product", "Amsterdam", "Product Manager", 90_000m),
+        new("David Bakker", "Design", "Utrecht", "UX Designer", 72_000m),
+        new("Eva Mulder", "Engineering", "Den Haag", "Tech Lead", 110_000m),
+        new("Frank Visser", "HR", "Amsterdam", "HR Business Partner",68_000m),
+        new("Greta Linden", "Finance", "Rotterdam", "Financial Analyst", 80_000m),
+        new("Hans Peters", "Engineering", "Eindhoven", "Junior Engineer", 58_000m),
+        new("Iris Groot", "Product", "Amsterdam", "Product Owner", 88_000m),
+        new("Jan Willems", "Design", "Utrecht", "Visual Designer", 65_000m),
+        new("Karen van Dam", "Engineering", "Amsterdam", "Staff Engineer", 120_000m),
+        new("Lars Hoekstra", "Marketing", "Rotterdam", "Marketing Manager", 82_000m),
+    ];
+
+    private readonly string _allSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmDataGrid TGridItem=\"Employee\" Items=\"@_employees.AsQueryable()\" ResizableColumns=\"true\">",
+        "    <PropertyColumn Title=\"Name\"       Value=\"@(x => x.Name)\"       Index=\"0\" MinWidth=\"80px\" />",
+        "    <PropertyColumn Title=\"Department\" Value=\"@(x => x.Department)\"  Index=\"1\" MinWidth=\"80px\" />",
+        "    <PropertyColumn Title=\"Location\"   Value=\"@(x => x.Location)\"    Index=\"2\" MinWidth=\"60px\" />",
+        "    <PropertyColumn Title=\"Role\"       Value=\"@(x => x.Role)\"        Index=\"3\" MinWidth=\"60px\" />",
+        "    <PropertyColumn Title=\"Salary\"     Value=\"@(x => x.Salary)\"      Index=\"4\" Width=\"120px\" MinWidth=\"80px\" />",
+        "</PggmDataGrid>");
+
+    private readonly string _perColumnSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<!-- Resizable=\"true\" on individual columns; grid-level flag stays false -->",
+        "<PggmDataGrid TGridItem=\"Employee\" Items=\"@_employees.AsQueryable()\">",
+        "    <PropertyColumn Title=\"Name\"       Value=\"@(x => x.Name)\"       Index=\"0\" Resizable=\"true\" MinWidth=\"80px\" />",
+        "    <PropertyColumn Title=\"Department\" Value=\"@(x => x.Department)\"  Index=\"1\" Resizable=\"true\" MinWidth=\"80px\" />",
+        "    <PropertyColumn Title=\"Location\"   Value=\"@(x => x.Location)\"    Index=\"2\" Width=\"140px\" />",
+        "    <PropertyColumn Title=\"Role\"       Value=\"@(x => x.Role)\"        Index=\"3\" Width=\"140px\" />",
+        "    <PropertyColumn Title=\"Salary\"     Value=\"@(x => x.Salary)\"      Index=\"4\" Width=\"120px\" />",
+        "</PggmDataGrid>");
+
+    private readonly string _sortSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<!-- ResizableColumns and sortable columns can be combined freely -->",
+        "<PggmDataGrid TGridItem=\"Employee\" Items=\"@_employees.AsQueryable()\" ResizableColumns=\"true\">",
+        "    <PropertyColumn Title=\"Name\"       Value=\"@(x => x.Name)\"",
+        "                    SortByExpression=\"@(x => x.Name)\"       Index=\"0\" IsDefaultSortColumn=\"true\" />",
+        "    <PropertyColumn Title=\"Department\" Value=\"@(x => x.Department)\"",
+        "                    SortByExpression=\"@(x => x.Department)\"  Index=\"1\" />",
+        "    <!-- ... remaining columns ... -->",
+        "</PggmDataGrid>");
+}

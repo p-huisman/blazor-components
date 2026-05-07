@@ -1,14 +1,18 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
+
 using Moq;
+
 using Pggm.Components.Base;
 using Pggm.Components.Extensions;
 using Pggm.Components.Services;
+
 using Xunit;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Pggm.Components.Tests
 {

@@ -1,0 +1,13 @@
+@namespace Pggm.Components
+@inherits PggmEventComponentBase
+
+<pggm-splitter @ref="ElementRef" @attributes="GetAttributes()">
+    @if (StartContent != null)
+    {
+        <div slot="start" style="height:100%">@StartContent</div>
+    }
+    @if (EndContent != null)
+    {
+        <div slot="end" style="height:100%">@EndContent</div>
+    }
+</pggm-splitter>

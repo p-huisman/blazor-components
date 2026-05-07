@@ -1,0 +1,38 @@
+@namespace Pggm.Components
+@typeparam TOption
+@inherits Pggm.Components.Base.PggmEventComponentInputBase<string>
+
+<pggm-combobox @ref="ElementRef"
+    name="@Name"
+    placeholder="@Placeholder"
+    id="@(Id ?? DataId)"
+    data-id="@DataId"
+    min="@Min"
+    max="@Max"
+    visible-items="@VisibleItems"
+    open="@Open"
+    multiple="@Multiple"
+    with-clear="@WithClear"
+    disabled="@Disabled"
+    readonly="@ReadOnly"
+    required="@(EditContext == null && Required)"
+    @attributes="GetAttributes()">
+    @ChildContent
+    @if (Items is not null)
+    {
+        @foreach (var item in Items)
+        {
+            @if (OptionTemplate is not null)
+            {
+                @OptionTemplate(item)
+            }
+            else
+            {
+                var val = OptionValue?.Invoke(item);
+                var text = OptionText?.Invoke(item) ?? val;
+                var disabled = OptionDisabled?.Invoke(item) == true;
+                <PggmComboboxItem Value="@val" Disabled="@disabled">@text</PggmComboboxItem>
+            }
+        }
+    }
+</pggm-combobox>

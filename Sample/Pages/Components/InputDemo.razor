@@ -1,187 +1,192 @@
 @page "/pggm-input"
+@using System.ComponentModel.DataAnnotations
+@using Pggm.Components.Sample.Components.ApiDocumentation
 
 <PageTitle>PGGM Input</PageTitle>
 
-<PggmHeader Level="1">PGGM Input</PggmHeader>
-
-<p class="lead">
+<PggmHeading Level="1">PGGM Input</PggmHeading>
+<p>
     This page demonstrates the PggmInput component, which is a wrapper for the pggm-input web component
     using the custom built-in element pattern <code>&lt;input is="pggm-input" /&gt;</code>.
 </p>
 
-<div class="row">
-    <div class="col-md-6">
-        <PggmHeader Level="2">Basic Input Examples</PggmHeader>
-        
-        <div class="mb-3">
-            <PggmLabel For="text-input" class="form-label">Text Input</PggmLabel>
-            <PggmInput @bind-value="_textValue" 
-                          id="text-input"
-                       Type="@PggmInput.InputTypes.Text"
-                       Name="text-input"
-                       Placeholder="Enter some text..."
-                       OnChange="OnTextChanged" />
-            <small class="form-text text-muted">Current value: @_textValue</small>
-        </div>
+<DemoSection Title="Basic Input Examples" Code="@basicInputSource" CodeBehind="@basicInputBehind">
+    <Content>
+        <PggmFieldset>
+            <PggmLabel slot="label" For="text-input">Text Input</PggmLabel>
+            <PggmErrorMessage slot="error" For="text-input"
+                Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.CustomError}")">
+                <p>Vul <strong>iets</strong> in</p>
+            </PggmErrorMessage>
+            <PggmInput @bind-Value="_textValue" Id="text-input" Type="@PggmInput.InputTypes.Text" Name="text-input" Required="true"
+                       Placeholder="Enter some text..." OnChange="OnTextChanged" />
+            <small slot="description" class="form-text text-muted">Current value: @_textValue</small>
+        </PggmFieldset>
 
-        <div class="mb-3">
-            <PggmLabel For="email-input" class="form-label">Email Input</PggmLabel>
-            <PggmInput @bind-value="_emailValue" 
-                          id="email-input"
-                       Type="@PggmInput.InputTypes.Email"
-                       Name="email-input"
-                       Placeholder="Enter your email..."
-                       Required="true" />
-            <small class="form-text text-muted">Current value: @_emailValue</small>
-        </div>
+        <PggmFieldset>
+            <PggmLabel slot="label" For="email-input">Email Input</PggmLabel>
+            <PggmInput @bind-Value="_emailValue" Id="email-input" Type="@PggmInput.InputTypes.Email" Name="email-input"
+                       Placeholder="Enter your email..." Required="true" />
+            <small slot="description" class="form-text text-muted">Current value: @_emailValue</small>
+        </PggmFieldset>
 
-        <div class="mb-3">
-            <PggmLabel For="password-input" class="form-label">Password Input</PggmLabel>
-            <PggmInput @bind-value="_passwordValue" 
-                          id="password-input"
-                       Type="@PggmInput.InputTypes.Password"
-                       Name="password-input"
-                       Placeholder="Enter password..."
-                       MinLength="8" />
-            <small class="form-text text-muted">Minimum 8 characters</small>
-        </div>
+        <PggmFieldset>
+            <PggmLabel slot="label" For="password-input">Password Input</PggmLabel>
+            <PggmInput @bind-Value="_passwordValue" Id="password-input" Type="@PggmInput.InputTypes.Password"
+                       Name="password-input" Placeholder="Enter password..." MinLength="8" />
+            <small slot="description" class="form-text text-muted">Minimum 8 characters</small>
+        </PggmFieldset>
 
-        <div class="mb-3">
-            <PggmLabel For="number-input" class="form-label">Number Input</PggmLabel>
-            <PggmInput @bind-value="_numberValue" 
-                          id="number-input"
-                       Type="@PggmInput.InputTypes.Number"
-                       Name="number-input"
-                       Min="0"
-                       Max="100"
-                       Step="1"
-                       Placeholder="Enter a number..." />
-            <small class="form-text text-muted">Range: 0-100, Current value: @_numberValue</small>
-        </div>
+        <PggmFieldset>
+            <PggmLabel slot="label" For="number-input">Number Input</PggmLabel>
+            <PggmInput @bind-Value="_numberValue" Id="number-input" Type="@PggmInput.InputTypes.Number" Name="number-input"
+                       Min="0" Max="100" Step="1" Placeholder="Enter a number..." />
+            <small slot="description" class="form-text text-muted">Range: 0-100, Current value: @_numberValue</small>
+        </PggmFieldset>
+    </Content>
+</DemoSection>
 
-        
-    </div>
+<DemoSection Title="Advanced Input Examples" Code="@advancedInputSource" CodeBehind="@advancedInputBehind">
+    <Content>
+        <PggmFieldset>
+            <PggmLabel slot="label" For="search-input">Search Input</PggmLabel>
+            <PggmInput @bind-Value="_searchValue" Id="search-input" Type="@PggmInput.InputTypes.Search" Name="search-input"
+                       Placeholder="Search..." OnInput="OnSearchInput" />
+            <small slot="description" class="form-text text-muted">Live search: @_searchValue</small>
+        </PggmFieldset>
 
-    <div class="col-md-6">
-        <PggmHeader Level="2">Advanced Input Examples</PggmHeader>
-        
-        <div class="mb-3">
-            <PggmLabel For="search-input" class="form-label">Search Input</PggmLabel>
-            <PggmInput @bind-Value="_searchValue" 
-                          id="search-input"
-                       Type="@PggmInput.InputTypes.Search"
-                       Name="search-input"
-                       Placeholder="Search..."
-                       OnInput="OnSearchInput" />
-            <small class="form-text text-muted">Live search: @_searchValue</small>
-        </div>
-
-        <div class="mb-3">
-            <PggmLabel For="url-input" class="form-label">URL Input</PggmLabel>
-            <PggmInput @bind-Value="_urlValue" 
-                          id="url-input"
-                       Type="@PggmInput.InputTypes.Url"
-                       Name="url-input"
+        <PggmFieldset>
+            <PggmLabel slot="label" For="url-input">URL Input</PggmLabel>
+            <PggmInput @bind-Value="_urlValue" Id="url-input" Type="@PggmInput.InputTypes.Url" Name="url-input"
                        Placeholder="https://example.com" />
-            <small class="form-text text-muted">Current URL: @_urlValue</small>
-        </div>
+            <small slot="description" class="form-text text-muted">Current URL: @_urlValue</small>
+        </PggmFieldset>
+    </Content>
+</DemoSection>
 
-    </div>
-</div>
+<DemoSection Title="EditForm Integration Example" Code="@editFormInputSource" CodeBehind="@editFormInputBehind">
+    <Content>
+        <EditForm Model="_formModel" OnValidSubmit="HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <PggmValidationSummary>
+                <p>Het formulier bevat <strong>fouten</strong>, controleer en corrigeer deze</p>
+            </PggmValidationSummary>
 
-<div class="row mt-4">
-    <div class="col-12">
-        <PggmHeader Level="2">Input States</PggmHeader>
-        
-        <div class="row">
-            <div class="col-md-4">
-                <div class="mb-3">
-                    <PggmLabel class="form-label">Disabled Input</PggmLabel>
-                    <PggmInput Value="This input is disabled" 
-                               Disabled="true"
-                               Placeholder="Disabled input" />
+            <PggmFieldset>
+                <PggmLabel slot="label" For="form-name">Name</PggmLabel>
+
+                <PggmValidationMessage slot="error"  For="() => _formModel.Name">
+                    <p>Vul een geldige <strong>naam</strong> in</p>
+                </PggmValidationMessage>
+
+                <PggmInput Id="form-name" @bind-Value="_formModel.Name" Name="form-name" Placeholder="Enter your name"
+                           Required="true" />
+
+            </PggmFieldset>
+            <PggmFieldset>
+                <PggmLabel slot="label" For="form-email">Email</PggmLabel>
+                <PggmInput Id="form-email" @bind-Value="_formModel.Email" Name="form-email" Type="email"
+                           Placeholder="Enter your email" Required="true" />
+                <PggmValidationMessage slot="error"  For="() => _formModel.Email">
+                    <p>Vul een geldig e-mailadres in</p>
+                </PggmValidationMessage>
+            </PggmFieldset>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </EditForm>
+        @if (_formSubmitted)
+        {
+            <div class="alert alert-success">Form submitted! Name: @_formModel.Name, Email: @_formModel.Email</div>
+        }
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Input States" Code="@statesInputSource" CodeBehind="@statesInputBehind">
+    <Content>
+        <PggmFieldset>
+            <PggmLabel slot="label" For="disabled-input">Disabled Input</PggmLabel>
+            <PggmInput id="disabled-input" Value="_disabledValue" ValueExpression="() => _disabledValue" Disabled="true"
+                       Placeholder="Disabled input" />
+        </PggmFieldset>
+        <PggmFieldset>
+            <PggmLabel slot="label" For="required-input">Required Input</PggmLabel>
+            <PggmInput @bind-Value="_requiredValue" Name="required-input" Id="required-input" Required="true"
+                       Placeholder="This field is required" />
+            @if (string.IsNullOrEmpty(_requiredValue))
+            {
+                <small class="text-danger">This field is required</small>
+            }
+        </PggmFieldset>
+
+        <PggmFieldset>
+            <PggmLabel slot="label" For="readonly-input">Read-only Input</PggmLabel>
+            <PggmInput id="readonly-input" Value="_readonlyValue" ValueExpression="() => _readonlyValue" ReadOnly="true" />
+        </PggmFieldset>
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Event Handling Example" Code="@eventInputSource" CodeBehind="@eventInputBehind">
+    <Content>
+        <PggmFieldset>
+            <PggmLabel slot="label" For="event-input">Event Demo Input</PggmLabel>
+            <PggmInput @bind-Value="_eventValue" Name="event-input" Id="event-input"
+                       Placeholder="Type here to see events..." OnChange="OnEventChange" OnInput="OnEventInput"
+                       OnFocus="OnEventFocus" OnBlur="OnEventBlur" />
+
+        </PggmFieldset>
+        <div style="height: 200px; overflow-y: auto; font-family: monospace; font-size: 0.875rem;">
+            @foreach (var logEntry in _eventLog.AsEnumerable().Reverse().Take(20))
+            {
+                <div>
+                    <span class="text-muted">[@logEntry.Timestamp.ToString("HH:mm:ss.fff")]</span>
+                    <span class="fw-bold text-primary">@logEntry.Event:</span>
+                    @logEntry.Details
                 </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="mb-3">
-                    <PggmLabel class="form-label">Required Input</PggmLabel>
-                    <PggmInput @bind-Value="_requiredValue" 
-                                 Name="required-input"
-                               Required="true"
-                               Placeholder="This field is required" />
-                    @if (string.IsNullOrEmpty(_requiredValue))
-                    {
-                        <small class="text-danger">This field is required</small>
-                    }
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="mb-3">
-                    <PggmLabel class="form-label">Read-only Input</PggmLabel>
-                    <PggmInput Value="This input is read-only" 
-                               ReadOnly="true" />
-                </div>
-            </div>
+            }
         </div>
-    </div>
-</div>
+        @if (_eventLog.Count > 20)
+        {
+            <small>Showing last 20 of @_eventLog.Count events</small>
+        }
+    </Content>
+</DemoSection>
 
-<div class="row mt-4">
-    <div class="col-12">
-        <PggmHeader Level="2">Event Handling Example</PggmHeader>
-        
-        <div class="mb-3">
-            <PggmLabel For="event-input" class="form-label">Event Demo Input</PggmLabel>
-            <PggmInput @bind-Value="_eventValue" 
-                       Name="event-input"
-                          id="event-input"
-                       Placeholder="Type here to see events..."
-                       OnChange="OnEventChange"
-                       OnInput="OnEventInput"
-                       OnFocus="OnEventFocus"
-                       OnBlur="OnEventBlur" />
-        </div>
+<PggmHeading Level="2">API</PggmHeading>
 
-        <div class="card">
-            <div class="card-header">
-                <h5>Event Log</h5>
-            </div>
-            <div class="card-body">
-                <div style="height: 200px; overflow-y: auto; font-family: monospace; font-size: 0.875rem;">
-                    @foreach (var logEntry in _eventLog.AsEnumerable().Reverse().Take(20))
-                    {
-                        <div class="mb-1">
-                            <span class="text-muted">[@logEntry.Timestamp.ToString("HH:mm:ss.fff")]</span>
-                            <span class="fw-bold text-primary">@logEntry.Event:</span>
-                            @logEntry.Details
-                        </div>
-                    }
-                </div>
-                @if (_eventLog.Count > 20)
-                {
-                    <small class="text-muted">Showing last 20 of @_eventLog.Count events</small>
-                }
-            </div>
-        </div>
-    </div>
-</div>
+<PggmHeading Level="3">PggmInput</PggmHeading>
+<ApiDocumentation Properties="inputProperties" Events="inputEvents" />
 
 @code {
+    // EditForm demo model
+    private DemoFormModel _formModel = new();
+    private bool _formSubmitted = false;
+    private void HandleValidSubmit()
+    {
+        _formSubmitted = true;
+    }
+
+    public class DemoFormModel
+    {
+        [Required]
+        public string? Name { get; set; }
+        [Required]
+        [EmailAddress]
+        public string? Email { get; set; }
+    }
     // Basic input values
     private string? _textValue = "";
     private string? _emailValue = "";
     private string? _passwordValue = "";
     private string? _numberValue = "";
-    
+
     // Advanced input values
     private string? _searchValue = "";
     private string? _urlValue = "";
-    
+
     // State examples
     private string? _requiredValue = "";
-    
+    private string _disabledValue = "This input is disabled";
+    private string _readonlyValue = "This input is read-only";
+
     // Event demo
     private string? _eventValue = "";
     private readonly List<EventLogEntry> _eventLog = new();
@@ -224,13 +229,13 @@
             Event = eventName,
             Details = details
         });
-        
+
         // Keep only last 100 events to prevent memory issues
         if (_eventLog.Count > 100)
         {
             _eventLog.RemoveAt(0);
         }
-        
+
         StateHasChanged();
     }
 
@@ -240,4 +245,137 @@
         public string Event { get; set; } = string.Empty;
         public string Details { get; set; } = string.Empty;
     }
+
+    // Code snippets for demo page
+    private string basicInputSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmFieldset>",
+        "  <PggmLabel slot=\"label\" For=\"text-input\">Text Input</PggmLabel>",
+        "  <PggmInput @bind-Value=\"_textValue\" Id=\"text-input\" Type=\"text\" Name=\"text-input\" Placeholder=\"Enter some text...\" />",
+        "  <small slot=\"description\" class=\"form-text text-muted\">Current value: @_textValue</small>",
+        "</PggmFieldset>",
+        "@code {",
+        "  private string? _textValue = \"\";",
+        "}");
+
+    private string advancedInputSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmFieldset>",
+        "  <PggmLabel slot=\"label\" For=\"search-input\">Search Input</PggmLabel>",
+        "  <PggmInput @bind-Value=\"_searchValue\" Id=\"search-input\" Type=\"search\" Name=\"search-input\" Placeholder=\"Search...\" />",
+        "  <small slot=\"description\" class=\"form-text text-muted\">Live search: @_searchValue</small>",
+        "</PggmFieldset>",
+        "@code {",
+        "  private string? _searchValue = \"\";",
+        "}");
+
+    private string editFormInputSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<EditForm Model=\"_formModel\" OnValidSubmit=\"HandleValidSubmit\">",
+        "  <DataAnnotationsValidator />",
+        "  <PggmValidationSummary>",
+        "    <p>Het formulier bevat fouten, controleer en corrigeer deze</p>",
+        "  </PggmValidationSummary>",
+        "  <PggmFieldset>",
+        "    <PggmLabel slot=\"label\" For=\"form-name\">Name</PggmLabel>",
+        "    <PggmValidationMessage slot=\"error\" For=\"() => _formModel.Name\">",
+        "      <p>Vul een geldige naam in</p>",
+        "    </PggmValidationMessage>",
+        "    <PggmInput Id=\"form-name\" @bind-Value=\"_formModel.Name\" Name=\"form-name\" Placeholder=\"Enter your name\" Required=\"true\" />",
+        "  </PggmFieldset>",
+        "  <PggmFieldset>",
+        "    <PggmLabel slot=\"label\" For=\"form-email\">Email</PggmLabel>",
+        "    <PggmInput Id=\"form-email\" @bind-Value=\"_formModel.Email\" Name=\"form-email\" Type=\"email\" Placeholder=\"Enter your email\" Required=\"true\" />",
+        "    <PggmValidationMessage slot=\"error\" For=\"() => _formModel.Email\">",
+        "      <p>Vul een geldig e-mailadres in</p>",
+        "    </PggmValidationMessage>",
+        "  </PggmFieldset>",
+        "  <button type=\"submit\" class=\"btn btn-primary\">Submit</button>",
+        "</EditForm>"
+    );
+
+    private string statesInputSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmFieldset>",
+        "  <PggmLabel slot=\"label\" For=\"disabled-input\">Disabled Input</PggmLabel>",
+        "  <PggmInput Id=\"disabled-input\" Value=\"_disabledValue\" Disabled=\"true\" />",
+        "</PggmFieldset>",
+        "@code {",
+        "  private string _disabledValue = \"This input is disabled\";",
+        "}");
+
+    private string eventInputSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmFieldset>",
+        "  <PggmLabel slot=\"label\" For=\"event-input\">Event Demo Input</PggmLabel>",
+        "  <PggmInput @bind-Value=\"_eventValue\" Id=\"event-input\" OnChange=\"OnEventChange\" OnInput=\"OnEventInput\" OnFocus=\"OnEventFocus\" OnBlur=\"OnEventBlur\" />",
+        "</PggmFieldset>",
+        "@code {",
+        "  private string? _eventValue = \"\";",
+        "}");
+
+    // Code-behind snippets (shown separately in demo)
+    private string basicInputBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "@code {",
+        "  private string? _textValue = \"\";",
+        "}");
+
+    private string advancedInputBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "@code {",
+        "  private string? _searchValue = \"\";",
+        "}");
+
+    private string editFormInputBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private DemoFormModel _formModel = new();",
+        "private bool _formSubmitted = false;",
+        "",
+        "private void HandleValidSubmit()",
+        "{",
+        "    _formSubmitted = true;",
+        "}",
+        "",
+        "public class DemoFormModel",
+        "{",
+        "    [Required]",
+        "    public string? Name { get; set; }",
+        "    [Required]",
+        "    [EmailAddress]",
+        "    public string? Email { get; set; }",
+        "}"
+    );
+
+    private string statesInputBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "@code {",
+        "  private string? _requiredValue = \"\";",
+        "  private string _disabledValue = \"This input is disabled\";",
+        "  private string _readonlyValue = \"This input is read-only\";",
+        "}");
+
+    private string eventInputBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "@code {",
+        "  private string? _eventValue = \"\";",
+        "  // event logging omitted for brevity",
+        "}");
+
+    private IEnumerable<ApiMember> inputProperties = new[]
+    {
+        new ApiMember { Name = "Value", Type = "string?", DefaultValue = "null", Description = "Two-way bound value (provided by InputBase<string>)." },
+        new ApiMember { Name = "Name", Type = "string?", DefaultValue = "null", Description = "Name attribute for underlying input." },
+        new ApiMember { Name = "Type", Type = "PggmInput.InputTypes", DefaultValue = "text", Description = "Input type (text, email, number, etc.)." },
+        new ApiMember { Name = "Placeholder", Type = "string?", DefaultValue = "null", Description = "Placeholder text shown when empty." },
+        new ApiMember { Name = "Required", Type = "bool", DefaultValue = "false", Description = "Whether the input is required for validation." },
+        new ApiMember { Name = "ReadOnly", Type = "bool", DefaultValue = "false", Description = "When true makes the input read-only." },
+        new ApiMember { Name = "Disabled", Type = "bool", DefaultValue = "false", Description = "When true disables the input." },
+        new ApiMember { Name = "Min", Type = "string?", DefaultValue = "null", Description = "Minimum value for numeric/date inputs." },
+        new ApiMember { Name = "Max", Type = "string?", DefaultValue = "null", Description = "Maximum value for numeric/date inputs." },
+        new ApiMember { Name = "ChildContent", Type = "RenderFragment?", DefaultValue = "null", Description = "Optional child content." }
+    };
+
+    private IEnumerable<ApiMember> inputEvents = new[]
+    {
+        new ApiMember { Name = "OnChange", Type = "EventCallback<ChangeEventArgs>", Description = "Invoked when the input value changes (on blur)." },
+        new ApiMember { Name = "OnInput", Type = "EventCallback<ChangeEventArgs>", Description = "Invoked on every input event (keystroke)." },
+        new ApiMember { Name = "OnFocus", Type = "EventCallback<FocusEventArgs>", Description = "Invoked when input gains focus." },
+        new ApiMember { Name = "OnBlur", Type = "EventCallback<FocusEventArgs>", Description = "Invoked when input loses focus." },
+        new ApiMember { Name = "ValueChanged", Type = "EventCallback<string?>", Description = "EventCallback for two-way binding updates." }
+    };
 }
+
+<style>
+    /* demo-section styles are provided globally in wwwroot/css/custom-formatters.css */
+</style>

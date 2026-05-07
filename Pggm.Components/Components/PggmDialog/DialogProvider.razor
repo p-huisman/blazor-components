@@ -1,0 +1,16 @@
+@using Pggm.Components.Components.PggmDialog.Services
+
+<div class="pggm-dialog-host">
+    @foreach (var dlg in _dialogs)
+    {
+        <PggmDialog Open="true"
+                   Modal="@GetModal(dlg)"
+                   HeaderContent="@dlg.Title"
+                   Actions="@GetActions(dlg)"
+                   OnClose="@(() => OnDialogClose(dlg))"
+                   OnCancel="@(() => OnDialogCancel(dlg))"
+                   CloseLabel="@GetCloseLabel(dlg)">
+            @dlg.Content
+        </PggmDialog>
+    }
+</div>

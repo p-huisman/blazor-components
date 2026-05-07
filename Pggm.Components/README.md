@@ -59,14 +59,14 @@ Add the namespace to your `_Imports.razor`:
     Get Started
 </PggmButton>
 
-<PggmInput @bind-Value="userInput" 
+<PggmInput @bind-Value="userInput"
            Type="@PggmInput.InputTypes.Email"
            Placeholder="Enter your email..."
            Required="true" />
 
 @code {
     private string userInput = "";
-    
+
     private void HandleClick()
     {
         // Handle button click
@@ -89,11 +89,12 @@ This library provides Blazor wrappers for the following PGGM Design System compo
 | **PggmErrorMessage** | Validation errors | Form validation display |
 | **PggmFieldset** | Form grouping | Accessible field grouping with legends |
 | **PggmFileUpload** | File input controls | Multiple file support, validation |
-| **PggmHeader** | Page headers | Consistent page header styling |
+| **PggmHeading** | Headings | Semantic heading levels with PGGM styling |
 | **PggmIcon** | Icon display | PGGM icon library integration |
 | **PggmInput** | Text inputs | Multiple input types, validation, events |
 | **PggmInputDate** | Date pickers | Date selection with localization |
 | **PggmInputIban** | IBAN inputs | IBAN validation and formatting |
+| **PggmInputBsn** | BSN inputs | Dutch BSN validation and formatting |
 | **PggmInputPhone** | Phone inputs | Country selection, number validation |
 | **PggmLabel** | Form labels | Accessible form labeling |
 | **PggmLink** | Navigation links | Consistent link styling |
@@ -127,7 +128,7 @@ Two-way data binding with Blazor's `@bind` syntax:
 
 ```razor
 <PggmInput @bind-Value="@user.Email" Type="@PggmInput.InputTypes.Email" />
-<PggmCheckbox @bind-Checked="@user.AcceptsTerms" />
+<PggmCheckbox @bind-Value="@user.AcceptsTerms" />
 <PggmSelect @bind-Value="@user.Country" Items="@countries" />
 ```
 
@@ -143,7 +144,7 @@ Native Blazor event handling with strongly-typed event arguments:
     {
         // Handle click with access to mouse event details
     }
-    
+
     private void HandleInputChange(ChangeEventArgs args)
     {
         // Handle input change with typed event arguments
@@ -165,23 +166,23 @@ Automatic loading of PGGM Design System styles and tokens:
 ```razor
 <EditForm Model="@user" OnValidSubmit="@HandleSubmit">
     <DataAnnotationsValidator />
-    
+
     <PggmFieldset Title="Personal Information">
         <PggmLabel For="email">Email Address</PggmLabel>
-        <PggmInput @bind-Value="@user.Email" 
+        <PggmInput @bind-Value="@user.Email"
                    Type="@PggmInput.InputTypes.Email"
                    Id="email"
                    Required="true" />
         <ValidationMessage For="@(() => user.Email)" />
-        
+
         <PggmLabel For="phone">Phone Number</PggmLabel>
-        <PggmInputPhone @bind-Value="@user.Phone" 
+        <PggmInputPhone @bind-Value="@user.Phone"
                         Id="phone"
                         InitialCountry="NL"
                         Required="true" />
         <ValidationMessage For="@(() => user.Phone)" />
     </PggmFieldset>
-    
+
     <PggmButton Type="submit" Variant="primary">
         Save Information
     </PggmButton>
@@ -191,12 +192,12 @@ Automatic loading of PGGM Design System styles and tokens:
 ### Data Table with Remote Data
 
 ```razor
-<PggmTable RemoteUrl="@($"/api/employees?page={currentPage}")" 
+<PggmTable RemoteUrl="@($"/api/employees?page={currentPage}")"
            Remote="cursor"
-           FilterLabel="Filter employees" 
+           FilterLabel="Filter employees"
            ClearLabel="Clear filters"
            OnSelectionChanged="HandleSelectionChanged">
-    
+
     <PggmTh Field="firstName" Type="string" Sortable="true" Filterable="true">
         First Name
     </PggmTh>
@@ -215,24 +216,24 @@ Automatic loading of PGGM Design System styles and tokens:
 ### Multi-Step Wizard
 
 ```razor
-<PggmWizard OnWizardFinished="HandleWizardComplete" 
+<PggmWizard OnWizardFinished="HandleWizardComplete"
             OnBeforeSubmit="ValidateWizard">
-    
+
     <PggmWizardForm Label="Personal Details" Active="true">
         <PggmInput @bind-Value="@wizard.FirstName" Placeholder="First Name" Required="true" />
         <PggmInput @bind-Value="@wizard.LastName" Placeholder="Last Name" Required="true" />
     </PggmWizardForm>
-    
+
     <PggmWizardForm Label="Contact Information">
         <PggmInput @bind-Value="@wizard.Email" Type="@PggmInput.InputTypes.Email" Required="true" />
         <PggmInputPhone @bind-Value="@wizard.Phone" InitialCountry="NL" Required="true" />
     </PggmWizardForm>
-    
+
     <PggmWizardForm Label="Review & Submit">
         <p>Please review your information before submitting.</p>
         <!-- Display summary -->
     </PggmWizardForm>
-    
+
     <FinishContent>
         <PggmAlert Variant="success">
             Your information has been successfully submitted!
@@ -248,7 +249,7 @@ Automatic loading of PGGM Design System styles and tokens:
 All components support additional CSS classes and attributes:
 
 ```razor
-<PggmButton CssClass="my-custom-class" 
+<PggmButton CssClass="my-custom-class"
             Style="margin-top: 1rem;"
             data-analytics="submit-button">
     Submit
@@ -287,7 +288,7 @@ Access underlying web component methods when needed:
 
 @code {
     private PggmTable tableRef;
-    
+
     private async Task RefreshTable()
     {
         await tableRef.RefreshAsync();
@@ -297,7 +298,7 @@ Access underlying web component methods when needed:
 
 ## Requirements
 
-- **.NET 8.0** or later
+- **.NET 10.0** or later
 - **Blazor WebAssembly** or **Blazor Server**
 - Modern browser with **Web Components** support
 
@@ -315,26 +316,42 @@ The PGGM Design System web components support:
 ### Component Hierarchy
 
 ```
-PggmComponentBase (Abstract base class)
-├── PggmEventComponentBase (For components with complex events)
-├── PggmInput (Text inputs)
-├── PggmButton (Buttons and clickable elements)
-├── PggmTable (Data tables)
-└── [Other components...]
+PggmComponentBase                        — Abstract base for all components
+├── PggmEventComponentBase               — For components with JS event handling
+│   ├── PggmButton, PggmDialog, PggmTab, PggmSlider, ...
+│   └── PggmEventComponentInputBase<T>   — For input components with EditForm support
+│       ├── PggmInput, PggmInputDate, PggmInputPhone, PggmInputIban, ...
+│       └── PggmBankAccountInput, PggmAddressInput, PggmSignaturePad, ...
+└── Display-only components (no events)
+    └── PggmLabel, PggmIcon, PggmHeading, PggmFieldset, ...
 ```
 
-### Services
+### Event Handling
 
-- **PggmDesignSystemService**: Manages web component initialization and JavaScript interop
-- **ServiceCollectionExtensions**: Provides easy service registration
+Event components register handlers via `RegisterEventHandler` in `OnParametersSetAsync`. Each component:
+1. Declares which DOM events to listen for in `GetEventNames()`
+2. Registers closures (capturing current parameter values) in `OnParametersSetAsync`
+3. Has its listeners wired via `PggmComponents.addEventListeners` (batch) with automatic per-event fallback
 
-### JavaScript Integration
+```csharp
+protected override IEnumerable<string> GetEventNames()
+{
+    if (OnChange.HasDelegate) yield return EventNames.Change;
+    if (OnBlur.HasDelegate)   yield return EventNames.Blur;
+}
 
-The library automatically handles:
-- Loading PGGM Design System bundle
-- Web component registration
-- Event listener setup and cleanup
-- Property synchronization between Blazor and web components
+protected override Task OnParametersSetAsync()
+{
+    RegisterEventHandler(EventNames.Change, async (_) =>
+    {
+        if (OnChange.HasDelegate)
+            await OnChange.InvokeAsync(new ChangeEventArgs { Value = await GetValueAsync() });
+    });
+    return base.OnParametersSetAsync();
+}
+```
+
+See [docs/event-handling-fix.md](../docs/event-handling-fix.md) for full developer guidance.
 
 ## Troubleshooting
 
@@ -355,7 +372,7 @@ The library automatically handles:
 ### Getting Help
 
 - **Sample Application**: Run the included sample for working examples
-- **API Documentation**: Use IntelliSense for parameter documentation  
+- **API Documentation**: Use IntelliSense for parameter documentation
 - **PGGM Design System**: Reference the official design system documentation
 - **Issues**: Report bugs on the project repository
 
@@ -367,10 +384,11 @@ None
 
 Contributions are welcome! Please ensure:
 
-1. All new components follow the established patterns
-2. Include comprehensive tests for new functionality
-3. Update documentation for API changes
-4. Follow the existing code style and conventions
+1. **New event components** inherit from `PggmEventComponentBase` (or `PggmEventComponentInputBase<T>` for input components).
+2. **Register handlers** via `RegisterEventHandler` in `OnParametersSetAsync` — do not override `EventHandlers`.
+3. **Declare event names** in `GetEventNames()` so the base class can wire up JS listeners.
+4. Include comprehensive tests for new functionality.
+5. Follow the existing code style defined in `AGENTS.md`.
 
 ---
 
@@ -378,4 +396,4 @@ Contributions are welcome! Please ensure:
 - **Package ID**: Pggm.Components
 - **Authors**: PGGM
 - **Tags**: blazor, pggm, design-system, web-components, ui
-- **Target Framework**: .NET 8.0
+- **Target Framework**: .NET 10.0

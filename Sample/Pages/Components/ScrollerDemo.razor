@@ -1,0 +1,125 @@
+@page "/pggm-scroller"
+@using Pggm.Components
+@using Pggm.Components.Sample.Components.ApiDocumentation
+@using Pggm.Components.Sample.Utilities
+
+<PageTitle>PGGM Scroller</PageTitle>
+
+<PggmHeading Level="1">PGGM Scroller</PggmHeading>
+
+<p>The <code>PggmScroller</code> component wraps content in a scrollable container. It supports horizontal and vertical
+    orientations and offers options to hide the scrollbar or the overflow shadow indicators.</p>
+
+<DemoSection Title="Vertical Scroller" Code="@verticalSource">
+    <Description>
+        <p>A vertical scroller with a fixed height. Content that overflows is accessible via scroll.</p>
+    </Description>
+    <ChildContent>
+        <PggmScroller Orientation="Orientation.Vertical" style="height: 150px;">
+            @for (int i = 1; i <= 12; i++)
+            {
+                var index = i;
+                <div style="padding: 8px 12px; border-bottom: 1px solid var(--color-border, #eee);">Item @index</div>
+            }
+        </PggmScroller>
+    </ChildContent>
+</DemoSection>
+
+<DemoSection Title="Horizontal Scroller" Code="@horizontalSource">
+    <Description>
+        <p>A horizontal scroller. Set <code>Orientation="Orientation.Horizontal"</code> to enable left/right scrolling.</p>
+    </Description>
+    <ChildContent>
+        <PggmScroller Orientation="Orientation.Horizontal">
+            <div style="display: flex; gap: 12px; padding: 8px;">
+                @for (int i = 1; i <= 12; i++)
+                {
+                    var index = i;
+                    <div style="min-width: 120px; padding: 16px; background: var(--color-surface-raised, #f5f5f5); border-radius: 4px; text-align: center;">
+                        Card @index
+                    </div>
+                }
+            </div>
+        </PggmScroller>
+    </ChildContent>
+</DemoSection>
+
+<DemoSection Title="Without Scrollbar" Code="@withoutScrollbarSource">
+    <Description>
+        <p>Add <code>WithoutScrollbar="true"</code> to hide the scrollbar while still allowing scroll interaction.</p>
+    </Description>
+    <ChildContent>
+        <PggmScroller WithoutScrollbar="true" style="height: 150px;">
+            @for (int i = 1; i <= 12; i++)
+            {
+                var index = i;
+                <div style="padding: 8px 12px; border-bottom: 1px solid var(--color-border, #eee);">Item @index</div>
+            }
+        </PggmScroller>
+    </ChildContent>
+</DemoSection>
+
+<DemoSection Title="Without Shadow" Code="@withoutShadowSource">
+    <Description>
+        <p>Add <code>WithoutShadow="true"</code> to remove the overflow shadow indicators at the edges of the scroller.</p>
+    </Description>
+    <ChildContent>
+        <PggmScroller WithoutShadow="true" style="height: 150px;">
+            @for (int i = 1; i <= 12; i++)
+            {
+                var index = i;
+                <div style="padding: 8px 12px; border-bottom: 1px solid var(--color-border, #eee);">Item @index</div>
+            }
+        </PggmScroller>
+    </ChildContent>
+</DemoSection>
+
+<DemoSection Title="Without Scrollbar and Shadow" Code="@withoutBothSource">
+    <Description>
+        <p>Combine both flags to produce a clean scrollable area with no visual scroll indicators.</p>
+    </Description>
+    <ChildContent>
+        <PggmScroller WithoutScrollbar="true" WithoutShadow="true" style="height: 150px;">
+            @for (int i = 1; i <= 12; i++)
+            {
+                var index = i;
+                <div style="padding: 8px 12px; border-bottom: 1px solid var(--color-border, #eee);">Item @index</div>
+            }
+        </PggmScroller>
+    </ChildContent>
+</DemoSection>
+
+@code {
+    private string verticalSource =
+        "<PggmScroller Orientation=\"Orientation.Vertical\" style=\"height: 150px;\">\n" +
+        "    @for (int i = 1; i <= 12; i++)\n" +
+        "    {\n" +
+        "        <div style=\"padding: 8px 12px;\">Item @i</div>\n" +
+        "    }\n" +
+        "</PggmScroller>";
+
+    private string horizontalSource =
+        "<PggmScroller Orientation=\"Orientation.Horizontal\">\n" +
+        "    <div style=\"display: flex; gap: 12px; padding: 8px;\">\n" +
+        "        @for (int i = 1; i <= 12; i++)\n" +
+        "        {\n" +
+        "            <div style=\"min-width: 120px; padding: 16px;\">Card @i</div>\n" +
+        "        }\n" +
+        "    </div>\n" +
+        "</PggmScroller>";
+
+    private string withoutScrollbarSource =
+        "<PggmScroller WithoutScrollbar=\"true\" style=\"height: 150px;\">\n" +
+        "    ...\n" +
+        "</PggmScroller>";
+
+    private string withoutShadowSource =
+        "<PggmScroller WithoutShadow=\"true\" style=\"height: 150px;\">\n" +
+        "    ...\n" +
+        "</PggmScroller>";
+
+    private string withoutBothSource =
+        "<PggmScroller WithoutScrollbar=\"true\" WithoutShadow=\"true\" style=\"height: 150px;\">\n" +
+        "    ...\n" +
+        "</PggmScroller>";
+}

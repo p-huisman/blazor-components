@@ -1,0 +1,17 @@
+@namespace Pggm.Components
+@inherits PggmEventComponentBase
+
+<pggm-address-input @ref="ElementRef"
+    value="@Value"
+    name="@Name"
+    id="@Id"
+    class="@CssClass"
+    disabled="@Disabled"
+    required="@Required"
+    foreign="@Foreign"
+    autocomplete="@Autocomplete"
+    landen-endpoint="@LandenEndpoint"
+    adres-endpoint="@AdresEndpoint"
+    @attributes="GetAttributes()">
+  @ChildContent
+</pggm-address-input>

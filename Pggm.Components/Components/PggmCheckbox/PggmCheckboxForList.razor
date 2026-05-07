@@ -1,0 +1,11 @@
+@typeparam TItem where TItem : class
+@namespace Pggm.Components
+
+<PggmCheckbox
+  Name="@Name"
+  Value="@IsChecked"
+  ValueChanged="OnCheckedChanged"
+  Disabled="@Disabled"
+  @attributes="AdditionalAttributes">
+  @ChildContent
+</PggmCheckbox>

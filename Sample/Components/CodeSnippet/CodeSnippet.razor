@@ -1,0 +1,64 @@
+@using System.Text.Json
+@inject IJSRuntime JS
+
+<div class="code-snippet">
+  @if (!string.IsNullOrEmpty(Title) || ShowCopyButton)
+  {
+    <div class="header">
+       <span class="title">@if (!string.IsNullOrEmpty(Title)) { @Title }</span>
+      
+      @if (ShowCopyButton)
+      {
+        <PggmButton Appearance="@ButtonAppearance.Secondary" class="copy-button" @onclick="Copy">
+          <PggmIcon Icon="copy" Size="Small" />@CopyButtonText</PggmButton>
+      }
+    </div>
+  }
+  @{
+    var lang = (Language ?? "text").ToLowerInvariant();
+    if (lang == "razor") lang = "markup"; // Prism doesn't include razor by default; use markup for mixed html/csharp
+    var langClass = $"language-{lang}";
+  }
+  <pre class="@(ShowLineNumbers ? "line-numbers" : string.Empty)"><code class="@langClass">@((MarkupString)EncodedCode)</code></pre>
+</div>
+
+
+@code {
+  [Parameter] public string? Title { get; set; }
+  [Parameter] public string? Code { get; set; }
+  [Parameter] public string Language { get; set; } = "text";
+  [Parameter] public bool ShowCopyButton { get; set; } = true;
+  [Parameter] public string CopyButtonText { get; set; } = "Copy";
+  [Parameter] public bool ShowLineNumbers { get; set; } = true;
+
+  string EncodedCode => System.Net.WebUtility.HtmlEncode(Code ?? string.Empty);
+
+  async Task Copy()
+  {
+    if (string.IsNullOrEmpty(Code)) return;
+    try
+    {
+      await JS.InvokeAsync<bool>("codeSnippet.copyToClipboard", Code);
+    }
+    catch
+    {
+      // best-effort
+    }
+    var previous = CopyButtonText;
+    CopyButtonText = "Copied";
+    StateHasChanged();
+    await Task.Delay(1200);
+    CopyButtonText = previous;
+    StateHasChanged();
+  }
+
+  bool _highlighted = false;
+  protected override async Task OnAfterRenderAsync(bool firstRender)
+  {
+    if (!_highlighted)
+    {
+      _highlighted = true;
+      try { await JS.InvokeVoidAsync("codeSnippet.highlightAll"); } catch { }
+    }
+  }
+}

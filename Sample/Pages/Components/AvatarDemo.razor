@@ -1,0 +1,137 @@
+@page "/pggm-avatar"
+@using Pggm.Components.Sample.Components.ApiDocumentation
+
+<PageTitle>PGGM Avatar</PageTitle>
+
+<PggmHeading Level="1">PGGM Avatar</PggmHeading>
+
+<p>
+    The <code>PggmAvatar</code> component is a Blazor wrapper for the PGGM design system's avatar web component.
+    It displays a user representation using an image, initials/characters, or a default icon.
+    Use <code>PggmAvatarGroup</code> to stack multiple avatars together.
+</p>
+
+<DemoSection Title="Characters" Code="@charactersSource">
+    <p>Display up to five characters (typically initials) inside the avatar.</p>
+    <PggmStack Orientation="Orientation.Horizontal" HorizontalGap="16" Wrap="true">
+        <PggmAvatar Characters="AB" Label="Anne de Boer" />
+        <PggmAvatar Characters="JW" Label="Jan de Wit" />
+        <PggmAvatar Characters="PGGM" Label="PGGM" />
+    </PggmStack>
+</DemoSection>
+
+<DemoSection Title="Image" Code="@imageSource">
+    <p>Provide a <code>Src</code> URL to render a photo. The default icon is shown as fallback while the image loads or when it fails.</p>
+    <PggmStack Orientation="Orientation.Horizontal" HorizontalGap="16" Wrap="true">
+        <PggmAvatar Src="https://i.pravatar.cc/150?img=1" Label="Person 1" />
+        <PggmAvatar Src="https://i.pravatar.cc/150?img=2" Label="Person 2" />
+        <PggmAvatar Src="broken-url.jpg" Label="Fallback avatar" />
+    </PggmStack>
+</DemoSection>
+
+<DemoSection Title="Default Icon" Code="@defaultIconSource">
+    <p>When neither <code>Characters</code> nor <code>Src</code> is provided the component renders the default user icon.</p>
+    <PggmAvatar Label="Unknown user" />
+</DemoSection>
+
+<DemoSection Title="Custom Colors" Code="@colorsSource">
+    <p>Override the foreground and background colors with any CSS color value.</p>
+    <PggmStack Orientation="Orientation.Horizontal" HorizontalGap="16" Wrap="true">
+        <PggmAvatar Characters="AB" Label="Anne de Boer" Color="#ffffff" Background="#005b8e" />
+        <PggmAvatar Characters="JW" Label="Jan de Wit" Color="#ffffff" Background="#2e7d32" />
+        <PggmAvatar Characters="MK" Label="Maria Koster" Color="#1a1a1a" Background="#ffd600" />
+    </PggmStack>
+</DemoSection>
+
+<DemoSection Title="Avatar Group" Code="@groupSource">
+    <p>
+        Use <code>PggmAvatarGroup</code> to stack multiple avatars. Set the <code>Max</code> parameter to control
+        how many avatars are visible; any overflow is shown as a numeric badge.
+    </p>
+    <PggmStack Orientation="Orientation.Vertical" VerticalGap="16">
+        <PggmAvatarGroup Label="Team members">
+            <PggmAvatar Characters="AB" Label="Anne de Boer" />
+            <PggmAvatar Characters="JW" Label="Jan de Wit" />
+            <PggmAvatar Characters="MK" Label="Maria Koster" />
+        </PggmAvatarGroup>
+
+        <PggmAvatarGroup Label="Large team" MaxAvatars="3">
+            <PggmAvatar Characters="AB" Label="Anne de Boer" />
+            <PggmAvatar Characters="JW" Label="Jan de Wit" />
+            <PggmAvatar Characters="MK" Label="Maria Koster" />
+            <PggmAvatar Characters="RV" Label="Rob van Dijk" />
+            <PggmAvatar Characters="SL" Label="Sara de Leeuw" />
+        </PggmAvatarGroup>
+    </PggmStack>
+</DemoSection>
+
+<PggmHeading Level="2">API</PggmHeading>
+
+<PggmHeading Level="3">PggmAvatar</PggmHeading>
+<ApiDocumentation Properties="_avatarProperties" />
+
+<PggmHeading Level="3">PggmAvatarGroup</PggmHeading>
+<ApiDocumentation Properties="_groupProperties" />
+
+@code {
+    private IEnumerable<ApiMember> _avatarProperties = new[]
+    {
+        new ApiMember { Name = "Label",      Type = "string?", DefaultValue = "null",  Description = "Accessible label rendered as aria-label on the element." },
+        new ApiMember { Name = "Alt",        Type = "string?", DefaultValue = "null",  Description = "Alternative text; used instead of Label for the aria-label when both are provided the web component selects label first." },
+        new ApiMember { Name = "Characters", Type = "string?", DefaultValue = "null",  Description = "Up to five characters (e.g. initials) displayed inside the avatar." },
+        new ApiMember { Name = "Src",        Type = "string?", DefaultValue = "null",  Description = "URL of the image to display. Falls back to the default icon on error." },
+        new ApiMember { Name = "Color",      Type = "string?", DefaultValue = "null",  Description = "CSS color for the foreground (text/icon). Overrides --pggm-avatar-color." },
+        new ApiMember { Name = "Background", Type = "string?", DefaultValue = "null",  Description = "CSS color for the background. Overrides --pggm-avatar-background-color." },
+        new ApiMember { Name = "ChildContent",         Type = "RenderFragment?", DefaultValue = "null", Description = "Optional slot content, e.g. a custom icon element." },
+        new ApiMember { Name = "CssClass",             Type = "string?",         DefaultValue = "null", Description = "Additional CSS classes applied to the element." },
+        new ApiMember { Name = "AdditionalAttributes", Type = "Dictionary<string, object>?", DefaultValue = "null", Description = "Attributes splatted onto the underlying web component element." },
+    };
+
+    private IEnumerable<ApiMember> _groupProperties = new[]
+    {
+        new ApiMember { Name = "MaxAvatars",        Type = "int?",    DefaultValue = "null (3)", Description = "Maximum number of visible avatars. Extra avatars are hidden with an overflow count badge." },
+        new ApiMember { Name = "Label",      Type = "string?", DefaultValue = "null",     Description = "Accessible label for the group element (role=group)." },
+        new ApiMember { Name = "ChildContent",         Type = "RenderFragment?", DefaultValue = "null", Description = "PggmAvatar elements to display in the group." },
+        new ApiMember { Name = "CssClass",             Type = "string?",         DefaultValue = "null", Description = "Additional CSS classes applied to the element." },
+        new ApiMember { Name = "AdditionalAttributes", Type = "Dictionary<string, object>?", DefaultValue = "null", Description = "Attributes splatted onto the underlying web component element." },
+    };
+
+    private string charactersSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmStack Orientation=\"Orientation.Horizontal\" HorizontalGap=\"16\" Wrap=\"true\">",
+        "    <PggmAvatar Characters=\"AB\" Label=\"Anne de Boer\" />",
+        "    <PggmAvatar Characters=\"JW\" Label=\"Jan de Wit\" />",
+        "    <PggmAvatar Characters=\"PGGM\" Label=\"PGGM\" />",
+        "</PggmStack>");
+
+    private string imageSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmStack Orientation=\"Orientation.Horizontal\" HorizontalGap=\"16\" Wrap=\"true\">",
+        "    <PggmAvatar Src=\"https://i.pravatar.cc/150?img=1\" Label=\"Person 1\" />",
+        "    <PggmAvatar Src=\"https://i.pravatar.cc/150?img=2\" Label=\"Person 2\" />",
+        "    <PggmAvatar Src=\"broken-url.jpg\" Label=\"Fallback avatar\" />",
+        "</PggmStack>");
+
+    private string defaultIconSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmAvatar Label=\"Unknown user\" />");
+
+    private string colorsSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmStack Orientation=\"Orientation.Horizontal\" HorizontalGap=\"16\" Wrap=\"true\">",
+        "    <PggmAvatar Characters=\"AB\" Label=\"Anne de Boer\" Color=\"#ffffff\" Background=\"#005b8e\" />",
+        "    <PggmAvatar Characters=\"JW\" Label=\"Jan de Wit\" Color=\"#ffffff\" Background=\"#2e7d32\" />",
+        "    <PggmAvatar Characters=\"MK\" Label=\"Maria Koster\" Color=\"#1a1a1a\" Background=\"#ffd600\" />",
+        "</PggmStack>");
+
+    private string groupSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmAvatarGroup Label=\"Team members\">",
+        "    <PggmAvatar Characters=\"AB\" Label=\"Anne de Boer\" />",
+        "    <PggmAvatar Characters=\"JW\" Label=\"Jan de Wit\" />",
+        "    <PggmAvatar Characters=\"MK\" Label=\"Maria Koster\" />",
+        "</PggmAvatarGroup>",
+        "",
+        "<PggmAvatarGroup Label=\"Large team\" MaxAvatars=\"3\">",
+        "    <PggmAvatar Characters=\"AB\" Label=\"Anne de Boer\" />",
+        "    <PggmAvatar Characters=\"JW\" Label=\"Jan de Wit\" />",
+        "    <PggmAvatar Characters=\"MK\" Label=\"Maria Koster\" />",
+        "    <PggmAvatar Characters=\"RV\" Label=\"Rob van Dijk\" />",
+        "    <PggmAvatar Characters=\"SL\" Label=\"Sara de Leeuw\" />",
+        "</PggmAvatarGroup>");
+}

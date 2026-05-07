@@ -1,0 +1,376 @@
+@page "/pggm-drawer"
+
+@using Pggm.Components.Models
+@using Pggm.Components.Sample.Components.ApiDocumentation
+
+<PageTitle>PGGM Drawer</PageTitle>
+
+<PggmHeading Level="1">PGGM Drawer</PggmHeading>
+
+<p>The Drawer component is a panel that slides in from the edge of the screen. It is useful for navigation, filters,
+    or supplementary content that should not block the main content entirely.</p>
+
+<DemoSection Title="Default (end)" Code="@_defaultSource">
+    <Description>
+        <p>A basic drawer that slides in from the end (right in LTR layouts).</p>
+    </Description>
+    <Content>
+        <PggmButton Appearance="@ButtonAppearance.Primary" @onclick="() => _defaultOpen = true">
+            Open Drawer
+        </PggmButton>
+
+        <PggmDrawer @bind-Open="_defaultOpen" Label="Default Drawer">
+            <p>This is the drawer body. It slides in from the end by default.</p>
+            <p>Click the X button, press Escape, or click the overlay to close it.</p>
+        </PggmDrawer>
+
+        <p>State: <strong>@(_defaultOpen ? "Open" : "Closed")</strong></p>
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Placement: start" Code="@_startSource">
+    <Description>
+        <p>Drawer that slides in from the start (left in LTR layouts).</p>
+    </Description>
+    <Content>
+        <PggmButton Appearance="@ButtonAppearance.Primary" @onclick="() => _startOpen = true">
+            Open Start Drawer
+        </PggmButton>
+
+        <PggmDrawer @bind-Open="_startOpen" Label="Start Drawer" Placement="start">
+            <p>This drawer slides in from the start.</p>
+        </PggmDrawer>
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Placement: top" Code="@_topSource">
+    <Description>
+        <p>Drawer that slides down from the top of the viewport.</p>
+    </Description>
+    <Content>
+        <PggmButton Appearance="@ButtonAppearance.Primary" @onclick="() => _topOpen = true">
+            Open Top Drawer
+        </PggmButton>
+
+        <PggmDrawer @bind-Open="_topOpen" Label="Top Drawer" Placement="top">
+            <p>This drawer slides in from the top.</p>
+        </PggmDrawer>
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Placement: bottom" Code="@_bottomSource">
+    <Description>
+        <p>Drawer that slides up from the bottom of the viewport.</p>
+    </Description>
+    <Content>
+        <PggmButton Appearance="@ButtonAppearance.Primary" @onclick="() => _bottomOpen = true">
+            Open Bottom Drawer
+        </PggmButton>
+
+        <PggmDrawer @bind-Open="_bottomOpen" Label="Bottom Drawer" Placement="bottom">
+            <p>This drawer slides in from the bottom.</p>
+        </PggmDrawer>
+    </Content>
+</DemoSection>
+
+<DemoSection Title="No Header" Code="@_noHeaderSource">
+    <Description>
+        <p>A drawer without a header. Useful when building fully custom layouts inside the panel.</p>
+    </Description>
+    <Content>
+        <PggmButton Appearance="@ButtonAppearance.Primary" @onclick="() => _noHeaderOpen = true">
+            Open No-Header Drawer
+        </PggmButton>
+
+        <PggmDrawer @bind-Open="_noHeaderOpen" NoHeader="true">
+            <div style="padding: 1rem;">
+                <p>This drawer has no header. Close it programmatically or via Escape / overlay click.</p>
+                <PggmButton Appearance="@ButtonAppearance.Secondary" @onclick="() => _noHeaderOpen = false">
+                    Close
+                </PggmButton>
+            </div>
+        </PggmDrawer>
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Custom Size" Code="@_customSizeSource">
+    <Description>
+        <p>Use the <code>Size</code> parameter to control the panel width (or height for top/bottom placement)
+            via the <code>--size</code> CSS custom property.</p>
+    </Description>
+    <Content>
+        <PggmButton Appearance="@ButtonAppearance.Primary" @onclick="() => _customSizeOpen = true">
+            Open Wide Drawer (50vw)
+        </PggmButton>
+
+        <PggmDrawer @bind-Open="_customSizeOpen" Label="Wide Drawer" Size="50vw">
+            <p>This drawer is 50% of the viewport width.</p>
+        </PggmDrawer>
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Scrolling Body Content" Code="@_scrollSource">
+    <Description>
+        <p>When the body content exceeds the drawer height, it scrolls independently while the header and footer
+            remain fixed.</p>
+    </Description>
+    <Content>
+        <PggmButton Appearance="@ButtonAppearance.Primary" @onclick="() => _scrollOpen = true">
+            Open Scrolling Drawer
+        </PggmButton>
+
+        <PggmDrawer @bind-Open="_scrollOpen" Label="Scrolling Content">
+            <Footer>
+                <PggmButton Appearance="@ButtonAppearance.Primary" @onclick="() => _scrollOpen = false">
+                    Close
+                </PggmButton>
+            </Footer>
+            <ChildContent>
+                @for (var i = 1; i <= 20; i++)
+                {
+                    var n = i;
+                    <p>Paragraph @n — scroll to see more content below.</p>
+                }
+            </ChildContent>
+        </PggmDrawer>
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Preventing Overlay Close" Code="@_preventCloseSource">
+    <Description>
+        <p>Handle the <code>OnRequestClose</code> event and set <code>Cancel = true</code> on the event args to
+            prevent the drawer from closing when the user clicks the overlay. The close button and Escape key still
+            work.</p>
+    </Description>
+    <Content>
+        <PggmButton Appearance="@ButtonAppearance.Primary" @onclick="() => _preventCloseOpen = true">
+            Open Drawer
+        </PggmButton>
+
+        <PggmDrawer @bind-Open="_preventCloseOpen" Label="Overlay Close Prevented"
+                    OnRequestClose="HandleRequestClose">
+            <p>Click the overlay — the drawer will stay open. Use the X button or Escape to close it.</p>
+        </PggmDrawer>
+
+        @if (!string.IsNullOrEmpty(_requestCloseMessage))
+        {
+            <p>Last request: <strong>@_requestCloseMessage</strong></p>
+        }
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Contained to Parent" Code="@_containedSource">
+    <Description>
+        <p>When <code>Contained</code> is true, the drawer is positioned relative to its nearest positioned
+            ancestor instead of the viewport. The parent element must have <code>position: relative</code> and
+            <code>overflow: hidden</code>.</p>
+    </Description>
+    <Content>
+        <div style="position: relative; overflow: hidden; height: 300px; border: 2px dashed #ccc; display: flex; align-items: flex-start; padding: 1rem; gap: 1rem;">
+            <PggmButton Appearance="@ButtonAppearance.Primary" @onclick="() => _containedOpen = true">
+                Open Contained Drawer
+            </PggmButton>
+            <p>The drawer opens inside this box.</p>
+
+            <PggmDrawer @bind-Open="_containedOpen" Label="Contained Drawer" Contained="true">
+                <p>I am contained within the dashed box.</p>
+            </PggmDrawer>
+        </div>
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Programmatic Control &amp; Event Log" Code="@_programmaticSource">
+    <Description>
+        <p>Control the drawer programmatically via <code>ShowAsync()</code> / <code>HideAsync()</code> methods,
+            and observe all lifecycle events.</p>
+    </Description>
+    <Content>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
+            <PggmButton Appearance="@ButtonAppearance.Primary" @onclick="OpenProgrammatically">
+                Show
+            </PggmButton>
+            <PggmButton Appearance="@ButtonAppearance.Secondary" @onclick="CloseProgrammatically">
+                Hide
+            </PggmButton>
+        </div>
+
+        <PggmDrawer @ref="_programmaticDrawer"
+                    @bind-Open="_programmaticOpen"
+                    Label="Event Log Drawer"
+                    OnShow="OnProgShow"
+                    OnAfterShow="OnProgAfterShow"
+                    OnHide="OnProgHide"
+                    OnAfterHide="OnProgAfterHide">
+            <p>Opening and closing this drawer produces events in the log below.</p>
+        </PggmDrawer>
+
+        @if (_events.Any())
+        {
+            <div class="event-log">
+                <PggmHeading Level="4">Event Log:</PggmHeading>
+                <ul>
+                    @foreach (var evt in _events.TakeLast(8))
+                    {
+                        <li>@evt</li>
+                    }
+                </ul>
+            </div>
+        }
+    </Content>
+</DemoSection>
+
+<PggmHeading Level="2">API</PggmHeading>
+<PggmHeading Level="3">PggmDrawer</PggmHeading>
+<ApiDocumentation Properties="_properties" Methods="_methods" Events="_events_api" />
+
+@code {
+    // Demo state
+    private bool _defaultOpen;
+    private bool _startOpen;
+    private bool _topOpen;
+    private bool _bottomOpen;
+    private bool _noHeaderOpen;
+    private bool _customSizeOpen;
+    private bool _scrollOpen;
+    private bool _preventCloseOpen;
+    private bool _containedOpen;
+    private bool _programmaticOpen;
+
+    private string _requestCloseMessage = "";
+    private PggmDrawer? _programmaticDrawer;
+    private List<string> _events = new();
+
+    private void HandleRequestClose(DrawerRequestCloseEventArgs args)
+    {
+        if (args.Source == "overlay")
+        {
+            args.Cancel = true;
+            _requestCloseMessage = $"Blocked close from: {args.Source}";
+        }
+        else
+        {
+            _requestCloseMessage = $"Allowed close from: {args.Source}";
+        }
+    }
+
+    private void LogEvent(string name)
+    {
+        _events.Add($"{DateTime.Now:HH:mm:ss.fff} — {name}");
+        StateHasChanged();
+    }
+
+    private async Task OpenProgrammatically()
+    {
+        if (_programmaticDrawer != null)
+            await _programmaticDrawer.ShowAsync();
+    }
+
+    private async Task CloseProgrammatically()
+    {
+        if (_programmaticDrawer != null)
+            await _programmaticDrawer.HideAsync();
+    }
+
+    private void OnProgShow() => LogEvent("show");
+    private void OnProgAfterShow() => LogEvent("afterShow");
+    private void OnProgHide() => LogEvent("hide");
+    private void OnProgAfterHide() => LogEvent("afterHide");
+
+    // Code snippets for DemoSection
+    private string _defaultSource =
+        "<PggmDrawer @bind-Open=\"isOpen\" Label=\"Default Drawer\">\n" +
+        "    <p>Drawer body content.</p>\n" +
+        "</PggmDrawer>";
+
+    private string _startSource =
+        "<PggmDrawer @bind-Open=\"isOpen\" Label=\"Start Drawer\" Placement=\"start\">\n" +
+        "    <p>Slides in from the start.</p>\n" +
+        "</PggmDrawer>";
+
+    private string _topSource =
+        "<PggmDrawer @bind-Open=\"isOpen\" Label=\"Top Drawer\" Placement=\"top\">\n" +
+        "    <p>Slides in from the top.</p>\n" +
+        "</PggmDrawer>";
+
+    private string _bottomSource =
+        "<PggmDrawer @bind-Open=\"isOpen\" Label=\"Bottom Drawer\" Placement=\"bottom\">\n" +
+        "    <p>Slides in from the bottom.</p>\n" +
+        "</PggmDrawer>";
+
+    private string _noHeaderSource =
+        "<PggmDrawer @bind-Open=\"isOpen\" NoHeader=\"true\">\n" +
+        "    <p>No header — fully custom layout.</p>\n" +
+        "</PggmDrawer>";
+
+    private string _customSizeSource =
+        "<PggmDrawer @bind-Open=\"isOpen\" Label=\"Wide Drawer\" Size=\"50vw\">\n" +
+        "    <p>Panel is 50vw wide.</p>\n" +
+        "</PggmDrawer>";
+
+    private string _scrollSource =
+        "<PggmDrawer @bind-Open=\"isOpen\" Label=\"Scrolling Content\">\n" +
+        "    <Footer>\n" +
+        "        <PggmButton Appearance=\"primary\" @onclick=\"Close\">Close</PggmButton>\n" +
+        "    </Footer>\n" +
+        "    @for (var i = 1; i <= 20; i++) { <p>Paragraph @i</p> }\n" +
+        "</PggmDrawer>";
+
+    private string _preventCloseSource =
+        "<PggmDrawer @bind-Open=\"isOpen\" Label=\"...\" OnRequestClose=\"HandleRequestClose\">\n" +
+        "    ...\n" +
+        "</PggmDrawer>\n\n" +
+        "@code {\n" +
+        "    private void HandleRequestClose(DrawerRequestCloseEventArgs args)\n" +
+        "    {\n" +
+        "        if (args.Source == \"overlay\") args.Cancel = true;\n" +
+        "    }\n" +
+        "}";
+
+    private string _containedSource =
+        "<div style=\"position: relative; overflow: hidden; height: 300px;\">\n" +
+        "    <PggmDrawer @bind-Open=\"isOpen\" Label=\"Contained\" Contained=\"true\">\n" +
+        "        <p>Contained to the parent element.</p>\n" +
+        "    </PggmDrawer>\n" +
+        "</div>";
+
+    private string _programmaticSource =
+        "<PggmDrawer @ref=\"_drawer\" @bind-Open=\"isOpen\" Label=\"...\">\n" +
+        "    ...\n" +
+        "</PggmDrawer>\n\n" +
+        "@code {\n" +
+        "    private PggmDrawer? _drawer;\n" +
+        "    private async Task Open() => await _drawer!.ShowAsync();\n" +
+        "    private async Task Close() => await _drawer!.HideAsync();\n" +
+        "}";
+
+    // API documentation
+    private IEnumerable<ApiMember> _properties = new[]
+    {
+        new ApiMember { Name = "Open", Type = "bool", DefaultValue = "false", Description = "Controls whether the drawer is visible. Supports two-way binding via @bind-Open." },
+        new ApiMember { Name = "Label", Type = "string?", DefaultValue = "null", Description = "Text displayed in the drawer header." },
+        new ApiMember { Name = "Placement", Type = "string", DefaultValue = "\"end\"", Description = "Which edge the drawer slides from. Accepted values: end, start, top, bottom." },
+        new ApiMember { Name = "Contained", Type = "bool", DefaultValue = "false", Description = "Scopes the drawer to its nearest positioned ancestor instead of the viewport." },
+        new ApiMember { Name = "NoHeader", Type = "bool", DefaultValue = "false", Description = "Hides the built-in header (title and close button)." },
+        new ApiMember { Name = "Size", Type = "string?", DefaultValue = "null", Description = "CSS length value for the panel width/height (sets --size custom property), e.g. \"50vw\"." },
+        new ApiMember { Name = "HeaderContent", Type = "RenderFragment?", DefaultValue = "null", Description = "Custom content rendered in the header slot." },
+        new ApiMember { Name = "HeaderActions", Type = "RenderFragment?", DefaultValue = "null", Description = "Custom actions rendered in the header-actions slot." },
+        new ApiMember { Name = "Footer", Type = "RenderFragment?", DefaultValue = "null", Description = "Content rendered in the footer slot." },
+        new ApiMember { Name = "ChildContent", Type = "RenderFragment?", DefaultValue = "null", Description = "Body content of the drawer." },
+    };
+
+    private IEnumerable<ApiMember> _methods = new[]
+    {
+        new ApiMember { Name = "ShowAsync()", Signature = "Task ShowAsync()", Description = "Programmatically opens the drawer." },
+        new ApiMember { Name = "HideAsync()", Signature = "Task HideAsync()", Description = "Programmatically closes the drawer." },
+    };
+
+    private IEnumerable<ApiMember> _events_api = new[]
+    {
+        new ApiMember { Name = "OnShow", Type = "EventCallback", Description = "Fired when the drawer begins to open." },
+        new ApiMember { Name = "OnAfterShow", Type = "EventCallback", Description = "Fired after the open transition completes." },
+        new ApiMember { Name = "OnHide", Type = "EventCallback", Description = "Fired when the drawer begins to close." },
+        new ApiMember { Name = "OnAfterHide", Type = "EventCallback", Description = "Fired after the close transition completes." },
+        new ApiMember { Name = "OnRequestClose", Type = "EventCallback<DrawerRequestCloseEventArgs>", Description = "Cancelable — fired when a close is requested. Set Cancel = true on the args to prevent it. Source indicates the trigger: close-button, overlay, or keyboard." },
+        new ApiMember { Name = "OpenChanged", Type = "EventCallback<bool>", Description = "Supports two-way binding (@bind-Open)." },
+    };
+}

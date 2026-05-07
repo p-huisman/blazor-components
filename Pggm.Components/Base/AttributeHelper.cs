@@ -1,5 +1,5 @@
-using System.Text;
 using System.Collections.Concurrent;
+using System.Text;
 
 namespace Pggm.Components.Base;
 
@@ -10,44 +10,6 @@ public static class AttributeHelper
 {
     private static readonly ConcurrentDictionary<string, string> _kebabCaseCache = new();
     private static readonly StringBuilder _stringBuilder = new();
-    /// <summary>
-    /// Convert a boolean parameter to a web component attribute
-    /// Web components typically use presence/absence for boolean attributes
-    /// </summary>
-    public static void SetBooleanAttribute(Dictionary<string, object> attributes, string attributeName, bool value)
-    {
-        if (value)
-        {
-            attributes[attributeName] = true;
-        }
-        else
-        {
-            attributes.Remove(attributeName);
-        }
-    }
-
-    /// <summary>
-    /// Set an attribute only if the value is not null or empty
-    /// </summary>
-    public static void SetAttributeIfNotEmpty(Dictionary<string, object> attributes, string attributeName, string? value)
-    {
-        if (!string.IsNullOrEmpty(value))
-        {
-            attributes[attributeName] = value;
-        }
-    }
-
-    /// <summary>
-    /// Set an enum attribute with kebab-case conversion
-    /// </summary>
-    public static void SetEnumAttribute<T>(Dictionary<string, object> attributes, string attributeName, T? value)
-        where T : struct, Enum
-    {
-        if (value.HasValue)
-        {
-            attributes[attributeName] = ConvertToKebabCase(value.Value.ToString());
-        }
-    }
 
     /// <summary>
     /// Merge CSS classes, handling null and empty values
@@ -90,61 +52,20 @@ public static class AttributeHelper
     }
 
     /// <summary>
-    /// Batch set multiple boolean attributes efficiently
+    /// Set an attribute only if the provided string value is not null or empty
     /// </summary>
-    public static void SetBooleanAttributes(Dictionary<string, object> attributes, params (string name, bool value)[] booleanAttributes)
+    public static void SetAttributeIfNotEmpty(Dictionary<string, object> attributes, string name, string? value)
     {
-        foreach (var (name, value) in booleanAttributes)
-        {
-            SetBooleanAttribute(attributes, name, value);
-        }
+        if (string.IsNullOrEmpty(value)) return;
+        attributes[name] = value!;
     }
 
     /// <summary>
-    /// Set multiple string attributes efficiently, skipping null/empty values
+    /// Set a boolean attribute if true (for web components we typically render the attribute name without value when true)
     /// </summary>
-    public static void SetStringAttributes(Dictionary<string, object> attributes, params (string name, string? value)[] stringAttributes)
+    public static void SetBooleanAttribute(Dictionary<string, object> attributes, string name, bool value)
     {
-        foreach (var (name, value) in stringAttributes)
-        {
-            SetAttributeIfNotEmpty(attributes, name, value);
-        }
-    }
-
-    /// <summary>
-    /// Set multiple attributes from an object using reflection
-    /// Properties will be converted to kebab-case attribute names
-    /// </summary>
-    public static void SetAttributesFromObject(Dictionary<string, object> attributes, object source)
-    {
-        if (source == null) return;
-
-        var properties = source.GetType().GetProperties();
-
-        foreach (var property in properties)
-        {
-            var value = property.GetValue(source);
-            if (value != null)
-            {
-                var attributeName = ConvertToKebabCase(property.Name);
-
-                // Handle different value types appropriately
-                switch (value)
-                {
-                    case bool boolValue:
-                        SetBooleanAttribute(attributes, attributeName, boolValue);
-                        break;
-                    case string stringValue when !string.IsNullOrEmpty(stringValue):
-                        attributes[attributeName] = stringValue;
-                        break;
-                    case Enum enumValue:
-                        attributes[attributeName] = ConvertToKebabCase(enumValue.ToString());
-                        break;
-                    default:
-                        attributes[attributeName] = value;
-                        break;
-                }
-            }
-        }
+        if (!value) return;
+        attributes[name] = true;
     }
 }

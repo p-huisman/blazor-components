@@ -1,11 +1,13 @@
 // PggmErrorMessageTests.cs
-using Xunit;
 using Bunit;
+
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Tests
+using Xunit;
+
+namespace Pggm.Components.Tests
 {
-    public class PggmErrorMessageTests : TestContext
+    public class PggmErrorMessageTests : PggmTestContext
     {
         public PggmErrorMessageTests()
         {

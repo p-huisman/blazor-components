@@ -1,0 +1,355 @@
+@page "/pggm-data-grid-api"
+
+@using Pggm.Components.Sample.Components.ApiDocumentation
+
+<PageTitle>PGGM DataGrid API</PageTitle>
+
+<PggmHeading Level="1">PGGM DataGrid - API Reference</PggmHeading>
+
+<p>Complete API reference for the <code>PggmDataGrid&lt;TGridItem&gt;</code> component and its supporting types.</p>
+
+<hr />
+
+<PggmHeading Level="2">PggmDataGrid&lt;TGridItem&gt;</PggmHeading>
+<p>
+    Generic Blazor data grid component. Tag: <code>pggm-data-grid</code>.<br />
+    Inherits from <code>PggmComponentBase</code>. Implements <code>IAsyncDisposable</code>.
+</p>
+
+<ApiDocumentation
+    Properties="_gridParameters"
+    PublicProperties="_gridPublicProperties"
+    Events="_gridEvents"
+    Methods="_gridMethods" />
+
+<hr />
+
+<PggmHeading Level="2">Column Types</PggmHeading>
+
+<PggmHeading Level="3">ColumnBase&lt;TGridItem&gt;</PggmHeading>
+<p>Abstract base class for all column types. All concrete column types inherit these parameters.</p>
+<ApiDocumentation Properties="_columnBaseParameters" />
+
+<PggmHeading Level="3">TemplateColumn&lt;TGridItem&gt;</PggmHeading>
+<p>Concrete column with a free-form cell content template. Inherits all <code>ColumnBase</code> parameters.</p>
+<ApiDocumentation Properties="_templateColumnParameters" />
+
+<PggmHeading Level="3">SelectColumn&lt;TGridItem&gt;</PggmHeading>
+<p>
+    Renders a checkbox (multi-select) or radio button (<code>SingleSelect</code>) per row.
+    Inherits all <code>ColumnBase</code> parameters.
+</p>
+<ApiDocumentation Properties="_selectColumnParameters" />
+
+<hr />
+
+<PggmHeading Level="2">Supporting Types</PggmHeading>
+
+<PggmHeading Level="3">PaginationState</PggmHeading>
+<p>
+    Shared state object that connects a <code>PggmDataGrid</code> to a <code>PggmPaginator</code>.
+    Create one instance per grid/paginator pair and pass it to both components via <code>Pagination</code>.
+</p>
+<ApiDocumentation
+    PublicProperties="_paginationStateProperties"
+    Methods="_paginationStateMethods"
+    Events="_paginationStateEvents" />
+
+<PggmHeading Level="3">GridItemsProviderRequest&lt;TGridItem&gt;</PggmHeading>
+<p>
+    Passed as the argument to an <code>ItemsProvider</code> delegate. Contains the current page window,
+    sort state, and a cancellation token.
+</p>
+<ApiDocumentation
+    PublicProperties="_providerRequestProperties"
+    Methods="_providerRequestMethods" />
+
+<PggmHeading Level="3">GridItemsProviderResult&lt;TGridItem&gt;</PggmHeading>
+<p>Return value from an <code>ItemsProvider</code> delegate. Use the static <code>From</code> factory method to create an instance.</p>
+<ApiDocumentation PublicProperties="_providerResultProperties" Methods="_providerResultMethods" />
+
+<PggmHeading Level="3">GridSort&lt;TGridItem&gt;</PggmHeading>
+<p>
+    Builds a composable, expression-based sort descriptor. Assign an instance to
+    <code>ColumnBase.SortBy</code> to enable sorting for that column.
+</p>
+<ApiDocumentation Methods="_gridSortMethods" />
+
+<PggmHeading Level="3">IHierarchicalGridItem</PggmHeading>
+<p>
+    Interface that grid items must implement (or inherit via <code>HierarchicalGridItem&lt;TItem,TGridItem&gt;</code>)
+    to enable tree-style row expansion.
+</p>
+<ApiDocumentation PublicProperties="_hierarchicalItemProperties" />
+
+<PggmHeading Level="3">HierarchicalGridItem&lt;TItem, TGridItem&gt;</PggmHeading>
+<p>
+    Ready-made base class that implements <code>IHierarchicalGridItem</code>. Wrap your business data type
+    in a class that derives from this to enable hierarchical rows.
+</p>
+<ApiDocumentation PublicProperties="_hierarchicalGridItemProperties" />
+
+@code {
+
+    // ── PggmDataGrid ──────────────────────────────────────────────────────────
+
+    private readonly IEnumerable<ApiMember> _gridParameters = new[]
+    {
+        new ApiMember { Name = "Items",                    Type = "IQueryable<TGridItem>?",                   DefaultValue = "null",       Description = "In-memory data source. Mutually exclusive with ItemsProvider." },
+        new ApiMember { Name = "ItemsProvider",            Type = "GridItemsProvider<TGridItem>?",            DefaultValue = "null",       Description = "Async/remote data source callback. Mutually exclusive with Items." },
+        new ApiMember { Name = "ChildContent",             Type = "RenderFragment?",                          DefaultValue = "null",       Description = "Column definitions (TemplateColumn, SelectColumn, etc.)." },
+        new ApiMember { Name = "Pagination",               Type = "PaginationState?",                         DefaultValue = "null",       Description = "Shared pagination state. Connect the same instance to a PggmPaginator." },
+        new ApiMember { Name = "SingleSelect",             Type = "bool",                                     DefaultValue = "false",      Description = "Restricts row selection to a single item at a time (radio buttons)." },
+        new ApiMember { Name = "StickyFirstColumn",        Type = "bool",                                     DefaultValue = "false",      Description = "Pins the first column (and the second when the first is a SelectColumn) while scrolling horizontally." },
+        new ApiMember { Name = "ResizableColumns",         Type = "bool",                                     DefaultValue = "false",      Description = "Enables drag-to-resize handles on all column headers. Can also be set per column via ColumnBase.Resizable." },
+        new ApiMember { Name = "EnableVirtualization",     Type = "bool",                                     DefaultValue = "false",      Description = "Renders rows through a virtual scroll window instead of materialising the entire list." },
+        new ApiMember { Name = "Height",                   Type = "string?",                                  DefaultValue = "\"400px\"",  Description = "Container height when EnableVirtualization is true (e.g. \"400px\", \"60vh\")." },
+        new ApiMember { Name = "VirtualizeItemSize",       Type = "int",                                      DefaultValue = "40",         Description = "Assumed row height in pixels used by the virtualization engine." },
+        new ApiMember { Name = "VirtualizeOverscanCount",  Type = "int",                                      DefaultValue = "3",          Description = "Number of extra rows fetched above and below the visible viewport." },
+        new ApiMember { Name = "Loading",                  Type = "bool?",                                    DefaultValue = "null",       Description = "Overrides the automatic loading state. When null the grid tracks loading state internally via ItemsProvider calls." },
+        new ApiMember { Name = "EmptyContent",             Type = "RenderFragment?",                          DefaultValue = "null",       Description = "Content shown when the data source returns no items. Falls back to a default 'No data to show!' message." },
+        new ApiMember { Name = "LoadingContent",           Type = "RenderFragment?",                          DefaultValue = "null",       Description = "Content shown while data is loading. Falls back to a default spinner." },
+        new ApiMember { Name = "AutoItemsPerPage",         Type = "bool",                                     DefaultValue = "false",      Description = "Dynamically adapts page size to available container height. Requires Pagination to be set. The container must have a fixed or flex-constrained height." },
+        new ApiMember { Name = "AutoItemsPerPageRowHeight",Type = "int",                                      DefaultValue = "40",         Description = "Assumed row height in pixels used for AutoItemsPerPage calculations." },
+        new ApiMember { Name = "RefreshItems",             Type = "Func<GridItemsProviderRequest<TGridItem>, Task>?", DefaultValue = "null", Description = "Optional callback invoked after each internal data refresh cycle." },
+    };
+
+    private readonly IEnumerable<ApiMember> _gridPublicProperties = new[]
+    {
+        new ApiMember { Name = "SelectedItems", Type = "IReadOnlyCollection<TGridItem>", Description = "Currently selected rows." },
+        new ApiMember { Name = "Columns",       Type = "IReadOnlyList<ColumnBase<TGridItem>>", Description = "Registered columns in display order." },
+    };
+
+    private readonly IEnumerable<ApiMember> _gridEvents = new[]
+    {
+        new ApiMember { Name = "SelectedItemsChanged",         Type = "event Action?",          Description = "Fired when the row selection changes." },
+        new ApiMember { Name = "SelectedItemsChangedCallback", Type = "EventCallback",           Description = "Blazor EventCallback alternative for selection changes. Use when a parent component needs to be notified." },
+        new ApiMember { Name = "OnToggle",                     Type = "EventCallback<TGridItem>",Description = "Fired when a hierarchical row is expanded or collapsed. The toggled item is passed as the argument." },
+        new ApiMember { Name = "OnAutoItemsPerPageChanged",    Type = "EventCallback<int>",      Description = "Fired when AutoItemsPerPage recalculates the items-per-page value due to a container resize. The new page size is passed as the argument." },
+    };
+
+    private readonly IEnumerable<ApiMember> _gridMethods = new[]
+    {
+        new ApiMember
+        {
+            Signature   = "Task SetSortAsync(int columnIndex, bool ascending)",
+            Description = "Programmatically sorts the grid by the column at the given zero-based index.",
+            Parameters  = new[]
+            {
+                new ApiParameter { Name = "columnIndex", Type = "int",  Description = "Zero-based index of the target column." },
+                new ApiParameter { Name = "ascending",   Type = "bool", Description = "true for ascending, false for descending." },
+            }
+        },
+        new ApiMember
+        {
+            Signature   = "Task SetSortAsync(string columnTitle, bool ascending)",
+            Description = "Programmatically sorts the grid by the column whose Title matches the given string (ordinal comparison).",
+            Parameters  = new[]
+            {
+                new ApiParameter { Name = "columnTitle", Type = "string", Description = "Exact Title of the target column." },
+                new ApiParameter { Name = "ascending",   Type = "bool",   Description = "true for ascending, false for descending." },
+            }
+        },
+        new ApiMember
+        {
+            Signature   = "Task SetSortAsync(ColumnBase<TGridItem> column, bool ascending)",
+            Description = "Programmatically sorts the grid by a direct column reference. The column must belong to this grid instance.",
+            Parameters  = new[]
+            {
+                new ApiParameter { Name = "column",    Type = "ColumnBase<TGridItem>", Description = "Reference to the target column." },
+                new ApiParameter { Name = "ascending", Type = "bool",                  Description = "true for ascending, false for descending." },
+            }
+        },
+        new ApiMember
+        {
+            Signature   = "Task ClearSortAsync()",
+            Description = "Removes the active sort and re-fetches data in natural order.",
+        },
+        new ApiMember
+        {
+            Signature   = "Task RefreshDataAsync(CancellationToken cancellationToken)",
+            Description = "Re-fetches data from the current data source. When virtualization is active, delegates to the internal TableVirtualize component.",
+            Parameters  = new[]
+            {
+                new ApiParameter { Name = "cancellationToken", Type = "CancellationToken", Description = "Token to cancel the operation." },
+            }
+        },
+    };
+
+    // ── ColumnBase ────────────────────────────────────────────────────────────
+
+    private readonly IEnumerable<ApiMember> _columnBaseParameters = new[]
+    {
+        new ApiMember { Name = "Title",              Type = "string?",                  DefaultValue = "null",     Description = "Column header text." },
+        new ApiMember { Name = "Index",              Type = "int",                      DefaultValue = "0",        Description = "Display order. Columns are rendered in ascending Index order." },
+        new ApiMember { Name = "Class",              Type = "string?",                  DefaultValue = "null",     Description = "Additional CSS class applied to header and cell elements." },
+        new ApiMember { Name = "Style",              Type = "string?",                  DefaultValue = "null",     Description = "Inline CSS style applied to cell elements." },
+        new ApiMember { Name = "Width",              Type = "string?",                  DefaultValue = "null",     Description = "CSS width value (e.g. \"200px\"). When set, cells also apply overflow:hidden and text-overflow:ellipsis." },
+        new ApiMember { Name = "MinWidth",           Type = "string",                   DefaultValue = "\"50px\"", Description = "Minimum width the column can be resized to. Ignored when resizing is disabled." },
+        new ApiMember { Name = "Alignment",          Type = "ColumnAlignment",          DefaultValue = "Left",     Description = "Text alignment within the column. Values: Left, Center, Right." },
+        new ApiMember { Name = "Sortable",           Type = "bool?",                    DefaultValue = "null",     Description = "Enables the sort button for this column. When null the sort button is shown only if SortBy is set." },
+        new ApiMember { Name = "SortBy",             Type = "IGridSort<TGridItem>?",    DefaultValue = "null",     Description = "Sort expression. Use GridSort<TGridItem>.CreateFromExpression(...) to build one." },
+        new ApiMember { Name = "IsDefaultSortColumn",Type = "bool",                     DefaultValue = "false",    Description = "When true, the grid applies an ascending sort by this column on the first render." },
+        new ApiMember { Name = "ShowSortButton",     Type = "bool",                     DefaultValue = "true",     Description = "Controls visibility of the sort icon button in the header." },
+        new ApiMember { Name = "Resizable",          Type = "bool",                     DefaultValue = "false",    Description = "Per-column opt-in for drag-to-resize. Can also be enabled globally via PggmDataGrid.ResizableColumns." },
+        new ApiMember { Name = "HierarchicalToggle", Type = "bool",                     DefaultValue = "false",    Description = "When true, this column renders the expand/collapse toggle for hierarchical (tree) rows. Only one column per grid should have this set." },
+    };
+
+    // ── TemplateColumn ────────────────────────────────────────────────────────
+
+    private readonly IEnumerable<ApiMember> _templateColumnParameters = new[]
+    {
+        new ApiMember { Name = "Template", Type = "RenderFragment<TGridItem>?", DefaultValue = "null", Description = "Template rendered inside each cell. The current row item is available as the implicit context parameter." },
+    };
+
+    // ── SelectColumn ─────────────────────────────────────────────────────────
+
+    private readonly IEnumerable<ApiMember> _selectColumnParameters = new[]
+    {
+        new ApiMember { Name = "ShowSelectAll", Type = "bool", DefaultValue = "true", Description = "Shows a 'select all' checkbox in the column header. Automatically hidden when the parent grid is in SingleSelect mode." },
+    };
+
+    // ── PaginationState ───────────────────────────────────────────────────────
+
+    private readonly IEnumerable<ApiMember> _paginationStateProperties = new[]
+    {
+        new ApiMember { Name = "PageIndex",      Type = "int",   Description = "Zero-based index of the current page." },
+        new ApiMember { Name = "PageSize",       Type = "int",   Description = "Number of items displayed per page. Minimum value is 1." },
+        new ApiMember { Name = "TotalItemCount", Type = "int?",  Description = "Total items across all pages. Set internally by the grid after each load. null until the first load completes." },
+        new ApiMember { Name = "LastPageIndex",  Type = "int?",  Description = "Computed zero-based last page index. null when TotalItemCount is unknown." },
+    };
+
+    private readonly IEnumerable<ApiMember> _paginationStateMethods = new[]
+    {
+        new ApiMember
+        {
+            Signature   = "Task SetCurrentPageIndexAsync(int pageIndex)",
+            Description = "Navigates to the specified zero-based page and raises CurrentPageChanged.",
+            Parameters  = new[] { new ApiParameter { Name = "pageIndex", Type = "int", Description = "Target page index (clamped to ≥ 0)." } }
+        },
+        new ApiMember
+        {
+            Signature   = "Task SetItemsPerPageAsync(int pageSize)",
+            Description = "Changes the page size, resets to page 0, and raises CurrentPageChanged.",
+            Parameters  = new[] { new ApiParameter { Name = "pageSize", Type = "int", Description = "New page size (minimum 1)." } }
+        },
+        new ApiMember
+        {
+            Signature   = "Task SetTotalItemCountAsync(int totalItemCount)",
+            Description = "Called internally by the grid after each data load to update the total count and raise TotalItemCountChanged.",
+            Parameters  = new[] { new ApiParameter { Name = "totalItemCount", Type = "int", Description = "Total number of items across all pages." } }
+        },
+    };
+
+    private readonly IEnumerable<ApiMember> _paginationStateEvents = new[]
+    {
+        new ApiMember { Name = "CurrentPageChanged",    Type = "event Func<Task>?", Description = "Raised when the page index or page size changes. The grid subscribes to reload data." },
+        new ApiMember { Name = "TotalItemCountChanged", Type = "event Func<Task>?", Description = "Raised when the total item count is updated by the grid. The paginator subscribes to re-render." },
+    };
+
+    // ── GridItemsProviderRequest ──────────────────────────────────────────────
+
+    private readonly IEnumerable<ApiMember> _providerRequestProperties = new[]
+    {
+        new ApiMember { Name = "StartIndex",       Type = "int",                        Description = "Zero-based index of the first item to fetch for the current page/viewport window." },
+        new ApiMember { Name = "Count",            Type = "int?",                       Description = "Number of items requested. null means 'fetch all remaining'." },
+        new ApiMember { Name = "SortByColumn",     Type = "ColumnBase<TGridItem>?",     Description = "The currently active sort column. null when no sort is applied." },
+        new ApiMember { Name = "SortByAscending",  Type = "bool",                       Description = "Sort direction. true = ascending." },
+        new ApiMember { Name = "CancellationToken", Type = "CancellationToken",        Description = "Token to cancel the async fetch." },
+    };
+
+    private readonly IEnumerable<ApiMember> _providerRequestMethods = new[]
+    {
+        new ApiMember
+        {
+            Signature   = "IQueryable<TGridItem> ApplySorting(IQueryable<TGridItem> source)",
+            Description = "Convenience helper that applies the active sort expression to the provided queryable.",
+            Parameters  = new[] { new ApiParameter { Name = "source", Type = "IQueryable<TGridItem>", Description = "The queryable to sort." } }
+        },
+        new ApiMember
+        {
+            Signature   = "IReadOnlyCollection<SortedProperty> GetSortByProperties()",
+            Description = "Returns a list of SortedProperty descriptors suitable for constructing server-side ORDER BY clauses.",
+        },
+    };
+
+    // ── GridItemsProviderResult ───────────────────────────────────────────────
+
+    private readonly IEnumerable<ApiMember> _providerResultProperties = new[]
+    {
+        new ApiMember { Name = "Items",          Type = "ICollection<TGridItem>", Description = "The page of items to display." },
+        new ApiMember { Name = "TotalItemCount", Type = "int",                   Description = "Total items across all pages; used to calculate pagination." },
+    };
+
+    private readonly IEnumerable<ApiMember> _providerResultMethods = new[]
+    {
+        new ApiMember
+        {
+            Signature   = "static GridItemsProviderResult<TGridItem> From(ICollection<TGridItem> items, int totalItemCount)",
+            Description = "Factory method to create a result instance.",
+            Parameters  = new[]
+            {
+                new ApiParameter { Name = "items",          Type = "ICollection<TGridItem>", Description = "The fetched page of items." },
+                new ApiParameter { Name = "totalItemCount", Type = "int",                    Description = "Total items across all pages." },
+            }
+        },
+    };
+
+    // ── GridSort ──────────────────────────────────────────────────────────────
+
+    private readonly IEnumerable<ApiMember> _gridSortMethods = new[]
+    {
+        new ApiMember
+        {
+            Signature   = "static GridSort<TGridItem> CreateFromExpression<U>(Expression<Func<TGridItem, U>> expression)",
+            Description = "Creates a new GridSort from a primary sort key expression.",
+            Parameters  = new[] { new ApiParameter { Name = "expression", Type = "Expression<Func<TGridItem, U>>", Description = "Lambda selecting the sort property (e.g. x => x.Name)." } }
+        },
+        new ApiMember
+        {
+            Signature   = "GridSort<TGridItem> ThenBy<U>(Expression<Func<TGridItem, U>> expression)",
+            Description = "Appends a secondary ascending sort key.",
+            Parameters  = new[] { new ApiParameter { Name = "expression", Type = "Expression<Func<TGridItem, U>>", Description = "Lambda selecting the secondary sort property." } }
+        },
+        new ApiMember
+        {
+            Signature   = "GridSort<TGridItem> ThenByDescending<U>(Expression<Func<TGridItem, U>> expression)",
+            Description = "Appends a secondary descending sort key.",
+            Parameters  = new[] { new ApiParameter { Name = "expression", Type = "Expression<Func<TGridItem, U>>", Description = "Lambda selecting the secondary sort property." } }
+        },
+        new ApiMember
+        {
+            Signature   = "IOrderedQueryable<TGridItem> Apply(IQueryable<TGridItem> queryable, bool ascending)",
+            Description = "Applies the full sort chain to a queryable.",
+            Parameters  = new[]
+            {
+                new ApiParameter { Name = "queryable",  Type = "IQueryable<TGridItem>", Description = "The source queryable." },
+                new ApiParameter { Name = "ascending",  Type = "bool",                  Description = "Overall sort direction." },
+            }
+        },
+        new ApiMember
+        {
+            Signature   = "IReadOnlyCollection<SortedProperty> ToPropertyList(bool ascending)",
+            Description = "Returns property names and directions for all sort keys in the chain. Useful for building server-side ORDER BY clauses.",
+            Parameters  = new[] { new ApiParameter { Name = "ascending", Type = "bool", Description = "Overall sort direction." } }
+        },
+    };
+
+    // ── IHierarchicalGridItem ─────────────────────────────────────────────────
+
+    private readonly IEnumerable<ApiMember> _hierarchicalItemProperties = new[]
+    {
+        new ApiMember { Name = "Depth",       Type = "int",  Description = "Nesting level of this item. 0 = root level." },
+        new ApiMember { Name = "IsHidden",    Type = "bool", Description = "True when this item is hidden because an ancestor node is collapsed." },
+        new ApiMember { Name = "IsCollapsed", Type = "bool", Description = "True when this item's children are collapsed. Setting this cascades IsHidden to all descendants." },
+        new ApiMember { Name = "HasChildren", Type = "bool", Description = "Indicates whether this item has child items." },
+    };
+
+    // ── HierarchicalGridItem ──────────────────────────────────────────────────
+
+    private readonly IEnumerable<ApiMember> _hierarchicalGridItemProperties = new[]
+    {
+        new ApiMember { Name = "Item",     Type = "TItem",          Description = "The underlying business data object wrapped by this grid row." },
+        new ApiMember { Name = "Children", Type = "List<TGridItem>",Description = "Direct child rows of this item." },
+    };
+}

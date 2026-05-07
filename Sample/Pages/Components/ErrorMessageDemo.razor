@@ -1,263 +1,76 @@
 @page "/pggm-error-message"
+@using Pggm.Components.Sample.Components.ApiDocumentation
 
 <PageTitle>PGGM Error Message</PageTitle>
 
-<PggmHeader Level="1">PGGM Error Message</PggmHeader>
+<PggmHeading Level="1">PGGM Error Message</PggmHeading>
 
-<div class="demo-section">
-  <PggmHeader Level="2">Basic Error Messages</PggmHeader>
+<p>
+  The <code>PggmErrorMessage</code> component is used to display validation error messages associated 
+  with form controls. It can be configured to show messages for specific validity states, such as when a 
+  required field is left empty or when a pattern does not match. 
+  This component enhances user experience by providing clear feedback on form validation issues, 
+  helping users understand what needs to be corrected.
+</p>
 
-  <div class="demo-item">
-    <PggmHeader Level="3">Error Message Associated with Input Field</PggmHeader>
-    <PggmLabel For="sample-input">Sample Input:</PggmLabel>
-    <PggmErrorMessage For="sample-input" Validity="@PggmErrorMessage.ValidityStates.ValueMissing">
-      This field is required.
-    </PggmErrorMessage>
-    <PggmInput required id="sample-input" />
-  </div>
+<DemoSection Title="Error Message Associated with Input Field" Code="@basicErrorSource">
+  <PggmLabel For="sample-input">Sample Input:</PggmLabel>
+  <PggmErrorMessage For="sample-input" Validity="@PggmErrorMessage.ValidityStates.ValueMissing">
+    This field is required.
+  </PggmErrorMessage>
+  <PggmInput Required="true" Id="sample-input" @bind-Value="sampleInputValue" />
+</DemoSection>
 
-  <div class="demo-item">
-    <PggmHeader Level="3">Multiple Validity States</PggmHeader>
-    <PggmLabel For="multi-input">Multi-validation Input:</PggmLabel>
-    <PggmErrorMessage For="multi-input"
-      Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.PatternMismatch}")">
-      This field is required and must match the specified pattern. (Starts with 'P')
-    </PggmErrorMessage>
-    <PggmInput Required="true" Pattern="^P.*" id="multi-input" />
-  </div>
-</div>
+<DemoSection Title="Multiple Validity States" Code="@multipleValiditySource">
+  <PggmLabel For="multi-input">Multi-validation Input:</PggmLabel>
+  <PggmErrorMessage For="multi-input"
+                    Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.PatternMismatch}")">
+    This field is required and must match the specified pattern. (Starts with 'P')
+  </PggmErrorMessage>
+  <PggmInput Required="true" Pattern="^P.*" Id="multi-input" @bind-Value="multiInputValue" />
+</DemoSection>
 
-<div class="demo-section">
-  <PggmHeader Level="2">Form Validation Examples</PggmHeader>
+<PggmHeading Level="2">API</PggmHeading>
 
-  <div class="demo-item">
-    <PggmHeader Level="3">Email Validation</PggmHeader>
-    <PggmLabel For="email-input">Email Address:</PggmLabel>
-    @if (!string.IsNullOrEmpty(emailValidityState))
-    {
-      <PggmErrorMessage For="email-input" Validity="@emailValidityState">
-        @GetEmailErrorMessage()
-      </PggmErrorMessage>
-    }
-    <PggmInput @bind-Value="formModel.Email" OnBlur="ValidateEmail" id="email-input" Type="email"
-      Placeholder="Enter your email" />
-  </div>
-
-  <div class="demo-item">
-    <PggmHeader Level="3">Password Validation</PggmHeader>
-    <PggmLabel For="password-input">Password (min 8 characters):</PggmLabel>
-    @if (!string.IsNullOrEmpty(passwordValidityState))
-    {
-      <PggmErrorMessage For="password-input" Validity="@passwordValidityState">
-        @GetPasswordErrorMessage()
-      </PggmErrorMessage>
-    }
-    <PggmInput @bind-Value="formModel.Password" OnBlur="ValidatePassword" id="password-input" Type="password"
-      MinLength="8" Placeholder="Enter password" />
-  </div>
-
-  <div class="demo-item">
-    <PggmHeader Level="3">Number Range Validation</PggmHeader>
-    <PggmLabel For="age-input">Age (18-100):</PggmLabel>
-    @if (!string.IsNullOrEmpty(ageValidityState))
-    {
-      <PggmErrorMessage For="age-input" Validity="@ageValidityState">
-        @GetAgeErrorMessage()
-      </PggmErrorMessage>
-    }
-    <PggmInput @bind-Value="ageValue" OnBlur="ValidateAge" id="age-input" Type="number" Min="18" Max="100"
-      Placeholder="Enter your age" />
-  </div>
-</div>
-
-<div class="demo-section">
-  <PggmHeader Level="2">All Validity States Examples</PggmHeader>
-
-  <div class="demo-item">
-    <PggmHeader Level="3">Pattern Mismatch</PggmHeader>
-    <PggmLabel For="pattern-input">Phone Number (format: 123-456-7890):</PggmLabel>
-    <PggmErrorMessage For="pattern-input" Validity="@PggmErrorMessage.ValidityStates.PatternMismatch">
-      Please enter a valid phone number in the format 123-456-7890.
-    </PggmErrorMessage>
-    <PggmInput id="pattern-input" Pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" Placeholder="123-456-7890" />
-  </div>
-
-  <div class="demo-item">
-    <PggmHeader Level="3">Too Long / Too Short</PggmHeader>
-    <PggmLabel For="length-input">Username (5-15 characters):</PggmLabel>
-    <PggmErrorMessage For="length-input" Validity="@PggmErrorMessage.ValidityStates.TooShort">
-      Username must be at least 5 characters long.
-    </PggmErrorMessage>
-    <PggmErrorMessage For="length-input" Validity="@PggmErrorMessage.ValidityStates.TooLong">
-      Username cannot be longer than 15 characters.
-    </PggmErrorMessage>
-    <PggmInput id="length-input" MinLength="5" MaxLength="15" Placeholder="Enter username" />
-  </div>
-
-  <div class="demo-item">
-    <PggmHeader Level="3">Step Mismatch</PggmHeader>
-    <PggmLabel For="step-input">Price (increments of 0.50):</PggmLabel>
-    <PggmErrorMessage For="step-input" Validity="@PggmErrorMessage.ValidityStates.StepMismatch">
-      Price must be in increments of $0.50.
-    </PggmErrorMessage>
-    <PggmInput id="step-input" Type="number" Step="0.5" Placeholder="0.00" />
-  </div>
-
-  <div class="demo-item">
-    <PggmHeader Level="3">Custom Error</PggmHeader>
-    <PggmLabel For="custom-input">Custom Validation:</PggmLabel>
-    @if (showCustomError)
-    {
-      <PggmErrorMessage For="custom-input" Validity="@PggmErrorMessage.ValidityStates.CustomError">
-        This value is not allowed by our business rules.
-      </PggmErrorMessage>
-    }
-    <PggmInput @bind-Value="customValue" OnBlur="ValidateCustom" id="custom-input"
-      Placeholder="Type 'forbidden' to see custom error" />
-  </div>
-</div>
-
-<div class="demo-section">
-  <PggmHeader Level="2">Interactive Controls</PggmHeader>
-
-  <div class="demo-item">
-    <button type="button" class="btn btn-primary" @onclick="ClearAllErrors">Clear All Errors</button>
-    <button type="button" class="btn btn-secondary" @onclick="ShowAllErrors">Show All Errors</button>
-  </div>
-</div>
+<PggmHeading Level="3">PggmErrorMessage</PggmHeading>
+<ApiDocumentation Properties="_properties" />
 
 @code {
-  private FormModel formModel = new();
-  private string emailValidityState = "";
-  private string passwordValidityState = "";
-  private string ageValidityState = "";
-  private string customValue = "";
-  private bool showCustomError = false;
-  private string ageValue = "";
 
-  private void ValidateEmail()
+  // Backing fields for demo inputs that are displayed without a model bind.
+  private string sampleInputValue = "";
+  private string multiInputValue = "";
+
+  // CodeSnippet sources (use SnippetBuilder for consistent formatting)
+  private string basicErrorSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+    "<PggmLabel For=\"sample-input\">Sample Input:</PggmLabel>",
+    "<PggmErrorMessage For=\"sample-input\" Validity=\"@($\"{PggmErrorMessage.ValidityStates.ValueMissing}\")\">This field is required.</PggmErrorMessage>",
+    "<PggmInput Required=\"true\" Id=\"sample-input\" @bind-Value=\"sampleInputValue\" />",
+    "@code {",
+    "  private string sampleInputValue = \"\";",
+    "}");
+
+  private string multipleValiditySource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+    "<PggmLabel For=\"multi-input\">Multi-validation Input:</PggmLabel>",
+    "<PggmErrorMessage For=\"multi-input\" Validity=\"@($\"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.PatternMismatch}\")\">This field is required and must match the specified pattern. (Starts with 'P')</PggmErrorMessage>",
+    "<PggmInput Required=\"true\" Pattern=\"^P.*\" Id=\"multi-input\" @bind-Value=\"multiInputValue\" />",
+    "@code {",
+    "  private string multiInputValue = \"\";",
+    "}");
+
+  // API table for docs
+  private IEnumerable<ApiMember> _properties = new[]
   {
-    emailValidityState = "";
-
-    if (string.IsNullOrEmpty(formModel.Email))
-    {
-      emailValidityState = PggmErrorMessage.ValidityStates.ValueMissing;
-    }
-    else if (!formModel.Email.Contains("@"))
-    {
-      emailValidityState = PggmErrorMessage.ValidityStates.TypeMismatch;
-    }
-  }
-
-  private void ValidatePassword()
-  {
-    passwordValidityState = "";
-
-    if (string.IsNullOrEmpty(formModel.Password))
-    {
-      passwordValidityState = PggmErrorMessage.ValidityStates.ValueMissing;
-    }
-    else if (formModel.Password.Length < 8)
-    {
-      passwordValidityState = PggmErrorMessage.ValidityStates.TooShort;
-    }
-  }
-
-  private void ValidateAge()
-  {
-    ageValidityState = "";
-
-    if (string.IsNullOrEmpty(ageValue))
-    {
-      ageValidityState = PggmErrorMessage.ValidityStates.ValueMissing;
-      formModel.Age = null;
-    }
-    else if (int.TryParse(ageValue, out int age))
-    {
-      formModel.Age = age;
-      if (age < 18)
-      {
-        ageValidityState = PggmErrorMessage.ValidityStates.RangeUnderflow;
-      }
-      else if (age > 100)
-      {
-        ageValidityState = PggmErrorMessage.ValidityStates.RangeOverflow;
-      }
-    }
-    else
-    {
-      ageValidityState = PggmErrorMessage.ValidityStates.BadInput;
-      formModel.Age = null;
-    }
-  }
-
-  private void ValidateCustom()
-  {
-    showCustomError = customValue?.ToLower() == "forbidden";
-  }
-
-  private string GetEmailErrorMessage()
-  {
-    return emailValidityState switch
-    {
-      var state when state == PggmErrorMessage.ValidityStates.ValueMissing => "Email address is required.",
-      var state when state == PggmErrorMessage.ValidityStates.TypeMismatch => "Please enter a valid email address.",
-      _ => ""
-    };
-  }
-
-  private string GetPasswordErrorMessage()
-  {
-    return passwordValidityState switch
-    {
-      var state when state == PggmErrorMessage.ValidityStates.ValueMissing => "Password is required.",
-      var state when state == PggmErrorMessage.ValidityStates.TooShort => "Password must be at least 8 characters long.",
-      _ => ""
-    };
-  }
-
-  private string GetAgeErrorMessage()
-  {
-    return ageValidityState switch
-    {
-      var state when state == PggmErrorMessage.ValidityStates.ValueMissing => "Age is required.",
-      var state when state == PggmErrorMessage.ValidityStates.RangeUnderflow => "You must be at least 18 years old.",
-      var state when state == PggmErrorMessage.ValidityStates.RangeOverflow => "Please enter a valid age.",
-      _ => ""
-    };
-  }
-
-  private void ClearAllErrors()
-  {
-    emailValidityState = "";
-    passwordValidityState = "";
-    ageValidityState = "";
-    showCustomError = false;
-  }
-
-  private void ShowAllErrors()
-  {
-    emailValidityState = PggmErrorMessage.ValidityStates.ValueMissing;
-    passwordValidityState = PggmErrorMessage.ValidityStates.TooShort;
-    ageValidityState = PggmErrorMessage.ValidityStates.RangeUnderflow;
-    showCustomError = true;
-  }
-
-  public class FormModel
-  {
-    public string Email { get; set; } = "";
-    public string Password { get; set; } = "";
-    public int? Age { get; set; }
-  }
+    new ApiMember { Name = "For", Type = "string?", DefaultValue = "null", Description = "Target input id or name associated with this error message." },
+    new ApiMember { Name = "Validity", Type = "string?", DefaultValue = "null", Description = "One or more validity states (space-separated) that this message represents, e.g. ValueMissing PatternMismatch." },
+    new ApiMember { Name = "ChildContent", Type = "RenderFragment?", DefaultValue = "null", Description = "Optional custom markup for the message content." },
+    new ApiMember { Name = "CssClass", Type = "string?", DefaultValue = "null", Description = "Additional CSS classes applied to the root element." },
+    new ApiMember { Name = "AdditionalAttributes", Type = "Dictionary<string, object>?", DefaultValue = "null", Description = "Additional attributes splatted onto the underlying pggm-error-message element." },
+  };
 }
 
 <style>
-  .demo-section {
-    margin-bottom: 2rem;
-    padding: 1rem;
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
-  }
+  /* demo-section styles are provided globally in wwwroot/css/custom-formatters.css */
 
   .demo-item {
     margin-bottom: 1.5rem;
@@ -285,7 +98,7 @@
   pggm-error-message:has(+input[is]) {
     margin-bottom: .5em;
   }
-  
+
   .btn {
     padding: 0.5rem 1rem;
     border: none;

@@ -1,0 +1,34 @@
+@namespace Pggm.Components
+@using Pggm.Components.Extensions
+@inherits PggmComponentBase
+
+<pggm-card @ref="ElementRef" @attributes="GetAttributes()">
+  @if (MediaContent != null)
+  {
+    <span slot="media">@MediaContent</span>
+  }
+  @if (HeaderIconContent != null)
+  {
+    <span slot="header-icon">@HeaderIconContent</span>
+  }
+  @if (HeaderContent != null)
+  {
+    <span slot="header">@HeaderContent</span>
+  }
+  @if (HeaderActionContent != null)
+  {
+    <span slot="header-action">@HeaderActionContent</span>
+  }
+  @if (ChildContent != null)
+  {
+    @ChildContent
+  }
+  @if (FooterContent != null)
+  {
+    <span slot="footer">@FooterContent</span>
+  }
+  @if (ActionContent != null)
+  {
+    <span slot="action">@ActionContent</span>
+  }
+</pggm-card>

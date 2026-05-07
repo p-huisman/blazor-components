@@ -1,200 +1,228 @@
 @page "/pggm-input-phone"
+@using Microsoft.AspNetCore.Components
+@using System.ComponentModel.DataAnnotations
+@using Pggm.Components.Sample.Components.ApiDocumentation
 
 <PageTitle>PGGM Input Phone</PageTitle>
 
-<PggmHeader Level="1">PGGM Input Phone</PggmHeader>
+<PggmHeading Level="1">PGGM Input Phone</PggmHeading>
 
 <p>This page demonstrates the PGGM Input Phone component with various configurations and features.</p>
 
-<div class="demo-section">
-    <PggmHeader Level="2">Basic Phone Input</PggmHeader>
-    <PggmInputPhone @bind-Value="@basicPhoneValue" 
-                    InitialCountry="NL"
-                    Name="basic-phone" />
-    <p><strong>Current Value:</strong> @basicPhoneValue</p>
-</div>
+<DemoSection Title="Phone Input Examples" Code="@basicPhoneSource" CodeBehind="@basicPhoneBehind">
+    <Description>
+        <p>Common phone input usages and variations.</p>
+    </Description>
+    <Content>
+        <PggmFieldset>
+            <PggmLabel slot="label" For="phone1">Basic Phone Input:</PggmLabel>
+            <PggmInputPhone @bind-Value="@phoneValue1" InitialCountry="NL" Name="phone1" Id="phone1" />
+            <p slot="description">Current value: @phoneValue1</p>
+        </PggmFieldset>
 
-<div class="demo-section">
-    <PggmHeader Level="2">Phone Input with Top Countries</PggmHeader>
-    <PggmInputPhone @bind-Value="@countryPhoneValue" 
-                    TopCountries="NL,BE,DE,FR"
-                    CountryLabel="Choose country..."
-                    InitialCountry="NL"
-                    Name="country-phone" />
-    <p><strong>Current Value:</strong> @countryPhoneValue</p>
-    <small>Top countries with custom country selector placeholder</small>
-</div>
+        <PggmFieldset>
+            <PggmLabel slot="label" For="phone2">Mobile Numbers Only:</PggmLabel>
+            <PggmErrorMessage slot="error" For="phone2" Validity="@PggmErrorMessage.ValidityStates.TypeMismatch">Vul een geldig mobiel nummer in</PggmErrorMessage>  
+            <PggmInputPhone @bind-Value="@phoneValue2" InitialCountry="NL" PhoneNumberType="@PggmInputPhone.PhoneNumberTypes.Mobile" 
+                Name="phone2" Id="phone2" />
+            <p slot="description">Current value: @phoneValue2</p>
+            <small slot="description">Only mobile numbers are valid</small>
+        </PggmFieldset>
 
-<div class="demo-section">
-    <PggmHeader Level="2">Basic Phone Input</PggmHeader>
-    <PggmInputPhone @bind-Value="@internationalPhoneValue" 
-                    InitialCountry="NL"
-                    Name="international-phone" />
-    <p><strong>Current Value:</strong> @internationalPhoneValue</p>
-</div>
+        <PggmFieldset>
+            <PggmLabel slot="label" For="phone3">Fixed Line or Mobile:</PggmLabel>
+            <PggmErrorMessage slot="error" For="phone3" Validity="@PggmErrorMessage.ValidityStates.TypeMismatch">Vul een geldig vast of mobiel nummer in</PggmErrorMessage>
+            <PggmInputPhone @bind-Value="@phoneValue3" InitialCountry="NL" PhoneNumberType="@PggmInputPhone.PhoneNumberTypes.FixedLineOrMobile"
+                TopCountries="NL,BE,DE,FR" Name="phone3" Id="phone3" />
+            <p slot="description">Current value: @phoneValue3</p>
+            <small slot="description">Both fixed line and mobile numbers are valid</small>
+        </PggmFieldset>
 
-<div class="demo-section">
-    <PggmHeader Level="2">Disabled Phone Input</PggmHeader>
-    <PggmInputPhone Value="+31 6 12345678" 
-                    InitialCountry="NL"
-                    Disabled="true"
-                    Name="disabled-phone" />
-</div>
+        <PggmFieldset>
+            <PggmLabel slot="label" For="phone4">Disabled Phone Input:</PggmLabel>
+            <PggmInputPhone Value="+31 6 12345678" InitialCountry="NL" Disabled="true" Name="phone4" Id="phone4" />
+        </PggmFieldset>
 
-<div class="demo-section">
-    <PggmHeader Level="2">Required Phone Input</PggmHeader>
-    <PggmInputPhone @bind-Value="@requiredPhoneValue" 
-                    InitialCountry="NL"
-                    Required="true"
-                    Name="required-phone" />
-    <p><strong>Current Value:</strong> @requiredPhoneValue</p>
-</div>
-
-<div class="demo-section">
-    <PggmHeader Level="2">Simple Phone Input</PggmHeader>
-    <PggmInputPhone @bind-Value="@noCountryPhoneValue" 
-                    InitialCountry="NL"
-                    Name="no-country-phone" />
-    <p><strong>Current Value:</strong> @noCountryPhoneValue</p>
-</div>
-
-<div class="demo-section">
-    <PggmHeader Level="2">Mobile Numbers Only</PggmHeader>
-    <PggmInputPhone @bind-Value="@mobilePhoneValue" 
-                    PhoneNumberType="@PggmInputPhone.PhoneNumberTypes.Mobile"
-                    InitialCountry="NL"
-                    Name="mobile-phone" />
-    <p><strong>Current Value:</strong> @mobilePhoneValue</p>
-    <small>Only mobile numbers are valid for this input</small>
-</div>
-
-<div class="demo-section">
-    <PggmHeader Level="2">Fixed Line Numbers Only</PggmHeader>
-    <PggmInputPhone @bind-Value="@fixedLinePhoneValue" 
-                    PhoneNumberType="@PggmInputPhone.PhoneNumberTypes.FixedLine"
-                    InitialCountry="NL"
-                    Name="fixed-line-phone" />
-    <p><strong>Current Value:</strong> @fixedLinePhoneValue</p>
-    <small>Only fixed line numbers are valid for this input</small>
-</div>
-
-<div class="demo-section">
-    <PggmHeader Level="2">Fixed Line or Mobile</PggmHeader>
-    <PggmInputPhone @bind-Value="@anyPhoneValue" 
-                    PhoneNumberType="@PggmInputPhone.PhoneNumberTypes.FixedLineOrMobile"
-                    InitialCountry="NL"
-                    Name="any-phone" />
-    <p><strong>Current Value:</strong> @anyPhoneValue</p>
-    <small>Both fixed line and mobile numbers are valid</small>
-</div>
-
-<div class="demo-section">
-    <PggmHeader Level="2">European Countries Priority</PggmHeader>
-    <PggmInputPhone @bind-Value="@europeanPhoneValue" 
-                    TopCountries="NL,BE,DE,FR,ES,IT,LU"
-                    CountryLabel="Select country..."
-                    InitialCountry="NL"
-                    Name="european-phone" />
-    <p><strong>Current Value:</strong> @europeanPhoneValue</p>
-    <small>European countries shown at top with custom country selector placeholder</small>
-</div>
-
-<div class="demo-section">
-    <PggmHeader Level="2">Phone Input with Events</PggmHeader>
-    <PggmInputPhone @bind-Value="@eventPhoneValue" 
-                    OnChange="@OnPhoneChanged"
-                    OnInput="@OnPhoneInput"
-                    OnFocus="@OnPhoneFocus"
-                    OnBlur="@OnPhoneBlur"
-                    InitialCountry="NL"
-                    Name="event-phone" />
-    <p><strong>Current Value:</strong> @eventPhoneValue</p>
-    <div class="event-log">
-        <PggmHeader Level="4">Event Log:</PggmHeader>
-        <ul>
-            @foreach (var logEntry in eventLog)
+        <PggmFieldset>
+            <PggmLabel slot="label" For="phone5">Phone with Event Handling:</PggmLabel>
+            <PggmInputPhone @bind-Value="@phoneValue5" InitialCountry="NL" 
+                OnInput="@OnPhoneInput" OnChange="@OnPhoneChange" OnFocus="@OnPhoneFocus" OnBlur="@OnPhoneBlur"
+                Name="phone5" Id="phone5" />
+            <p slot="description">Current value: @phoneValue5</p>
+            @if (!string.IsNullOrEmpty(eventMessage))
             {
-                <li>@logEntry</li>
+                <p slot="description" class="event-message">@eventMessage</p>
             }
-        </ul>
-    </div>
-</div>
+        </PggmFieldset>
+    </Content>
+</DemoSection>
+
+<DemoSection Title="EditForm Example" Code="@editFormPhoneSource" CodeBehind="@editFormPhoneBehind">
+    <Description>
+        <p>Example showing <code>EditForm</code> integration with <code>PggmInputPhone</code> and data-annotation validation.</p>
+    </Description>
+    <Content>
+        <EditForm Model="@formModel" OnValidSubmit="HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <PggmValidationSummary>
+                <p>Er zijn fouten in het formulier. Corrigeer deze en probeer het opnieuw.</p>
+            </PggmValidationSummary>
+            <PggmFieldset>
+                <PggmLabel slot="label" For="phoneForm">Phone Number:</PggmLabel>
+                <PggmInputPhone @bind-Value="@formModel.Phone" InitialCountry="NL" Required Name="phoneForm" Id="phoneForm" />
+                <PggmValidationMessage slot="error"  For="() => formModel.Phone" />
+            </PggmFieldset>
+            <PggmFieldset>
+                <PggmLabel slot="label" For="mobileForm">Mobile Number Only:</PggmLabel>
+                <PggmInputPhone @bind-Value="@formModel.Mobile" InitialCountry="NL" 
+                    PhoneNumberType="@PggmInputPhone.PhoneNumberTypes.Mobile" Required Name="mobileForm" Id="mobileForm" />
+                <PggmValidationMessage slot="error"  For="() => formModel.Mobile" />
+            </PggmFieldset>
+            <PggmButton Type="@ButtonType.Submit">Submit</PggmButton>
+        </EditForm>
+
+        @if (submittedPhone is not null)
+        {
+            <p>Submitted Phone: @submittedPhone</p>
+            <p>Submitted Mobile: @submittedMobile</p>
+        }
+    </Content>
+</DemoSection>
+
+<PggmHeading Level="2">API</PggmHeading>
+
+<PggmHeading Level="3">PggmInputPhone</PggmHeading>
+<ApiDocumentation Properties="phoneProperties" Events="phoneEvents" />
 
 <style>
-    .demo-section {
-        margin: 2rem 0;
-        padding: 1rem;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-    }
-
-    .demo-section h2 {
-        margin-top: 0;
-        color: #333;
-    }
-
-    .event-log {
-        background-color: #f5f5f5;
-        padding: 1rem;
-        border-radius: 4px;
-        margin-top: 1rem;
-        max-height: 200px;
-        overflow-y: auto;
-    }
-
-    .event-log ul {
-        margin: 0;
-        padding-left: 1rem;
-    }
-
-    .event-log li {
-        font-family: monospace;
-        font-size: 0.9em;
-        margin: 0.25rem 0;
+    .event-message {
+        color: #0066cc;
+        font-style: italic;
+        margin-top: 5px;
     }
 </style>
 
 @code {
-    private string? basicPhoneValue = "";
-    private string? countryPhoneValue = "";
-    private string? internationalPhoneValue = "";
-    private string? requiredPhoneValue = "";
-    private string? noCountryPhoneValue = "";
-    private string? mobilePhoneValue = "";
-    private string? fixedLinePhoneValue = "";
-    private string? anyPhoneValue = "";
-    private string? europeanPhoneValue = "";
-    private string? eventPhoneValue = "";
-    
-    private List<string> eventLog = new();
-
-    private void OnPhoneChanged(ChangeEventArgs args)
-    {
-        AddEventLog($"OnChange: {args.Value}");
-    }
+    private string? phoneValue1 = "";
+    private string? phoneValue2 = "";
+    private string? phoneValue3 = "";
+    private string? phoneValue5 = "";
+    private string eventMessage = "";
 
     private void OnPhoneInput(ChangeEventArgs args)
     {
-        AddEventLog($"OnInput: {args.Value}");
+        eventMessage = $"Input event fired: {args.Value}";
+        StateHasChanged();
+    }
+
+    private void OnPhoneChange(ChangeEventArgs args)
+    {
+        eventMessage = $"Change event fired: {args.Value}";
+        StateHasChanged();
     }
 
     private void OnPhoneFocus(FocusEventArgs args)
     {
-        AddEventLog("OnFocus: Input gained focus");
+        eventMessage = "Phone input focused";
+        StateHasChanged();
     }
 
     private void OnPhoneBlur(FocusEventArgs args)
     {
-        AddEventLog("OnBlur: Input lost focus");
-    }
-
-    private void AddEventLog(string message)
-    {
-        eventLog.Insert(0, $"{DateTime.Now:HH:mm:ss} - {message}");
-        if (eventLog.Count > 10)
-        {
-            eventLog.RemoveAt(eventLog.Count - 1);
-        }
+        eventMessage = "Phone input blurred";
         StateHasChanged();
     }
+
+    // EditForm demo model and handlers
+    private PhoneModel formModel = new();
+    private string? submittedPhone;
+    private string? submittedMobile;
+
+    private void HandleValidSubmit()
+    {
+        submittedPhone = formModel.Phone;
+        submittedMobile = formModel.Mobile;
+    }
+
+    private class PhoneModel
+    {
+        [Required(ErrorMessage = "Telefoon nummer is verplicht")]
+        [PggmValidation("Vul een geldig telefoon nummer in!!!")]
+        public string? Phone { get; set; }
+
+        [Required(ErrorMessage = "Mobiel nummer is verplicht")]
+        [PggmValidation("Vul een geldig mobiel nummer in!!!")]
+        public string? Mobile { get; set; }
+    }
+
+    // Code snippets for demo page
+    private string basicPhoneSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmFieldset>",
+        "  <PggmLabel slot=\"label\" For=\"phone1\">Basic Phone Input:</PggmLabel>",
+        "  <PggmInputPhone @bind-Value=\"@phoneValue1\" InitialCountry=\"NL\" Name=\"phone1\" Id=\"phone1\" />",
+        "  <p slot=\"description\">Current value: @phoneValue1</p>",
+        "</PggmFieldset>");
+
+    private string basicPhoneBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private string? phoneValue1 = \"\";"
+    );
+
+    private string editFormPhoneSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<EditForm Model=\"@formModel\" OnValidSubmit=\"HandleValidSubmit\">",
+        "  <DataAnnotationsValidator />",
+        "  <PggmValidationSummary>",
+        "    <p>Er zijn fouten in het formulier. Corrigeer deze en probeer het opnieuw.</p>",
+        "  </PggmValidationSummary>",
+        "  <PggmFieldset>",
+        "    <PggmLabel slot=\"label\" For=\"phoneForm\">Phone Number:</PggmLabel>",
+        "    <PggmInputPhone @bind-Value=\"@formModel.Phone\" InitialCountry=\"NL\" Required Name=\"phoneForm\" Id=\"phoneForm\" />",
+        "    <PggmValidationMessage slot=\"error\" For=\"() => formModel.Phone\" />",
+        "  </PggmFieldset>",
+        "  <PggmFieldset>",
+        "    <PggmLabel slot=\"label\" For=\"mobileForm\">Mobile Number Only:</PggmLabel>",
+        "    <PggmInputPhone @bind-Value=\"@formModel.Mobile\" InitialCountry=\"NL\" PhoneNumberType=\"@PggmInputPhone.PhoneNumberTypes.Mobile\" Required Name=\"mobileForm\" Id=\"mobileForm\" />",
+        "    <PggmValidationMessage slot=\"error\" For=\"() => formModel.Mobile\" />",
+        "  </PggmFieldset>",
+        "  <PggmButton Type=\"@ButtonType.Submit\">Submit</PggmButton>",
+        "</EditForm>");
+
+    private string editFormPhoneBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private PhoneModel formModel = new();",
+        "private string? submittedPhone;",
+        "private string? submittedMobile;",
+        "private void HandleValidSubmit() { submittedPhone = formModel.Phone; submittedMobile = formModel.Mobile; }",
+        "",
+        "private class PhoneModel {",
+        "  [Required(ErrorMessage = \"Telefoon nummer is verplicht\")]",
+        "  [PggmValidation(\"Vul een geldig telefoon nummer in\")]",
+        "  public string? Phone { get; set; }",
+        "  [Required(ErrorMessage = \"Mobiel nummer is verplicht\")]",
+        "  [PggmValidation(\"Vul een geldig mobiel nummer in\")]",
+        "  public string? Mobile { get; set; }",
+        "}"
+    );
+
+    private IEnumerable<ApiMember> phoneProperties = new[]
+    {
+        new ApiMember { Name = "Value", Type = "string?", DefaultValue = "null", Description = "Bound value of the phone input (two-way binding)." },
+        new ApiMember { Name = "Name", Type = "string?", DefaultValue = "null", Description = "Name attribute for the underlying input element." },
+        new ApiMember { Name = "InitialCountry", Type = "string?", DefaultValue = "null", Description = "The initial country code to select (e.g., \"NL\", \"BE\", \"DE\")." },
+        new ApiMember { Name = "PhoneNumberType", Type = "string?", DefaultValue = "null", Description = "The phone number type for validation (fixed-line, mobile, fixed-line-or-mobile)." },
+        new ApiMember { Name = "TopCountries", Type = "string?", DefaultValue = "null", Description = "Comma-separated list of country codes to show at the top of the country selector." },
+        new ApiMember { Name = "CountryLabel", Type = "string?", DefaultValue = "null", Description = "Placeholder text for the country select dropdown." },
+        new ApiMember { Name = "Required", Type = "bool", DefaultValue = "false", Description = "Whether the input is required for form validation." },
+        new ApiMember { Name = "ReadOnly", Type = "bool", DefaultValue = "false", Description = "When true, the input is read-only." },
+        new ApiMember { Name = "Disabled", Type = "bool", DefaultValue = "false", Description = "When true, the input is disabled." },
+        new ApiMember { Name = "PhoneValidationMessage", Type = "string?", DefaultValue = "\"Telefoon nummer is ongeldig\"", Description = "Error message added to the EditContext when phone validation fails." }
+    };
+
+    private IEnumerable<ApiMember> phoneEvents = new[]
+    {
+        new ApiMember { Name = "OnChange", Type = "EventCallback<ChangeEventArgs>", Description = "Invoked when the phone value changes (on blur)." },
+        new ApiMember { Name = "OnInput", Type = "EventCallback<ChangeEventArgs>", Description = "Invoked on every input (keystroke)." },
+        new ApiMember { Name = "OnFocus", Type = "EventCallback<FocusEventArgs>", Description = "Invoked when the input gains focus." },
+        new ApiMember { Name = "OnBlur", Type = "EventCallback<FocusEventArgs>", Description = "Invoked when the input loses focus." },
+        new ApiMember { Name = "OnCountryChanged", Type = "EventCallback<string>", Description = "Invoked when the country selection changes." },
+        new ApiMember { Name = "OnValidationChanged", Type = "EventCallback<bool>", Description = "Invoked when the validation state changes." }
+    };
 }

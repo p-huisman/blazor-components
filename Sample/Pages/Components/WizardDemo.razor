@@ -4,7 +4,7 @@
 
 <PageTitle>PGGM Wizard</PageTitle>
 
-<PggmHeader Level="1">PGGM Wizard</PggmHeader>
+<PggmHeading Level="1">PGGM Wizard</PggmHeading>
 
 <PggmWizard @ref="wizardRef" Method="POST" Action="/api/submit-wizard"
     OnBeforeNavigate="HandleBeforeNavigate" OnBeforeSubmit="HandleBeforeSubmit"
@@ -13,86 +13,70 @@
     <ChildContent>
         <PggmWizardForm Label="Personal Information" Active="true">
             <form>
-                <PggmHeader Level="3">Enter Your Personal Information</PggmHeader>
+                <PggmHeading Level="3">Enter Your Personal Information</PggmHeading>
                 <p>Please fill in your personal information.</p>
                 <PggmFieldset>
-                    <Label>
-                        <PggmLabel For="firstName">First Name *</PggmLabel>
-                    </Label>
-                    <Description>
+                    <PggmFieldsetLabel For="firstName">First Name *</PggmFieldsetLabel>
+                    <PggmFieldsetDescription>
                         <p>Vul uw naam in.</p>
-                    </Description>
-                    <Error>
-                        <PggmErrorMessage For="firstName" Validity="@PggmErrorMessage.ValidityStates.ValueMissing">
+                    </PggmFieldsetDescription>
+                    <PggmFieldsetError>
+                        <PggmErrorMessage slot="error" For="firstName" Validity="@PggmErrorMessage.ValidityStates.ValueMissing">
                             First name is required
                         </PggmErrorMessage>
-                    </Error>
-                    <ChildContent>
+                    </PggmFieldsetError>
                         <PggmInput Id="firstName" Name="firstName" Required="true" @bind-value="@firstName" />
-                    </ChildContent>
 
                 </PggmFieldset>
                 <PggmFieldset>
-                    <Label>
-                        <PggmLabel For="lastName">Last Name *</PggmLabel>
-                    </Label>
-                    <Description>
+                    <PggmFieldsetLabel For="lastName">Last Name *</PggmFieldsetLabel>
+                    <PggmFieldsetDescription>
                         <p>Vul uw achternaam in.</p>
-                    </Description>
-                    <Error>
-                        <PggmErrorMessage For="lastName" Validity="@PggmErrorMessage.ValidityStates.ValueMissing">
+                    </PggmFieldsetDescription>
+                    <PggmFieldsetError>
+                        <PggmErrorMessage slot="error"  For="lastName" Validity="@PggmErrorMessage.ValidityStates.ValueMissing">
                             Last name is required
                         </PggmErrorMessage>
-                    </Error>
-                    <ChildContent>
+                    </PggmFieldsetError>
                         <PggmInput Id="lastName" Name="lastName" Required="true" @bind-value="@lastName" />
-                    </ChildContent>
                 </PggmFieldset>
                 <PggmFieldset>
-                    <Label>
-                        <PggmLabel For="email">Email *</PggmLabel>
-                    </Label>
-                    <Description>
+                    <PggmFieldsetLabel For="email">Email *</PggmFieldsetLabel>
+                    <PggmFieldsetDescription>
                         <p>Vul uw email in.</p>
-                    </Description>
-                    <Error>
-                        <PggmErrorMessage For="email" Validity="@PggmErrorMessage.ValidityStates.ValueMissing">
+                    </PggmFieldsetDescription>
+                    <PggmFieldsetError>
+                        <PggmErrorMessage slot="error" For="email" Validity="@PggmErrorMessage.ValidityStates.ValueMissing">
                             Email is required
                         </PggmErrorMessage>
-                        <PggmErrorMessage For="email" Validity="@PggmErrorMessage.ValidityStates.TypeMismatch">
+                        <PggmErrorMessage slot="error"  For="email" Validity="@PggmErrorMessage.ValidityStates.TypeMismatch">
                             Please enter a valid email address
                         </PggmErrorMessage>
-                    </Error>
-                    <ChildContent>
+                    </PggmFieldsetError>
                         <PggmInput Id="email" Name="email" Type="@PggmInput.InputTypes.Email" Required="true"
                             @bind-Value="@email" />
-                    </ChildContent>
                 </PggmFieldset>
             </form>
         </PggmWizardForm>
 
         <PggmWizardForm Label="Additional Info" NextDisabled="@(!allowNextStep)">
             <form>
-                <PggmHeader Level="3">Additional Information</PggmHeader>
+                <PggmHeading Level="3">Additional Information</PggmHeading>
                 <p>Provide any additional information you think is relevant.</p>
                 <PggmFieldset>
-                    <Label>
-                        <PggmLabel For="phoneInput">Phone Number</PggmLabel>
-                    </Label>
-                    <ChildContent>
+                    <PggmFieldsetLabel For="phoneInput">Phone Number</PggmFieldsetLabel>
                         <PggmInputPhone id="phoneInput" @bind-Value="@phoneNumber" TopCountries="NL,BE,DE,FR"
                             CountryLabel="Choose country..." InitialCountry="NL" Name="phone" />
-                    </ChildContent>
                 </PggmFieldset>
 
                 <PggmFieldset>
-                    <PggmCheckbox Id="subscribe" Name="allowNavigation" @bind-Checked="allowNavigation">
+                    <PggmCheckbox Id="subscribe" Name="allowNavigation" @bind-Value="allowNavigation">
                         Allow navigation to next step (via event cancellation)
                     </PggmCheckbox>
                 </PggmFieldset>
 
                 <PggmFieldset>
-                    <PggmCheckbox Id="allowNextStep" Name="allowNextStep" @bind-Checked="allowNextStep">
+                    <PggmCheckbox Id="allowNextStep" Name="allowNextStep" @bind-Value="allowNextStep">
                         Allow navigation to next step (via disable Next button)
                     </PggmCheckbox>
                 </PggmFieldset>
@@ -102,7 +86,7 @@
 
         <PggmWizardForm Label="Confirmation">
             <form>
-                <PggmHeader Level="3">Review Your Information</PggmHeader>
+                <PggmHeading Level="3">Review Your Information</PggmHeading>
                 <p>Please review and confirm your information.</p>
 
                 <ul is="pggm-unordered-list">
@@ -112,16 +96,14 @@
                     <li>Phone Number: @(string.IsNullOrWhiteSpace(phoneNumber) ? "N/A" : phoneNumber)</li>
                 </ul>
                 <PggmFieldset>
-                    <Error>
-                        <PggmErrorMessage For="terms" Validity="@PggmErrorMessage.ValidityStates.ValueMissing">
+                    <PggmFieldsetError>
+                        <PggmErrorMessage slot="error" For="terms" Validity="@PggmErrorMessage.ValidityStates.ValueMissing">
                             You must agree to the terms and conditions
                         </PggmErrorMessage>
-                    </Error>
-                    <ChildContent>
+                    </PggmFieldsetError>
                         <PggmCheckbox Id="terms" Name="terms" Required="true">
                             I agree to the terms and conditions
                         </PggmCheckbox>
-                    </ChildContent>
                 </PggmFieldset>
 
             </form>
@@ -192,4 +174,6 @@
         StateHasChanged();
         return Task.CompletedTask;
     }
+
+    // Use <PggmFieldsetLabel> element in markup for labels
 }

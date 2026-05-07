@@ -4,14 +4,14 @@
 
 <PageTitle>Table Custom Formatters Demo</PageTitle>
 
-<PggmHeader Level="1">PGGM Table Custom Formatters Demo</PggmHeader>
+<PggmHeading Level="1">PGGM Table - Custom Formatters Demo</PggmHeading>
 
 <p>This page demonstrates how to use custom web components as formatters in PGGM Tables. 
    The <code>format</code> attribute of <code>&lt;PggmTh&gt;</code> can contain the tag name of a custom component 
    that implements a static <code>format(fieldName: string, record: any)</code> method.</p>
 
 <div class="demo-section">
-    <PggmHeader Level="2">How Custom Formatters Work</PggmHeader>
+    <PggmHeading Level="2">How Custom Formatters Work</PggmHeading>
     <div class="demo-description">
         <p>Custom formatters are web components with a static <strong>format</strong> method that:</p>
         <ul>
@@ -43,7 +43,7 @@ class StatusFormatter extends HTMLElement {<br/>
 </div>
 
 <div class="formatter-showcase">
-    <PggmHeader Level="2">Project Management Dashboard</PggmHeader>
+    <PggmHeading Level="2">Project Management Dashboard</PggmHeading>
     <p>This table demonstrates various custom formatters in a realistic project management context.</p>
     
     <PggmTable 
@@ -122,7 +122,7 @@ class StatusFormatter extends HTMLElement {<br/>
 </div>
 
 <div class="formatter-showcase">
-    <PggmHeader Level="2">Employee Directory</PggmHeader>
+    <PggmHeading Level="2">Employee Directory</PggmHeading>
     <p>Another example showing different formatters in an employee directory context.</p>
     
     <PggmTable 
@@ -183,7 +183,7 @@ class StatusFormatter extends HTMLElement {<br/>
 </div>
 
 <div class="demo-section">
-    <PggmHeader Level="2">Available Custom Formatters</PggmHeader>
+    <PggmHeading Level="2">Available Custom Formatters</PggmHeading>
     <div class="demo-description">
         <p>The following custom formatters are included in this demo:</p>
         <ul>

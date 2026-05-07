@@ -1,66 +1,143 @@
 @page "/pggm-input-iban"
 @using Microsoft.AspNetCore.Components
+@using System.ComponentModel.DataAnnotations
+@using Pggm.Components.Sample.Components.ApiDocumentation
 
 <PageTitle>PGGM Input IBAN</PageTitle>
 
-<PggmHeader Level="1">PGGM Input IBAN</PggmHeader>
+<PggmHeading Level="1">PGGM Input IBAN</PggmHeading>
 
-<p>This page demonstrates the PGGM IBAN input component with various configurations and features.</p>
+<p>This page demonstrates the PGGM IBAN (International Bank Account Number) input component with various configurations and features.</p>
 
-<div class="demo-section">
-    <PggmHeader Level="2">IBAN Input Examples</PggmHeader>
+<DemoSection Title="IBAN Input Examples" Code="@basicIbanSource" CodeBehind="@basicIbanBehind">
+    <Description>
+        <p>Common IBAN input usages and variations.</p>
+    </Description>
+    <Content>
+        <PggmFieldset>
+            <PggmLabel slot="label" For="iban1">Basic IBAN Input:</PggmLabel>
+            <PggmErrorMessage slot="error" For="iban1"
+                Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.CustomError}")">
+                <p>Vul een geldige <strong>IBAN</strong> in</p>
+            </PggmErrorMessage>
+            <PggmInputIban @bind-Value="@ibanValue1" Placeholder="Enter your IBAN" Name="iban1" Id="iban1" />
+            <p slot="description">Current value: @ibanValue1</p>
+        </PggmFieldset>
 
-    <div class="form-group">
-        <PggmLabel For="iban1">Basic IBAN Input:</PggmLabel>
-        <PggmInputIban @bind-value="@ibanValue1" Placeholder="Enter your IBAN" Name="iban1" id="iban1" />
-        <p>Current value: @ibanValue1</p>
-    </div>
+        <PggmFieldset>
+            <PggmLabel slot="label" For="iban2">Required IBAN Input:</PggmLabel>
+            <PggmErrorMessage slot="error" For="iban2"
+                Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.CustomError}")">
+                <p>Vul een geldige <strong>IBAN</strong> in</p>        
+            </PggmErrorMessage>
+            <PggmInputIban @bind-Value="@ibanValue2" Placeholder="NL91 ABNA 0417 1643 00" Name="iban2" Id="iban2"
+                Required="true" ErrorMessage="Please enter a valid IBAN" />
+            <p slot="description">Current value: @ibanValue2</p>
+        </PggmFieldset>
 
-    <div class="form-group">
-        <PggmLabel For="iban2">Required IBAN Input:</PggmLabel>
-        <PggmInputIban @bind-value="@ibanValue2" Placeholder="NL91 ABNA 0417 1643 00" Name="iban2" id="iban2"
-            Required="true" ErrorMessage="Please enter a valid IBAN" />
-        <p>Current value: @ibanValue2</p>
-    </div>
+        <PggmFieldset>
+            <PggmLabel slot="label" For="iban3">Disabled IBAN Input:</PggmLabel>
+            <PggmInputIban @bind-Value="@ibanValue3" Placeholder="Disabled input" Name="iban3" Id="iban3" Disabled="true" />
+        </PggmFieldset>
 
-    <div class="form-group">
-        <PggmLabel For="iban3">Disabled IBAN Input:</PggmLabel>
-        <PggmInputIban @bind-value="@ibanValue3" Placeholder="Disabled input" Name="iban3" id="iban3" Disabled="true" />
-    </div>
+        <PggmFieldset>
+            <PggmLabel slot="label" For="iban4">IBAN with Event Handling:</PggmLabel>
+            <PggmErrorMessage slot="error" For="iban4"
+                Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.CustomError}")">
+                <p>Vul een geldige <strong>IBAN</strong> in</p>    
+            </PggmErrorMessage>
+            <PggmInputIban @bind-Value="@ibanValue4" Placeholder="Enter IBAN with validation" Name="iban4" Id="iban4"
+                OnInput="@OnIbanInput" OnChange="@OnIbanChange" OnFocus="@OnIbanFocus" OnBlur="@OnIbanBlur"
+                OnInvalid="@OnIbanInvalid" />
+            <p slot="description">Current value: @ibanValue4</p>
+            @if (!string.IsNullOrEmpty(eventMessage))
+            {
+                <p slot="description" class="event-message">@eventMessage</p>
+            }
+        </PggmFieldset>
 
-    <div class="form-group">
-        <PggmLabel For="iban4">IBAN with Event Handling:</PggmLabel>
-        <PggmInputIban @bind-value="@ibanValue4" Placeholder="Enter IBAN with validation" Name="iban4" id="iban4"
-            OnInput="@OnIbanInput" OnChange="@OnIbanChange" OnFocus="@OnIbanFocus" OnBlur="@OnIbanBlur"
-            OnInvalid="@OnIbanInvalid" />
-        <p>Current value: @ibanValue4</p>
-        @if (!string.IsNullOrEmpty(eventMessage))
+        <PggmFieldset>
+            <PggmLabel slot="label" For="iban5">IBAN with Custom Formatting Options:</PggmLabel>
+            <PggmErrorMessage slot="error" For="iban5"
+                Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.CustomError}")">
+                <p>Vul een geldige <strong>IBAN</strong> in</p>
+            </PggmErrorMessage>
+            <PggmInputIban @bind-Value="@ibanValue5" Placeholder="No auto-formatting" Name="iban5" Id="iban5"
+                AutoFormat="false" ValidateOnInput="false" />
+            <p slot="description">Current value: @ibanValue5</p>
+            <small slot="description">Auto-formatting and real-time validation disabled</small>
+        </PggmFieldset>
+
+        <PggmFieldset>
+            <PggmLabel slot="label" For="iban6">ReadOnly IBAN Input:</PggmLabel>
+            <PggmInputIban @bind-Value="@ibanValue6" Name="iban6" Id="iban6" ReadOnly="true" />
+            <small slot="description">This field is read-only</small>
+        </PggmFieldset>
+
+        <CodeSnippet Title="IBAN with Event Handling" Language="razor" Code="@eventIbanSource" />
+    </Content>
+</DemoSection>
+
+<DemoSection Title="EditForm Example" Code="@editFormIbanSource" CodeBehind="@editFormIbanBehind">
+    <Description>
+        <p>Example showing <code>EditForm</code> integration with <code>PggmInputIban</code> and data-annotation validation.</p>
+    </Description>
+    <Content>
+        <EditForm Model="@formModel" OnValidSubmit="HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <PggmValidationSummary>
+                <p>Er zijn fouten in het formulier. Corrigeer deze en probeer het opnieuw.</p>
+            </PggmValidationSummary>
+            <PggmFieldset>
+                <PggmLabel slot="label" For="ibanForm">IBAN (15-34 characters):</PggmLabel>
+                <PggmInputIban @bind-Value="@formModel.Iban" Name="ibanForm" Id="ibanForm" Required Placeholder="NL91 ABNA 0417 1643 00" />
+                <PggmValidationMessage slot="error"  For="() => formModel.Iban" />
+            </PggmFieldset>
+            <PggmButton Type="@ButtonType.Submit">Submit</PggmButton>
+            
+        </EditForm>
+
+        @if (submittedIban is not null)
         {
-            <p class="event-message">@eventMessage</p>
+            <p>Submitted IBAN: @submittedIban</p>
         }
-    </div>
-</div>
+    </Content>
+</DemoSection>
+
+<PggmHeading Level="2">API</PggmHeading>
+
+<PggmHeading Level="3">PggmInputIban</PggmHeading>
+<ApiDocumentation Properties="ibanProperties" Events="ibanEvents" />
 
 <style>
-    .demo-section {
-        max-width: 600px;
-        margin: 20px 0;
-    }
-
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    .form-group label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
-    }
+    /* demo-section styles are provided globally in wwwroot/css/custom-formatters.css */
 
     .event-message {
         color: #0066cc;
         font-style: italic;
         margin-top: 5px;
+    }
+
+    .form-group small {
+        display: block;
+        margin-top: 5px;
+        color: #666;
+        font-style: italic;
+    }
+
+    .demo-section ul {
+        margin: 10px 0;
+        padding-left: 20px;
+    }
+
+    .demo-section li {
+        margin-bottom: 5px;
+    }
+
+    .demo-section h3 {
+        margin-top: 20px;
+        margin-bottom: 10px;
+        color: #333;
     }
 </style>
 
@@ -69,7 +146,10 @@
     private string? ibanValue2;
     private string? ibanValue3 = "NL91 ABNA 0417 1643 00"; // Pre-filled for disabled demo
     private string? ibanValue4;
+    private string? ibanValue5;
+    private string? ibanValue6 = "NL91 ABNA 0417 1643 00"; // Pre-filled for readonly demo
     private string eventMessage = "";
+
     private void OnIbanInput(ChangeEventArgs args)
     {
         eventMessage = $"Input event fired: {args.Value}";
@@ -99,4 +179,104 @@
         eventMessage = "Invalid IBAN detected!";
         StateHasChanged();
     }
+
+    // EditForm demo model and handlers
+    private IbanModel formModel = new();
+    private string? submittedIban;
+
+    private void HandleValidSubmit()
+    {
+        submittedIban = formModel.Iban;
+    }
+
+    private class IbanModel
+    {
+        [Required(ErrorMessage = "IBAN is verplicht")]
+        [PggmValidation("Vul een geldig IBAN in!!!")]
+        public string? Iban { get; set; }
+    }
+
+    // Code snippets for demo page
+    private string basicIbanSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmFieldset>",
+        "  <PggmLabel slot=\"label\" For=\"iban1\">Basic IBAN Input:</PggmLabel>",
+        "  <PggmErrorMessage For=\"iban1\" Validity=\"${PggmErrorMessage.ValidityStates.ValueMissing} ${PggmErrorMessage.ValidityStates.CustomError}\">Vul een geldig IBAN in</PggmErrorMessage>",
+        "  <PggmInputIban @bind-Value=\"@ibanValue1\" Placeholder=\"Enter your IBAN\" Name=\"iban1\" Id=\"iban1\" />",
+        "  <p slot=\"description\">Current value: @ibanValue1</p>",
+        "</PggmFieldset>");
+
+    private string eventIbanSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmFieldset>",
+        "  <PggmLabel slot=\"label\" For=\"iban4\">IBAN with Event Handling:</PggmLabel>",
+        "  <PggmErrorMessage slot=\"error\" For=\"iban4\" Validity=\"${PggmErrorMessage.ValidityStates.ValueMissing} ${PggmErrorMessage.ValidityStates.CustomError}\">Vul een geldig IBAN in</PggmErrorMessage>",
+        "  <PggmInputIban @bind-Value=\"@ibanValue4\" Placeholder=\"Enter IBAN with validation\" Name=\"iban4\" Id=\"iban4\" OnInput=\"@OnIbanInput\" OnChange=\"@OnIbanChange\" OnFocus=\"@OnIbanFocus\" OnBlur=\"@OnIbanBlur\" OnInvalid=\"@OnIbanInvalid\" />",
+        "  <p slot=\"description\">Current value: @ibanValue4</p>",
+        "  <p slot=\"description\" class=\"event-message\">@eventMessage</p>",
+        "</PggmFieldset>",
+        "@code {",
+        "  private string? ibanValue4;",
+        "  private string eventMessage = \"\";",
+        "  private void OnIbanInput(ChangeEventArgs args) { eventMessage = $\"Input event fired: {args.Value}\"; }",
+        "  private void OnIbanChange(ChangeEventArgs args) { eventMessage = $\"Change event fired: {args.Value}\"; }",
+        "  private void OnIbanFocus(Microsoft.AspNetCore.Components.Web.FocusEventArgs args) { eventMessage = \"IBAN input focused\"; }",
+        "  private void OnIbanBlur(Microsoft.AspNetCore.Components.Web.FocusEventArgs args) { eventMessage = \"IBAN input blurred\"; }",
+        "  private void OnIbanInvalid(System.EventArgs args) { eventMessage = \"Invalid IBAN detected!\"; }",
+        "}");
+
+    private string editFormIbanSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<EditForm Model=\"@formModel\" OnValidSubmit=\"HandleValidSubmit\">",
+        "  <DataAnnotationsValidator />",
+        "  <PggmValidationSummary>",
+        "    <p>Er zijn fouten in het formulier. Corrigeer deze en probeer het opnieuw.</p>",
+        "  </PggmValidationSummary>",
+        "  <PggmFieldset>",
+        "    <PggmLabel slot=\"label\" For=\"ibanForm\">IBAN (15-34 characters):</PggmLabel>",
+        "    <PggmInputIban @bind-Value=\"@formModel.Iban\" Name=\"ibanForm\" Id=\"ibanForm\" Required Placeholder=\"NL91 ABNA 0417 1643 00\" />",
+        "    <PggmValidationMessage slot=\"error\" For=\"() => formModel.Iban\" />",
+        "  </PggmFieldset>",
+        "  <PggmButton Type=\"@ButtonType.Submit\">Submit</PggmButton>",
+        "</EditForm>");
+
+    private string basicIbanBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private string? ibanValue1;"
+    );
+
+    private string editFormIbanBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private IbanModel formModel = new();",
+        "private string? submittedIban;",
+        "private void HandleValidSubmit() { submittedIban = formModel.Iban; }",
+        "",
+        "private class IbanModel {",
+        "  [Required(ErrorMessage = \"IBAN is verplicht\")]",
+        "  [PggmValidation(\"Vul een geldig IBAN in\")]",
+        "  public string? Iban { get; set; }",
+        "}"
+    );
+
+    private IEnumerable<ApiMember> ibanProperties = new[]
+    {
+        new ApiMember { Name = "Value", Type = "string?", DefaultValue = "null", Description = "Bound value of the input (two-way binding)." },
+        new ApiMember { Name = "Name", Type = "string?", DefaultValue = "null", Description = "Name attribute for the underlying input element." },
+        new ApiMember { Name = "Placeholder", Type = "string?", DefaultValue = "null", Description = "Placeholder text shown when empty." },
+        new ApiMember { Name = "AutoFormat", Type = "bool", DefaultValue = "true", Description = "Whether input is auto-formatted as the user types." },
+        new ApiMember { Name = "ValidateOnInput", Type = "bool", DefaultValue = "false", Description = "Whether validation runs on input events." },
+        new ApiMember { Name = "Required", Type = "bool", DefaultValue = "false", Description = "Whether the input is required for form validation." },
+        new ApiMember { Name = "ReadOnly", Type = "bool", DefaultValue = "false", Description = "When true, the input is read-only." },
+        new ApiMember { Name = "Disabled", Type = "bool", DefaultValue = "false", Description = "When true, the input is disabled." },
+        new ApiMember { Name = "ShowValidation", Type = "bool", DefaultValue = "true", Description = "Whether to show validation feedback from the web component." },
+        new ApiMember { Name = "Form", Type = "string?", DefaultValue = "null", Description = "The form attribute for the input." },
+        new ApiMember { Name = "AutoComplete", Type = "string?", DefaultValue = "null", Description = "The autocomplete attribute for the input." },
+        new ApiMember { Name = "ErrorMessage", Type = "string?", DefaultValue = "null", Description = "Custom error message to display." },
+        new ApiMember { Name = "IbanValidationMessage", Type = "string?", DefaultValue = "\"IBAN is ongeldig\"", Description = "Error message added to the EditContext when IBAN validation fails." }
+    };
+
+    private IEnumerable<ApiMember> ibanEvents = new[]
+    {
+        new ApiMember { Name = "OnChange", Type = "EventCallback<ChangeEventArgs>", Description = "Invoked when the input value changes (on blur)." },
+        new ApiMember { Name = "OnInput", Type = "EventCallback<ChangeEventArgs>", Description = "Invoked on every input (keystroke)." },
+        new ApiMember { Name = "OnFocus", Type = "EventCallback<FocusEventArgs>", Description = "Invoked when the input gains focus." },
+        new ApiMember { Name = "OnBlur", Type = "EventCallback<FocusEventArgs>", Description = "Invoked when the input loses focus." },
+        new ApiMember { Name = "OnValidationChanged", Type = "EventCallback<bool>", Description = "Invoked when the validation state changes." },
+        new ApiMember { Name = "OnInvalid", Type = "EventCallback<EventArgs>", Description = "Invoked when an invalid IBAN is detected." }
+    };
 }

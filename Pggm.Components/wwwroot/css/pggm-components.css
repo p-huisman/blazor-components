@@ -1,0 +1,646 @@
+/* Responsive column span utilities */
+@media (max-width: 575.98px) {
+  [class*="pggm-grid-item-col-xs-"] {
+    grid-column: auto;
+  }
+
+  .pggm-grid-item-col-xs-1 {
+    grid-column: span 1;
+  }
+
+  .pggm-grid-item-col-xs-2 {
+    grid-column: span 2;
+  }
+
+  .pggm-grid-item-col-xs-3 {
+    grid-column: span 3;
+  }
+
+  .pggm-grid-item-col-xs-4 {
+    grid-column: span 4;
+  }
+
+  .pggm-grid-item-col-xs-5 {
+    grid-column: span 5;
+  }
+
+  .pggm-grid-item-col-xs-6 {
+    grid-column: span 6;
+  }
+
+  .pggm-grid-item-col-xs-7 {
+    grid-column: span 7;
+  }
+
+  .pggm-grid-item-col-xs-8 {
+    grid-column: span 8;
+  }
+
+  .pggm-grid-item-col-xs-9 {
+    grid-column: span 9;
+  }
+
+  .pggm-grid-item-col-xs-10 {
+    grid-column: span 10;
+  }
+
+  .pggm-grid-item-col-xs-11 {
+    grid-column: span 11;
+  }
+
+  .pggm-grid-item-col-xs-12 {
+    grid-column: span 12;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  [class*="pggm-grid-item-col-sm-"] {
+    grid-column: auto;
+  }
+
+  .pggm-grid-item-col-sm-1 {
+    grid-column: span 1;
+  }
+
+  .pggm-grid-item-col-sm-2 {
+    grid-column: span 2;
+  }
+
+  .pggm-grid-item-col-sm-3 {
+    grid-column: span 3;
+  }
+
+  .pggm-grid-item-col-sm-4 {
+    grid-column: span 4;
+  }
+
+  .pggm-grid-item-col-sm-5 {
+    grid-column: span 5;
+  }
+
+  .pggm-grid-item-col-sm-6 {
+    grid-column: span 6;
+  }
+
+  .pggm-grid-item-col-sm-7 {
+    grid-column: span 7;
+  }
+
+  .pggm-grid-item-col-sm-8 {
+    grid-column: span 8;
+  }
+
+  .pggm-grid-item-col-sm-9 {
+    grid-column: span 9;
+  }
+
+  .pggm-grid-item-col-sm-10 {
+    grid-column: span 10;
+  }
+
+  .pggm-grid-item-col-sm-11 {
+    grid-column: span 11;
+  }
+
+  .pggm-grid-item-col-sm-12 {
+    grid-column: span 12;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  [class*="pggm-grid-item-col-md-"] {
+    grid-column: auto;
+  }
+
+  .pggm-grid-item-col-md-1 {
+    grid-column: span 1;
+  }
+
+  .pggm-grid-item-col-md-2 {
+    grid-column: span 2;
+  }
+
+  .pggm-grid-item-col-md-3 {
+    grid-column: span 3;
+  }
+
+  .pggm-grid-item-col-md-4 {
+    grid-column: span 4;
+  }
+
+  .pggm-grid-item-col-md-5 {
+    grid-column: span 5;
+  }
+
+  .pggm-grid-item-col-md-6 {
+    grid-column: span 6;
+  }
+
+  .pggm-grid-item-col-md-7 {
+    grid-column: span 7;
+  }
+
+  .pggm-grid-item-col-md-8 {
+    grid-column: span 8;
+  }
+
+  .pggm-grid-item-col-md-9 {
+    grid-column: span 9;
+  }
+
+  .pggm-grid-item-col-md-10 {
+    grid-column: span 10;
+  }
+
+  .pggm-grid-item-col-md-11 {
+    grid-column: span 11;
+  }
+
+  .pggm-grid-item-col-md-12 {
+    grid-column: span 12;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  [class*="pggm-grid-item-col-lg-"] {
+    grid-column: auto;
+  }
+
+  .pggm-grid-item-col-lg-1 {
+    grid-column: span 1;
+  }
+
+  .pggm-grid-item-col-lg-2 {
+    grid-column: span 2;
+  }
+
+  .pggm-grid-item-col-lg-3 {
+    grid-column: span 3;
+  }
+
+  .pggm-grid-item-col-lg-4 {
+    grid-column: span 4;
+  }
+
+  .pggm-grid-item-col-lg-5 {
+    grid-column: span 5;
+  }
+
+  .pggm-grid-item-col-lg-6 {
+    grid-column: span 6;
+  }
+
+  .pggm-grid-item-col-lg-7 {
+    grid-column: span 7;
+  }
+
+  .pggm-grid-item-col-lg-8 {
+    grid-column: span 8;
+  }
+
+  .pggm-grid-item-col-lg-9 {
+    grid-column: span 9;
+  }
+
+  .pggm-grid-item-col-lg-10 {
+    grid-column: span 10;
+  }
+
+  .pggm-grid-item-col-lg-11 {
+    grid-column: span 11;
+  }
+
+  .pggm-grid-item-col-lg-12 {
+    grid-column: span 12;
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1399.98px) {
+  [class*="pggm-grid-item-col-xl-"] {
+    grid-column: auto;
+  }
+
+  .pggm-grid-item-col-xl-1 {
+    grid-column: span 1;
+  }
+
+  .pggm-grid-item-col-xl-2 {
+    grid-column: span 2;
+  }
+
+  .pggm-grid-item-col-xl-3 {
+    grid-column: span 3;
+  }
+
+  .pggm-grid-item-col-xl-4 {
+    grid-column: span 4;
+  }
+
+  .pggm-grid-item-col-xl-5 {
+    grid-column: span 5;
+  }
+
+  .pggm-grid-item-col-xl-6 {
+    grid-column: span 6;
+  }
+
+  .pggm-grid-item-col-xl-7 {
+    grid-column: span 7;
+  }
+
+  .pggm-grid-item-col-xl-8 {
+    grid-column: span 8;
+  }
+
+  .pggm-grid-item-col-xl-9 {
+    grid-column: span 9;
+  }
+
+  .pggm-grid-item-col-xl-10 {
+    grid-column: span 10;
+  }
+
+  .pggm-grid-item-col-xl-11 {
+    grid-column: span 11;
+  }
+
+  .pggm-grid-item-col-xl-12 {
+    grid-column: span 12;
+  }
+}
+
+@media (min-width: 1400px) {
+  [class*="pggm-grid-item-col-xxl-"] {
+    grid-column: auto;
+  }
+
+  .pggm-grid-item-col-xxl-1 {
+    grid-column: span 1;
+  }
+
+  .pggm-grid-item-col-xxl-2 {
+    grid-column: span 2;
+  }
+
+  .pggm-grid-item-col-xxl-3 {
+    grid-column: span 3;
+  }
+
+  .pggm-grid-item-col-xxl-4 {
+    grid-column: span 4;
+  }
+
+  .pggm-grid-item-col-xxl-5 {
+    grid-column: span 5;
+  }
+
+  .pggm-grid-item-col-xxl-6 {
+    grid-column: span 6;
+  }
+
+  .pggm-grid-item-col-xxl-7 {
+    grid-column: span 7;
+  }
+
+  .pggm-grid-item-col-xxl-8 {
+    grid-column: span 8;
+  }
+
+  .pggm-grid-item-col-xxl-9 {
+    grid-column: span 9;
+  }
+
+  .pggm-grid-item-col-xxl-10 {
+    grid-column: span 10;
+  }
+
+  .pggm-grid-item-col-xxl-11 {
+    grid-column: span 11;
+  }
+
+  .pggm-grid-item-col-xxl-12 {
+    grid-column: span 12;
+  }
+}
+
+/* Grid */
+/* Hidden utilities */
+@media (max-width: 575.98px) {
+  .pggm-grid-item-hidden-xs {
+    display: none !important;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .pggm-grid-item-hidden-sm {
+    display: none !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .pggm-grid-item-hidden-md {
+    display: none !important;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .pggm-grid-item-hidden-lg {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1399.98px) {
+  .pggm-grid-item-hidden-xl {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1400px) {
+  .pggm-grid-item-hidden-xxl {
+    display: none !important;
+  }
+}
+
+/* ── DataGrid ────────────────────────────────────────────── */
+
+:root {
+  --border-width-max: max(var(--pggm-checkbox-border-width), var(--pggm-checkbox-active-border-width), var(--pggm-checkbox-invalid-border-width));
+  --border-width-difference: 0px;
+
+
+
+  --checkbox-checked-color: #274c77;
+  --checkbox-hover-color: #a3cef1;
+  --checkbox-disabled-bg-color: #d9d9d9;
+  --pggm-data-grid-select-col-width: 48px; /* width for checkbox/radio select column */
+}
+
+.pggm-data-grid {
+  overflow-x: auto;
+}
+
+.pggm-data-grid-table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  /* Allow the table to size to the sum of its column widths so fixed
+     column widths (px) are respected. The outer `.pggm-data-grid` wrapper
+     already provides `overflow-x: auto` for scrolling when needed. */
+  width: auto;
+}
+
+.pggm-data-grid-table th,
+.pggm-data-grid-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #e6e6e6;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Selected data-grid row */
+.pggm-data-grid--single-selectable .pggm-data-grid-row--selected td {
+    background-color: var(--pggm-data-grid-selected-row-bg, #e8f0ff);
+}
+
+/* When grid has selectable column(s) */
+.pggm-data-grid--selectable {
+}  /* placeholder for select-mode styles (no visual changes by default) */
+
+
+/* Single-select mode */
+.pggm-data-grid--single-selectable {
+  /* placeholder for single-select specific styles */
+}
+
+/* Column header base — needed for absolute-positioned resize handle */
+.pggm-data-grid-table th.column-header {
+  position: relative;
+  overflow: clip; /* clip the full-height resize-handle so it doesn't overlay tbody rows */
+}
+
+/* ── No wrap and overflow ─ellipses ──────────────────────────────── */
+
+
+.pggm-sticky-col,
+.pggm-data-grid--auto-height .pggm-data-grid-table th,
+.pggm-data-grid--auto-height .pggm-data-grid-table td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Alignment utility classes used by the grid when avoiding inline styles */
+.pggm-align-left { text-align: left; }
+.pggm-align-center { text-align: center; }
+.pggm-align-right { text-align: right; }
+
+/* ── Column resize handle ──────────────────────────────── */
+
+/* The persistent visual indicator: a thin line on the right edge of the header */
+.pggm-data-grid-table th.resizable .resize-handle {
+  position: absolute;
+  right: 0;
+  top: 4px;
+  bottom: 4px;
+  width: 4px;
+  cursor: col-resize;
+  border-inline-end: 1px solid var(--pggm-resize-handle-color, #bbb);
+  opacity: 0.6;
+  pointer-events: none; /* the actual-resize-handle (injected by JS) captures events */
+}
+
+[dir=rtl] .pggm-data-grid-table th.resizable .resize-handle {
+  right: unset;
+  left: 0;
+}
+
+/* When virtualization is enabled the grid div is its own scroll container
+   (overflow-y: auto + explicit height set as inline style via the Height parameter).
+   Sticky th cells stick at top: 0 of that container — no dependency on outer padding. */
+.pggm-data-grid--virtualized .pggm-data-grid-table {
+  border-collapse: collapse;
+  /* For virtualized mode we also allow the table to size to its columns
+     and rely on the virtualized container's scroll for overflow. */
+  width: auto;
+}
+
+/* Virtualized grid container height controlled via JS-set CSS variable */
+.pggm-data-grid--virtualized {
+  height: var(--pggm-data-grid-height, 400px);
+  overflow-y: auto;
+}
+
+/* sticky: specificity (0,2,2) beats th.column-header's position:relative (0,2,1) */
+.pggm-data-grid-table thead th,
+.pggm-data-grid-table thead th.column-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: white;
+}
+
+/* ── Sticky first column(s) ──────────────────────────────── */
+
+/* Body cells that are pinned horizontally */
+.pggm-data-grid-table td.pggm-sticky-col {
+  position: sticky;
+  z-index: 1;
+  background: var(--pggm-sticky-col-bg, white);
+}
+
+/* Header cells that are ALSO pinned horizontally sit above both
+   regular sticky headers (z-index:2) and sticky body cells (z-index:1) */
+.pggm-data-grid-table thead th.pggm-sticky-col {
+  z-index: 3;
+}
+
+/* Visual separator — a subtle shadow on the right edge of the last sticky column */
+.pggm-data-grid-table td.pggm-sticky-col:last-of-type,
+.pggm-data-grid-table thead th.pggm-sticky-col:last-of-type {
+  box-shadow: inset -4px 0 4px -4px rgba(0, 0, 0, 0.15);
+}
+
+.pggm-grid-header-button {
+  background: transparent;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.pggm-grid-header-title {
+  font-weight: 600;
+}
+
+input[type="checkbox"].pggm-data-grid-table-checkbox {
+  box-sizing: border-box;
+  width: 16px;
+  height: 16px;
+  margin: 0px;
+  padding: 0;
+  border-color: var(--pggm-checkbox-border-color);
+  border-radius: var(--pggm-checkbox-border-radius);
+  border-style: solid;
+  border-width: var(--pggm-checkbox-border-width);
+
+  appearance: none;
+  background-color: transparent;
+  outline: none;
+}
+
+
+input[type="checkbox"].pggm-data-grid-table-checkbox:checked {
+  background-size: cover;
+}
+
+input[type="checkbox"]:not(:disabled):checked {
+  background-color: var(--pggm-checkbox-checked-background-color);
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke='none' d='M0 0h24v24H0z'/%3E%3Cpath d='m5 12 5 5L20 7'/%3E%3C/svg%3E");
+  background-position: 50% center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  border-color: var(--pggm-checkbox-checked-border-color);
+  border-width: var(--pggm-checkbox-checked-border-width, var(--pggm-checkbox-border-width));
+  box-shadow: inset 0 0 0 var(--distance) var(--background-color);
+}
+
+input[type="checkbox"].pggm-data-grid-table-checkbox:disabled {
+  background-color: var(--pggm-checkbox-disabled-background-color);
+  border-color: var(--pggm-checkbox-disabled-border-color);
+  cursor: not-allowed;
+}
+
+
+@media (hover: hover) {
+  input[type="checkbox"].pggm-data-grid-table-checkbox:not(:disabled):hover {
+    background-color: var(--pggm-checkbox-hover-background-color);
+    border-color: var(--pggm-checkbox-hover-border-color);
+    border-width: var(--pggm-checkbox-hover-border-width, var(--pggm-checkbox-border-width));
+  }
+  input[type="checkbox"].pggm-data-grid-table-checkbox:not(:disabled):checked:hover {
+    background-color: var(--pggm-checkbox-checked-hover-background-color);
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke='none' d='M0 0h24v24H0z'/%3E%3Cpath d='m5 12 5 5L20 7'/%3E%3C/svg%3E");
+  }
+}
+
+input[type="checkbox"].pggm-data-grid-table-checkbox:focus-visible {
+  outline: var(--pggm-focus-outline-width) var(--pggm-focus-outline-style, solid) var(--pggm-focus-outline-color, blue);
+  outline-offset: var(--pggm-focus-outline-offset);
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  input[type="checkbox"].pggm-data-grid-table-checkbox {
+    transition: none;
+  }
+}
+
+/* ── Hierarchical data grid ────────────────────────────── */
+
+.pggm-hierarchical-toggle-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  vertical-align: middle;
+ /* Per-row indent applied by JS via --pggm-hier-indent variable */
+  margin-inline-start: var(--pggm-hier-indent, 0px);
+}
+
+.pggm-hierarchical-expander {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  flex-shrink: 0;
+} 
+
+.pggm-hierarchical-leaf {
+  display: inline-flex;
+  width: 20px;
+  flex-shrink: 0;
+}
+
+.pggm-hierarchical-expand-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: inherit;
+  border-radius: 3px;
+}
+
+.pggm-hierarchical-expand-button:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.pggm-hierarchical-expand-button:focus-visible {
+  outline: var(--pggm-focus-outline-width) var(--pggm-focus-outline-style, solid) var(--pggm-focus-outline-color, blue);
+  outline-offset: 1px;
+}
+
+.pggm-hierarchical-expand-button svg {
+  transition: transform 0.15s ease;
+  pointer-events: none;
+}
+
+.pggm-hierarchical-collapsed .pggm-hierarchical-expand-button svg {
+  transform: rotate(0deg);
+}
+
+.pggm-hierarchical-expanded .pggm-hierarchical-expand-button svg {
+  transform: rotate(90deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pggm-hierarchical-expand-button svg {
+    transition: none;
+  }
+}

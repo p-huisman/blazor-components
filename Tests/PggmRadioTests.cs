@@ -1,11 +1,13 @@
 // PggmRadioTests.cs
-using Xunit;
 using Bunit;
+
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Tests
+using Xunit;
+
+namespace Pggm.Components.Tests
 {
-    public class PggmRadioTests : TestContext
+    public class PggmRadioTests : PggmTestContext
     {
         public PggmRadioTests()
         {

@@ -3,12 +3,12 @@
 
 <PageTitle>PGGM Tooltip</PageTitle>
 
-<PggmHeader Level="1">PGGM Tooltip</PggmHeader>
+<PggmHeading Level="1">PGGM Tooltip</PggmHeading>
 
 <p>The <code>PggmTooltip</code> component provides accessible tooltip functionality with positioning options and various trigger mechanisms.</p>
 
 <div class="demo-section">
-    <PggmHeader Level="2">Basic Usage with Input Fields</PggmHeader>
+    <PggmHeading Level="2">Basic Usage with Input Fields</PggmHeading>
     <p>Basic tooltip functionality with form inputs:</p>
     
     <div class="form-field">
@@ -21,7 +21,7 @@
 </div>
 
 <div class="demo-section">
-    <PggmHeader Level="2">Position Options</PggmHeader>
+    <PggmHeading Level="2">Position Options</PggmHeading>
     <p>The tooltip can be positioned in four directions: above, below, before, or after the target element.</p>
     
     <div class="position-examples">
@@ -64,7 +64,7 @@
 </div>
 
 <div class="demo-section">
-    <PggmHeader Level="2">Button Tooltips</PggmHeader>
+    <PggmHeading Level="2">Button Tooltips</PggmHeading>
     <p>Tooltips with various button interactions:</p>
     
     <div class="button-group">
@@ -86,7 +86,7 @@
 </div>
 
 <div class="demo-section">
-    <PggmHeader Level="2">Complex Content Tooltips</PggmHeader>
+    <PggmHeading Level="2">Complex Content Tooltips</PggmHeading>
     <p>Tooltips can contain rich HTML content including lists and formatting:</p>
     
     <div class="form-field">
@@ -108,9 +108,9 @@
 </div>
 
 <div class="demo-section">
-    <PggmHeader Level="2">Basic Tooltip with Button Trigger</PggmHeader>
+    <PggmHeading Level="2">Basic Tooltip with Button Trigger</PggmHeading>
     
-    <PggmButton Id="LumpsumButton" is="pggm-button" appearance="primary">
+    <PggmButton Id="LumpsumButton" is="pggm-button" Appearance="@ButtonAppearance.Primary">
         Lumpsum
     </PggmButton>
 
@@ -123,7 +123,7 @@
 </div>
 
 <div class="demo-section">
-    <PggmHeader Level="2">Tooltip with Span Trigger</PggmHeader>
+    <PggmHeading Level="2">Tooltip with Span Trigger</PggmHeading>
     <p>Hover over the <span id="SpanTrigger" tabindex="0"  class="text-decoration-underline text-primary">underlined text</span> to see the tooltip.</p>
 
     <PggmTooltip For="SpanTrigger" Id="SpanTooltip">
@@ -132,7 +132,7 @@
 </div>
 
 <div class="demo-section">
-    <PggmHeader Level="2">Multiple Tooltips</PggmHeader>
+    <PggmHeading Level="2">Multiple Tooltips</PggmHeading>
     <p>This section demonstrates multiple tooltips on the same page:</p>
     
     <div class="mb-3">
@@ -156,7 +156,7 @@
 </div>
 
 <div class="demo-section">
-    <PggmHeader Level="2">Tooltip with Link Trigger</PggmHeader>
+    <PggmHeading Level="2">Tooltip with Link Trigger</PggmHeading>
     <p>Click on this <a href="#" is="pggm-link" Id="LinkTrigger">link</a> to see the tooltip.</p>
 
     <PggmTooltip For="LinkTrigger" Id="LinkTooltip">
@@ -166,7 +166,7 @@
 </div>
 
 <div class="demo-section">
-    <PggmHeader Level="2">Toggletip vs Tooltip Comparison</PggmHeader>
+    <PggmHeading Level="2">Toggletip vs Tooltip Comparison</PggmHeading>
     <p>Toggletips appear only on click and use dialog elements, while tooltips appear on hover/focus using the popover API:</p>
     
     <div class="comparison-container">
@@ -204,7 +204,7 @@
 </div>
 
 <div class="demo-section">
-    <PggmHeader Level="2">Form Integration</PggmHeader>
+    <PggmHeading Level="2">Form Integration</PggmHeading>
     <p>Comprehensive form example with tooltips for all fields:</p>
     
     <EditForm Model="formModel" OnValidSubmit="HandleSubmit">
@@ -245,7 +245,7 @@
         </div>
         
         <div class="form-actions">
-            <PggmButton Type="submit" Id="submit-form">Create Account</PggmButton>
+            <PggmButton Type="@ButtonType.Submit" Id="submit-form">Create Account</PggmButton>
             <PggmTooltip For="submit-form" Position="above">
                 All fields must be completed before submission
             </PggmTooltip>

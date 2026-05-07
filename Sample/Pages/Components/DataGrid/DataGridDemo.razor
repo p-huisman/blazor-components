@@ -1,0 +1,309 @@
+@page "/pggm-data-grid"
+@using System.Linq
+@using Pggm.Components.Components.PggmDataGrid
+@inject IJSRuntime JS
+
+<PageTitle>PGGM DataGrid</PageTitle>
+
+<PggmHeading Level="1">PGGM DataGrid</PggmHeading>
+
+<DemoSection Title="Selection" Code="@selectionSource">
+	<p>Demonstrates multi-select, async provider, and single-select modes.</p>
+
+	<PggmHeading Level="4">In-memory Grid (Multi-Select)</PggmHeading>
+	<PggmDataGrid TGridItem="Person" Items="@People.AsQueryable()" @ref="_multiGrid" SelectedItemsChangedCallback="@(()=>StateHasChanged())">
+		<SelectColumn TGridItem="Person" Index="0" />
+		<PropertyColumn TGridItem="Person" TProp="string" Title="Name" Value="@(p => p.Name)" SortByExpression="@(p => p.Name)" Index="1" />
+		<PropertyColumn TGridItem="Person" TProp="int" Title="Age" Value="@(p => p.Age)" SortByExpression="@(p => p.Age)" Index="2" />
+		<TemplateColumn TGridItem="Person" Index="3" Title="Actions">
+			<Template Context="p">
+				<button class="pggm-btn" @onclick="() => ShowDetails(p)">Details</button>
+			</Template>
+		</TemplateColumn>
+	</PggmDataGrid>
+	<div style="margin:8px 0 24px 0;">
+		<strong>Selected (multi):</strong>
+		@if (_multiGrid?.SelectedItems?.Any() == true)
+		{
+			<span>@string.Join(", ", _multiGrid.SelectedItems.Select(x => x.Name))</span>
+		}
+		else
+		{
+			<span>None</span>
+		}
+	</div>
+
+	<PggmHeading Level="4">Async ItemsProvider Grid</PggmHeading>
+	<PggmDataGrid TGridItem="Person" ItemsProvider="@LoadPeopleAsync">
+		<SelectColumn TGridItem="Person" Index="0" />
+		<PropertyColumn TGridItem="Person" TProp="string" Title="Name" Value="@(p => p.Name)" SortByExpression="@(p => p.Name)" Index="1" />
+		<PropertyColumn TGridItem="Person" TProp="int" Title="Age" Value="@(p => p.Age)" SortByExpression="@(p => p.Age)" Index="2" />
+	</PggmDataGrid>
+
+	<PggmHeading Level="4">Single Select Grid</PggmHeading>
+	<PggmDataGrid TGridItem="Person" Items="@People.AsQueryable()" SingleSelect="true" @ref="_singleGrid" SelectedItemsChangedCallback="@(()=>StateHasChanged())">
+		<SelectColumn TGridItem="Person" Index="0" />
+		<PropertyColumn TGridItem="Person" TProp="string" Title="Name" Value="@(p => p.Name)" SortByExpression="@(p => p.Name)" Index="1" />
+		<PropertyColumn TGridItem="Person" TProp="int" Title="Age" Value="@(p => p.Age)" SortByExpression="@(p => p.Age)" Index="2" />
+	</PggmDataGrid>
+	<div style="margin:8px 0 24px 0;">
+		<strong>Selected (single):</strong>
+		@if (_singleGrid?.SelectedItems?.Any() == true)
+		{
+			<span>@_singleGrid.SelectedItems.First().Name</span>
+		}
+		else
+		{
+			<span>None</span>
+		}
+	</div>
+</DemoSection>
+
+<DemoSection Title="Sorting & Column Params" Code="@sortingSource">
+	<p>Demonstrates sorting UI and column width/alignment parameters.</p>
+	<div class="demo-toolbar" style="margin-bottom:8px;">
+		<button class="pggm-btn" @onclick="() => SortByAgeDesc()">Sort Age ↓</button>
+		<button class="pggm-btn" @onclick="() => SortByNameAsc()">Sort Name ↑</button>
+		<button class="pggm-btn" @onclick="() => ClearSort()">Clear Sort</button>
+	</div>
+	<PggmDataGrid @ref="_progGrid" TGridItem="Person" Items="@People.AsQueryable()">
+		<SelectColumn TGridItem="Person" Index="0" />
+		<PropertyColumn TGridItem="Person" TProp="string" Title="Name" Value="@(p => p.Name)" SortByExpression="@(p => p.Name)" Index="1" Width="200px" Alignment="ColumnAlignment.Left" />
+		<PropertyColumn TGridItem="Person" TProp="int" Title="Age" Value="@(p => p.Age)" SortByExpression="@(p => p.Age)" Index="2" Width="80px" Alignment="ColumnAlignment.Center" />
+		<TemplateColumn TGridItem="Person" Index="3" Title="Actions" Width="120px" Alignment="ColumnAlignment.Center">
+			<Template Context="p">
+				<button class="pggm-btn" @onclick="() => ShowDetails(p)">Details</button>
+			</Template>
+		</TemplateColumn>
+	</PggmDataGrid>
+</DemoSection>
+
+<DemoSection Title="Pagination (ItemsProvider)" Code="@paginationSource">
+	<p>Demonstrates server-side paging via the `ItemsProvider`.</p>
+	<div class="demo-toolbar" style="margin-bottom:8px; display:flex; align-items:center; gap:8px;">
+		<button class="pggm-btn" @onclick="() => _pagerFirst()" disabled="@(_pagerState.PageIndex == 0 || (_pagerGrid?.IsLoading ?? false))">First</button>
+		<button class="pggm-btn" @onclick="() => _pagerPrev()" disabled="@(_pagerState.PageIndex == 0 || (_pagerGrid?.IsLoading ?? false))">Prev</button>
+		<span>Page</span>
+		<input type="number" min="1" max="@_pagerTotalPagesComputed" value="@(_pagerState.PageIndex + 1)" style="width:64px" @onchange="OnPageNumberChanged" disabled="@(_pagerGrid?.IsLoading ?? false)" />
+		<span>of @_pagerTotalPagesComputed</span>
+		<button class="pggm-btn" @onclick="() => _pagerNext()" disabled="@((_pagerState.PageIndex + 1) >= _pagerTotalPagesComputed || (_pagerGrid?.IsLoading ?? false))">Next</button>
+		<button class="pggm-btn" @onclick="() => _pagerLast()" disabled="@((_pagerState.PageIndex + 1) >= _pagerTotalPagesComputed || (_pagerGrid?.IsLoading ?? false))">Last</button>
+		<span style="margin-left:12px;">Total:</span>
+		<strong>@(_pagerGrid?.TotalItemCount ?? People.Count)</strong>
+
+		<span style="margin-left:12px;">Page size:</span>
+		<select @onchange="OnPageSizeChanged" value="@_pagerState.PageSize" disabled="@(_pagerGrid?.IsLoading ?? false)">
+			<option value="2">2</option>
+			<option value="5">5</option>
+			<option value="10">10</option>
+			<option value="20">20</option>
+		</select>
+		@if (_pagerGrid?.IsLoading ?? false)
+		{
+			<span style="margin-left:8px;">Loading…</span>
+		}
+	</div>
+	<PggmDataGrid @ref="_pagerGrid" TGridItem="Person" ItemsProvider="@LoadPeopleAsync" Pagination="_pagerState">
+		<SelectColumn TGridItem="Person" Index="0" />
+		<PropertyColumn TGridItem="Person" TProp="string" Title="Name" Value="@(p => p.Name)" SortByExpression="@(p => p.Name)" Index="1" />
+		<PropertyColumn TGridItem="Person" TProp="int" Title="Age" Value="@(p => p.Age)" SortByExpression="@(p => p.Age)" Index="2" />
+	</PggmDataGrid>
+</DemoSection>
+
+
+@code {
+    
+	private List<Person> People = new()
+	{
+		new Person { Name = "Alice", Age = 30 },
+		new Person { Name = "Bob", Age = 42 },
+		new Person { Name = "Carol", Age = 27 },
+		new Person { Name = "David", Age = 35 },
+		new Person { Name = "Eve", Age = 29 },
+		new Person { Name = "Frank", Age = 48 },
+		new Person { Name = "Grace", Age = 33 },
+		new Person { Name = "Heidi", Age = 25 },
+		new Person { Name = "Ivan", Age = 38 },
+		new Person { Name = "Judy", Age = 31 },
+		new Person { Name = "Karl", Age = 45 },
+		new Person { Name = "Laura", Age = 28 }
+	};
+
+	private ValueTask<GridItemsProviderResult<Person>> LoadPeopleAsync(GridItemsProviderRequest<Person> req)
+	{
+		// Simulate async load/delay and honor sorting requested by the grid
+		var query = People.AsQueryable();
+		query = req.ApplySorting(query);
+		var skip = Math.Max(0, req.StartIndex);
+		var take = req.Count ?? People.Count;
+		var items = query.Skip(skip).Take(take).ToList();
+		return new ValueTask<GridItemsProviderResult<Person>>(GridItemsProviderResult.From(items, People.Count));
+	}
+
+	private void ShowDetails(Person p)
+	{
+		Console.WriteLine($"Details: {p.Name}, {p.Age}");
+	}
+
+	private class Person
+	{
+		public string? Name { get; set; }
+		public int Age { get; set; }
+	}
+
+	private string sortingSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+		"<PggmDataGrid TGridItem=\"Person\" Items=\"@People.AsQueryable()\">",
+		"    <SelectColumn TGridItem=\"Person\" Index=\"0\" />",
+		"    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Value=\"@(p => p.Name)\" SortByExpression=\"@(p => p.Name)\" Index=\"1\" Width=\"200px\" Alignment=\"ColumnAlignment.Left\" />",
+		"    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Value=\"@(p => p.Age)\" SortByExpression=\"@(p => p.Age)\" Index=\"2\" Width=\"80px\" Alignment=\"ColumnAlignment.Center\" />",
+		"    <TemplateColumn TGridItem=\"Person\" Index=\"3\" Title=\"Actions\" Width=\"120px\" Alignment=\"ColumnAlignment.Center\">",
+		"        <Template Context=\"p\">",
+		"            <button class=\"pggm-btn\" @onclick=\"() => ShowDetails(p)\">Details</button>",
+		"        </Template>",
+		"    </TemplateColumn>",
+		"</PggmDataGrid>");
+
+	private string selectionSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+		"<PggmDataGrid TGridItem=\"Person\" Items=\"@People.AsQueryable()\">",
+		"    <SelectColumn TGridItem=\"Person\" Index=\"0\" />",
+		"    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Value=\"@(p => p.Name)\" Index=\"1\" />",
+		"    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Value=\"@(p => p.Age)\" Index=\"2\" />",
+		"</PggmDataGrid>",
+		"",
+		"<PggmDataGrid TGridItem=\"Person\" ItemsProvider=\"@LoadPeopleAsync\">",
+		"    <SelectColumn TGridItem=\"Person\" Index=\"0\" />",
+		"    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Value=\"@(p => p.Name)\" Index=\"1\" />",
+		"    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Value=\"@(p => p.Age)\" Index=\"2\" />",
+		"</PggmDataGrid>",
+		"",
+		"<PggmDataGrid TGridItem=\"Person\" Items=\"@People.AsQueryable()\" SingleSelect=\"true\">",
+		"    <SelectColumn TGridItem=\"Person\" Index=\"0\" />",
+		"    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Value=\"@(p => p.Name)\" Index=\"1\" />",
+		"    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Value=\"@(p => p.Age)\" Index=\"2\" />",
+		"</PggmDataGrid>");
+
+		private string paginationSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+			"<PggmDataGrid TGridItem=\"Person\" ItemsProvider=\"@LoadPeopleAsync\" Pagination=\"_pagerState\">",
+			"    <SelectColumn TGridItem=\"Person\" Index=\"0\" />",
+			"    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Value=\"@(p => p.Name)\" SortByExpression=\"@(p => p.Name)\" Index=\"1\" />",
+			"    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Value=\"@(p => p.Age)\" SortByExpression=\"@(p => p.Age)\" Index=\"2\" />",
+			"</PggmDataGrid>");
+
+	private PggmDataGrid<Person>? _multiGrid;
+	private PggmDataGrid<Person>? _singleGrid;
+	private PggmDataGrid<Person>? _progGrid;
+
+    private Task SortByAgeDesc() => _progGrid?.SetSortAsync(2, false) ?? Task.CompletedTask;
+    private Task SortByNameAsc() => _progGrid?.SetSortAsync("Name", true) ?? Task.CompletedTask;
+    private Task ClearSort() => _progGrid?.ClearSortAsync() ?? Task.CompletedTask;
+
+	// Pagination demo state
+	private PaginationState _pagerState = new PaginationState { PageIndex = 0, PageSize = 2 };
+	private int _pagerIndex => _pagerState.PageIndex;
+	private int _pagerTotalPages => (int)Math.Ceiling((double)People.Count / _pagerState.PageSize);
+
+	private async Task _pagerNext()
+	{
+		if (_pagerState.PageIndex + 1 < _pagerTotalPages)
+		{
+			_pagerState.PageIndex++;
+			if (_pagerGrid is not null)
+			{
+				await _pagerGrid.SetPageAsync(_pagerState.PageIndex);
+			}
+		}
+	}
+
+	private async Task _pagerPrev()
+	{
+		if (_pagerState.PageIndex > 0)
+		{
+			_pagerState.PageIndex--;
+			if (_pagerGrid is not null)
+			{
+				await _pagerGrid.SetPageAsync(_pagerState.PageIndex);
+			}
+		}
+	}
+
+	private async Task _pagerFirst()
+	{
+		if (_pagerState.PageIndex > 0)
+		{
+			_pagerState.PageIndex = 0;
+			if (_pagerGrid is not null)
+			{
+				await _pagerGrid.SetPageAsync(0);
+			}
+		}
+	}
+
+	private async Task _pagerLast()
+	{
+		var last = Math.Max(0, _pagerTotalPagesComputed - 1);
+		if (_pagerState.PageIndex < last)
+		{
+			_pagerState.PageIndex = last;
+			if (_pagerGrid is not null)
+			{
+				await _pagerGrid.SetPageAsync(last);
+			}
+		}
+	}
+
+	private PggmDataGrid<Person>? _pagerGrid;
+
+	private int _pagerTotalPagesComputed =>
+		Math.Max(1, (int)Math.Ceiling((double)(_pagerGrid?.TotalItemCount ?? People.Count) / _pagerState.PageSize));
+
+	protected override async Task OnInitializedAsync()
+	{
+		// restore saved page size from localStorage if present
+		try
+		{
+			var saved = await JS.InvokeAsync<string>("localStorage.getItem", "pggm-demo-page-size");
+			if (!string.IsNullOrWhiteSpace(saved) && int.TryParse(saved, out var s))
+			{
+				_pagerState.PageSize = Math.Max(1, s);
+			}
+		}
+		catch
+		{
+			// ignore JS errors in sample
+		}
+	}
+
+	private async Task OnPageNumberChanged(ChangeEventArgs e)
+	{
+		if (e?.Value is null) return;
+		if (!int.TryParse(e.Value.ToString(), out var val)) return;
+		var page = Math.Clamp(val - 1, 0, _pagerTotalPagesComputed - 1);
+		_pagerState.PageIndex = page;
+		if (_pagerGrid is not null)
+		{
+			await _pagerGrid.SetPageAsync(page);
+		}
+	}
+
+	private async Task OnPageSizeChanged(ChangeEventArgs e)
+	{
+		if (e?.Value is null) return;
+		if (!int.TryParse(e.Value.ToString(), out var size)) return;
+		size = Math.Max(1, size);
+		_pagerState.PageSize = size;
+		_pagerState.PageIndex = 0;
+		try
+		{
+			await JS.InvokeVoidAsync("localStorage.setItem", "pggm-demo-page-size", size.ToString());
+		}
+		catch
+		{
+			// ignore
+		}
+		if (_pagerGrid is not null)
+		{
+			await _pagerGrid.SetPageSizeAsync(size);
+		}
+	}
+}
+

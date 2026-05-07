@@ -1,6 +1,6 @@
-using Microsoft.JSInterop;
-using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
+using Microsoft.JSInterop;
 
 namespace Pggm.Components.Services;
 
@@ -160,6 +160,22 @@ public class PggmDesignSystemService : IAsyncDisposable
     /// Check if the design system is initialized
     /// </summary>
     public bool IsInitialized => _isInitialized;
+
+    /// <summary>
+    /// Lazily load a component-specific script by its registered ID.
+    /// Concurrent calls for the same ID are deduplicated in JavaScript.
+    /// </summary>
+    public async Task LoadScriptAsync(string scriptId)
+    {
+        try
+        {
+            await _jsRuntime.InvokeVoidAsync("PggmComponents.loadScript", scriptId);
+        }
+        catch (JSException ex)
+        {
+            _logger?.LogWarning(ex, "Failed to lazy-load script '{ScriptId}': {Message}", scriptId, ex.Message);
+        }
+    }
 
     public ValueTask DisposeAsync()
     {

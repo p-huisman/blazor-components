@@ -1,25 +1,49 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>Pggm.Components</PackageId>
-    <PackageVersion>1.0.0</PackageVersion>
+    <PackageVersion>2.0.0</PackageVersion>
     <Authors>PGGM</Authors>
     <Description>Blazor wrapper components for PGGM Design System web components</Description>
+    <PackageReleaseNotes>Major update: Migrated to .NET 10 with updated dependencies and improved performance.</PackageReleaseNotes>
     <PackageTags>blazor;pggm;design-system;web-components;ui</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
+
+  <!-- Exclude TypeScript source and Node tooling from the NuGet package -->
+  <ItemGroup>
+    <Content Remove="ts\**" />
+    <None Remove="ts\**;node_modules\**;package.json;package-lock.json;tsconfig.json" />
+  </ItemGroup>
+
+  <!-- Restore npm packages only when lock file is missing -->
+  <Target Name="NpmInstall" BeforeTargets="CompileTypeScript"
+          Condition="!Exists('$(MSBuildProjectDirectory)/node_modules/.package-lock.json')">
+    <Exec Command="npm install" WorkingDirectory="$(MSBuildProjectDirectory)" />
+  </Target>
+
+  <ItemGroup>
+    <TypeScriptSource Include="$(MSBuildProjectDirectory)/ts/**/*.ts" />
+  </ItemGroup>
+
+  <!-- Compile + minify TypeScript; only runs when any source is newer than output -->
+  <Target Name="CompileTypeScript" BeforeTargets="Build"
+          Inputs="@(TypeScriptSource);$(MSBuildProjectDirectory)/tsconfig.json"
+          Outputs="$(MSBuildProjectDirectory)/wwwroot/js/pggm-components.js">
+    <Exec Command="npm run build" WorkingDirectory="$(MSBuildProjectDirectory)" />
+  </Target>
 
 </Project>

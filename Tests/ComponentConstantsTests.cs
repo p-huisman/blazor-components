@@ -1,4 +1,5 @@
 using Pggm.Components.Constants;
+
 using Xunit;
 
 namespace Pggm.Components.Tests
@@ -45,43 +46,6 @@ namespace Pggm.Components.Tests
         public void EventNames_ButtonEvents_HaveCorrectValues()
         {
             Assert.Equal("click", EventNames.Click);
-        }
-
-        [Fact]
-        public void AttributeNames_CommonAttributes_HaveCorrectValues()
-        {
-            Assert.Equal("appearance", AttributeNames.Appearance);
-            Assert.Equal("disabled", AttributeNames.Disabled);
-            Assert.Equal("required", AttributeNames.Required);
-            Assert.Equal("readonly", AttributeNames.ReadOnly);
-        }
-
-        [Fact]
-        public void AttributeNames_FormAttributes_HaveCorrectValues()
-        {
-            Assert.Equal("name", AttributeNames.Name);
-            Assert.Equal("value", AttributeNames.Value);
-            Assert.Equal("placeholder", AttributeNames.Placeholder);
-        }
-
-        [Fact]
-        public void AttributeNames_LayoutAttributes_HaveCorrectValues()
-        {
-            Assert.Equal("size", AttributeNames.Size);
-            Assert.Equal("variant", AttributeNames.Variant);
-        }
-
-        [Fact]
-        public void AttributeNames_AccordionAttributes_HaveCorrectValues()
-        {
-            Assert.Equal("allow-multiple", AttributeNames.AllowMultiple);
-        }
-
-        [Fact]
-        public void AttributeNames_DialogAttributes_HaveCorrectValues()
-        {
-            Assert.Equal("open", AttributeNames.Open);
-            Assert.Equal("modal", AttributeNames.Modal);
         }
 
         [Fact]

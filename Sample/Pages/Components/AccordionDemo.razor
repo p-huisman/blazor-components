@@ -1,148 +1,178 @@
 @page "/pggm-accordion"
 
 @using Microsoft.AspNetCore.Components.Web
+@using Pggm.Components.Sample.Components.DemoSection
+@using Pggm.Components.Sample.Components.ApiDocumentation
 
 <PageTitle>PGGM Accordion</PageTitle>
 
-<PggmHeader Level="1">PGGM Accordion</PggmHeader>
+<PggmHeading Level="1">PGGM Accordion</PggmHeading>
 
 <p>This page demonstrates the PGGM Accordion and Accordion Item components.</p>
 
-<PggmHeader Level="2">Accordion</PggmHeader>
+<PggmHeading Level="2">Accordion</PggmHeading>
 
-<div class="demo-section">
-    <PggmHeader Level="3">Basic Accordion (Single Expand)</PggmHeader>
-    <p>Only one item can be open at a time (default behavior):</p>
-    <PggmAccordion>
-        <PggmAccordionItem>
-            <PggmAccordionItemTitle>Section 1</PggmAccordionItemTitle>
-            <p>This is the content of the first section. Only one section can be open at a time.</p>
-        </PggmAccordionItem>
-        <PggmAccordionItem>
-            <PggmAccordionItemTitle>Section 2</PggmAccordionItemTitle>
-            <p>This is the content of the second section. Opening this will close other sections.</p>
-        </PggmAccordionItem>
-        <PggmAccordionItem>
-            <PggmAccordionItemTitle>Section 3</PggmAccordionItemTitle>
-            <p>This is the content of the third section.</p>
-        </PggmAccordionItem>
-    </PggmAccordion>
-</div>
+<DemoSection Title="Basic Accordion (Single Expand)" Code="@basicAccordionSource">
+    <Description>
+        <p>Only one item can be open at a time (default behavior):</p>
+    </Description>
 
-<div class="demo-section">
-    <PggmHeader Level="3">Multi-Expand Accordion</PggmHeader>
-    <p>Multiple items can be open simultaneously:</p>
-    <PggmAccordion AllowMultiple="true">
+    <Content>
+        <PggmAccordion>
+            <PggmAccordionItem>
+                <PggmAccordionItemTitle>Section 1</PggmAccordionItemTitle>
+                <p>This is the content of the first section. Only one section can be open at a time.</p>
+            </PggmAccordionItem>
+            <PggmAccordionItem>
+                <PggmAccordionItemTitle>Section 2</PggmAccordionItemTitle>
+                <p>This is the content of the second section. Opening this will close other sections.</p>
+            </PggmAccordionItem>
+            <PggmAccordionItem>
+                <PggmAccordionItemTitle>Section 3</PggmAccordionItemTitle>
+                <p>This is the content of the third section.</p>
+            </PggmAccordionItem>
+        </PggmAccordion>
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Multi-Expand Accordion" Code="@multiExpandSource">
+    <Description>
+        <p>Multiple items can be open simultaneously:</p>
+    </Description>
+
+    <Content>
+        <PggmAccordion AllowMultiple="true">
+            <PggmAccordionItem>
+                <PggmAccordionItemTitle>Section A</PggmAccordionItemTitle>
+                <p>This accordion allows multiple sections to be open at the same time.</p>
+            </PggmAccordionItem>
+            <PggmAccordionItem Open="true">
+                <PggmAccordionItemTitle>Section B (Open by default)</PggmAccordionItemTitle>
+                <p>This section starts open, and others can be opened without closing this one.</p>
+            </PggmAccordionItem>
+            <PggmAccordionItem>
+                <PggmAccordionItemTitle>Section C</PggmAccordionItemTitle>
+                <p>You can have multiple sections open simultaneously in this accordion.</p>
+            </PggmAccordionItem>
+            <PggmAccordionItem Disabled="true">
+                <PggmAccordionItemTitle>Section D (Disabled)</PggmAccordionItemTitle>
+                <p>This section is disabled and cannot be interacted with.</p>
+            </PggmAccordionItem>
+            <PggmAccordionItem>
+                <PggmAccordionItemTitle>Section E</PggmAccordionItemTitle>
+                <p>You can have multiple sections open simultaneously in this accordion.</p>
+            </PggmAccordionItem>
+        </PggmAccordion>
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Interactive Accordion Demo" Code="@interactiveAccordionSource">
+    <Description>
+        <p>
+            <label>
+                <input type="checkbox" @bind="allowMultiple" />
+                Allow Multiple Open
+            </label>
+        </p>
+    </Description>
+
+    <Content>
+        <PggmAccordion AllowMultiple="allowMultiple">
+            <PggmAccordionItem>
+                <PggmAccordionItemTitle>Dynamic Section 1</PggmAccordionItemTitle>
+                <p>Allow Multiple is currently: @allowMultiple</p>
+                <p>Toggle the checkbox above to change the accordion behavior.</p>
+            </PggmAccordionItem>
+            <PggmAccordionItem>
+                <PggmAccordionItemTitle>Dynamic Section 2</PggmAccordionItemTitle>
+                <p>When AllowMultiple is false, only one section can be open.</p>
+                <p>When AllowMultiple is true, multiple sections can be open simultaneously.</p>
+            </PggmAccordionItem>
+            <PggmAccordionItem>
+                <PggmAccordionItemTitle>Dynamic Section 3</PggmAccordionItemTitle>
+                <p>Test the behavior by opening multiple sections and then toggling the AllowMultiple setting.</p>
+            </PggmAccordionItem>
+        </PggmAccordion>
+    </Content>
+</DemoSection>
+
+<PggmHeading Level="2">Accordion Item</PggmHeading>
+
+<DemoSection Title="Default Accordion Item" Code="@defaultItemSource">
+    <Content>
         <PggmAccordionItem>
-            <PggmAccordionItemTitle>Section A</PggmAccordionItemTitle>
-            <p>This accordion allows multiple sections to be open at the same time.</p>
+            <PggmAccordionItemTitle>Accordion Item 1</PggmAccordionItemTitle>
+            <p>This is the content of the first accordion item.</p>
         </PggmAccordionItem>
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Open Accordion Item" Code="@openItemSource">
+    <Content>
         <PggmAccordionItem Open="true">
-            <PggmAccordionItemTitle>Section B (Open by default)</PggmAccordionItemTitle>
-            <p>This section starts open, and others can be opened without closing this one.</p>
+            <PggmAccordionItemTitle>Accordion Item 2 (Open by default)</PggmAccordionItemTitle>
+            <p>This accordion item is open by default using the Open parameter.</p>
         </PggmAccordionItem>
-        <PggmAccordionItem>
-            <PggmAccordionItemTitle>Section C</PggmAccordionItemTitle>
-            <p>You can have multiple sections open simultaneously in this accordion.</p>
-        </PggmAccordionItem>
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Disabled Accordion Item" Code="@disabledItemSource">
+    <Content>
         <PggmAccordionItem Disabled="true">
-            <PggmAccordionItemTitle>Section D (Disabled)</PggmAccordionItemTitle>
-            <p>This section is disabled and cannot be interacted with.</p>
+            <PggmAccordionItemTitle>Accordion Item 3 (Disabled)</PggmAccordionItemTitle>
+            <p>This accordion item is disabled and cannot be interacted with.</p>
         </PggmAccordionItem>
-        <PggmAccordionItem>
-            <PggmAccordionItemTitle>Section E</PggmAccordionItemTitle>
-            <p>You can have multiple sections open simultaneously in this accordion.</p>
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Event Handling Demo" Code="@eventHandlingSource">
+    <Description>
+        <p>This accordion item demonstrates the OnAccordionItemToggle event:</p>
+        <p><strong>Toggle Count:</strong> @toggleCount</p>
+        <p><strong>Last Event Time:</strong> @lastToggleTime</p>
+    </Description>
+
+    <Content>
+        <PggmAccordionItem OnAccordionItemToggle="HandleAccordionToggle">
+            <PggmAccordionItemTitle>Event Demo Accordion Item</PggmAccordionItemTitle>
+            <p>Click the title to toggle this accordion item and trigger the event.</p>
+            <p>The toggle count and timestamp will be updated above when you toggle this item.</p>
         </PggmAccordionItem>
-    </PggmAccordion>
-</div>
+    </Content>
+</DemoSection>
 
-<div class="demo-section">
-    <PggmHeader Level="3">Interactive Accordion Demo</PggmHeader>
-    <p>
-        <label>
-            <input type="checkbox" @bind="allowMultiple" />
-            Allow Multiple Open
-        </label>
-    </p>
-    
-    <PggmAccordion AllowMultiple="allowMultiple">
-        <PggmAccordionItem>
-            <PggmAccordionItemTitle>Dynamic Section 1</PggmAccordionItemTitle>
-            <p>Allow Multiple is currently: @allowMultiple</p>
-            <p>Toggle the checkbox above to change the accordion behavior.</p>
+<DemoSection Title="Interactive Demo" Code="@interactiveItemSource">
+    <Description>
+        <p>
+            <label>
+                <input type="checkbox" @bind="isOpen" />
+                Open
+            </label>
+        </p>
+        <p>
+            <label>
+                <input type="checkbox" @bind="isDisabled" />
+                Disabled
+            </label>
+        </p>
+    </Description>
+
+    <Content>
+        <PggmAccordionItem Open="isOpen" Disabled="isDisabled">
+            <PggmAccordionItemTitle>Interactive Accordion Item</PggmAccordionItemTitle>
+            <p>Use the checkboxes above to control this accordion item's state.</p>
+            <p>Open: @isOpen, Disabled: @isDisabled</p>
         </PggmAccordionItem>
-        <PggmAccordionItem>
-            <PggmAccordionItemTitle>Dynamic Section 2</PggmAccordionItemTitle>
-            <p>When AllowMultiple is false, only one section can be open.</p>
-            <p>When AllowMultiple is true, multiple sections can be open simultaneously.</p>
-        </PggmAccordionItem>
-        <PggmAccordionItem>
-            <PggmAccordionItemTitle>Dynamic Section 3</PggmAccordionItemTitle>
-            <p>Test the behavior by opening multiple sections and then toggling the AllowMultiple setting.</p>
-        </PggmAccordionItem>
-    </PggmAccordion>
-</div>
+    </Content>
+</DemoSection>
 
-<PggmHeader Level="2">Accordion Item</PggmHeader>
+<PggmHeading Level="2">API</PggmHeading>
 
-<div class="demo-section">
-    <PggmHeader Level="3">Default Accordion Item</PggmHeader>
-    <PggmAccordionItem>
-        <PggmAccordionItemTitle>Accordion Item 1</PggmAccordionItemTitle>
-        <p>This is the content of the first accordion item.</p>
-    </PggmAccordionItem>
-</div>
+<PggmHeading Level="3">PggmAccordion</PggmHeading>
+<ApiDocumentation Properties="accordionProperties" Events="accordionEvents" />
 
-<div class="demo-section">
-    <PggmHeader Level="3">Open Accordion Item</PggmHeader>
-    <PggmAccordionItem Open="true">
-        <PggmAccordionItemTitle>Accordion Item 2 (Open by default)</PggmAccordionItemTitle>
-        <p>This accordion item is open by default using the Open parameter.</p>
-    </PggmAccordionItem>
-</div>
-
-<div class="demo-section">
-    <PggmHeader Level="3">Disabled Accordion Item</PggmHeader>
-    <PggmAccordionItem Disabled="true">
-        <PggmAccordionItemTitle>Accordion Item 3 (Disabled)</PggmAccordionItemTitle>
-        <p>This accordion item is disabled and cannot be interacted with.</p>
-    </PggmAccordionItem>
-</div>
-
-<div class="demo-section">
-    <PggmHeader Level="3">Event Handling Demo</PggmHeader>
-    <p>This accordion item demonstrates the OnAccordionItemToggle event:</p>
-    <p><strong>Toggle Count:</strong> @toggleCount</p>
-    <p><strong>Last Event Time:</strong> @lastToggleTime</p>
-    
-    <PggmAccordionItem OnAccordionItemToggle="HandleAccordionToggle">
-        <PggmAccordionItemTitle>Event Demo Accordion Item</PggmAccordionItemTitle>
-        <p>Click the title to toggle this accordion item and trigger the event.</p>
-        <p>The toggle count and timestamp will be updated above when you toggle this item.</p>
-    </PggmAccordionItem>
-</div>
-
-<div class="demo-section">
-    <PggmHeader Level="3">Interactive Demo</PggmHeader>
-    <p>
-        <label>
-            <input type="checkbox" @bind="isOpen" />
-            Open
-        </label>
-    </p>
-    <p>
-        <label>
-            <input type="checkbox" @bind="isDisabled" />
-            Disabled
-        </label>
-    </p>
-    
-    <PggmAccordionItem Open="isOpen" Disabled="isDisabled">
-        <PggmAccordionItemTitle>Interactive Accordion Item</PggmAccordionItemTitle>
-        <p>Use the checkboxes above to control this accordion item's state.</p>
-        <p>Open: @isOpen, Disabled: @isDisabled</p>
-    </PggmAccordionItem>
-</div>
+<PggmHeading Level="3">PggmAccordionItem</PggmHeading>
+<ApiDocumentation Properties="accordionItemProperties" Events="accordionItemEvents" />
 
 @code {
     private bool isOpen = false;
@@ -157,28 +187,116 @@
         lastToggleTime = DateTime.Now.ToString("HH:mm:ss");
         StateHasChanged();
     }
-}
 
-<style>
-    .demo-section {
-        margin: 2rem 0;
-        padding: 1rem;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-    }
-    
-    .demo-section h3 {
-        margin-top: 0;
-        color: #333;
-    }
-    
-    label {
-        display: inline-block;
-        margin-right: 1rem;
-        cursor: pointer;
-    }
-    
-    input[type="checkbox"] {
-        margin-right: 0.5rem;
-    }
-</style>
+    // Source code strings for demos
+    private string basicAccordionSource = @"<PggmAccordion>
+    <PggmAccordionItem>
+        <PggmAccordionItemTitle>Section 1</PggmAccordionItemTitle>
+        <p>This is the content of the first section. Only one section can be open at a time.</p>
+    </PggmAccordionItem>
+    <PggmAccordionItem>
+        <PggmAccordionItemTitle>Section 2</PggmAccordionItemTitle>
+        <p>This is the content of the second section. Opening this will close other sections.</p>
+    </PggmAccordionItem>
+    <PggmAccordionItem>
+        <PggmAccordionItemTitle>Section 3</PggmAccordionItemTitle>
+        <p>This is the content of the third section.</p>
+    </PggmAccordionItem>
+</PggmAccordion>";
+
+    private string multiExpandSource = @"<PggmAccordion AllowMultiple=""true"">
+    <PggmAccordionItem>
+        <PggmAccordionItemTitle>Section A</PggmAccordionItemTitle>
+        <p>This accordion allows multiple sections to be open at the same time.</p>
+    </PggmAccordionItem>
+    <PggmAccordionItem Open=""true"">
+        <PggmAccordionItemTitle>Section B (Open by default)</PggmAccordionItemTitle>
+        <p>This section starts open, and others can be opened without closing this one.</p>
+    </PggmAccordionItem>
+</PggmAccordion>";
+
+
+
+    // Include backing field for @bind in displayed snippet
+    private string interactiveAccordionSource = @"<label>
+    <input type=""checkbox"" @bind=""allowMultiple"" />
+    Allow Multiple Open
+</label>
+
+<PggmAccordion AllowMultiple=""allowMultiple"">
+    <PggmAccordionItem>
+        <PggmAccordionItemTitle>Dynamic Section 1</PggmAccordionItemTitle>
+        <p>Allow Multiple is currently: @allowMultiple</p>
+    </PggmAccordionItem>
+</PggmAccordion>
+
+@code {
+    private bool allowMultiple = false;
+}";
+
+    private string defaultItemSource = @"<PggmAccordionItem>
+    <PggmAccordionItemTitle>Accordion Item 1</PggmAccordionItemTitle>
+    <p>This is the content of the first accordion item.</p>
+</PggmAccordionItem>";
+
+    private string openItemSource = @"<PggmAccordionItem Open=""true"">
+    <PggmAccordionItemTitle>Accordion Item 2 (Open by default)</PggmAccordionItemTitle>
+    <p>This accordion item is open by default using the Open parameter.</p>
+</PggmAccordionItem>";
+
+    private string disabledItemSource = @"<PggmAccordionItem Disabled=""true"">
+    <PggmAccordionItemTitle>Accordion Item 3 (Disabled)</PggmAccordionItemTitle>
+    <p>This accordion item is disabled and cannot be interacted with.</p>
+</PggmAccordionItem>";
+
+    private string eventHandlingSource = @"<PggmAccordionItem OnAccordionItemToggle=""HandleAccordionToggle"">
+    <PggmAccordionItemTitle>Event Demo Accordion Item</PggmAccordionItemTitle>
+    <p>Click the title to toggle this accordion item and trigger the event.</p>
+</PggmAccordionItem>";
+
+
+
+    // Include backing fields for @bind in displayed snippet
+    private string interactiveItemSource = @"<label>
+    <input type=""checkbox"" @bind=""isOpen"" />
+    Open
+</label>
+<label>
+    <input type=""checkbox"" @bind=""isDisabled"" />
+    Disabled
+</label>
+
+<PggmAccordionItem Open=""isOpen"" Disabled=""isDisabled"">
+    <PggmAccordionItemTitle>Interactive Accordion Item</PggmAccordionItemTitle>
+    <p>Use the checkboxes above to control this accordion item's state.</p>
+</PggmAccordionItem>
+
+@code {
+    private bool isOpen = false;
+    private bool isDisabled = false;
+}";
+
+
+    // API metadata for documentation component
+    private IEnumerable<ApiMember> accordionProperties = new[]
+    {
+        new ApiMember { Name = "AllowMultiple", Type = "bool", DefaultValue = "false", Description = "When true, multiple items may be expanded at once." }
+    };
+
+    private IEnumerable<ApiMember> accordionEvents = new[]
+    {
+        new ApiMember { Name = "OnAccordionToggle", Type = "EventCallback<EventArgs>", Description = "Invoked when an accordion item is toggled." }
+    };
+
+    private IEnumerable<ApiMember> accordionItemProperties = new[]
+    {
+        new ApiMember { Name = "Open", Type = "bool", DefaultValue = "false", Description = "Whether the item is open." },
+        new ApiMember { Name = "Disabled", Type = "bool", DefaultValue = "false", Description = "When true, the item cannot be toggled." }
+    };
+
+    private IEnumerable<ApiMember> accordionItemEvents = new[]
+    {
+        new ApiMember { Name = "OnAccordionItemToggle", Type = "EventCallback<EventArgs>", Description = "Invoked when this item toggles open/closed." }
+    };
+
+}

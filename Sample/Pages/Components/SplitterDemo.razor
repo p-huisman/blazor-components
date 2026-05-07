@@ -1,0 +1,181 @@
+@page "/pggm-splitter"
+@using Pggm.Components.Enums
+
+<PggmHeading Level="1">PGGM Splitter</PggmHeading>
+
+<p>The PGGM Splitter component divides a container into two resizable panels separated by a draggable divider.
+    It supports horizontal and vertical orientations, snap points, and keyboard navigation.</p>
+
+<DemoSection Title="Basic Horizontal Splitter" Code="@basicSource">
+    <Description>
+        <p>A horizontal splitter with equal-sized panels. Drag the divider to resize the panels.</p>
+    </Description>
+    <ChildContent>
+        <div style="height: 200px; border: 1px solid var(--color-border, #ccc); border-radius: 4px; overflow: hidden;">
+            <PggmSplitter @bind-Position="basicPosition" style="height: 100%;">
+                <StartContent>
+                    <div style="padding: 1rem; height: 100%; box-sizing: border-box;">
+                        <PggmHeading Level="3">Start Panel</PggmHeading>
+                        <p>Drag the divider to resize.</p>
+                    </div>
+                </StartContent>
+                <EndContent>
+                    <div style="padding: 1rem; height: 100%; box-sizing: border-box;">
+                        <PggmHeading Level="3">End Panel</PggmHeading>
+                        <p>Both panels resize together.</p>
+                    </div>
+                </EndContent>
+            </PggmSplitter>
+        </div>
+        <p>Current position: <strong>@(basicPosition.ToString("P0"))</strong></p>
+    </ChildContent>
+</DemoSection>
+
+<DemoSection Title="Vertical Splitter" Code="@verticalSource">
+    <Description>
+        <p>A vertical splitter that divides the container into top and bottom panels.</p>
+    </Description>
+    <ChildContent>
+        <div style="height: 300px; border: 1px solid var(--color-border, #ccc); border-radius: 4px; overflow: hidden;">
+            <PggmSplitter Orientation="SplitterOrientation.Vertical" @bind-Position="verticalPosition" style="height: 100%;">
+                <StartContent>
+                    <div style="padding: 1rem; width: 100%; box-sizing: border-box;">
+                        <PggmHeading Level="3">Top Panel</PggmHeading>
+                        <p>Resize vertically by dragging the horizontal divider.</p>
+                    </div>
+                </StartContent>
+                <EndContent>
+                    <div style="padding: 1rem; width: 100%; box-sizing: border-box;">
+                        <PggmHeading Level="3">Bottom Panel</PggmHeading>
+                        <p>Keyboard: use arrow keys, Home, End, and Enter (collapse/expand) on the divider.</p>
+                    </div>
+                </EndContent>
+            </PggmSplitter>
+        </div>
+        <p>Current position: <strong>@(verticalPosition.ToString("P0"))</strong></p>
+    </ChildContent>
+</DemoSection>
+
+<DemoSection Title="Splitter with Snap Points" Code="@snapSource">
+    <Description>
+        <p>The divider snaps to 25%, 50%, and 75% when dragged within 10 pixels of those positions.</p>
+    </Description>
+    <ChildContent>
+        <div style="height: 200px; border: 1px solid var(--color-border, #ccc); border-radius: 4px; overflow: hidden;">
+            <PggmSplitter @bind-Position="snapPosition" Snap="25 50 75" SnapThreshold="10" style="height: 100%;">
+                <StartContent>
+                    <div style="padding: 1rem; height: 100%; box-sizing: border-box;">
+                        <p>Snaps to: <strong>25% · 50% · 75%</strong></p>
+                    </div>
+                </StartContent>
+                <EndContent>
+                    <div style="padding: 1rem; height: 100%; box-sizing: border-box;">
+                        <p>Drag near a snap point to feel it lock in.</p>
+                    </div>
+                </EndContent>
+            </PggmSplitter>
+        </div>
+        <p>Current position: <strong>@(snapPosition.ToString("P0"))</strong></p>
+    </ChildContent>
+</DemoSection>
+
+<DemoSection Title="Disabled Splitter" Code="@disabledSource">
+    <Description>
+        <p>When <code>Disabled</code> is set, the divider cannot be dragged or operated via keyboard.</p>
+    </Description>
+    <ChildContent>
+        <div style="height: 200px; border: 1px solid var(--color-border, #ccc); border-radius: 4px; overflow: hidden;">
+            <PggmSplitter Position="0.4" Disabled="true" style="height: 100%;">
+                <StartContent>
+                    <div style="padding: 1rem; height: 100%; box-sizing: border-box;">
+                        <p>This panel is locked at 40%.</p>
+                    </div>
+                </StartContent>
+                <EndContent>
+                    <div style="padding: 1rem; height: 100%; box-sizing: border-box;">
+                        <p>Dragging is disabled.</p>
+                    </div>
+                </EndContent>
+            </PggmSplitter>
+        </div>
+    </ChildContent>
+</DemoSection>
+
+<DemoSection Title="Event Handling" Code="@eventSource">
+    <Description>
+        <p>Listen to the <code>OnSplitterResize</code> event to react to position changes.</p>
+    </Description>
+    <ChildContent>
+        <div style="height: 200px; border: 1px solid var(--color-border, #ccc); border-radius: 4px; overflow: hidden;">
+            <PggmSplitter @bind-Position="eventPosition" OnSplitterResize="HandleResize" style="height: 100%;">
+                <StartContent>
+                    <div style="padding: 1rem; height: 100%; box-sizing: border-box;">
+                        <p>Resize count: <strong>@resizeCount</strong></p>
+                    </div>
+                </StartContent>
+                <EndContent>
+                    <div style="padding: 1rem; height: 100%; box-sizing: border-box;">
+                        <p>Last position: <strong>@(eventPosition.ToString("P1"))</strong></p>
+                    </div>
+                </EndContent>
+            </PggmSplitter>
+        </div>
+    </ChildContent>
+</DemoSection>
+
+@code {
+    private double basicPosition = 0.5;
+    private double verticalPosition = 0.4;
+    private double snapPosition = 0.5;
+    private double eventPosition = 0.5;
+    private int resizeCount = 0;
+
+    private void HandleResize()
+    {
+        resizeCount++;
+    }
+
+    private string basicSource = """
+        <PggmSplitter @bind-Position="position" style="height: 200px;">
+            <StartContent>
+                <div>Start panel content</div>
+            </StartContent>
+            <EndContent>
+                <div>End panel content</div>
+            </EndContent>
+        </PggmSplitter>
+        """;
+
+    private string verticalSource = """
+        <PggmSplitter Orientation="SplitterOrientation.Vertical" @bind-Position="position" style="height: 300px;">
+            <StartContent><div>Top panel</div></StartContent>
+            <EndContent><div>Bottom panel</div></EndContent>
+        </PggmSplitter>
+        """;
+
+    private string snapSource = """
+        <PggmSplitter @bind-Position="position" Snap="25 50 75" SnapThreshold="10" style="height: 200px;">
+            <StartContent><div>Start panel</div></StartContent>
+            <EndContent><div>End panel</div></EndContent>
+        </PggmSplitter>
+        """;
+
+    private string disabledSource = """
+        <PggmSplitter Position="0.4" Disabled="true" style="height: 200px;">
+            <StartContent><div>Start panel</div></StartContent>
+            <EndContent><div>End panel</div></EndContent>
+        </PggmSplitter>
+        """;
+
+    private string eventSource = """
+        <PggmSplitter @bind-Position="position" OnSplitterResize="HandleResize" style="height: 200px;">
+            <StartContent><div>Start panel</div></StartContent>
+            <EndContent><div>End panel</div></EndContent>
+        </PggmSplitter>
+
+        @code {
+            private double position = 0.5;
+            private void HandleResize() { /* react to resize */ }
+        }
+        """;
+}

@@ -1,90 +1,162 @@
 @page "/pggm-select"
+@using System.ComponentModel.DataAnnotations
+@using Pggm.Components.Sample.Components.ApiDocumentation
 
 <PageTitle>PGGM Select</PageTitle>
 
-<PggmHeader Level="1">PggmSelect Component Demo</PggmHeader>
+<PggmHeading Level="1">PGGM Select</PggmHeading>
 
 <p>This page demonstrates the PGGM Select component with various configurations and event handling.</p>
 
-<div class="demo-section">
-    <PggmHeader Level="2">Basic Select</PggmHeader>
-    <p>Selected Country: <strong>@selectedCountry</strong></p>
-    
-    <PggmSelect Value="@selectedCountry" ValueChanged="@(value => selectedCountry = value)">
-        <option value="">Choose a country...</option>
-        <option value="nl">Netherlands</option>
-        <option value="de">Germany</option>
-        <option value="be">Belgium</option>
-        <option value="fr">France</option>
-        <option value="uk">United Kingdom</option>
-    </PggmSelect>
-</div>
+<DemoSection Title="Basic Select" Code="@_basicSource" CodeBehind="@_basicBehind">
+    <Content>
+        <p>Selected Country: <strong>@selectedCountry</strong></p>
+        
+        <PggmSelect TOption="string" Value="@selectedCountry" ValueChanged="@(value => selectedCountry = value)">
+            <option value="">Choose a country...</option>
+            <option value="nl">Netherlands</option>
+            <option value="de">Germany</option>
+            <option value="be">Belgium</option>
+            <option value="fr">France</option>
+            <option value="uk">United Kingdom</option>
+        </PggmSelect>
+    </Content>
+</DemoSection>
 
-<div class="demo-section">
-    <PggmHeader Level="2">Required Select with Name</PggmHeader>
-    <p>Selected Department: <strong>@selectedDepartment</strong></p>
-    
-    <PggmSelect Name="department" Required="true" Value="@selectedDepartment" ValueChanged="@(value => selectedDepartment = value)">
-        <option value="">Select department...</option>
-        <option value="hr">Human Resources</option>
-        <option value="it">Information Technology</option>
-        <option value="finance">Finance</option>
-        <option value="marketing">Marketing</option>
-        <option value="sales">Sales</option>
-    </PggmSelect>
-</div>
+<DemoSection Title="Required Select with Name" Code="@_requiredSource" CodeBehind="@_requiredBehind">
+    <Content>
+        <p>Selected Department: <strong>@selectedDepartment</strong></p>
+        
+        <PggmSelect TOption="string" Name="department" Required="true" Value="@selectedDepartment" ValueChanged="@(value => selectedDepartment = value)">
+            <option value="">Select department...</option>
+            <option value="hr">Human Resources</option>
+            <option value="it">Information Technology</option>
+            <option value="finance">Finance</option>
+            <option value="marketing">Marketing</option>
+            <option value="sales">Sales</option>
+        </PggmSelect>
+    </Content>
+</DemoSection>
 
-<div class="demo-section">
-    <PggmHeader Level="2">Disabled Select</PggmHeader>
-    <p>This select is disabled and cannot be changed.</p>
-    
-    <PggmSelect Disabled="true" Value="disabled-option">
-        <option value="disabled-option">This option is pre-selected</option>
-        <option value="other">Other option (not selectable)</option>
-    </PggmSelect>
-</div>
+<DemoSection Title="Disabled Select" Code="@_disabledSource" CodeBehind="@_disabledBehind">
+    <Content>
+        <p>This select is disabled and cannot be changed.</p>
+        
+        <PggmSelect TOption="string" Disabled="true" Value="disabled-option">
+            <option value="disabled-option">This option is pre-selected</option>
+            <option value="other">Other option (not selectable)</option>
+        </PggmSelect>
+    </Content>
+</DemoSection>
 
-<div class="demo-section">
-    <PggmHeader Level="2">Select with Grouped Options</PggmHeader>
-    <p>Selected Technology: <strong>@selectedTechnology</strong></p>
-    
-    <PggmSelect Value="@selectedTechnology" ValueChanged="@(value => selectedTechnology = value)">
-        <option value="">Choose a technology...</option>
-        <optgroup label="Frontend">
-            <option value="html">HTML</option>
-            <option value="css">CSS</option>
-            <option value="javascript-fe">JavaScript</option>
-            <option value="typescript">TypeScript</option>
-        </optgroup>
-        <optgroup label="Backend">
-            <option value="csharp-be">C#</option>
-            <option value="nodejs">Node.js</option>
-            <option value="python-be">Python</option>
-            <option value="java-be">Java</option>
-        </optgroup>
-        <optgroup label="Frameworks">
-            <option value="blazor-fw">Blazor</option>
-            <option value="react-fw">React</option>
-            <option value="angular-fw">Angular</option>
-            <option value="vue-fw">Vue.js</option>
-        </optgroup>
-    </PggmSelect>
-</div>
+<DemoSection Title="Select with Grouped Options" Code="@_groupedSource" CodeBehind="@_groupedBehind">
+    <Content>
+        <p>Selected Technology: <strong>@selectedTechnology</strong></p>
+        
+        <PggmSelect TOption="string" Value="@selectedTechnology" ValueChanged="@(value => selectedTechnology = value)">
+            <option value="">Choose a technology...</option>
+            <optgroup label="Frontend">
+                <option value="html">HTML</option>
+                <option value="css">CSS</option>
+                <option value="javascript-fe">JavaScript</option>
+                <option value="typescript">TypeScript</option>
+            </optgroup>
+            <optgroup label="Backend">
+                <option value="csharp-be">C#</option>
+                <option value="nodejs">Node.js</option>
+                <option value="python-be">Python</option>
+                <option value="java-be">Java</option>
+            </optgroup>
+            <optgroup label="Frameworks">
+                <option value="blazor-fw">Blazor</option>
+                <option value="react-fw">React</option>
+                <option value="angular-fw">Angular</option>
+                <option value="vue-fw">Vue.js</option>
+            </optgroup>
+        </PggmSelect>
+    </Content>
+</DemoSection>
 
-<div class="demo-section">
-    <PggmHeader Level="2">Event Handling</PggmHeader>
-    <p>Last Event: <strong>@lastEvent</strong></p>
-    
-    <PggmSelect Value="@eventTestValue" 
-                ValueChanged="@HandleValueChange"
-                OnFocus="@HandleFocus"
-                OnBlur="@HandleBlur">
-        <option value="">Select an option...</option>
-        <option value="option1">Option 1</option>
-        <option value="option2">Option 2</option>
-        <option value="option3">Option 3</option>
-    </PggmSelect>
-</div>
+<DemoSection Title="Data Binding with Items API" Code="@_itemsSource" CodeBehind="@_itemsBehind">
+    <Content>
+        <p>Selected: <strong>@(_selectedEmployee?.Name ?? "—")</strong> (id: <strong>@(_selectedEmployee?.Id.ToString() ?? "—")</strong>)</p>
+
+        <PggmSelect TOption="EmployeeOption"
+                    Items="@_employees"
+                    OptionValue="@(e => e.Id.ToString())"
+                    OptionText="@(e => e.Name)"
+                    OptionDisabled="@(e => e.Inactive)"
+                    Value="@(_selectedEmployee?.Id.ToString())"
+                    @bind-SelectedOption="_selectedEmployee" />
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Event Handling" Code="@_eventSource" CodeBehind="@_eventBehind">
+    <Content>
+        <p>Last Event: <strong>@lastEvent</strong></p>
+        
+        <PggmSelect TOption="string" Value="@eventTestValue" 
+                    ValueChanged="@HandleValueChange"
+                    OnFocus="@HandleFocus"
+                    OnBlur="@HandleBlur">
+            <option value="">Select an option...</option>
+            <option value="option1">Option 1</option>
+            <option value="option2">Option 2</option>
+            <option value="option3">Option 3</option>
+        </PggmSelect>
+    </Content>
+</DemoSection>
+
+<DemoSection Title="EditForm Two-Way Binding &amp; Validation" Code="@_editFormSource" CodeBehind="@_editFormBehind">
+    <Content>
+        <p>Demonstrates <code>@@bind-Value</code> inside an <code>EditForm</code> with <code>DataAnnotationsValidator</code> and <code>PggmValidationMessage</code>.</p>
+
+        <EditForm Model="_formModel" OnValidSubmit="HandleFormSubmit">
+            <DataAnnotationsValidator />
+            <PggmValidationSummary>
+                <p class="text-danger">Please fix the following errors:</p>
+            </PggmValidationSummary>
+            <PggmFieldset>
+                <PggmLabel slot="label" For="form-country">Land</PggmLabel>
+                <PggmValidationMessage slot="error" For="() => _formModel.Country" />
+                <PggmSelect TOption="string" @bind-Value="_formModel.Country" Name="form-country" Required="true">
+                    <option value="">Kies een land...</option>
+                    <option value="nl">Nederland</option>
+                    <option value="de">Duitsland</option>
+                    <option value="be">België</option>
+                    <option value="fr">Frankrijk</option>
+                    <option value="uk">Verenigd Koninkrijk</option>
+                </PggmSelect>
+            </PggmFieldset>
+
+            <PggmFieldset>
+                <PggmLabel slot="label" For="form-department">Afdeling</PggmLabel>
+                <PggmValidationMessage slot="error" For="() => _formModel.Department" />
+                <PggmSelect TOption="string" @bind-Value="_formModel.Department" Name="form-department" Required="true">
+                    <option value="">Kies een afdeling...</option>
+                    <option value="hr">Human Resources</option>
+                    <option value="it">Informatietechnologie</option>
+                    <option value="finance">Financiën</option>
+                    <option value="marketing">Marketing</option>
+                    <option value="sales">Sales</option>
+                </PggmSelect>
+            </PggmFieldset>
+
+            <PggmButton Type="@ButtonType.Submit" Appearance="@ButtonAppearance.Primary">Verzenden</PggmButton>
+        </EditForm>
+
+        @if (_formSubmitted)
+        {
+            <div class="alert alert-success mt-2">
+                Formulier verzonden! Land: <strong>@_formModel.Country</strong>, Afdeling: <strong>@_formModel.Department</strong>
+            </div>
+        }
+    </Content>
+</DemoSection>
+
+<PggmHeading Level="2">API</PggmHeading>
+<PggmHeading Level="3">PggmSelect</PggmHeading>
+<ApiDocumentation Properties="_properties" />
 
 @code {
     private string? selectedCountry = "nl";
@@ -92,6 +164,20 @@
     private string? selectedTechnology;
     private string? eventTestValue;
     private string lastEvent = "None";
+
+    // ── Items API demo ────────────────────────────────────────────────────────
+    public record EmployeeOption(int Id, string Name, bool Inactive = false);
+
+    private EmployeeOption? _selectedEmployee;
+
+    private readonly IEnumerable<EmployeeOption> _employees = new[]
+    {
+        new EmployeeOption(1, "Alice de Vries"),
+        new EmployeeOption(2, "Bob Jansen"),
+        new EmployeeOption(3, "Carol Bakker"),
+        new EmployeeOption(4, "Dave Smit (inactive)", Inactive: true),
+        new EmployeeOption(5, "Eva Visser"),
+    };
 
     private void HandleValueChange(string? value)
     {
@@ -108,33 +194,149 @@
     {
         lastEvent = $"Select blurred at {DateTime.Now:HH:mm:ss}";
     }
+
+    // ── EditForm two-way binding demo ─────────────────────────────────────────
+    private SelectFormModel _formModel = new();
+    private bool _formSubmitted;
+
+    private void HandleFormSubmit()
+    {
+        _formSubmitted = true;
+    }
+
+    public class SelectFormModel
+    {
+        [Required(ErrorMessage = "Selecteer een land.")]
+        public string? Country { get; set; }
+
+        [Required(ErrorMessage = "Selecteer een afdeling.")]
+        public string? Department { get; set; }
+    }
+
+    // ── Code snippets for DemoSection Code / CodeBehind
+    private string _basicSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmSelect TOption=\"string\" Value=\"@selectedCountry\" ValueChanged=\"@(value => selectedCountry = value)\">",
+        "  <option value=\"\">Choose a country...</option>",
+        "  <option value=\"nl\">Netherlands</option>",
+        "  <option value=\"de\">Germany</option>",
+        "</PggmSelect>");
+
+    private string _basicBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private string? selectedCountry = \"nl\";",
+        "");
+
+    private string _requiredSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmSelect TOption=\"string\" Name=\"department\" Required=\"true\" Value=\"@selectedDepartment\" ValueChanged=\"@(value => selectedDepartment = value)\">",
+        "  <option value=\"\">Select department...</option>",
+        "  <option value=\"hr\">Human Resources</option>",
+        "</PggmSelect>");
+
+    private string _requiredBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private string? selectedDepartment;",
+        "");
+
+    private string _disabledSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmSelect TOption=\"string\" Disabled=\"true\" Value=\"disabled-option\">",
+        "  <option value=\"disabled-option\">This option is pre-selected</option>",
+        "  <option value=\"other\">Other option (not selectable)</option>",
+        "</PggmSelect>");
+
+    private string _disabledBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "// Disabled select example uses a static selected value",
+        "");
+
+    private string _groupedSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmSelect TOption=\"string\" Value=\"@selectedTechnology\" ValueChanged=\"@(value => selectedTechnology = value)\">",
+        "  <option value=\"\">Choose a technology...</option>",
+        "  <optgroup label=\"Frontend\">",
+        "    <option value=\"html\">HTML</option>",
+        "    <option value=\"typescript\">TypeScript</option>",
+        "  </optgroup>",
+        "  <optgroup label=\"Backend\">",
+        "    <option value=\"csharp-be\">C#</option>",
+        "  </optgroup>",
+        "</PggmSelect>");
+
+    private string _groupedBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private string? selectedTechnology;",
+        "");
+
+    private string _itemsSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmSelect TOption=\"EmployeeOption\"",
+        "            Items=\"@_employees\"",
+        "            OptionValue=\"@(e => e.Id.ToString())\"",
+        "            OptionText=\"@(e => e.Name)\"",
+        "            OptionDisabled=\"@(e => e.Inactive)\"",
+        "            @bind-SelectedOption=\"_selectedEmployee\" />");
+
+    private string _itemsBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "public record EmployeeOption(int Id, string Name, bool Inactive = false);",
+        "",
+        "private EmployeeOption? _selectedEmployee;",
+        "",
+        "private readonly IEnumerable<EmployeeOption> _employees = new[]",
+        "{",
+        "    new EmployeeOption(1, \"Alice de Vries\"),",
+        "    new EmployeeOption(2, \"Bob Jansen\"),",
+        "    new EmployeeOption(4, \"Dave Smit (inactive)\", Inactive: true),",
+        "};");
+
+    private string _eventSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmSelect TOption=\"string\" Value=\"@eventTestValue\" ValueChanged=\"@HandleValueChange\" OnFocus=\"@HandleFocus\" OnBlur=\"@HandleBlur\">",
+        "  <option value=\"\">Select an option...</option>",
+        "  <option value=\"option1\">Option 1</option>",
+        "  <option value=\"option2\">Option 2</option>",
+        "</PggmSelect>");
+
+    private string _eventBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private string? eventTestValue;",
+        "private string lastEvent = \"None\";",
+        "");
+
+    private string _editFormSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<EditForm Model=\"_formModel\" OnValidSubmit=\"HandleFormSubmit\">",
+        "  <DataAnnotationsValidator />",
+        "  <PggmValidationSummary />",
+        "  <PggmFieldset>",
+        "    <PggmLabel slot=\"label\" For=\"form-country\">Land</PggmLabel>",
+        "    <PggmValidationMessage slot=\"error\" For=\"() => _formModel.Country\" />",
+        "    <PggmSelect TOption=\"string\" @bind-Value=\"_formModel.Country\" Name=\"form-country\" Required=\"true\">",
+        "      <option value=\"\">Kies een land...</option>",
+        "      <option value=\"nl\">Nederland</option>",
+        "    </PggmSelect>",
+        "  </PggmFieldset>",
+        "  <PggmButton Type=\"@ButtonType.Submit\" Appearance=\"@ButtonAppearance.Primary\">Verzenden</PggmButton>",
+        "</EditForm>");
+
+    private string _editFormBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private SelectFormModel _formModel = new();",
+        "");
+
+    // ── API table ────────────────────────────────────────────────────────────
+    private IEnumerable<ApiMember> _properties = new[]
+    {
+        new ApiMember { Name = "Value", Type = "string?", DefaultValue = "null", Description = "The currently selected value." },
+        new ApiMember { Name = "ValueChanged", Type = "EventCallback<string?>", DefaultValue = "null", Description = "Event callback invoked when the selected value changes." },
+        new ApiMember { Name = "Items", Type = "IEnumerable<TOption>?", DefaultValue = "null", Description = "Items to render as options. Use with OptionValue/OptionText." },
+        new ApiMember { Name = "OptionValue", Type = "Func<TOption, string?>", DefaultValue = "null", Description = "Selector for the option value string from each item." },
+        new ApiMember { Name = "OptionText", Type = "Func<TOption, string?>", DefaultValue = "null", Description = "Selector for the option display text from each item." },
+        new ApiMember { Name = "OptionDisabled", Type = "Func<TOption, bool>", DefaultValue = "null", Description = "Selector for whether an item should be rendered as disabled." },
+        new ApiMember { Name = "OptionTemplate", Type = "RenderFragment<TOption>", DefaultValue = "null", Description = "Custom render fragment for each option when using Items." },
+        new ApiMember { Name = "SelectedOption", Type = "TOption?", DefaultValue = "null", Description = "The currently selected item object (two-way binding via @bind-SelectedOption)." },
+        new ApiMember { Name = "SelectedOptionChanged", Type = "EventCallback<TOption?>", DefaultValue = "null", Description = "Event callback invoked when the selected item changes." },
+        new ApiMember { Name = "Disabled", Type = "bool", DefaultValue = "false", Description = "Whether the select is disabled." },
+        new ApiMember { Name = "Required", Type = "bool", DefaultValue = "false", Description = "Whether the select is required." },
+        new ApiMember { Name = "Name", Type = "string?", DefaultValue = "null", Description = "The name attribute for the select." },
+        new ApiMember { Name = "Multiple", Type = "bool", DefaultValue = "false", Description = "Whether multiple selection is allowed." },
+        new ApiMember { Name = "Size", Type = "int?", DefaultValue = "null", Description = "The size attribute (number of visible options)." },
+        new ApiMember { Name = "AutoFocus", Type = "bool", DefaultValue = "false", Description = "Whether the select should auto-focus on load." },
+        new ApiMember { Name = "Form", Type = "string?", DefaultValue = "null", Description = "The form attribute to associate the select with a form." },
+        new ApiMember { Name = "OnChange", Type = "EventCallback<ChangeEventArgs>", DefaultValue = "null", Description = "Change event callback." },
+        new ApiMember { Name = "OnFocus", Type = "EventCallback<FocusEventArgs>", DefaultValue = "null", Description = "Focus event callback." },
+        new ApiMember { Name = "OnBlur", Type = "EventCallback<FocusEventArgs>", DefaultValue = "null", Description = "Blur event callback." },
+        new ApiMember { Name = "CssClass", Type = "string?", DefaultValue = "null", Description = "Additional CSS classes applied to the component." },
+        new ApiMember { Name = "AdditionalAttributes", Type = "Dictionary<string, object>?", DefaultValue = "null", Description = "Additional attributes splatted onto the underlying element." },
+    };
 }
 
-<style>
-    .demo-section {
-        margin-bottom: 2rem;
-        padding: 1rem;
-        border: 1px solid #e0e0e0;
-        border-radius: 4px;
-    }
-    
-    .demo-section h4 {
-        margin-top: 0;
-        color: #333;
-    }
-    
-    .demo-section p {
-        margin-bottom: 1rem;
-    }
-    
-    .demo-section p strong {
-        color: #0066cc;
-    }
-    
-    .demo-section small {
-        color: #666;
-        font-style: italic;
-    }
-    
-  
-</style>
+ 

@@ -1,0 +1,68 @@
+@page "/pggm-virtualized-data-grid"
+@using Pggm.Components.Components.PggmDataGrid
+@using Pggm.Components.Sample.Components.DemoSection
+@inject IJSRuntime JS
+
+<PageTitle>Virtualized DataGrid Demo</PageTitle>
+
+<PggmHeading Level="1">Virtualized Pggm DataGrid Demo</PggmHeading>
+
+
+<p>This demo uses `EnableVirtualization` with an `ItemsProvider` to fetch pages on demand.</p>
+
+<DemoSection Title="Virtualized DataGrid" Code="@_source">
+    <PggmDataGrid TGridItem="Person" ItemsProvider="@LoadPeopleAsync" EnableVirtualization="true" VirtualizeItemSize="40" Height="400px">
+        <SelectColumn TGridItem="Person" Index="0" ShowSelectAll="false" />
+        <PropertyColumn TGridItem="Person" TProp="string" Title="Name" Value="@(p => p.Name)" SortByExpression="@(p => p.Name)" Index="1" />
+        <PropertyColumn TGridItem="Person" TProp="int" Title="Age" Value="@(p => p.Age)" SortByExpression="@(p => p.Age)" Index="2" />
+    </PggmDataGrid>
+</DemoSection>
+
+@code {
+    private List<Person> People = Enumerable.Range(1, 1000).Select(i => new Person { Name = $"Person {i}", Age = 20 + (i % 50) }).ToList();
+
+    private int ProviderCallCount;
+    private int LastStart;
+    private int LastCount;
+
+    private async ValueTask<GridItemsProviderResult<Person>> LoadPeopleAsync(GridItemsProviderRequest<Person> req)
+    {
+        ProviderCallCount++;
+        LastStart = req.StartIndex;
+        LastCount = req.Count ?? 0;
+        // NOTE: Do NOT call StateHasChanged here — it can re-enter Virtualize and cause hangs.
+
+        // simulate latency so scrolling/cancellations are observable
+        try
+        {
+            await Task.Delay(60, req.CancellationToken);
+        }
+        catch (OperationCanceledException)
+        {
+            // return empty page if canceled
+            return GridItemsProviderResult.From(new List<Person>(), People.Count);
+        }
+
+        if (req.CancellationToken.IsCancellationRequested)
+        {
+            return GridItemsProviderResult.From(new List<Person>(), People.Count);
+        }
+
+        var query = People.AsQueryable();
+        query = req.ApplySorting(query);
+        var skip = Math.Max(0, req.StartIndex);
+        var take = (req.Count.HasValue && req.Count.Value > 0) ? req.Count.Value : 50;
+        var items = query.Skip(skip).Take(take).ToList();
+        // provider returning
+        return GridItemsProviderResult.From(items, People.Count);
+    }
+
+    private class Person { public string? Name { get; set; } public int Age { get; set; } }
+
+    private string _source = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmDataGrid TGridItem=\"Person\" ItemsProvider=\"@LoadPeopleAsync\" EnableVirtualization=\"true\" VirtualizeItemSize=\"40\">",
+        "    <SelectColumn TGridItem=\"Person\" Index=\"0\" ShowSelectAll=\"false\" />",
+        "    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Value=\"@(p => p.Name)\" SortByExpression=\"@(p => p.Name)\" Index=\"1\" />",
+        "    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Value=\"@(p => p.Age)\" SortByExpression=\"@(p => p.Age)\" Index=\"2\" />",
+        "</PggmDataGrid>");
+}

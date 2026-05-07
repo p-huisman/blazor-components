@@ -1,6 +1,9 @@
 using Bunit;
+
 using Microsoft.Extensions.DependencyInjection;
+
 using Pggm.Components;
+
 using Xunit;
 
 namespace Pggm.Components.Tests
@@ -11,8 +14,12 @@ namespace Pggm.Components.Tests
         {
             // Register the design system service for DI
             Services.AddScoped<Pggm.Components.Services.PggmDesignSystemService>();
+            JSInterop.SetupVoid("PggmComponents.initialize", _ => true);
+            JSInterop.SetupVoid("PggmComponents.loadScript", _ => true);
+            JSInterop.SetupVoid("PggmComponents.addEventListener", _ => true);
+            JSInterop.SetupVoid("PggmComponents.removeEventListener", _ => true);
+            JSInterop.SetupVoid("PggmComponents.setProperty", _ => true);
         }
-        // No need for JSRuntime registration for these tests (handled above)
 
         [Fact]
         public void PggmSlider_WithZeroValue_RendersCorrectly()

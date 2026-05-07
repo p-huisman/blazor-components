@@ -1,0 +1,37 @@
+using Microsoft.AspNetCore.Components;
+
+using Pggm.Components.Base;
+
+namespace Pggm.Components;
+
+public partial class PggmTooltip : PggmComponentBase
+{
+    public override string TagName => "pggm-tooltip";
+
+    /// <summary>
+    /// The ID of the element that triggers this tooltip
+    /// </summary>
+    [Parameter, EditorRequired] public string For { get; set; } = string.Empty;
+
+    /// <summary>
+    /// The unique identifier for this tooltip
+    /// </summary>
+    [Parameter] public string? Id { get; set; }
+
+    /// <summary>
+    /// The position where the tooltip should appear relative to the trigger element
+    /// </summary>
+    [Parameter] public string? Position { get; set; }
+
+    protected override void AddComponentAttributes(Dictionary<string, object> attributes)
+    {
+        // The 'for' attribute is required and links the tooltip to its trigger element
+        if (!string.IsNullOrEmpty(For)) attributes["for"] = For;
+
+        // Set the ID for the tooltip - this should match the aria-describedby and popovertarget of the trigger
+        if (!string.IsNullOrEmpty(Id)) attributes["id"] = Id;
+
+        // Optional position attribute
+        if (!string.IsNullOrEmpty(Position)) attributes["position"] = Position;
+    }
+}

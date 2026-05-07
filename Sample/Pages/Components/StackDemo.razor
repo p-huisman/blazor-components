@@ -1,0 +1,79 @@
+@page "/pggm-stack"
+
+<PageTitle>PGGM Stack</PageTitle>
+
+<PggmHeading Level="1">PGGM Stack</PggmHeading>
+
+<p>Demonstrates the `PggmStack` layout helper for arranging child content horizontally or vertically.</p>
+
+<DemoSection Title="Vertical stack (default)" Code="@verticalStackSource">
+    <ChildContent>
+    <PggmStack>
+        <div class="pggm-box">Item 1</div>
+        <div class="pggm-box">Item 2</div>
+        <div class="pggm-box">Item 3</div>
+    </PggmStack>
+    </ChildContent>
+</DemoSection>
+
+<DemoSection Title="Horizontal stack with centered alignment" Code="@horizontalStackSource">
+    <ChildContent>
+    <PggmStack Orientation="Pggm.Components.Orientation.Horizontal" HorizontalAlignment="Pggm.Components.HorizontalAlignment.Center" HorizontalGap="16">
+        <div class="pggm-box">First</div>
+        <div class="pggm-box">Second</div>
+        <div class="pggm-box">Third</div>
+    </PggmStack>
+    </ChildContent>
+</DemoSection>
+
+<DemoSection Title="Wrapping and reversed" Code="@wrappingStackSource">
+    <ChildContent>
+    <PggmStack Wrap="true" Reversed="true" HorizontalGap="20">
+        @for (int i = 1; i <= 8; i++)
+        {
+            <div class="pggm-box">Item @i</div>
+        }
+    </PggmStack>
+    </ChildContent>
+</DemoSection>
+
+@code {
+}
+
+@code {
+    private string verticalStackSource =
+        "<PggmStack>\n" +
+        "  <div class='pggm-box'>Item 1</div>\n" +
+        "  <div class='pggm-box'>Item 2</div>\n" +
+        "  <div class='pggm-box'>Item 3</div>\n" +
+        "</PggmStack>";
+
+    private string horizontalStackSource =
+        "<PggmStack Orientation='Pggm.Components.Orientation.Horizontal' HorizontalAlignment='Pggm.Components.HorizontalAlignment.Center' HorizontalGap='16'>\n" +
+        "  <div class='pggm-box'>First</div>\n" +
+        "  <div class='pggm-box'>Second</div>\n" +
+        "  <div class='pggm-box'>Third</div>\n" +
+        "</PggmStack>";
+
+    private string wrappingStackSource =
+        "<PggmStack Wrap='true' Reversed='true' HorizontalGap='20'>\n" +
+        "  <!-- multiple items -->\n" +
+        "  <div class='pggm-box'>Item 1</div>\n" +
+        "  <div class='pggm-box'>Item 2</div>\n" +
+        "  <div class='pggm-box'>Item 3</div>\n" +
+        "  <div class='pggm-box'>Item 4</div>\n" +
+        "</PggmStack>";
+}
+
+<style>
+    /* demo-section styles are provided globally in wwwroot/css/custom-formatters.css */
+    .pggm-box { 
+        padding: 0.75rem 1.25rem; 
+        border-radius: 6px; 
+        background: #ffffff; 
+        border: 1px solid #F5F5F5; 
+        box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.2); 
+        font-weight:500; 
+    }
+    
+</style>

@@ -1,15 +1,19 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
+
 using Moq;
+
 using Pggm.Components.Base;
 using Pggm.Components.Interfaces;
 using Pggm.Components.Services;
+
 using Xunit;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Pggm.Components.Tests
 {
@@ -253,22 +257,29 @@ namespace Pggm.Components.Tests
             // Test implementation
         }
 
-        // Expose protected methods for testing
-        public Dictionary<string, Func<object?, Task>> GetEventHandlers() => EventHandlers;
-        public Dictionary<string, Func<object?, Task<bool>>> GetCancelableEventHandlers() => CancelableEventHandlers;
+        // Local mirrors so tests can inspect what was registered
+        private readonly Dictionary<string, Func<object?, Task>> _registeredHandlers = new();
+        private readonly Dictionary<string, Func<object?, Task<bool>>> _registeredCancelableHandlers = new();
+
+        // Expose registered handlers for testing
+        public Dictionary<string, Func<object?, Task>> GetEventHandlers() => _registeredHandlers;
+        public Dictionary<string, Func<object?, Task<bool>>> GetCancelableEventHandlers() => _registeredCancelableHandlers;
 
         public void RegisterTestEventHandler(string eventName, Func<object?, Task> handler)
         {
+            _registeredHandlers[eventName] = handler;
             RegisterEventHandler(eventName, handler);
         }
 
         public void RegisterTestEventHandler(string eventName, Func<Task> handler)
         {
+            _registeredHandlers[eventName] = _ => handler();
             RegisterEventHandler(eventName, handler);
         }
 
         public void RegisterTestCancelableEventHandler<T>(string eventName, Func<T?, Task<bool>> handler) where T : class, new()
         {
+            _registeredCancelableHandlers[eventName] = async (data) => await handler(data as T);
             RegisterCancelableEventHandler(eventName, handler);
         }
 

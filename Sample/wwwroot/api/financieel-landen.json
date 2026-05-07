@@ -1,0 +1,1586 @@
+[
+  {
+    "naam": "Afghanistan",
+    "code": "AF",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Alands eilanden",
+    "code": "AX",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Albanië",
+    "code": "AL",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Alderney",
+    "code": "GG",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Algerije",
+    "code": "DZ",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Amerikaans-Samoa",
+    "code": "AS",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Amerikaanse Maagdeneilanden",
+    "code": "VI",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Andorra",
+    "code": "AD",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Angola",
+    "code": "AO",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Anguilla",
+    "code": "AI",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Antigua en Barbuda",
+    "code": "AG",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Argentinië",
+    "code": "AR",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Armenië",
+    "code": "AM",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Aruba",
+    "code": "AW",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Ascension",
+    "code": "SH",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Australië",
+    "code": "AU",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": true
+  },
+  {
+    "naam": "Azerbeidzjan",
+    "code": "AZ",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Azoren",
+    "code": "PT",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Bahama's",
+    "code": "BS",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Bahrein",
+    "code": "BH",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Bangladesh",
+    "code": "BD",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Barbados",
+    "code": "BB",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Belarus",
+    "code": "BY",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "België",
+    "code": "BE",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Belize",
+    "code": "BZ",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Benin",
+    "code": "BJ",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Bermuda",
+    "code": "BM",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Bhutan",
+    "code": "BT",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Bolivia",
+    "code": "BO",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Bonaire",
+    "code": "BQ",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Bosnië-Herzegovina",
+    "code": "BA",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Botswana",
+    "code": "BW",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Bouvet-eilanden",
+    "code": "BV",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Brazilië",
+    "code": "BR",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Brits Antarctisch Territorium",
+    "code": "AQ",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Brits Indische Oceaanterritorium",
+    "code": "IO",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Britse Maagdeneilanden",
+    "code": "VG",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Brunei",
+    "code": "BN",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Bulgarije",
+    "code": "BG",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Burkina Faso",
+    "code": "BF",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Burundi",
+    "code": "BI",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Cambodja",
+    "code": "KH",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Canada",
+    "code": "CA",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": true
+  },
+  {
+    "naam": "Canarische Eilanden",
+    "code": "ES",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Caymaneilanden",
+    "code": "KY",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Centraal-Afrikaanse Republiek",
+    "code": "CF",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Chili",
+    "code": "CL",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "China",
+    "code": "CN",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Christmaseiland",
+    "code": "CX",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Cocoseilanden",
+    "code": "CC",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Colombia",
+    "code": "CO",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Comoren",
+    "code": "KM",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Congo",
+    "code": "CG",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Cookeilanden",
+    "code": "CK",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Costa Rica",
+    "code": "CR",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Cuba",
+    "code": "CU",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Curaçao",
+    "code": "CW",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Cyprus",
+    "code": "CY",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Democratische Republiek Congo",
+    "code": "CD",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Denemarken",
+    "code": "DK",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Djibouti",
+    "code": "DJ",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Dominica",
+    "code": "DM",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Dominicaanse republiek",
+    "code": "DO",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Duitsland",
+    "code": "DE",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Ecuador",
+    "code": "EC",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Egypte",
+    "code": "EG",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "El Salvador",
+    "code": "SV",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Equatoriaal-Guinea",
+    "code": "GQ",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Eritrea",
+    "code": "ER",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Estland",
+    "code": "EE",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Eswatini",
+    "code": "SZ",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Ethiopië",
+    "code": "ET",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Faeröer",
+    "code": "FO",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Falklandeilanden",
+    "code": "FK",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Fiji",
+    "code": "FJ",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Filipijnen",
+    "code": "PH",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Finland",
+    "code": "FI",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Frankrijk",
+    "code": "FR",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Frans-Guyana",
+    "code": "GF",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Frans-Polynesië",
+    "code": "PF",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Gabon",
+    "code": "GA",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Gambia",
+    "code": "GM",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Gazastrook en Westelijke Jordaanoever",
+    "code": "PS",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Georgië",
+    "code": "GE",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Ghana",
+    "code": "GH",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Gibraltar",
+    "code": "GI",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Grenada",
+    "code": "GD",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Griekenland",
+    "code": "GR",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Groenland",
+    "code": "GL",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Groot-Brittannië",
+    "code": "GB",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Guadeloupe",
+    "code": "GP",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Guam",
+    "code": "GU",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Guatemala",
+    "code": "GT",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Guernsey",
+    "code": "GG",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Guinee",
+    "code": "GN",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Guinee-Bissau",
+    "code": "GW",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Guyana",
+    "code": "GY",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Haïti",
+    "code": "HT",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Heard en McDonald eilanden",
+    "code": "HM",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Honduras",
+    "code": "HN",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Hongarije",
+    "code": "HU",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Hongkong",
+    "code": "HK",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Ierland",
+    "code": "IE",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "IJsland",
+    "code": "IS",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "India",
+    "code": "IN",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Indonesië",
+    "code": "ID",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Irak",
+    "code": "IQ",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Iran",
+    "code": "IR",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Israël",
+    "code": "IL",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Italië",
+    "code": "IT",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Ivoorkust",
+    "code": "CI",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Jamaica",
+    "code": "JM",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Japan",
+    "code": "JP",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Jemen",
+    "code": "YE",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Jersey",
+    "code": "JE",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Johnston",
+    "code": "UM",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Jordanië",
+    "code": "JO",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Kaapverdië",
+    "code": "CV",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Kameroen",
+    "code": "CM",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Kazachstan",
+    "code": "KZ",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Kenya",
+    "code": "KE",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Kirgizië",
+    "code": "KG",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Kiribati",
+    "code": "KI",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Koeweit",
+    "code": "KW",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Kosovo",
+    "code": "XK",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Kroatië",
+    "code": "HR",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Laos",
+    "code": "LA",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Lesotho",
+    "code": "LS",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Letland",
+    "code": "LV",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Libanon",
+    "code": "LB",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Liberia",
+    "code": "LR",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Libië",
+    "code": "LY",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Liechtenstein",
+    "code": "LI",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Litouwen",
+    "code": "LT",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Luxemburg",
+    "code": "LU",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Macau",
+    "code": "MO",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Madagaskar",
+    "code": "MG",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Madeira-eilanden",
+    "code": "PT",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Malawi",
+    "code": "MW",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Maldiven",
+    "code": "MV",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Maleisië",
+    "code": "MY",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Mali",
+    "code": "ML",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Malta",
+    "code": "MT",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Man",
+    "code": "IM",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Marianen",
+    "code": "MP",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Marokko",
+    "code": "MA",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Marshalleilanden",
+    "code": "MH",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Martinique",
+    "code": "MQ",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Mauritanië",
+    "code": "MR",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Mauritius",
+    "code": "MU",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Mayotte",
+    "code": "YT",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Mexico",
+    "code": "MX",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Micronesia",
+    "code": "FM",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Midway",
+    "code": "UM",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Moldavië",
+    "code": "MD",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Monaco",
+    "code": "MC",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Mongolië",
+    "code": "MN",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Montenegro",
+    "code": "ME",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Montserrat",
+    "code": "MS",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Mozambique",
+    "code": "MZ",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Myanmar",
+    "code": "MM",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Namibië",
+    "code": "NA",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Nauru",
+    "code": "NR",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Nederland",
+    "code": "NL",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Nepal",
+    "code": "NP",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Nicaragua",
+    "code": "NI",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Nieuw-Caledonië",
+    "code": "NC",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Nieuw-Zeeland",
+    "code": "NZ",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": true
+  },
+  {
+    "naam": "Niger",
+    "code": "NE",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Nigeria",
+    "code": "NG",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Niue",
+    "code": "NU",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Noord-Korea",
+    "code": "KP",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Noorwegen",
+    "code": "NO",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Norfolk",
+    "code": "NF",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Oekraïne",
+    "code": "UA",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Oezbekistan",
+    "code": "UZ",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Oman",
+    "code": "OM",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Onbekend",
+    "code": "ON",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Oostenrijk",
+    "code": "AT",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Pakistan",
+    "code": "PK",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Palau",
+    "code": "PW",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Panama",
+    "code": "PA",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Panamakanaalzone",
+    "code": "PA",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Papoea-Nieuw-Guinea",
+    "code": "PG",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Paraguay",
+    "code": "PY",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Peru",
+    "code": "PE",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Pitcairneilanden",
+    "code": "PN",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Polen",
+    "code": "PL",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Portugal",
+    "code": "PT",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Puerto Rico",
+    "code": "PR",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Qatar",
+    "code": "QA",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Republiek Noord-Macedonië",
+    "code": "MK",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Réunion",
+    "code": "RE",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Roemenië",
+    "code": "RO",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Rusland",
+    "code": "RU",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Rwanda",
+    "code": "RW",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Saba",
+    "code": "BQ",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Saint Kitts en Nevis",
+    "code": "KN",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Saint Lucia",
+    "code": "LC",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Saint Pierre en Miquelon",
+    "code": "PM",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Saint Vincent en de Grenadines",
+    "code": "VC",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Saint-Barthélemey",
+    "code": "BL",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Salomonseilanden",
+    "code": "SB",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Samoa",
+    "code": "WS",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "San Marino",
+    "code": "SM",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "São Tomé en Principe",
+    "code": "ST",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Saoedi-Arabië",
+    "code": "SA",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Senegal",
+    "code": "SN",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Servië",
+    "code": "RS",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Seychellen",
+    "code": "SC",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Sierra Leone",
+    "code": "SL",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Singapore",
+    "code": "SG",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Sint Eustatius",
+    "code": "BQ",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Sint Maarten",
+    "code": "SX",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Sint Maarten (Franse deel)",
+    "code": "MF",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Sint-Helena",
+    "code": "SH",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Slovenië",
+    "code": "SI",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Slowakije",
+    "code": "SK",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Soedan",
+    "code": "SD",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Somalië",
+    "code": "SO",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Spanje",
+    "code": "ES",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Sri Lanka",
+    "code": "LK",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Suriname",
+    "code": "SR",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Svalbardeilanden",
+    "code": "SJ",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Syrië",
+    "code": "SY",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Tadzjikistan",
+    "code": "TJ",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Taiwan",
+    "code": "TW",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Tanzania",
+    "code": "TZ",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Thailand",
+    "code": "TH",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Tibet",
+    "code": "CN",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Timor Leste",
+    "code": "TL",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Togo",
+    "code": "TG",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Tokelau",
+    "code": "TK",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Tonga",
+    "code": "TO",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Trinidad en Tobago",
+    "code": "TT",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Tristan Da Cunha",
+    "code": "SH",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Tsjaad",
+    "code": "TD",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Tsjechië",
+    "code": "CZ",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Tunesië",
+    "code": "TN",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Turkije",
+    "code": "TR",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Turkmenistan",
+    "code": "TM",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Turks- en Caicoseilanden",
+    "code": "TC",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Tuvalu",
+    "code": "TV",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Uganda",
+    "code": "UG",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "United States Minor Outlying Islands",
+    "code": "UM",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Uruguay",
+    "code": "UY",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Vanuatu",
+    "code": "VU",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Vaticaanstad",
+    "code": "VA",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Venezuela",
+    "code": "VE",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Verenigde Arabische Emiraten",
+    "code": "AE",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Verenigde Staten van Amerika",
+    "code": "US",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": true
+  },
+  {
+    "naam": "Vietnam",
+    "code": "VN",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Wake",
+    "code": "UM",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Wallis en Futuna",
+    "code": "WF",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Westelijke Sahara",
+    "code": "EH",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Zambia",
+    "code": "ZM",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Zimbabwe",
+    "code": "ZW",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Zuid-Afrika",
+    "code": "ZA",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": true
+  },
+  {
+    "naam": "Zuid-Georgië en Zuid. Sandwich eilanden",
+    "code": "GS",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Zuid-Korea",
+    "code": "KR",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Zuid-Soedan",
+    "code": "SS",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Zuidelijke Franse gebieden",
+    "code": "TF",
+    "betaalsysteem": "NIETSEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Zweden",
+    "code": "SE",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  },
+  {
+    "naam": "Zwitserland",
+    "code": "CH",
+    "betaalsysteem": "SEPA",
+    "is_bankcode_verplicht": false
+  }
+]

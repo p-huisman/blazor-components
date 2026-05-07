@@ -1,39 +1,35 @@
 
 @page "/pggm-file-upload"
-
+@using Pggm.Components.Sample.Components.ApiDocumentation
 
 <PageTitle>PGGM File Upload</PageTitle>
 
-<PggmHeader Level="1">PGGM File Upload</PggmHeader>
+<PggmHeading Level="1">PGGM File Upload</PggmHeading>
 
 <p>This page demonstrates the PGGM File Upload component with various configurations and use cases.</p>
 
-<div class="demo-section">
-    <PggmHeader Level="2">Basic File Upload</PggmHeader>
+<DemoSection Title="Basic File Upload" Code="@basicFileUploadSource" CodeBehind="@basicFileUploadBehind">
     <PggmFileUpload Button="Choose File" 
                     DropzoneLabel="Drag and drop a file here or click to browse" />
-</div>
+</DemoSection>
 
-<div class="demo-section">
-    <PggmHeader Level="2">Multiple Files with Size Limits</PggmHeader>
+<DemoSection Title="Multiple Files with Size Limits" Code="@multipleFilesSource" CodeBehind="@multipleFilesBehind">
     <PggmFileUpload Button="Choose Files"
                     Multiple="true"
                     MaxFiles="5"
                     MaxFileSize="10485760"
                     DropzoneLabel="Upload up to 5 files (max 10MB each)" />
-</div>
+</DemoSection>
 
-<div class="demo-section">
-    <PggmHeader Level="2">Image Files Only</PggmHeader>
+<DemoSection Title="Image Files Only" Code="@imageFilesSource" CodeBehind="@imageFilesBehind">
     <PggmFileUpload Button="Choose Images"
                     Accept='"image/*"'
                     Multiple="true"
                     DropzoneLabel="Upload image files only"
                     ButtonAppearance="primary" />
-</div>
+</DemoSection>
 
-<div class="demo-section">
-    <PggmHeader Level="2">Document Upload with Custom Labels</PggmHeader>
+<DemoSection Title="Document Upload with Custom Labels" Code="@documentUploadSource" CodeBehind="@documentUploadBehind">
     <PggmFileUpload Button="Upload Document"
                     Accept='".pdf,.doc,.docx,.txt"'
                     MenuFile="Select Document"
@@ -41,26 +37,64 @@
                     DropzoneLabel="Drop your document here"
                     MaxSize="52428800"
                     Required="true" />
-</div>
+</DemoSection>
 
-<div class="demo-section">
-    <PggmHeader Level="2">Disabled File Upload</PggmHeader>
+<DemoSection Title="Disabled File Upload" Code="@disabledUploadSource" CodeBehind="@disabledUploadBehind">
     <PggmFileUpload Button="Upload"
                     Disabled="true"
                     DropzoneLabel="File upload is disabled" />
-</div>
+</DemoSection>
 
-<style>
-    .demo-section {
-        margin-bottom: 2rem;
-        padding: 1rem;
-        border: 1px solid #e0e0e0;
-        border-radius: 4px;
-    }
 
-    .demo-section h2 {
-        margin-top: 0;
-        color: #333;
-        font-size: 1.2rem;
-    }
-</style>
+@code {
+    private string basicFileUploadSource =
+        "<PggmFileUpload Button='Choose File' DropzoneLabel='Drag and drop a file here or click to browse' />";
+
+    private string basicFileUploadBehind =
+        "// Basic file upload with single file selection";
+
+    private string multipleFilesSource =
+        "<PggmFileUpload Button='Choose Files' Multiple='true' MaxFiles='5' MaxFileSize='10485760' />";
+
+    private string multipleFilesBehind =
+        "// Multiple files with size limits";
+
+    private string imageFilesSource =
+        "<PggmFileUpload Button='Choose Images' Accept='\"image/*\"' Multiple='true' />";
+
+    private string imageFilesBehind =
+        "// Image-only upload configuration";
+
+    private string documentUploadSource =
+        "<PggmFileUpload Button='Upload Document' Accept='\".pdf,.doc,.docx,.txt\"' MaxSize='52428800' />";
+
+    private string documentUploadBehind =
+        "// Document upload with custom labels and max size";
+
+    private string disabledUploadSource =
+        "<PggmFileUpload Button='Upload' Disabled='true' />";
+
+    private string disabledUploadBehind =
+        "// Disabled file upload demo";
+}
+
+<PggmHeading Level="2">API</PggmHeading>
+<PggmHeading Level="3">PggmFileUpload</PggmHeading>
+<ApiDocumentation Properties="_properties" />
+
+@code {
+    private IEnumerable<ApiMember> _properties = new[]
+    {
+        new ApiMember { Name = "Button", Type = "string?", DefaultValue = "null", Description = "Text displayed on the upload button." },
+        new ApiMember { Name = "Accept", Type = "string?", DefaultValue = "null", Description = "Accepted file types (comma-separated MIME types or extensions)." },
+        new ApiMember { Name = "Multiple", Type = "bool", DefaultValue = "false", Description = "Allows selecting multiple files when true." },
+        new ApiMember { Name = "MaxFiles", Type = "int?", DefaultValue = "null", Description = "Maximum number of files allowed." },
+        new ApiMember { Name = "MaxFileSize", Type = "long?", DefaultValue = "null", Description = "Maximum file size in bytes for uploaded files." },
+        new ApiMember { Name = "DropzoneLabel", Type = "string?", DefaultValue = "null", Description = "Label shown in the dropzone area." },
+        new ApiMember { Name = "Disabled", Type = "bool", DefaultValue = "false", Description = "Disables the upload control when true." },
+        new ApiMember { Name = "Required", Type = "bool", DefaultValue = "false", Description = "Marks the field as required for validation." },
+        new ApiMember { Name = "MenuFile", Type = "string?", DefaultValue = "null", Description = "Label for the file selection menu option." },
+        new ApiMember { Name = "MenuCapture", Type = "string?", DefaultValue = "null", Description = "Label for capture/scan menu option." },
+        new ApiMember { Name = "AdditionalAttributes", Type = "Dictionary<string, object>?", DefaultValue = "null", Description = "Additional attributes splatted onto the underlying element." }
+    };
+}

@@ -2,12 +2,12 @@
 
 <PageTitle>PGGM Switch</PageTitle>
 
-<PggmHeader Level="1">PggmSwitch Component Demo</PggmHeader>
+<PggmHeading Level="1">PGGM Switch</PggmHeading>
 
 <p>This page demonstrates the PGGM Switch component with various configurations, states, and event handling.</p>
 
 <div class="demo-section">
-    <PggmHeader Level="2">Basic Switch</PggmHeader>
+    <PggmHeading Level="2">Basic Switch</PggmHeading>
     <p>Notifications Enabled: <strong>@(notificationsEnabled ? "On" : "Off")</strong></p>
     
     <label>
@@ -19,7 +19,7 @@
 </div>
 
 <div class="demo-section">
-    <PggmHeader Level="2">Switch with Value and Label</PggmHeader>
+    <PggmHeading Level="2">Switch with Value and Label</PggmHeading>
     <p>Marketing Emails: <strong>@(marketingEmailsEnabled ? "Subscribed" : "Unsubscribed")</strong></p>
     
     <label>
@@ -32,7 +32,7 @@
 </div>
 
 <div class="demo-section">
-    <PggmHeader Level="2">Disabled Switch</PggmHeader>
+    <PggmHeading Level="2">Disabled Switch</PggmHeading>
     <p>This switch is disabled and cannot be toggled.</p>
     
     <PggmSwitch Checked="true" Disabled="true">
@@ -45,7 +45,7 @@
 </div>
 
 <div class="demo-section">
-    <PggmHeader Level="2">Multiple Switches with Labels</PggmHeader>
+    <PggmHeading Level="2">Multiple Switches with Labels</PggmHeading>
     
     <div class="switch-group">
         <label>
@@ -72,7 +72,7 @@
 </div>
 
 <div class="demo-section">
-    <PggmHeader Level="2">Event Handling</PggmHeader>
+    <PggmHeading Level="2">Event Handling</PggmHeading>
     <p>Last Event: <strong>@lastEvent</strong></p>
     
     <label>
@@ -112,26 +112,20 @@
 }
 
 <style>
-    .demo-section {
-        margin-bottom: 2rem;
-        padding: 1rem;
-        border: 1px solid #e0e0e0;
-        border-radius: 4px;
-    }
-    
+    /* demo-section styles are provided globally in wwwroot/css/custom-formatters.css */
     .demo-section h4 {
         margin-top: 0;
         color: #333;
     }
-    
+
     .demo-section p {
         margin-bottom: 1rem;
     }
-    
+
     .demo-section p strong {
         color: #0066cc;
     }
-    
+
     .switch-group {
         display: flex;
         flex-direction: column;

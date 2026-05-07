@@ -1,13 +1,13 @@
 @page "/pggm-notification"
+@using Pggm.Components.Sample.Components.ApiDocumentation
 <PageTitle>PGGM Notification</PageTitle>
 
-<PggmHeader Level="1">PGGM Notification</PggmHeader>
+<PggmHeading Level="1">PGGM Notification</PggmHeading>
 
 <p>This page demonstrates the PggmNotification component with various types and configurations.</p>
 
-<div class="demo-section">
-  <PggmHeader Level="2">Different Notification Types</PggmHeader>
-
+<DemoSection Title="Notification Types" Code="@notificationTypesSource" CodeBehind="@notificationTypesBehind">
+  
   <div class="notification-examples">
     <PggmNotification Open=true Type="@PggmNotification.NotificationTypes.Informative">
       <PggmNotificationTitle>This is an Informative Notification</PggmNotificationTitle>
@@ -33,12 +33,10 @@
       <a slot="action" href="#">Learn more</a>
     </PggmNotification>
   </div>
-</div>
+</DemoSection>
 
 
-<div class="demo-section">
-  <PggmHeader Level="2">Closable Notification</PggmHeader>
-
+<DemoSection Title="Closable Notification" Code="@closableNotificationSource" CodeBehind="@closableNotificationBehind">
   <PggmNotification Type="@PggmNotification.NotificationTypes.Informative" Closeable="true" CloseLabel="Close this notification" Open="true" OnDismiss="HandleNotificationDismiss">
     <PggmNotificationTitle>Closable Notification</PggmNotificationTitle>
     This notification can be closed by clicking the close button.
@@ -49,10 +47,12 @@
   {
     <p class="text-muted">Notification was dismissed at @dismissTime</p>
   }
-</div>
 
+</DemoSection>
 
-
+<PggmHeading Level="2">API</PggmHeading>
+<PggmHeading Level="3">PggmNotification</PggmHeading>
+<ApiDocumentation Properties="_properties" />
 
 <style>
   .notification-examples {
@@ -77,4 +77,54 @@
     notificationDismissed = false;
     StateHasChanged();
   }
+  
+  // Code snippets for demo sections
+  private string notificationTypesSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+    "<div class=\"notification-examples\">",
+    "  <PggmNotification Open=true Type=\"@PggmNotification.NotificationTypes.Informative\">",
+    "    <PggmNotificationTitle>This is an Informative Notification</PggmNotificationTitle>",
+    "    This is an informative notification message with useful information for the user.",
+    "    <a slot=\"action\" href=\"#\">Learn more</a>",
+    "  </PggmNotification>",
+    "  <PggmNotification Open=true Type=\"@PggmNotification.NotificationTypes.Warning\">",
+    "    <PggmNotificationTitle>This is a Warning Notification</PggmNotificationTitle>",
+    "    This is a warning notification message that requires attention.",
+    "    <a slot=\"action\" href=\"#\">Learn more</a>",
+    "  </PggmNotification>",
+    "  <PggmNotification Open=true Type=\"@PggmNotification.NotificationTypes.Error\">",
+    "    <PggmNotificationTitle>This is an Error Notification</PggmNotificationTitle>",
+    "    This is an error notification message indicating something went wrong.",
+    "    <a slot=\"action\" href=\"#\">Learn more</a>",
+    "  </PggmNotification>",
+    "  <PggmNotification Open=true Type=\"@PggmNotification.NotificationTypes.Success\">",
+    "    <PggmNotificationTitle>This is a Success Notification</PggmNotificationTitle>",
+    "    This is a success notification message confirming a successful action.",
+    "    <a slot=\"action\" href=\"#\">Learn more</a>",
+    "  </PggmNotification>",
+    "</div>");
+
+  private string notificationTypesBehind = "// Example of different notification types: Informative, Warning, Error, Success";
+
+  private string closableNotificationSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+    "<PggmNotification Type=\"@PggmNotification.NotificationTypes.Informative\" Closeable=\"true\" CloseLabel=\"Close this notification\" Open=\"true\" OnDismiss=\"HandleNotificationDismiss\">",
+    "  <PggmNotificationTitle>Closable Notification</PggmNotificationTitle>",
+    "  This notification can be closed by clicking the close button.",
+    "  <a slot=\"action\" href=\"#\">Learn more</a>",
+    "</PggmNotification>");
+
+  private string closableNotificationBehind = "// Notification with a close action and OnDismiss handler";
+
+}
+
+@code {
+  // API table for docs
+  private IEnumerable<ApiMember> _properties = new[]
+  {
+    new ApiMember { Name = "Type", Type = "string", DefaultValue = "\"informative\"", Description = "The notification type (informative, warning, error, success). Use NotificationTypes constants." },
+    new ApiMember { Name = "Closeable", Type = "bool", DefaultValue = "false", Description = "Whether the notification shows a close button." },
+    new ApiMember { Name = "CloseLabel", Type = "string", DefaultValue = "\"\"", Description = "Accessible label for the close button." },
+    new ApiMember { Name = "Open", Type = "bool", DefaultValue = "true", Description = "Whether the notification is visible/open." },
+    new ApiMember { Name = "OnDismiss", Type = "EventCallback", DefaultValue = "null", Description = "Callback invoked when the notification is dismissed (close action)." },
+    new ApiMember { Name = "NotificationTypes", Type = "class", DefaultValue = "-", Description = "Static constants: Informative, Warning, Error, Success." },
+  };
 }

@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using Pggm.Components.Services;
+
 using Pggm.Components.Interfaces;
+using Pggm.Components.Services;
 using Pggm.Components.Utilities;
 
 namespace Pggm.Components.Base;
@@ -46,8 +47,8 @@ public abstract class PggmComponentBase : ComponentBase, IPggmComponent
     {
         if (firstRender)
         {
-            Guard.NotNull(DesignSystemService, nameof(DesignSystemService));
-            Guard.NotNull(JSRuntime, nameof(JSRuntime));
+            Guard.NotNull(DesignSystemService);
+            Guard.NotNull(JSRuntime);
 
             await DesignSystemService.InitializeAsync();
             await InitializeWebComponentAsync();

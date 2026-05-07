@@ -1,0 +1,9 @@
+.pggm-grid {
+  width: 100%;
+}
+
+.pggm-grid,
+.pggm-grid > * {
+  box-sizing: border-box;
+  box-sizing: border-box;
+}

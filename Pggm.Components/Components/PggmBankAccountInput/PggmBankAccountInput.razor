@@ -1,0 +1,15 @@
+@namespace Pggm.Components
+@inherits PggmEventComponentBase
+
+<pggm-bank-account-input @ref="ElementRef" 
+                         value="@Value"
+                         name="@Name"
+                         id="@Id"
+                         class="@CssClass"
+                         country="@Country"
+                         disabled="@Disabled"
+                         required="@Required"
+                         landen-endpoint="@LandenEndpoint"
+                         @attributes="GetAttributes()">
+    @ChildContent
+</pggm-bank-account-input>

@@ -1,12 +1,17 @@
 using Bunit;
+
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.DependencyInjection;
+
 using Pggm.Components;
+using Pggm.Components.Enums;
 using Pggm.Components.Services;
+
 using Xunit;
 
 namespace Pggm.Components.Tests
 {
-    public class PggmButtonTests : TestContext
+    public class PggmButtonTests : PggmTestContext
     {
         public PggmButtonTests()
         {
@@ -33,7 +38,7 @@ namespace Pggm.Components.Tests
         {
             // Arrange & Act
             var component = RenderComponent<PggmButton>(parameters => parameters
-                .Add(p => p.Appearance, "primary")
+                .Add(p => p.Appearance, ButtonAppearance.Primary)
                 .AddChildContent("Primary Button"));
 
             // Assert
@@ -59,7 +64,7 @@ namespace Pggm.Components.Tests
         {
             // Arrange & Act
             var component = RenderComponent<PggmButton>(parameters => parameters
-                .Add(p => p.Type, "submit")
+                .Add(p => p.Type, ButtonType.Submit)
                 .AddChildContent("Submit Button"));
 
             // Assert
@@ -73,12 +78,12 @@ namespace Pggm.Components.Tests
             // Arrange
             bool clicked = false;
             var component = RenderComponent<PggmButton>(parameters => parameters
-                .Add(p => p.OnClick, () => clicked = true)
+                .Add(p => p.OnClick, (MouseEventArgs _) => clicked = true)
                 .AddChildContent("Click me"));
 
-            // Act
-            var button = component.Find("button");
-            button.Click();
+            // Act: PggmButton uses JS event listeners (PggmEventComponentBase), not native @onclick.
+            // Simulate the JS "click" event by invoking HandleEvent directly.
+            component.InvokeAsync(() => component.Instance.HandleEvent("click"));
 
             // Assert
             Assert.True(clicked);
@@ -91,12 +96,12 @@ namespace Pggm.Components.Tests
             bool clicked = false;
             var component = RenderComponent<PggmButton>(parameters => parameters
                 .Add(p => p.Disabled, true)
-                .Add(p => p.OnClick, () => clicked = true)
+                .Add(p => p.OnClick, (MouseEventArgs _) => clicked = true)
                 .AddChildContent("Disabled Button"));
 
-            // Act
-            var button = component.Find("button");
-            button.Click();
+            // Act: Simulate the JS "click" event via HandleEvent.
+            // PggmButton's event handler checks !Disabled before invoking OnClick.
+            component.InvokeAsync(() => component.Instance.HandleEvent("click"));
 
             // Assert
             Assert.False(clicked);

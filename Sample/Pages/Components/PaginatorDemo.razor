@@ -1,0 +1,79 @@
+@page "/pggm-paginator"
+@using Pggm.Components.Components.PggmDataGrid
+
+<PageTitle>PGGM Paginator</PageTitle>
+
+<PggmHeading Level="1">PGGM Paginator</PggmHeading>
+
+<p>
+    <code>PggmPaginator</code> is a standalone pagination control that works with
+    <code>PggmDataGrid</code> through a shared <code>PaginationState</code> instance.
+    Assign the same state object to both components — the paginator drives navigation and the
+    grid automatically reloads data.
+</p>
+
+<DemoSection Title="Client-side pagination">
+    <PggmPaginator State="@_pagination" ItemsPerPageOptions="@(new[] { 5, 10, 25 })" />
+
+    <PggmDataGrid TGridItem="Employee"
+                  Items="@_employees.AsQueryable()"
+                  Pagination="@_pagination">
+        <PropertyColumn TGridItem="Employee" TProp="string"  Title="Name"       Value="@(x => x.Name)"       Index="0" SortByExpression="@(x => x.Name)" IsDefaultSortColumn="true" />
+        <PropertyColumn TGridItem="Employee" TProp="string"  Title="Department" Value="@(x => x.Department)"  Index="1" SortByExpression="@(x => x.Department)" />
+        <PropertyColumn TGridItem="Employee" TProp="string"  Title="Location"   Value="@(x => x.Location)"    Index="2" />
+        <PropertyColumn TGridItem="Employee" TProp="decimal" Title="Salary"     Value="@(x => x.Salary)"      Index="3" Width="120px" Alignment="Pggm.Components.Components.PggmDataGrid.ColumnAlignment.Right" />
+    </PggmDataGrid>
+
+    <PggmPaginator State="@_pagination" NumericNavigation="true" />
+</DemoSection>
+
+<DemoSection Title="Numeric navigation &amp; custom summary">
+    <PggmPaginator State="@_pagination2"
+                   NumericNavigation="true"
+                   ItemsPerPageOptions="@(new[] { 5, 10, 20 })">
+        <SummaryTemplate Context="ctx">
+            Showing <strong>@ctx.FirstItem</strong>&nbsp;–&nbsp;<strong>@ctx.LastItem</strong>
+            of <strong>@ctx.TotalItems</strong> employees
+        </SummaryTemplate>
+    </PggmPaginator>
+
+    <PggmDataGrid TGridItem="Employee"
+                  Items="@_employees.AsQueryable()"
+                  Pagination="@_pagination2">
+        <PropertyColumn TGridItem="Employee" TProp="string"  Title="Name"       Value="@(x => x.Name)"       Index="0" SortByExpression="@(x => x.Name)" IsDefaultSortColumn="true" />
+        <PropertyColumn TGridItem="Employee" TProp="string"  Title="Department" Value="@(x => x.Department)"  Index="1" />
+        <PropertyColumn TGridItem="Employee" TProp="string"  Title="Location"   Value="@(x => x.Location)"    Index="2" />
+        <PropertyColumn TGridItem="Employee" TProp="decimal" Title="Salary"     Value="@(x => x.Salary)"      Index="3" Width="120px" Alignment="Pggm.Components.Components.PggmDataGrid.ColumnAlignment.Right" />
+    </PggmDataGrid>
+</DemoSection>
+
+@code {
+    private sealed record Employee(string Name, string Department, string Location, decimal Salary);
+
+    private readonly PaginationState _pagination  = new() { PageIndex = 0, PageSize = 5 };
+    private readonly PaginationState _pagination2 = new() { PageIndex = 0, PageSize = 5 };
+
+    private static readonly List<Employee> _employees =
+    [
+        new("Alice Jansen",    "Engineering", "Amsterdam", 95_000m),
+        new("Bob de Vries",    "Engineering", "Rotterdam", 75_000m),
+        new("Carla Smit",      "Product",     "Amsterdam", 90_000m),
+        new("David Bakker",    "Design",      "Utrecht",   72_000m),
+        new("Eva Mulder",      "Engineering", "Den Haag", 110_000m),
+        new("Frank Visser",    "HR",          "Amsterdam", 68_000m),
+        new("Greta Linden",    "Finance",     "Rotterdam", 80_000m),
+        new("Hans Peters",     "Engineering", "Eindhoven", 58_000m),
+        new("Iris Groot",      "Product",     "Amsterdam", 88_000m),
+        new("Jan Willems",     "Design",      "Utrecht",   65_000m),
+        new("Karen van Dam",   "Engineering", "Amsterdam",120_000m),
+        new("Lars Hoekstra",   "Marketing",   "Rotterdam", 82_000m),
+        new("Miriam Kok",      "Finance",     "Amsterdam", 91_000m),
+        new("Niels van Berg",  "Engineering", "Utrecht",   85_000m),
+        new("Olivia de Boer",  "HR",          "Den Haag",  74_000m),
+        new("Pieter Hendriks", "Product",     "Rotterdam", 78_000m),
+        new("Quinn Janssen",   "Design",      "Amsterdam", 95_000m),
+        new("Rosa Vermeer",    "Engineering", "Eindhoven", 67_000m),
+        new("Sander Brouwer",  "Marketing",   "Amsterdam", 70_000m),
+        new("Tessa van Loon",  "Finance",     "Rotterdam", 77_000m),
+    ];
+}

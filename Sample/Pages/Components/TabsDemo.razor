@@ -3,17 +3,17 @@
 
 <PageTitle>Tabs</PageTitle>
 
-<PggmHeader Level="1">PGGM Tabs</PggmHeader>
+<PggmHeading Level="1">PGGM Tabs</PggmHeading>
 
-<PggmHeader Level="2">Basic Tabs</PggmHeader>
+<PggmHeading Level="2">Basic Tabs</PggmHeading>
 <PggmTab OnTabChange="OnTabChanged">
   <PggmTabPanel Title="Tab 1" Active="true">
-    <PggmHeader Level="3">Content for Tab 1</PggmHeader>
+    <PggmHeading Level="3">Content for Tab 1</PggmHeading>
     <p>This is the content for the first tab. It can contain any HTML or Blazor components.</p>
   </PggmTabPanel>
   
   <PggmTabPanel Title="Tab 2">
-    <PggmHeader Level="3">Content for Tab 2</PggmHeader>
+    <PggmHeading Level="3">Content for Tab 2</PggmHeading>
     <p>This is the content for the second tab with different information.</p>
     <ul>
       <li>List item 1</li>
@@ -23,13 +23,13 @@
   </PggmTabPanel>
   
   <PggmTabPanel Title="Tab 3">
-    <PggmHeader Level="3">Content for Tab 3</PggmHeader>
+    <PggmHeading Level="3">Content for Tab 3</PggmHeading>
     <p>The third tab contains yet another set of content.</p>
     <button class="btn btn-primary">Sample Button</button>
   </PggmTabPanel>
 </PggmTab>
 
-<PggmHeader Level="2">Multiple Tab Example</PggmHeader>
+<PggmHeading Level="2">Multiple Tab Example</PggmHeading>
 <PggmTab OnTabChange="OnMultipleTabChanged">
   <PggmTabPanel Title="First Tab" Active="true">
     <p>Content for the first tab.</p>
@@ -56,7 +56,7 @@
   </PggmTabPanel>
 </PggmTab>
 
-<PggmHeader Level="2">Another Tab Example</PggmHeader>
+<PggmHeading Level="2">Another Tab Example</PggmHeading>
 <PggmTab OnTabChange="OnAnotherTabChanged">
   <PggmTabPanel Title="Example 1" Active="true">
     <p>Example tab content 1.</p>
@@ -67,7 +67,7 @@
   </PggmTabPanel>
 </PggmTab>
 
-<PggmHeader Level="2">Tab Demo with Panels</PggmHeader>
+<PggmHeading Level="2">Tab Demo with Panels</PggmHeading>
 <PggmTab OnTabChange="OnDemoTabChanged">
   <PggmTabPanel Title="Demo Tab 1" Active="true">
     <p>This is a demo tab with content.</p>
@@ -82,9 +82,9 @@
   </PggmTabPanel>
 </PggmTab>
 
-@* <PggmHeader Level="2">Event Information</PggmHeader>
+@* <PggmHeading Level="2">Event Information</PggmHeading>
 <div class="alert alert-info">
-  <PggmHeader Level="4">Tab Events</PggmHeader>
+  <PggmHeading Level="4">Tab Events</PggmHeading>
   <p><strong>Last Basic Tab Changed:</strong> @lastBasicTabIndex</p>
   <p><strong>Last Multiple Tab Changed:</strong> @lastMultipleTabIndex</p>
   <p><strong>Last Another Tab Changed:</strong> @lastAnotherTabIndex</p>

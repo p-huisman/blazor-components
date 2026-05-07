@@ -1,18 +1,18 @@
+using System.Linq;
+
 using Bunit;
-using Xunit;
+
 using Microsoft.Extensions.DependencyInjection;
+
 using Pggm.Components;
 using Pggm.Components.Services;
 
+using Xunit;
+
 namespace Pggm.Components.Tests;
 
-public class PggmTableTests : TestContext
+public class PggmTableTests : PggmTestContext
 {
-    public PggmTableTests()
-    {
-        Services.AddSingleton<PggmDesignSystemService>();
-    }
-
     [Fact]
     public void PggmTable_RendersWithBasicAttributes()
     {
@@ -66,15 +66,15 @@ public class PggmTableTests : TestContext
     public void PggmTable_RendersWithDifferentRemoteModes()
     {
         // Test simple mode
-        var simpleComponent = RenderComponent<PggmTable>(parameters => parameters
-            .Add(p => p.Remote, "simple"));
-        var simpleElement = simpleComponent.Find("pggm-table");
+        var simpleElement = RenderComponent<PggmTable>(parameters => parameters
+            .Add(p => p.Remote, "simple"))
+            .Find("pggm-table");
         Assert.Equal("simple", simpleElement.GetAttribute("remote"));
 
         // Test offset mode
-        var offsetComponent = RenderComponent<PggmTable>(parameters => parameters
-            .Add(p => p.Remote, "offset"));
-        var offsetElement = offsetComponent.Find("pggm-table");
+        var offsetElement = RenderComponent<PggmTable>(parameters => parameters
+            .Add(p => p.Remote, "offset"))
+            .Find("pggm-table");
         Assert.Equal("offset", offsetElement.GetAttribute("remote"));
     }
 
@@ -92,11 +92,11 @@ public class PggmTableTests : TestContext
         var component = RenderComponent<PggmTable>(parameters => parameters
             .Add(p => p.Data, (object)testData));
 
-        // Assert
+        // Assert: Data is NOT set as an HTML attribute – it is applied programmatically
+        // via PggmComponents.setProperty JS interop in OnAfterRenderAsync.
         var element = component.Find("pggm-table");
-        var dataAttribute = element.GetAttribute("data");
-        Assert.Contains("John", dataAttribute);
-        Assert.Contains("Jane", dataAttribute);
+        Assert.NotNull(element);
+        Assert.Null(element.GetAttribute("data"));
     }
 
     [Fact]

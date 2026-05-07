@@ -1,84 +1,11 @@
-@inherits PggmEventComponentBase
 @namespace Pggm.Components
+@inherits PggmEventComponentBase
 
-<pggm-notification @ref="ElementRef" @attributes="GetAttributes()">
+<pggm-notification @ref="ElementRef"
+    type="@Type"
+    close-label="@CloseLabel"
+    open="@Open"
+    closeable="@Closeable"
+    @attributes="GetAttributes()">
   @ChildContent
 </pggm-notification>
-
-@code {
-  public override string TagName => "pggm-notification";
-
-  /// <summary>
-  /// The notification type (informative, warning, error, success)
-  /// </summary>
-  [Parameter] public string Type { get; set; } = "informative";
-
-  /// <summary>
-  /// Whether the notification is closeable
-  /// </summary>
-  [Parameter] public bool Closeable { get; set; }
-
-  /// <summary>
-  /// The close button label for accessibility
-  /// </summary>
-  [Parameter] public string CloseLabel { get; set; } = "";
-
-  /// <summary>
-  /// Whether the notification is open/visible
-  /// </summary>
-  [Parameter] public bool Open { get; set; } = true;
-
-  
-  /// <summary>
-  /// Event callback for when the notification is dismissed
-  /// </summary>
-  [Parameter] public EventCallback OnDismiss { get; set; }
-
-  protected override IEnumerable<string> GetEventNames()
-  {
-    if (Closeable && OnDismiss.HasDelegate)
-    {
-      yield return "closeNotification";
-    }
-  }
-
-  protected override Dictionary<string, Func<object?, Task>> EventHandlers => new()
-  {
-    ["closeNotification"] = async (_) => {
-      await OnDismiss.InvokeAsync();
-    }
-  };
-
-  /// <summary>
-  /// Gets the combined attributes for the component
-  /// </summary>
-  protected override Dictionary<string, object> GetAttributes()
-  {
-    var attributes = base.GetAttributes();
-    
-    if (!string.IsNullOrEmpty(Type))
-      attributes["type"] = Type;
-      
-    if (Closeable)
-      attributes["closeable"] = true;
-
-    if (!string.IsNullOrEmpty(CloseLabel))
-      attributes["close-label"] = CloseLabel;
-      
-    if (Open)
-      attributes["open"] = true;
-    
-    return attributes;
-  }
-
-  /// <summary>
-  /// Notification type constants for better IntelliSense
-  /// </summary>
-  public static class NotificationTypes
-  {
-    public const string Informative = "informative";
-    public const string Warning = "warning";
-    public const string Error = "error";
-    public const string Success = "success";
-  }
-}

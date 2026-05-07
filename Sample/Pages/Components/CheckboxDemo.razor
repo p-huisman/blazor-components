@@ -1,252 +1,123 @@
 @page "/pggm-checkbox"
-
-@using Microsoft.AspNetCore.Components.Web
 @using System.ComponentModel.DataAnnotations
+@using Pggm.Components
 
 <PageTitle>PGGM Checkbox</PageTitle>
 
-<PggmHeader Level="1">PGGM Checkbox</PggmHeader>
+<PggmHeading Level="1">PGGM Checkbox</PggmHeading>
 
-<p>This page demonstrates the PGGM Checkbox component with various configurations and interactions.</p>
+<p>Demonstrates basic and form-integrated usage of the PGGM Checkbox components.</p>
 
-<section class="demo-section">
-    <PggmHeader Level="2">Basic Checkbox</PggmHeader>
-    <p>A simple checkbox with label:</p>
+<DemoSection Title="Basic Checkbox" Code="@basicCheckboxSource" CodeBehind="@basicCheckboxBehind">
+    <PggmCheckbox @bind-Value="basicChecked">Basic option</PggmCheckbox>
+    <p>Checked: <strong>@basicChecked</strong></p>
+</DemoSection>
 
-    <div class="checkbox-group">
-        <PggmCheckbox @bind-Checked="isBasicChecked" Name="basic-checkbox" Value="basic">
-            I agree to the terms and conditions
-        </PggmCheckbox>
-    </div>
-    
-    <p><strong>Status:</strong> @(isBasicChecked ? "Checked" : "Unchecked")</p>
-</section>
+<DemoSection Title="Multi-select PggmCheckboxForList" Code="@listCheckboxSource" CodeBehind="@listCheckboxBehind">
+    <p>Selected: <strong>@string.Join(", ", selectedItems)</strong></p>
+    <PggmStack Orientation="Orientation.Horizontal" HorizontalGap="16">
+        @foreach (var opt in options)
+        {
+            <PggmCheckboxForList TItem="string" Item="@opt" SelectedItems="@selectedItems" SelectedItemsChanged="@(items => selectedItems = items ?? new List<string>())">
+                @opt
+            </PggmCheckboxForList>
+        }
+    </PggmStack>
+</DemoSection>
 
-<section class="demo-section">
-    <PggmHeader Level="2">Checkbox with Description</PggmHeader>
-    <p>Checkbox with additional descriptive text:</p>
+<DemoSection Title="PggmCheckbox with description" Code="@descriptionCheckboxSource" CodeBehind="@descriptionCheckboxBehind">
+    <PggmCheckbox @bind-Value="boundValue" Description="This option enables the advanced feature set, which includes additional settings and capabilities.">
+        Accept terms
+    </PggmCheckbox>
+</DemoSection>
 
-    <div class="checkbox-group">
-        <PggmCheckbox @bind-Checked="isDescriptionChecked" 
-                      Description="This will enable email notifications for important updates"
-                      Name="description-checkbox" 
-                      Value="notifications">
-            Enable email notifications
-        </PggmCheckbox>
-    </div>
-    
-    <p><strong>Status:</strong> @(isDescriptionChecked ? "Checked" : "Unchecked")</p>
-</section>
 
-<section class="demo-section">
-    <PggmHeader Level="2">Required Checkbox</PggmHeader>
-    <p>A checkbox that is marked as required:</p>
-
-    <div class="checkbox-group">
-        <PggmCheckbox @bind-Checked="isRequiredChecked" 
-                      Required="true"
-                      Name="required-checkbox" 
-                      Value="required">
-            This field is required *
-        </PggmCheckbox>
-    </div>
-    
-    <p><strong>Status:</strong> @(isRequiredChecked ? "Checked" : "Unchecked")</p>
-</section>
-
-<section class="demo-section">
-    <PggmHeader Level="2">Disabled Checkbox</PggmHeader>
-    <p>Checkboxes in disabled state:</p>
-
-    <div class="checkbox-group">
-        <PggmCheckbox Checked="false" 
-                      Disabled="true"
-                      Name="disabled-unchecked" 
-                      Value="disabled1">
-            Disabled (Unchecked)
-        </PggmCheckbox>
-        
-        <PggmCheckbox Checked="true" 
-                      Disabled="true"
-                      Name="disabled-checked" 
-                      Value="disabled2">
-            Disabled (Checked)
-        </PggmCheckbox>
-    </div>
-</section>
-
-<section class="demo-section">
-    <PggmHeader Level="2">Indeterminate Checkbox</PggmHeader>
-    <p>A checkbox in indeterminate state (partial selection):</p>
-
-    <div class="checkbox-group">
-        <PggmCheckbox Indeterminate="true"
-                      Name="indeterminate-checkbox" 
-                      Value="indeterminate">
-            Indeterminate state
-        </PggmCheckbox>
-    </div>
-</section>
-
-<section class="demo-section">
-    <PggmHeader Level="2">Interactive Examples</PggmHeader>
-    <p>Checkboxes with event handling and dynamic behavior:</p>
-
-    <div class="checkbox-group">
-        <PggmCheckbox @bind-Checked="selectAll" 
-                      OnChange="HandleSelectAllChange"
-                      Name="select-all" 
-                      Value="all">
-            Select All
-        </PggmCheckbox>
-        
-        <div style="margin-left: 2rem;">
-            <PggmCheckbox @bind-Checked="option1" 
-                          OnChange="HandleIndividualChange"
-                          Name="option1" 
-                          Value="opt1">
-                Option 1
-            </PggmCheckbox>
-            
-            <PggmCheckbox @bind-Checked="option2" 
-                          OnChange="HandleIndividualChange"
-                          Name="option2" 
-                          Value="opt2">
-                Option 2
-            </PggmCheckbox>
-            
-            <PggmCheckbox @bind-Checked="option3" 
-                          OnChange="HandleIndividualChange"
-                          Name="option3" 
-                          Value="opt3">
-                Option 3
-            </PggmCheckbox>
-        </div>
-    </div>
-    
-    <p><strong>Selected options:</strong> @GetSelectedOptions()</p>
-</section>
-
-<section class="demo-section">
-    <PggmHeader Level="2">Form Integration</PggmHeader>
-    <p>Checkboxes in a form context:</p>
-
-    <EditForm Model="formModel" OnValidSubmit="HandleFormSubmit">
+<DemoSection Title="PggmCheckbox in EditForm" Code="@editFormCheckboxSource" CodeBehind="@editFormCheckboxBehind">
+    <EditForm Model="formModel" OnValidSubmit="HandleSubmit">
         <DataAnnotationsValidator />
-        <ValidationSummary />
-        
-        <div class="checkbox-group">
-            <PggmCheckbox @bind-Checked="formModel.AcceptTerms" 
-                          Required="true"
-                          Name="accept-terms" 
-                          Value="terms">
-                I accept the terms and conditions *
-            </PggmCheckbox>
-            
-            <PggmCheckbox @bind-Checked="formModel.SubscribeNewsletter" 
-                          Description="Receive updates about new features and products"
-                          Name="newsletter" 
-                          Value="newsletter">
-                Subscribe to newsletter
-            </PggmCheckbox>
-            
-            <PggmCheckbox @bind-Checked="formModel.EnableTwoFactor" 
-                          Description="Add an extra layer of security to your account"
-                          Name="two-factor" 
-                          Value="2fa">
-                Enable two-factor authentication
-            </PggmCheckbox>
-        </div>
-        
-        <div style="margin-top: 1rem;">
-            <PggmButton Type="submit" Appearance="primary">Submit Form</PggmButton>
-        </div>
+        <PggmValidationSummary>
+            <p>There are validation errors. Please fix them before submitting the form.</p>
+        </PggmValidationSummary>
+
+        <PggmCheckbox @bind-Value="formModel.AcceptTerms" Required="true">Accept terms</PggmCheckbox>
+        <PggmValidationMessage For="() => formModel.AcceptTerms" />
+
+        <PggmButton Type="@ButtonType.Submit" Appearance="@ButtonAppearance.Primary">Submit</PggmButton>
     </EditForm>
-    
-    @if (!string.IsNullOrEmpty(formMessage))
-    {
-        <p style="margin-top: 1rem; color: green;"><strong>@formMessage</strong></p>
-    }
-</section>
 
-<style>
-    .demo-section {
-        margin-bottom: 2rem;
-        padding: 1rem;
-        border: 1px solid #e0e0e0;
-        border-radius: 4px;
-    }
-
-    .checkbox-group > * {
-        margin-bottom: 0.5rem;
-        display: block;
-    }
-
-    .checkbox-group > *:last-child {
-        margin-bottom: 0;
-    }
-</style>
+    <p>Form AcceptTerms: <strong>@formModel.AcceptTerms</strong></p>
+</DemoSection>
 
 @code {
-    // Basic checkbox states
-    private bool isBasicChecked = false;
-    private bool isDescriptionChecked = false;
-    private bool isRequiredChecked = false;
+    private bool basicChecked = false;
 
-    // Interactive example state
-    private bool selectAll = false;
-    private bool option1 = false;
-    private bool option2 = false;
-    private bool option3 = false;
+    private bool boundValue = true;
 
-    // Form model
+    private List<string> options = new() { "Option A", "Option B", "Option C" };
+    private IList<string> selectedItems = new List<string> { "Option B" };
+
     private FormModel formModel = new();
-    private string formMessage = "";
 
-    public class FormModel
+    private void HandleSubmit()
     {
-        [Required(ErrorMessage = "You must accept the terms and conditions")]
-        public bool AcceptTerms { get; set; } = false;
-        
-        public bool SubscribeNewsletter { get; set; } = false;
-        
-        public bool EnableTwoFactor { get; set; } = false;
+        // no-op for demo
     }
 
-    private async Task HandleSelectAllChange(ChangeEventArgs args)
-    {
-        var isChecked = args.Value?.ToString()?.ToLower() == "true" || args.Value is true;
-        
-        option1 = isChecked;
-        option2 = isChecked;
-        option3 = isChecked;
-        
-        await InvokeAsync(StateHasChanged);
-    }
+    private string basicCheckboxSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmCheckbox @bind-Value=\"basicChecked\">Basic option</PggmCheckbox>",
+        "<p>Checked: <strong>@basicChecked</strong></p>");
 
-    private async Task HandleIndividualChange(ChangeEventArgs args)
-    {
-        await InvokeAsync(() =>
-        {
-            // Update select all state based on individual selections
-            selectAll = option1 && option2 && option3;
-            StateHasChanged();
-        });
-    }
+    private string basicCheckboxBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private bool basicChecked = false;");
 
-    private string GetSelectedOptions()
-    {
-        var selected = new List<string>();
-        if (option1) selected.Add("Option 1");
-        if (option2) selected.Add("Option 2");
-        if (option3) selected.Add("Option 3");
-        
-        return selected.Any() ? string.Join(", ", selected) : "None";
-    }
+    private string listCheckboxSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmStack Orientation=\"Orientation.Horizontal\" HorizontalGap=\"16\">",
+        "  @foreach (var opt in options)",
+        "  {",
+        "    <PggmCheckboxForList TItem=\"string\" Item=\"@opt\"",
+        "        SelectedItems=\"@selectedItems\"",
+        "        SelectedItemsChanged=\"@(items => selectedItems = items ?? new List<string>())\">",
+        "      @opt",
+        "    </PggmCheckboxForList>",
+        "  }",
+        "</PggmStack>");
 
-    private async Task HandleFormSubmit()
+    private string listCheckboxBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private List<string> options = new() { \"Option A\", \"Option B\", \"Option C\" };",
+        "private IList<string> selectedItems = new List<string> { \"Option B\" };");
+
+    private string descriptionCheckboxSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmCheckbox @bind-Value=\"boundValue\"",
+        "    Description=\"This option enables the advanced feature set, which includes additional settings and capabilities.\">",
+        "  Accept terms",
+        "</PggmCheckbox>");
+
+    private string descriptionCheckboxBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private bool boundValue = true;");
+
+    private string editFormCheckboxSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<EditForm Model=\"formModel\" OnValidSubmit=\"HandleSubmit\">",
+        "    <DataAnnotationsValidator />",
+        "    <PggmValidationSummary />",
+        "    <PggmCheckbox @bind-Value=\"formModel.AcceptTerms\">Accept terms</PggmCheckbox>",
+        "    <PggmValidationMessage For=\"() => formModel.AcceptTerms\" />",
+        "    <PggmButton Type=\"@ButtonType.Submit\" Appearance=\"@ButtonAppearance.Primary\">Submit</PggmButton>",
+        "</EditForm>");
+
+    private string editFormCheckboxBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private FormModel formModel = new();",
+        "private void HandleSubmit() { }",
+        "",
+        "// [Required] does NOT work on bool — use [MustBeTrue] instead",
+        "private class FormModel",
+        "{",
+        "    [MustBeTrue(ErrorMessage = \"U moet akkoord gaan met de voorwaarden\")]",
+        "    public bool AcceptTerms { get; set; }",
+        "}");
+
+    private class FormModel
     {
-        formMessage = $"Form submitted successfully! Terms: {formModel.AcceptTerms}, Newsletter: {formModel.SubscribeNewsletter}, 2FA: {formModel.EnableTwoFactor}";
-        await Task.CompletedTask;
+        [MustBeTrue(ErrorMessage = "U moet akkoord gaan met de voorwaarden")]
+        public bool AcceptTerms { get; set; }
     }
 }

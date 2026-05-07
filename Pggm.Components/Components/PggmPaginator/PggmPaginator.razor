@@ -1,0 +1,83 @@
+@namespace Pggm.Components
+@using Pggm.Components.Components.PggmDataGrid
+@implements IDisposable
+
+<nav class="pggm-paginator @Class" aria-label="Pagination">
+    <div class="pggm-paginator__summary">
+        @if (State?.TotalItemCount.HasValue == true)
+        {
+            var first = State.PageIndex * State.PageSize + 1;
+            var last = Math.Min(first + State.PageSize - 1, State.TotalItemCount!.Value);
+            @SummaryTemplate(new PaginatorSummaryContext(first, last, State.TotalItemCount!.Value))
+        }
+    </div>
+
+    @if (ItemsPerPageOptions is { Length: > 0 })
+    {
+        <div class="pggm-paginator__page-size">
+            <label class="pggm-paginator__page-size-label" for="@_pageSizeSelectId">@ItemsPerPageLabel</label>
+            <select id="@_pageSizeSelectId" class="pggm-paginator__page-size-select" value="@State?.PageSize"
+                    @onchange="OnPageSizeChangedAsync">
+                @foreach (var opt in ItemsPerPageOptions)
+                {
+                    <option value="@opt" selected="@(State?.PageSize == opt)">@opt</option>
+                }
+            </select>
+        </div>
+    }
+
+    <div class="pggm-paginator__controls">
+        <button class="pggm-paginator__btn" title="First page" aria-label="First page" disabled="@IsFirstPage"
+                @onclick="GoToFirstAsync">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left-pipe">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M7 6v12" />
+                <path d="M18 6l-6 6l6 6" />
+            </svg>
+        </button>
+        <button class="pggm-paginator__btn" title="Previous page" aria-label="Previous page" disabled="@IsFirstPage"
+                @onclick="GoToPreviousAsync">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M15 6l-6 6l6 6" />
+            </svg>
+        </button>
+
+        @if (NumericNavigation && State?.LastPageIndex.HasValue == true)
+        {
+            foreach (var pageNum in GetVisiblePageNumbers())
+            {
+                var capturedPage = pageNum;
+                if (pageNum < 0)
+                {
+                    <span class="pggm-paginator__ellipsis">…</span>
+                }
+                else
+                {
+                    <button
+                        class="pggm-paginator__btn pggm-paginator__btn--page @(State!.PageIndex == capturedPage ? "pggm-paginator__btn--current" : "")"
+                        aria-label="Page @(capturedPage + 1)" aria-current="@(State!.PageIndex == capturedPage ? "page" : null)"
+                        @onclick="() => GoToPageAsync(capturedPage)">
+                        @(capturedPage + 1)
+                    </button>
+                }
+            }
+        }
+
+        <button class="pggm-paginator__btn" title="Next page" aria-label="Next page" disabled="@IsLastPage"
+                @onclick="GoToNextAsync">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M9 6l6 6l-6 6" />
+            </svg>
+        </button>
+        <button class="pggm-paginator__btn" title="Last page" aria-label="Last page" disabled="@IsLastPage"
+                @onclick="GoToLastAsync">
+           <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right-pipe">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M6 6l6 6l-6 6" />
+                <path d="M17 5v13" />
+            </svg>
+        </button>
+    </div>
+</nav>

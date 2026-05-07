@@ -1,15 +1,19 @@
 // Tests for PggmInputDate component
 
 using Bunit;
-using Xunit;
-using Pggm.Components;
+
 using Microsoft.Extensions.DependencyInjection;
+
+using Pggm.Components;
+
+using Xunit;
 
 public class PggmInputDateTests : TestContext
 {
     public PggmInputDateTests()
     {
         Services.AddSingleton<Pggm.Components.Services.PggmDesignSystemService>();
+        JSInterop.SetupVoid("PggmComponents.setProperty", _ => true);
     }
     [Fact]
     public void PggmInputDate_RendersCorrectly()

@@ -1,20 +1,7 @@
-@inherits PggmComponentBase
 @namespace Pggm.Components
+@inherits PggmComponentBase
 
-<pggm-accordion @ref="ElementRef" @attributes="GetAttributes()">
+<pggm-accordion @ref="ElementRef" @attributes="GetAttributes()"
+    allow-multiple="@AllowMultiple">
   @ChildContent
 </pggm-accordion>
-
-@code {
-  public override string TagName => "pggm-accordion";
-
-  /// <summary>
-  /// Whether multiple accordion items can be open at the same time
-  /// </summary>
-  [Parameter] public bool AllowMultiple { get; set; }
-
-  protected override void AddComponentAttributes(Dictionary<string, object> attributes)
-  {
-    AttributeHelper.SetBooleanAttribute(attributes, "allow-multiple", AllowMultiple);
-  }
-}

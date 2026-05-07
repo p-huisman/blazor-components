@@ -240,3 +240,9 @@ pggm-table::part(tag)  {
   border-radius: 2px;
   font-weight: 600;
 }
+
+/* Hide Prism toolbar (toolbar plugin), keep line-numbers and other features */
+.code-toolbar .toolbar,
+.code-toolbar .toolbar * {
+  display: none !important;
+}

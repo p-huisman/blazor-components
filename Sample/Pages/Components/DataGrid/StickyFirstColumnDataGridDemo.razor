@@ -1,0 +1,117 @@
+@page "/pggm-datagrid-sticky-first-column"
+@using Pggm.Components.Components.PggmDataGrid
+
+<PageTitle>PGGM DataGrid Sticky First Column Demo</PageTitle>
+
+<PggmHeading Level="1">PGGM DataGrid - Sticky First Column</PggmHeading>
+
+<p>
+    Setting <code>StickyFirstColumn="true"</code> on <code>PggmDataGrid</code> pins the first column
+    so it stays visible when the user scrolls the grid horizontally. When the grid includes a
+    <code>SelectColumn</code>, both the selection column and the first data column are frozen.
+    Wrap the grid in a container with <code>overflow-x: auto</code> and a fixed width to trigger
+    horizontal scrolling.
+</p>
+
+<DemoSection Title="Sticky first column" Code="@_basicSource">
+    <div style="overflow-x:auto; max-width:480px;">
+        <PggmDataGrid TGridItem="Employee" Items="@_employees.AsQueryable()" StickyFirstColumn="true">
+            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Name"         Value="@(x => x.Name)"         Index="0" Width="160px" />
+            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Department"   Value="@(x => x.Department)"   Index="1" Width="160px" />
+            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Location"     Value="@(x => x.Location)"     Index="2" Width="160px" />
+            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Role"         Value="@(x => x.Role)"         Index="3" Width="200px" />
+            <PropertyColumn TGridItem="Employee" TProp="decimal" Title="Salary"       Value="@(x => x.Salary)"       Index="4" Width="120px"
+                            Alignment="ColumnAlignment.Right" />
+        </PggmDataGrid>
+    </div>
+</DemoSection>
+
+<DemoSection Title="Sticky first column with SelectColumn" Code="@_selectSource">
+    <p>
+        Both the <code>SelectColumn</code> and the <strong>Name</strong> column are frozen.
+    </p>
+    <div style="overflow-x:auto; max-width:480px;">
+        <PggmDataGrid TGridItem="Employee" Items="@_employees.AsQueryable()" StickyFirstColumn="true">
+            <SelectColumn TGridItem="Employee" Index="0" Width="40px" />
+            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Name"         Value="@(x => x.Name)"         Index="1" Width="160px" />
+            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Department"   Value="@(x => x.Department)"   Index="2" Width="160px" />
+            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Location"     Value="@(x => x.Location)"     Index="3" Width="160px" />
+            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Role"         Value="@(x => x.Role)"         Index="4" Width="200px" />
+            <PropertyColumn TGridItem="Employee" TProp="decimal" Title="Salary"       Value="@(x => x.Salary)"       Index="5" Width="120px"
+                            Alignment="ColumnAlignment.Right" />
+        </PggmDataGrid>
+    </div>
+</DemoSection>
+
+<DemoSection Title="Sticky + resizable columns" Code="@_resizableSource">
+    <p>
+        <code>StickyFirstColumn</code> and <code>ResizableColumns</code> can be combined.
+    </p>
+    <div style="overflow-x:auto; max-width:480px;">
+        <PggmDataGrid TGridItem="Employee" Items="@_employees.AsQueryable()" StickyFirstColumn="true" ResizableColumns="true">
+            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Name"         Value="@(x => x.Name)"         Index="0" Width="160px" MinWidth="80px" />
+            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Department"   Value="@(x => x.Department)"   Index="1" Width="160px" MinWidth="80px" />
+            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Location"     Value="@(x => x.Location)"     Index="2" Width="160px" MinWidth="60px" />
+            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Role"         Value="@(x => x.Role)"         Index="3" Width="200px" MinWidth="60px" />
+            <PropertyColumn TGridItem="Employee" TProp="decimal" Title="Salary"       Value="@(x => x.Salary)"       Index="4" Width="120px" MinWidth="80px"
+                            Alignment="ColumnAlignment.Right" />
+        </PggmDataGrid>
+    </div>
+</DemoSection>
+
+@code {
+    private sealed record Employee(string Name, string Department, string Location, string Role, decimal Salary);
+
+    private static readonly List<Employee> _employees =
+    [
+        new("Alice Jansen",    "Engineering",  "Amsterdam",    "Senior Engineer",       95_000m),
+        new("Bob de Vries",    "Engineering",  "Rotterdam",    "Engineer",              75_000m),
+        new("Carla Smit",      "Product",      "Amsterdam",    "Product Manager",       90_000m),
+        new("David Bakker",    "Design",       "Utrecht",      "UX Designer",           72_000m),
+        new("Eva Mulder",      "Engineering",  "Den Haag",     "Tech Lead",            110_000m),
+        new("Frank Visser",    "HR",           "Amsterdam",    "HR Business Partner",   68_000m),
+        new("Greta Linden",    "Finance",      "Rotterdam",    "Financial Analyst",     80_000m),
+        new("Hans Peters",     "Engineering",  "Eindhoven",    "Junior Engineer",       58_000m),
+        new("Iris Groot",      "Product",      "Amsterdam",    "Product Owner",         88_000m),
+        new("Jan Willems",     "Design",       "Utrecht",      "Visual Designer",       65_000m),
+        new("Karen van Dam",   "Engineering",  "Amsterdam",    "Staff Engineer",       120_000m),
+        new("Lars Hoekstra",   "Marketing",    "Rotterdam",    "Marketing Manager",     82_000m),
+    ];
+
+    private readonly string _basicSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<!-- Wrap the grid in an overflow-x:auto container to trigger horizontal scrolling -->",
+        "<div style=\"overflow-x:auto; max-width:480px;\">",
+        "    <PggmDataGrid TGridItem=\"Employee\" Items=\"@_employees.AsQueryable()\" StickyFirstColumn=\"true\">",
+        "        <PropertyColumn Title=\"Name\"       Value=\"@(x => x.Name)\"       Index=\"0\" Width=\"160px\" />",
+        "        <PropertyColumn Title=\"Department\" Value=\"@(x => x.Department)\"  Index=\"1\" Width=\"160px\" />",
+        "        <PropertyColumn Title=\"Location\"   Value=\"@(x => x.Location)\"    Index=\"2\" Width=\"160px\" />",
+        "        <PropertyColumn Title=\"Role\"       Value=\"@(x => x.Role)\"        Index=\"3\" Width=\"200px\" />",
+        "        <PropertyColumn Title=\"Salary\"     Value=\"@(x => x.Salary)\"      Index=\"4\" Width=\"120px\" />",
+        "    </PggmDataGrid>",
+        "</div>");
+
+    private readonly string _selectSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<!-- Both SelectColumn and first data column are frozen when StickyFirstColumn is true -->",
+        "<div style=\"overflow-x:auto; max-width:480px;\">",
+        "    <PggmDataGrid TGridItem=\"Employee\" Items=\"@_employees.AsQueryable()\" StickyFirstColumn=\"true\">",
+        "        <SelectColumn TGridItem=\"Employee\" Index=\"0\" Width=\"40px\" />",
+        "        <PropertyColumn Title=\"Name\"       Value=\"@(x => x.Name)\"       Index=\"1\" Width=\"160px\" />",
+        "        <PropertyColumn Title=\"Department\" Value=\"@(x => x.Department)\"  Index=\"2\" Width=\"160px\" />",
+        "        <PropertyColumn Title=\"Location\"   Value=\"@(x => x.Location)\"    Index=\"3\" Width=\"160px\" />",
+        "        <PropertyColumn Title=\"Role\"       Value=\"@(x => x.Role)\"        Index=\"4\" Width=\"200px\" />",
+        "        <PropertyColumn Title=\"Salary\"     Value=\"@(x => x.Salary)\"      Index=\"5\" Width=\"120px\" />",
+        "    </PggmDataGrid>",
+        "</div>");
+
+    private readonly string _resizableSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<!-- StickyFirstColumn and ResizableColumns can be combined -->",
+        "<div style=\"overflow-x:auto; max-width:480px;\">",
+        "    <PggmDataGrid TGridItem=\"Employee\" Items=\"@_employees.AsQueryable()\" StickyFirstColumn=\"true\" ResizableColumns=\"true\">",
+        "        <PropertyColumn Title=\"Name\"       Value=\"@(x => x.Name)\"       Index=\"0\" Width=\"160px\" MinWidth=\"80px\" />",
+        "        <PropertyColumn Title=\"Department\" Value=\"@(x => x.Department)\"  Index=\"1\" Width=\"160px\" MinWidth=\"80px\" />",
+        "        <PropertyColumn Title=\"Location\"   Value=\"@(x => x.Location)\"    Index=\"2\" Width=\"160px\" MinWidth=\"60px\" />",
+        "        <PropertyColumn Title=\"Role\"       Value=\"@(x => x.Role)\"        Index=\"3\" Width=\"200px\" MinWidth=\"60px\" />",
+        "        <PropertyColumn Title=\"Salary\"     Value=\"@(x => x.Salary)\"      Index=\"4\" Width=\"120px\" MinWidth=\"80px\" />",
+        "    </PggmDataGrid>",
+        "</div>");
+}

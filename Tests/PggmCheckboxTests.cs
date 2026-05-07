@@ -1,11 +1,13 @@
 // PggmCheckboxTests.cs
-using Xunit;
 using Bunit;
+
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Tests
+using Xunit;
+
+namespace Pggm.Components.Tests
 {
-    public class PggmCheckboxTests : TestContext
+    public class PggmCheckboxTests : PggmTestContext
     {
         [Fact]
         public void Should_Render_Correctly()
@@ -18,6 +20,7 @@ namespace Tests
 
             // Assert
             cut.MarkupMatches("<pggm-checkbox ></pggm-checkbox>");
+            Assert.NotNull(cut.Markup);
         }
 
         // Add more tests as needed

@@ -1,7 +1,9 @@
-using Pggm.Components.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
+
+using Pggm.Components.Services;
+using Pggm.Components.Components.PggmDialog.Services;
 
 namespace Pggm.Components.Extensions;
 
@@ -59,6 +61,7 @@ public static class ServiceCollectionExtensions
 
         services.TryAddSingleton(options);
         services.TryAddScoped<PggmDesignSystemService>();
+        services.TryAddScoped<IDialogService, PggmDialogService>();
 
         return services;
     }
