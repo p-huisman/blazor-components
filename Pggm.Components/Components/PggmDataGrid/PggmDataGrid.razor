@@ -6,7 +6,8 @@
 
 
 <div class="pggm-data-grid @(EnableVirtualization ? "pggm-data-grid--virtualized" : "") @(AutoItemsPerPage ? "pggm-data-grid--auto-height" : "") @(InternalContext.Columns.Any(c => c is SelectColumn<TGridItem>) || InternalContext.SingleSelect ? "pggm-data-grid--selectable" : "") @(InternalContext.SingleSelect ? "pggm-data-grid--single-selectable" : "")"
-    id="@_gridId" @ref="_rootElement" role="grid" aria-label="@AriaLabel" @onkeydown="HandleGridKeyDown">
+    id="@_gridId" @ref="_rootElement" role="grid" aria-label="@AriaLabel" @onkeydown="HandleGridKeyDown"
+    style="@(EnableVirtualization ? $"--pggm-data-grid-height: {Height ?? "400px"};" : "")">
     <CascadingValue Value="InternalContext">
         @ChildContent
     </CascadingValue>

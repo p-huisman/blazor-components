@@ -268,14 +268,8 @@ namespace Pggm.Components.Components.PggmDataGrid
 
                 if (EnableVirtualization)
                 {
-                    // Render the TableVirtualize component now that columns are collected
-                    await InvokeAsync(StateHasChanged);
-                    // Yield to allow _tableVirtualizeRef to be captured from the new render
-                    await Task.Yield();
-                    if (_tableVirtualizeRef is not null)
-                    {
-                        await _tableVirtualizeRef.RefreshDataAsync();
-                    }
+                    // Request a render to display the TableVirtualize component now that columns are collected
+                    StateHasChanged();
                 }
                 else
                 {
