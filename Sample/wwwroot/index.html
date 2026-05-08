@@ -15,19 +15,8 @@
     <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" /></noscript>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" media="print" onload="this.media='all'" />
     <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" /></noscript>
-    <script src="/js/p-auth.js" type="module"></script>
 </head>
-
 <body>
-     <p-auth sw-url="/sw.js" sw-scope="/">
-        <p-code-flow 
-        discovery-url="https://login.microsoftonline.com/9e3ee5fe-3a99-45db-ac6e-691e86febef3/v2.0/"
-        client-id="c8554260-a059-4bc8-b66b-f1632631d9af"
-        scope="openid profile"
-        callback-path="/"
-        url-pattern="(apiservice.o.pfzw.nl|api.apim.o.pggm-cloud.nl)"
-        ></p-code-flow>
-    </p-auth>
     
     <div id="app">
         <svg class="loading-progress">
