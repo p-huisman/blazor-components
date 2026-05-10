@@ -1,0 +1,179 @@
+@using Pggm.Components.Components.PggmDataGrid
+@typeparam TGridItem
+@inject IJSRuntime JSRuntime
+
+    <PggmStack Class="filter-dialog-container" Orientation='Pggm.Components.Orientation.Vertical' VerticalGap='8'>
+        <PggmStack Orientation='Pggm.Components.Orientation.Horizontal' HorizontalAlignment='Pggm.Components.HorizontalAlignment.Left' HorizontalGap='8'>
+            <PggmSelect TOption="string" @bind-Value="_operator" @onkeydown="HandleInputKeyDown">
+                @if (FilterType == FilterType.Number)
+                {
+                    <option value="equals">equals</option>
+                    <option value="notEquals">not equals</option>
+                    <option value="greaterThan">greater than</option>
+                    <option value="greaterThanOrEqual">greater than or equal</option>
+                    <option value="lessThan">less than</option>
+                    <option value="lessThanOrEqual">less than or equal</option>
+                    <option value="between">between</option>
+                }
+                else if (FilterType == FilterType.Date)
+                {
+                    <option value="equals">equals</option>
+                    <option value="before">before</option>
+                    <option value="after">after</option>
+                    <option value="between">between</option>
+                }
+                else
+                {
+                    <option value="contains">contains</option>
+                    <option value="equals">equals</option>
+                    <option value="startsWith">starts with</option>
+                    <option value="endsWith">ends with</option>
+                }
+            </PggmSelect>
+            @if (FilterType == FilterType.Date)
+            {
+                @if (_operator == "between")
+                {
+                    <PggmStack Orientation='Pggm.Components.Orientation.Vertical' VerticalGap='4'>
+                        <PggmInputDate @ref="_inputDateRef" @bind-Value="_value" />
+                        <PggmInputDate @bind-Value="_value2" />
+                    </PggmStack>
+                }
+                else
+                {
+                    <PggmInputDate @ref="_inputDateRef" @bind-Value="_value" />
+                }
+            }
+            else
+            {
+                @if (_operator == "between")
+                {
+                    <PggmStack Orientation='Pggm.Components.Orientation.Vertical' VerticalGap='4'>
+                        <PggmInput @ref="_inputRef" @bind-Value="_value" Placeholder="@(FilterType == FilterType.Number ? "From" : "From")"
+                                   Type="@InputType" @onkeydown="HandleInputKeyDown" />
+                        <PggmInput @bind-Value="_value2" Placeholder="To"
+                                   Type="@InputType" @onkeydown="HandleInputKeyDown" />
+                    </PggmStack>
+                }
+                else
+                {
+                    <PggmInput @ref="_inputRef" @bind-Value="_value" Placeholder="@(FilterType == FilterType.Number ? "Number" : "Filter value")"
+                               Type="@InputType" @onkeydown="HandleInputKeyDown" />
+                }
+            }
+        </PggmStack>
+        @if (FilterType == FilterType.String)
+        {
+            <PggmStack Orientation='Pggm.Components.Orientation.Horizontal' HorizontalAlignment='Pggm.Components.HorizontalAlignment.Left' HorizontalGap='8' MarginTop='8'>
+                <PggmCheckbox @bind-Checked="_caseSensitive" @onkeydown="HandleInputKeyDown">Case sensitive</PggmCheckbox>
+            </PggmStack>
+        }
+        <PggmStack Orientation='Pggm.Components.Orientation.Horizontal' HorizontalAlignment='Pggm.Components.HorizontalAlignment.End' HorizontalGap='8' MarginTop='8'>
+            <PggmButton Appearance="@Enums.ButtonAppearance.Primary" @onclick="Apply">Apply</PggmButton>
+            <PggmButton Appearance="@Enums.ButtonAppearance.Secondary" @onclick="Clear">Clear</PggmButton>
+        </PggmStack>
+    </PggmStack>
+
+
+@code {
+    [Parameter] public FilterDescriptor? Filter { get; set; }
+    [Parameter] public FilterType FilterType { get; set; } = FilterType.String;
+    [Parameter] public bool IsOpen { get; set; }
+    [Parameter] public EventCallback<FilterDescriptor> OnApply { get; set; }
+    [Parameter] public EventCallback OnClearFilter { get; set; }
+
+    private string _operator = "contains";
+    private string? _value;
+    private string? _value2;
+    private bool _caseSensitive;
+
+    private PggmInput? _inputRef;
+    private PggmInputDate? _inputDateRef;
+    private FilterDescriptor? _lastSyncedFilter;
+    private FilterType _lastSyncedFilterType;
+    private bool _lastIsOpen;
+    private bool _focusOnNextRender;
+
+    private string InputType => FilterType == FilterType.Number ? "number" : "text";
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        bool filterChanged = !ReferenceEquals(Filter, _lastSyncedFilter);
+        bool typeChanged = FilterType != _lastSyncedFilterType;
+
+        if (IsOpen && !_lastIsOpen)
+            _focusOnNextRender = true;
+        _lastIsOpen = IsOpen;
+
+        if (!filterChanged && !typeChanged) return;
+
+        _lastSyncedFilter = Filter;
+        _lastSyncedFilterType = FilterType;
+
+        if (Filter is null)
+        {
+            _operator = FilterType switch
+            {
+                FilterType.Number => "equals",
+                FilterType.Date => "equals",
+                _ => "contains"
+            };
+            _value = null;
+            _value2 = null;
+            _caseSensitive = false;
+        }
+        else
+        {
+            _operator = Filter.Operator ?? _operator;
+            _value = Filter.Value;
+            _value2 = Filter.Values?.Length > 1 ? Filter.Values[1] : null;
+            _caseSensitive = Filter.CaseSensitive;
+        }
+    }
+
+    protected override async System.Threading.Tasks.Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_focusOnNextRender)
+        {
+            _focusOnNextRender = false;
+            await System.Threading.Tasks.Task.Delay(150);
+            try
+            {
+                if (FilterType == FilterType.Date && _inputDateRef is not null)
+                    await JSRuntime.InvokeVoidAsync("PggmComponents.callElementMethod", _inputDateRef.ElementRef, "focus");
+                else if (_inputRef is not null)
+                    await _inputRef.ElementRef.FocusAsync();
+            }
+            catch { /* ignore focus errors */ }
+        }
+    }
+
+    private async System.Threading.Tasks.Task Apply()
+    {
+        var fd = new FilterDescriptor
+        {
+            FilterType = FilterType,
+            Operator = _operator,
+            Value = _value,
+            Values = _operator == "between" ? new[] { _value ?? string.Empty, _value2 ?? string.Empty } : null,
+            CaseSensitive = _caseSensitive
+        };
+        await OnApply.InvokeAsync(fd);
+    }
+
+    private async System.Threading.Tasks.Task HandleInputKeyDown(KeyboardEventArgs e)
+    {
+        if (e?.Key == "Enter")
+        {
+            await Apply();
+        }
+    }
+
+    private async System.Threading.Tasks.Task Clear()
+    {
+        await OnClearFilter.InvokeAsync();
+    }
+}
+

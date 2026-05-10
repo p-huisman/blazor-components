@@ -41,6 +41,24 @@ namespace Pggm.Components.Components.PggmDataGrid
         public bool ShowSortButton { get; set; } = true;
 
         /// <summary>
+        /// When <c>true</c>, the column exposes a filter UI and participates in grid filtering.
+        /// </summary>
+        [Parameter]
+        public bool Filterable { get; set; }
+
+        /// <summary>
+        /// Optional field identifier used for filter keys. If not set the column Title may be used.
+        /// </summary>
+        [Parameter]
+        public string? Field { get; set; }
+
+        /// <summary>
+        /// The type of filter to show for this column. Defaults to String.
+        /// </summary>
+        [Parameter]
+        public FilterType FilterType { get; set; } = FilterType.String;
+
+        /// <summary>
         /// When <c>true</c>, this column renders the expand/collapse toggle for hierarchical (tree) rows.
         /// Only one column per grid should have this set to <c>true</c>, and it should be the first column.
         /// </summary>

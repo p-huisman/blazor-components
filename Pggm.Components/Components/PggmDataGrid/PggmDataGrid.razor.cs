@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Microsoft.AspNetCore.Components.Web;
 using Pggm.Components.Base;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Pggm.Components.Components.PggmDataGrid
 {
@@ -101,6 +103,9 @@ namespace Pggm.Components.Components.PggmDataGrid
         private bool _hasSetInitialFocus = false;
         private bool _keyboardNavEnabled = false;
         private readonly Dictionary<int, TGridItem> _virtualizedItemsByRow = new();
+        private bool _filterDialogOpen;
+        private ColumnBase<TGridItem>? _activeFilterColumn;
+
 
         [Parameter]
         public IQueryable<TGridItem>? Items { get; set; }
@@ -168,6 +173,13 @@ namespace Pggm.Components.Components.PggmDataGrid
         /// </summary>
         [Parameter]
         public bool ResizableColumns { get; set; }
+
+        /// <summary>
+        /// When <c>true</c>, columns that opt in with <see cref="ColumnBase{TGridItem}.Filterable"/>
+        /// will render a small filter button and support column filtering.
+        /// </summary>
+        [Parameter]
+        public bool EnableColumnFiltering { get; set; } = false;
 
         /// <summary>
         /// When <c>true</c>, the number of rows displayed per page adapts automatically to the
@@ -244,6 +256,15 @@ namespace Pggm.Components.Components.PggmDataGrid
                 _ = SelectedItemsChangedCallback.InvokeAsync(null);
             };
             InternalContext.SelectionChanged += _selectionChangedHandler;
+            // react to filter changes (local or remote) by refreshing data
+            InternalContext.FiltersChanged += () =>
+            {
+                _ = InvokeAsync(async () =>
+                {
+                    _ = RefreshDataAsync(CancellationToken.None);
+                    await InvokeAsync(StateHasChanged);
+                });
+            };
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -608,6 +629,31 @@ namespace Pggm.Components.Components.PggmDataGrid
                     ? _currentSortColumn.SortBy.Apply(Items, _currentSortAscending)
                     : Items;
 
+                // Apply active column filters (only PropertyColumn with FilterByExpression and string type supported for now)
+                var filters = InternalContext.GetFilters();
+                foreach (var fd in filters.Values)
+                {
+                    if (string.IsNullOrWhiteSpace(fd.Field)) continue;
+                    var col = InternalContext.Columns.FirstOrDefault(c => string.Equals(c.Field ?? c.Title, fd.Field, StringComparison.Ordinal));
+                    if (col is null) continue;
+                    var selectorObj = col.GetType().GetProperty("FilterByExpression")?.GetValue(col) as LambdaExpression;
+                    // If column didn't provide a FilterByExpression, attempt to build one from the Field name for string properties
+                    if (selectorObj is null && !string.IsNullOrWhiteSpace(fd.Field))
+                    {
+                        var itemType = typeof(TGridItem);
+                        var prop = itemType.GetProperty(fd.Field);
+                        if (prop is not null && prop.PropertyType == typeof(string))
+                        {
+                            var param = Expression.Parameter(itemType, "x");
+                            var body = Expression.Property(param, prop);
+                            selectorObj = Expression.Lambda(body, param);
+                        }
+                    }
+                    var pred = BuildPredicateFromDescriptor(selectorObj, fd);
+                    if (pred is not null)
+                        query = query.Where(pred);
+                }
+
                 _totalItemCount = query.Count();
 
                 if (Pagination is not null)
@@ -728,6 +774,19 @@ namespace Pggm.Components.Components.PggmDataGrid
                 else if (Items is not null)
                 {
                     var query = request.ApplySorting(Items);
+                    // Apply active filters to the query (local Items path)
+                    var filters = InternalContext.GetFilters();
+                    foreach (var fd in filters.Values)
+                    {
+                        if (string.IsNullOrWhiteSpace(fd.Field)) continue;
+                        var col = InternalContext.Columns.FirstOrDefault(c => string.Equals(c.Field ?? c.Title, fd.Field, StringComparison.Ordinal));
+                        if (col is null) continue;
+                        var selectorObj = col.GetType().GetProperty("FilterByExpression")?.GetValue(col) as LambdaExpression;
+                        var pred = BuildPredicateFromDescriptor(selectorObj, fd);
+                        if (pred is not null)
+                            query = query.Where(pred);
+                    }
+
                     var result = query.Skip(request.StartIndex);
                     if (request.Count.HasValue)
                     {
@@ -858,6 +917,9 @@ namespace Pggm.Components.Components.PggmDataGrid
         private async Task OnHeaderClicked(ColumnBase<TGridItem> col)
         {
             if (col is null) return;
+            if (EnableColumnFiltering && col.Filterable && _filterDialogOpen && _activeFilterColumn == col)
+                return;
+
             if (col.Sortable == true || col.IsDefaultSortColumn || col.SortBy is not null)
             {
                 await ToggleSort(col);
@@ -867,6 +929,207 @@ namespace Pggm.Components.Components.PggmDataGrid
         private void OnRowClicked(TGridItem item)
         {
             InternalContext.ToggleItem(item);
+        }
+
+        private void OpenFilterDialog(ColumnBase<TGridItem> col)
+        {
+            _activeFilterColumn = col;
+            _filterDialogOpen = true;
+            StateHasChanged();
+        }
+
+        private void CloseFilterDialog()
+        {
+            _filterDialogOpen = false;
+            StateHasChanged();
+        }
+
+        private FilterDescriptor? GetFilterForColumn(ColumnBase<TGridItem> column)
+        {
+            var key = column.Field ?? column.Title;
+            if (key is null) return null;
+            if (InternalContext.Filters.TryGetValue(key, out var fd)) return fd;
+            return null;
+        }
+
+        private bool IsColumnFiltered(ColumnBase<TGridItem> column)
+        {
+            var fd = GetFilterForColumn(column);
+            return fd is not null && !string.IsNullOrEmpty(fd.Value);
+        }
+
+        private async Task ApplyFilter(ColumnBase<TGridItem> column, FilterDescriptor fd)
+        {
+            var key = column.Field ?? column.Title;
+            if (key is null) return;
+            InternalContext.SetFilter(key, fd);
+            if (EnableVirtualization && _tableVirtualizeRef is not null)
+            {
+                await _tableVirtualizeRef.RefreshDataAsync();
+            }
+            else
+            {
+                await RefreshDataAsync(CancellationToken.None);
+                await InvokeAsync(StateHasChanged);
+            }
+        }
+
+        private async Task ClearFilter(ColumnBase<TGridItem> column)
+        {
+            var key = column.Field ?? column.Title;
+            if (key is null) return;
+            InternalContext.ClearFilter(key);
+            if (EnableVirtualization && _tableVirtualizeRef is not null)
+            {
+                await _tableVirtualizeRef.RefreshDataAsync();
+            }
+            else
+            {
+                await RefreshDataAsync(CancellationToken.None);
+                await InvokeAsync(StateHasChanged);
+            }
+        }
+
+        private static Expression<Func<TGridItem, bool>>? BuildPredicateFromDescriptor(LambdaExpression? selector, FilterDescriptor fd)
+        {
+            if (selector is null || fd is null) return null;
+
+            var param = selector.Parameters[0];
+            Expression body = selector.Body;
+            if (body.NodeType == ExpressionType.Convert && body is UnaryExpression ue)
+                body = ue.Operand;
+
+            var propType = Nullable.GetUnderlyingType(selector.ReturnType) ?? selector.ReturnType;
+
+            // ── Number filtering ────────────────────────────────────────────────────
+            if (fd.FilterType == FilterType.Number || (fd.FilterType == FilterType.String && (propType == typeof(int) || propType == typeof(long) || propType == typeof(double) || propType == typeof(float) || propType == typeof(decimal))))
+            {
+                if (string.IsNullOrEmpty(fd.Value) && fd.Operator != "between") return null;
+                if (!double.TryParse(fd.Value, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var numVal)) return null;
+
+                Expression memberAsDouble = Expression.Convert(body, typeof(double));
+
+                if (fd.Operator == "between")
+                {
+                    if (fd.Values is not { Length: >= 2 }) return null;
+                    if (!double.TryParse(fd.Values[0], System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var lo)) return null;
+                    if (!double.TryParse(fd.Values[1], System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var hi)) return null;
+                    var between = Expression.AndAlso(
+                        Expression.GreaterThanOrEqual(memberAsDouble, Expression.Constant(lo)),
+                        Expression.LessThanOrEqual(memberAsDouble, Expression.Constant(hi)));
+                    return Expression.Lambda<Func<TGridItem, bool>>(between, param);
+                }
+
+                var constDouble = Expression.Constant(numVal);
+                Expression numCmp = fd.Operator switch
+                {
+                    "notEquals" => Expression.NotEqual(memberAsDouble, constDouble),
+                    "greaterThan" => Expression.GreaterThan(memberAsDouble, constDouble),
+                    "greaterThanOrEqual" => Expression.GreaterThanOrEqual(memberAsDouble, constDouble),
+                    "lessThan" => Expression.LessThan(memberAsDouble, constDouble),
+                    "lessThanOrEqual" => Expression.LessThanOrEqual(memberAsDouble, constDouble),
+                    _ => Expression.Equal(memberAsDouble, constDouble)
+                };
+                return Expression.Lambda<Func<TGridItem, bool>>(numCmp, param);
+            }
+
+            // ── Date filtering ──────────────────────────────────────────────────────
+            if (fd.FilterType == FilterType.Date || (fd.FilterType == FilterType.String && (propType == typeof(DateTime) || propType == typeof(DateOnly) || propType == typeof(DateTimeOffset))))
+            {
+                if (string.IsNullOrEmpty(fd.Value) && fd.Operator != "between") return null;
+
+                if (propType == typeof(DateOnly))
+                {
+                    if (!DateOnly.TryParse(fd.Value, out var dateVal)) return null;
+                    Expression memberAsDate = body;
+
+                    if (fd.Operator == "between")
+                    {
+                        if (fd.Values is not { Length: >= 2 }) return null;
+                        if (!DateOnly.TryParse(fd.Values[0], out var lo)) return null;
+                        if (!DateOnly.TryParse(fd.Values[1], out var hi)) return null;
+                        var between = Expression.AndAlso(
+                            Expression.GreaterThanOrEqual(memberAsDate, Expression.Constant(lo)),
+                            Expression.LessThanOrEqual(memberAsDate, Expression.Constant(hi)));
+                        return Expression.Lambda<Func<TGridItem, bool>>(between, param);
+                    }
+
+                    Expression dateCmp = fd.Operator switch
+                    {
+                        "before" => Expression.LessThan(memberAsDate, Expression.Constant(dateVal)),
+                        "after" => Expression.GreaterThan(memberAsDate, Expression.Constant(dateVal)),
+                        _ => Expression.Equal(memberAsDate, Expression.Constant(dateVal))
+                    };
+                    return Expression.Lambda<Func<TGridItem, bool>>(dateCmp, param);
+                }
+                else
+                {
+                    if (!DateTime.TryParse(fd.Value, out var dtVal)) return null;
+                    // Normalize to Date portion for date-only comparisons
+                    Expression memberAsDate = Expression.Property(Expression.Convert(body, typeof(DateTime)), nameof(DateTime.Date));
+
+                    if (fd.Operator == "between")
+                    {
+                        if (fd.Values is not { Length: >= 2 }) return null;
+                        if (!DateTime.TryParse(fd.Values[0], out var lo)) return null;
+                        if (!DateTime.TryParse(fd.Values[1], out var hi)) return null;
+                        var between = Expression.AndAlso(
+                            Expression.GreaterThanOrEqual(memberAsDate, Expression.Constant(lo.Date)),
+                            Expression.LessThanOrEqual(memberAsDate, Expression.Constant(hi.Date)));
+                        return Expression.Lambda<Func<TGridItem, bool>>(between, param);
+                    }
+
+                    Expression dateCmp = fd.Operator switch
+                    {
+                        "before" => Expression.LessThan(memberAsDate, Expression.Constant(dtVal.Date)),
+                        "after" => Expression.GreaterThan(memberAsDate, Expression.Constant(dtVal.Date)),
+                        _ => Expression.Equal(memberAsDate, Expression.Constant(dtVal.Date))
+                    };
+                    return Expression.Lambda<Func<TGridItem, bool>>(dateCmp, param);
+                }
+            }
+
+            // ── String filtering ────────────────────────────────────────────────────
+            if (string.IsNullOrEmpty(fd.Value)) return null;
+            if (propType != typeof(string)) return null;
+
+            var value = fd.Value ?? string.Empty;
+            if (!fd.CaseSensitive)
+                value = value.ToLowerInvariant();
+
+            MethodInfo? toLowerMethod = typeof(string).GetMethod("ToLower", Type.EmptyTypes);
+            MethodInfo? containsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) });
+            MethodInfo? startsWithMethod = typeof(string).GetMethod("StartsWith", new[] { typeof(string) });
+            MethodInfo? endsWithMethod = typeof(string).GetMethod("EndsWith", new[] { typeof(string) });
+
+            Expression memberExpr = body;
+            Expression memberForCompare = memberExpr;
+            if (!fd.CaseSensitive)
+                memberForCompare = Expression.Call(memberExpr, toLowerMethod!);
+
+            var constExpr = Expression.Constant(value, typeof(string));
+
+            Expression comparison;
+            switch (fd.Operator)
+            {
+                case "equals":
+                    comparison = Expression.Equal(memberForCompare, constExpr);
+                    break;
+                case "startsWith":
+                    comparison = Expression.Call(memberForCompare, startsWithMethod!, constExpr);
+                    break;
+                case "endsWith":
+                    comparison = Expression.Call(memberForCompare, endsWithMethod!, constExpr);
+                    break;
+                default:
+                case "contains":
+                    comparison = Expression.Call(memberForCompare, containsMethod!, constExpr);
+                    break;
+            }
+
+            var notNull = Expression.NotEqual(memberExpr, Expression.Constant(null, typeof(string)));
+            var combined = Expression.AndAlso(notNull, comparison);
+            return Expression.Lambda<Func<TGridItem, bool>>(combined, param);
         }
 
         internal async Task ToggleExpandedAsync(TGridItem item)

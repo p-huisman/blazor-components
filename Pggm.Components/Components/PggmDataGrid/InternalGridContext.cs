@@ -6,6 +6,12 @@ namespace Pggm.Components.Components.PggmDataGrid
     {
         internal List<ColumnBase<TGridItem>> Columns { get; } = new();
 
+        // Active column filters keyed by field identifier
+        internal Dictionary<string, FilterDescriptor> Filters { get; } = new();
+
+        // Event raised when filters change (used to notify grid/remote provider)
+        internal event Action? FiltersChanged;
+
         // Selection state for simple SelectColumn support
         internal HashSet<TGridItem> SelectedItems { get; } = new();
         internal bool SingleSelect { get; set; } = false;
@@ -29,6 +35,45 @@ namespace Pggm.Components.Components.PggmDataGrid
         {
             Columns.Remove(column);
         }
+
+        /// <summary>
+        /// Set or update a filter for the specified field.
+        /// </summary>
+        internal void SetFilter(string field, FilterDescriptor? descriptor)
+        {
+            if (string.IsNullOrWhiteSpace(field)) return;
+            if (descriptor is null)
+            {
+                if (Filters.Remove(field))
+                    {
+                        System.Console.WriteLine($"[InternalGridContext] Cleared filter for '{field}'");
+                        FiltersChanged?.Invoke();
+                    }
+                return;
+            }
+            descriptor.Field = field;
+            Filters[field] = descriptor;
+            System.Console.WriteLine($"[InternalGridContext] Set filter for '{field}': op={descriptor.Operator}, value={descriptor.Value}, case={descriptor.CaseSensitive}");
+            FiltersChanged?.Invoke();
+        }
+
+        /// <summary>
+        /// Clear the filter for the specified field.
+        /// </summary>
+        internal void ClearFilter(string field)
+        {
+            if (string.IsNullOrWhiteSpace(field)) return;
+            if (Filters.Remove(field))
+            {
+                System.Console.WriteLine($"[InternalGridContext] ClearFilter called for '{field}'");
+                FiltersChanged?.Invoke();
+            }
+        }
+
+        /// <summary>
+        /// Get active filters snapshot.
+        /// </summary>
+        internal IReadOnlyDictionary<string, FilterDescriptor> GetFilters() => Filters;
 
         internal bool IsSelected(TGridItem item) => SelectedItems.Contains(item);
 

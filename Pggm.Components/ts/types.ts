@@ -34,7 +34,7 @@ export interface PggmComponentsNamespace {
   forceCleanupElement(elementId: string): void;
   setProperty(element: HTMLElement | null, property: string, value: unknown): void;
   getProperty(element: HTMLElement | null, property: string): unknown;
-  callElementMethod(element: HTMLElement | null, methodName: string, ...args: unknown[]): unknown;
+  callElementMethod(element: HTMLElement | string | null, methodName: string, ...args: unknown[]): unknown;
   disableNativeFormValidation(element: HTMLElement | null): void;
   dispose(): void;
   initialize(): Promise<boolean>;

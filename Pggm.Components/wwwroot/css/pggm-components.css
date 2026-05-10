@@ -364,18 +364,16 @@
 /* ── DataGrid ────────────────────────────────────────────── */
 
 :root {
-  --border-width-max: max(var(--pggm-checkbox-border-width), var(--pggm-checkbox-active-border-width), var(--pggm-checkbox-invalid-border-width));
-  --border-width-difference: 0px;
 
+  
+  --pggm-checkbox-size: 16px;
+  --pggm-radio-size: 16px;
 
-
-  --checkbox-checked-color: #274c77;
-  --checkbox-hover-color: #a3cef1;
-  --checkbox-disabled-bg-color: #d9d9d9;
-  --pggm-data-grid-select-col-width: 48px; /* width for checkbox/radio select column */
+  
 }
 
 .pggm-data-grid {
+  --pggm-dialog-max-width: 400px;
   overflow-x: auto;
 }
 
@@ -506,89 +504,191 @@
 .pggm-data-grid-table thead th.pggm-sticky-col:last-of-type {
   box-shadow: inset -4px 0 4px -4px rgba(0, 0, 0, 0.15);
 }
-
 .pggm-grid-header-button {
+  display: flex;
+  gap: 16px;
+  white-space: nowrap;
+}
+
+.pggm-grid-header-button > button {
   background: transparent;
   border: none;
 }
+.pggm-header-filter-button svg {
+  fill: none;
+  stroke: currentColor;
+}
 
-.pggm-grid-header-button:focus-visible {
+.pggm-column-filtered .pggm-header-filter-button svg {
+  fill: currentColor;
+}
+
+/* fixing weird border focus behaviour in current pfzw style */
+.filter-dialog-container {
+  width: calc(100% - 6px);
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+.pggm-grid-header-button > button:focus-visible {
   outline: var(--pggm-focus-outline-width, 2px) var(--pggm-focus-outline-style, solid) var(--pggm-focus-outline-color, blue);
-  outline-offset: -2px;
-  border-radius: 4px;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
+  /* outline-offset: -2px; */
+  /* border-radius: 4px; */
+  /* padding: 0; */
+  /* display: flex; */
+  /* align-items: center; */
+  /* gap: 8px; */
+  /* cursor: pointer; */
 }
 
 .pggm-grid-header-title {
   font-weight: 600;
 }
 
+/* ── Checkboxes ──────────────────────────────── */
 input[type="checkbox"].pggm-data-grid-table-checkbox {
-  box-sizing: border-box;
-  width: 16px;
-  height: 16px;
-  margin: 0px;
-  padding: 0;
-  border-color: var(--pggm-checkbox-border-color);
-  border-radius: var(--pggm-checkbox-border-radius);
-  border-style: solid;
-  border-width: var(--pggm-checkbox-border-width);
-
-  appearance: none;
-  background-color: transparent;
-  outline: none;
+    /* Compensate for changing border widths across states */
+    --border-width-max: max(var(--pggm-checkbox-border-width),
+            var(--pggm-checkbox-active-border-width),
+            var(--pggm-checkbox-invalid-border-width));
+    --border-width-difference: 0px;
+    appearance: none;
+    cursor: inherit;
+    margin: 0 .25em;
+    flex: 0 0 var(--pggm-checkbox-size);
+    border-radius: var(--pggm-checkbox-border-radius);
+    border-style: solid;
+    border-width: var(--pggm-checkbox-border-width);
+    border-color: var(--pggm-checkbox-border-color);
+    height: var(--pggm-checkbox-size);
+    width: var(--pggm-checkbox-size);
+    transition:
+        background-color var(--transition-duration),
+        border-color var(--transition-duration);
+    translate: 0 calc(var(--pggm-checkbox-size) / 4);
+    position: relative;
+    vertical-align: baseline;
 }
 
 
-input[type="checkbox"].pggm-data-grid-table-checkbox:checked {
-  background-size: cover;
-}
-
-input[type="checkbox"]:not(:disabled):checked {
-  background-color: var(--pggm-checkbox-checked-background-color);
-  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke='none' d='M0 0h24v24H0z'/%3E%3Cpath d='m5 12 5 5L20 7'/%3E%3C/svg%3E");
-  background-position: 50% center;
-  background-repeat: no-repeat;
-  background-size: 100%;
-  border-color: var(--pggm-checkbox-checked-border-color);
-  border-width: var(--pggm-checkbox-checked-border-width, var(--pggm-checkbox-border-width));
-  box-shadow: inset 0 0 0 var(--distance) var(--background-color);
-}
-
-input[type="checkbox"].pggm-data-grid-table-checkbox:disabled {
-  background-color: var(--pggm-checkbox-disabled-background-color);
-  border-color: var(--pggm-checkbox-disabled-border-color);
-  cursor: not-allowed;
+input[type="checkbox"].pggm-data-grid-table-checkbox:not(:disabled):invalid {
+    border-color: var(--pggm-checkbox-invalid-border-color);
+    border-width: var(--pggm-checkbox-invalid-border-width,
+            var(--pggm-checkbox-border-width));
 }
 
 
-@media (hover: hover) {
-  input[type="checkbox"].pggm-data-grid-table-checkbox:not(:disabled):hover {
+input[type="checkbox"].pggm-data-grid-table-checkbox:not(:disabled, :invalid):active {
+    background-color: var(--pggm-checkbox-active-background-color);
+    border-color: var(--pggm-checkbox-active-border-color);
+    border-width: var(--pggm-checkbox-active-border-width,
+            var(--pggm-checkbox-border-width));
+}
+
+input[type="checkbox"].pggm-data-grid-table-checkbox:hover {
     background-color: var(--pggm-checkbox-hover-background-color);
     border-color: var(--pggm-checkbox-hover-border-color);
-    border-width: var(--pggm-checkbox-hover-border-width, var(--pggm-checkbox-border-width));
-  }
-  input[type="checkbox"].pggm-data-grid-table-checkbox:not(:disabled):checked:hover {
-    background-color: var(--pggm-checkbox-checked-hover-background-color);
-    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke='none' d='M0 0h24v24H0z'/%3E%3Cpath d='m5 12 5 5L20 7'/%3E%3C/svg%3E");
-  }
+    border-width: var(--pggm-checkbox-hover-border-width,
+            var(--pggm-checkbox-border-width));
 }
 
-input[type="checkbox"].pggm-data-grid-table-checkbox:focus-visible {
-  outline: var(--pggm-focus-outline-width) var(--pggm-focus-outline-style, solid) var(--pggm-focus-outline-color, blue);
-  outline-offset: var(--pggm-focus-outline-offset);
-
+/* checked */
+input[type="checkbox"].pggm-data-grid-table-checkbox:checked {
+    background-color: var(--pggm-checkbox-checked-background-color);
+    box-shadow: inset 0 0 0 var(--distance) var(--background-color);
+    border-color: var(--pggm-checkbox-checked-border-color);
+    border-width: var(--pggm-checkbox-checked-border-width,
+            var(--pggm-checkbox-border-width));
+    /* Copied from @tabler/icons/outline/check.svg, recolored stroke  */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke='none' d='M0 0h24v24H0z' fill='none' /%3E%3Cpath d='M5 12l5 5l10 -10' /%3E%3C/svg%3E");
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  input[type="checkbox"].pggm-data-grid-table-checkbox {
-    transition: none;
-  }
+
+input[type="checkbox"].pggm-data-grid-table-checkbox:disabled:hover,
+input[type="checkbox"].pggm-data-grid-table-checkbox:disabled {
+    cursor: not-allowed;
+    color: var(--pggm-checkbox-option-label-disabled-color);
+    background-color: var(--pggm-checkbox-disabled-background-color);
+    border-color: var(--pggm-checkbox-disabled-border-color);
 }
+
+input[type="checkbox"].pggm-data-grid-table-checkbox:disabled:checked {
+    background-color: var(--pggm-checkbox-checked-disabled-background-color);
+    border-color: var(--pggm-checkbox-checked-disabled-border-color);
+    border-width: var(--pggm-checkbox-checked-disabled-border-width,
+            var(--pggm-checkbox-border-width));
+}
+
+/* ── radio buttons data grid ────────────────────────────── */
+input.pggm-data-grid-table-radio {
+    outline: none;
+    vertical-align: baseline;
+    translate: 0 calc(var(--pggm-radio-size) / 4);
+    position: relative;
+    --transition-duration: var(--pggm-motion-duration-xs);
+    --border-width-max: max(var(--pggm-radio-border-width), var(--pggm-radio-active-border-width), var(--pggm-radio-invalid-border-width));
+    --border-width-difference: 0;
+    --background-color: transparent;
+    --inset-distance: 0;
+    --border-width: var(--pggm-radio-border-width);
+    appearance: none;
+    cursor: inherit;
+    margin: 0px .25em;
+    -webkit-box-flex: 0;
+    border-color: var(--pggm-radio-border-color);
+    border-radius: var(--pggm-radio-border-radius);
+    border-style: solid;
+    border-width: var(--border-width);
+    box-shadow: inset 0 0 0 var(--inset-distance) var(--background-color);
+    flex: 0 0 var(--pggm-radio-size);
+    height: var(--pggm-radio-size);
+    transition: background-color var(--transition-duration), border-color var(--transition-duration), box-shadow calc(var(--transition-duration)*2), -webkit-box-shadow calc(var(--transition-duration)*2);
+    width: var(--pggm-radio-size);
+}
+
+input.pggm-data-grid-table-radio:checked {
+    --border-width: var(--pggm-radio-checked-border-width,
+            var(--pggm-radio-border-width));
+    --inset-distance: calc((var(--pggm-radio-size) - var(--pggm-radio-dot-size) - var(--border-width)) / 2);
+    --background-color: var(--pggm-radio-checked-background-color);
+    border-color: var(--pggm-radio-checked-border-color);
+}
+
+input.pggm-data-grid-table-radio:not(:disabled):hover {
+    --border-width: var(--pggm-radio-hover-border-width, var(--pggm-radio-border-width));
+    background-color: var(--pggm-radio-hover-background-color);
+    border-color: var(--pggm-radio-hover-border-color);
+}
+
+input.pggm-data-grid-table-radio:focus-visible {
+    outline: var(--pggm-focus-outline-width) var(--pggm-focus-outline-style, solid) var(--pggm-focus-outline-color, blue);
+    outline-offset: var(--pggm-focus-outline-offset);
+}
+
+input.pggm-data-grid-table-radio:invalid {
+    --border-width: var(--pggm-radio-invalid-border-width,
+            var(--pggm-radio-border-width));
+    border-color: var(--pggm-radio-invalid-border-color);
+}
+
+input.pggm-data-grid-table-radio:not(:disabled, :invalid):hover {
+    --border-width: var(--pggm-radio-hover-border-width,
+            var(--pggm-radio-border-width));
+    background-color: var(--pggm-radio-hover-background-color);
+    border-color: var(--pggm-radio-hover-border-color);
+}
+
+input.pggm-data-grid-table-radio:disabled {
+    cursor: not-allowed;
+    --border-width: var(--pggm-radio-disabled-border-width,
+            var(--pggm-radio-border-width));
+    background-color: var(--pggm-radio-disabled-background-color);
+    border-color: var(--pggm-radio-disabled-border-color);
+}
+
 
 /* ── Hierarchical data grid ────────────────────────────── */
 

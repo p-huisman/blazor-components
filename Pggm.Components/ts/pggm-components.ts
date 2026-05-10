@@ -92,11 +92,12 @@ import "./pggm-data-grid";
   };
 
   globalThis.PggmComponents.callElementMethod = function (
-    element: HTMLElement | null,
+    element: HTMLElement | string | null,
     methodName: string,
     ...args: unknown[]
   ): unknown {
-    const el = element as (HTMLElement & Record<string, unknown>) | null;
+    const resolved = typeof element === "string" ? document.getElementById(element) : element;
+    const el = resolved as (HTMLElement & Record<string, unknown>) | null;
     if (el && typeof el[methodName] === "function") {
       return (el[methodName] as (...a: unknown[]) => unknown)(...args);
     } else {
@@ -131,6 +132,7 @@ const designSystem = new PggmDesignSystem();
 globalThis.PggmComponents.initialize = function (): Promise<boolean> {
   return designSystem.initialize();
 };
+
 
 globalThis.PggmComponents.loadScript = function (id: string): Promise<void> {
   return designSystem.loadScript(id);
@@ -173,6 +175,7 @@ globalThis.PggmComponents.setStyle = function (
     (element.style as unknown as Record<string, string>)[property] = value;
   }
 };
+
 
 // ─── DataGrid JS helpers ──────────────────────────────────────────────────────
 

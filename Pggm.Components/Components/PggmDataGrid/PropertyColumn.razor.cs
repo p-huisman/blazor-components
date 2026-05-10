@@ -13,6 +13,9 @@ namespace Pggm.Components.Components.PggmDataGrid
         [Parameter]
         public Expression<Func<TGridItem, TProp>>? SortByExpression { get; set; }
 
+        [Parameter]
+        public Expression<Func<TGridItem, TProp>>? FilterByExpression { get; set; }
+
         private GridSort<TGridItem>? _sortBy;
 
         public override IGridSort<TGridItem>? SortBy
