@@ -154,10 +154,24 @@ export class EventListenerManager {
       // Sanitize event data to remove circular references
       const sanitizedEventData = sanitizeEventData(event.detail);
 
+      // Attempt to find a containing pggm-dialog id for the event target so
+      // .NET can distinguish cancel events that originate from popups
+      // rendered into the document body but logically belong to a dialog.
+      let originDialogId: string | null = null;
+      try {
+        const target = (event as any).target as Element | undefined | null;
+        if (target && typeof target.closest === "function") {
+          const dlg = target.closest("pggm-dialog") as Element | null;
+          originDialogId = dlg ? (dlg.id || null) : null;
+        }
+      } catch (ignored) { /* ignore DOM access errors */ }
+
+      const payload = { detail: sanitizedEventData, originDialogId };
+
       const shouldContinue = await dotNetRef.invokeMethodAsync(
         methodName,
         eventName,
-        sanitizedEventData,
+        payload,
       );
 
       if (shouldContinue === true) {

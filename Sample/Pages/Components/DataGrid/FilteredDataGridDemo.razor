@@ -13,7 +13,7 @@
     <PggmDataGrid TGridItem="Person" Items="@People.AsQueryable()" EnableColumnFiltering="true">
         <PropertyColumn TGridItem="Person" TProp="string" Title="Name" Value="@(p => p.Name)" SortByExpression="@(p => p.Name)" FilterByExpression="@(p => p.Name)" Filterable="true" FilterType="FilterType.String" Field="Name" Index="1" />
         <PropertyColumn TGridItem="Person" TProp="int" Title="Age" Value="@(p => p.Age)" SortByExpression="@(p => p.Age)" FilterByExpression="@(p => p.Age)" Filterable="true" FilterType="FilterType.Number" Field="Age" Index="2" />
-        <PropertyColumn TGridItem="Person" TProp="DateOnly" Title="Date of Birth" Value="@(p => p.DateOfBirth)" SortByExpression="@(p => p.DateOfBirth)" FilterByExpression="@(p => p.DateOfBirth)" Filterable="true" FilterType="FilterType.Date" Field="DateOfBirth" Index="3" />
+        <PropertyColumn TGridItem="Person" TProp="DateOnly" Title="Date of Birth" Value="@(p => p.DateOfBirth)" SortByExpression="@(p => p.DateOfBirth)" FilterByExpression="@(p => p.DateOfBirth)" Filterable="true" FilterType="FilterType.Date" Field="DateOfBirth" Index="3" DisplayFormat="d MMMM yyyy" />
     </PggmDataGrid>
 </DemoSection>
 

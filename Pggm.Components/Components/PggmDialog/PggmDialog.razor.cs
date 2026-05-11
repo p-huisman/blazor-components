@@ -80,8 +80,37 @@ public partial class PggmDialog : PggmEventComponentBase
     {
         RegisterEventHandler("openDialog", _ => InvokeAsync(HandleOpenDialog));
         RegisterEventHandler("closeDialog", _ => InvokeAsync(HandleCloseDialog));
-        RegisterEventHandler("cancelDialog", _ => InvokeAsync(HandleCancelDialog));
+
+        // Handle cancelDialog with payload support. If the cancel event
+        // originated from a nested popup that was appended to the document
+        // (e.g. a calendar dropdown), it will include `originDialogId`.
+        // In that case ignore the cancel if it does not belong to this dialog.
+        RegisterEventHandler("cancelDialog", async evt =>
+        {
+            CancelDialogPayload? payload = null;
+            try
+            {
+                payload = Pggm.Components.Base.PggmEventDataConverter.DeserializeEventData<CancelDialogPayload>(evt);
+                if (!string.IsNullOrEmpty(payload?.OriginDialogId) && payload.OriginDialogId != ElementRef.Id)
+                {
+                    // Event came from a different dialog context - ignore
+                    return;
+                }
+            }
+            catch
+            {
+                // Fall through to default behavior on any errors parsing payload
+            }
+
+            await InvokeAsync(() => HandleCancelDialog(payload));
+        });
         return base.OnParametersSetAsync();
+    }
+
+    private class CancelDialogPayload
+    {
+        public object? Detail { get; set; }
+        public string? OriginDialogId { get; set; }
     }
 
     private async Task HandleOpenDialog()
@@ -102,7 +131,7 @@ public partial class PggmDialog : PggmEventComponentBase
         StateHasChanged();
     }
 
-    private async Task HandleCancelDialog()
+    private async Task HandleCancelDialog(CancelDialogPayload? payload = null)
     {
         Open = false;
         if (OpenChanged.HasDelegate) await OpenChanged.InvokeAsync(Open);

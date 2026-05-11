@@ -342,7 +342,7 @@
     }
     @if (EnableColumnFiltering)
     {
-        <PggmDialog @bind-Open="_filterDialogOpen" Modal="true" HeaderContent="@($"Filter: {_activeFilterColumn?.Title}")"
+        <PggmDialog @bind-Open="_filterDialogOpen" Modal="false" HeaderContent="@($"Filter: {_activeFilterColumn?.Title}")"
                     CloseLabel="Close">
             @if (_activeFilterColumn is not null)
             {

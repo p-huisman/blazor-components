@@ -11,6 +11,9 @@ namespace Pggm.Components.Components.PggmDataGrid
         public Func<TGridItem, TProp>? Value { get; set; }
 
         [Parameter]
+        public string? DisplayFormat { get; set; }
+
+        [Parameter]
         public Expression<Func<TGridItem, TProp>>? SortByExpression { get; set; }
 
         [Parameter]
@@ -26,11 +29,37 @@ namespace Pggm.Components.Components.PggmDataGrid
 
         protected internal override void CellContent(RenderTreeBuilder builder, TGridItem item)
         {
-            if (Value is not null)
+            if (Value is null)
             {
-                var v = Value(item);
-                builder.AddContent(0, v?.ToString());
+                return;
             }
+
+            var v = Value(item);
+            if (v is null)
+            {
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(DisplayFormat))
+            {
+                switch (v)
+                {
+                    case DateTime dt:
+                        builder.AddContent(0, dt.ToString(DisplayFormat, System.Globalization.CultureInfo.CurrentCulture));
+                        return;
+                    case DateTimeOffset dto:
+                        builder.AddContent(0, dto.ToString(DisplayFormat, System.Globalization.CultureInfo.CurrentCulture));
+                        return;
+                    case System.DateOnly d:
+                        builder.AddContent(0, d.ToString(DisplayFormat, System.Globalization.CultureInfo.CurrentCulture));
+                        return;
+                    case IFormattable f:
+                        builder.AddContent(0, f.ToString(DisplayFormat, System.Globalization.CultureInfo.CurrentCulture));
+                        return;
+                }
+            }
+
+            builder.AddContent(0, v?.ToString());
         }
 
         protected override void OnInitialized()
