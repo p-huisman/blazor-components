@@ -10,11 +10,11 @@
 <DemoSection Title="Initial Selection via Parameter" Code="@initialSelectionSource" CodeBehind="@initialSelectionBehind">
 	<p>Demonstrates pre-selecting items at startup using <code>SelectColumn.SelectedItems</code>. The selection is applied once on first render; further interaction works normally.</p>
 
-	<PggmDataGrid TGridItem="Person" Items="@People.AsQueryable()" @ref="_initialSelectGrid"
-	              SelectedItemsChangedCallback="@(()=>StateHasChanged())">
-		<SelectColumn TGridItem="Person" Index="0" SelectedItems="@_initialSelection" />
-		<PropertyColumn TGridItem="Person" TProp="string" Title="Name" Property="@(p => p.Name)" Index="1" />
-		<PropertyColumn TGridItem="Person" TProp="int" Title="Age" Property="@(p => p.Age)" Index="2" />
+<PggmDataGrid TGridItem="Person" Items="@People.AsQueryable()" @ref="_initialSelectGrid"
+              SelectedItemsChangedCallback="@(()=>StateHasChanged())">
+		<SelectColumn SelectedItems="@_initialSelection" />
+		<PropertyColumn Title="Name" Property="@(p => p.Name)" />
+		<PropertyColumn Title="Age" Property="@(p => p.Age)" />
 	</PggmDataGrid>
 
 	<div style="margin:8px 0 24px 0;">
@@ -40,11 +40,11 @@
 		<button class="pggm-btn" @onclick="ClearCodeSelectionAsync">Clear</button>
 	</div>
 
-	<PggmDataGrid TGridItem="Person" Items="@People.AsQueryable()" @ref="_codeSelectGrid" SelectedItemsChangedCallback="@(()=>StateHasChanged())">
-		<SelectColumn TGridItem="Person" Index="0" />
-		<PropertyColumn TGridItem="Person" TProp="string" Title="Name" Property="@(p => p.Name)" Index="1" />
-		<PropertyColumn TGridItem="Person" TProp="int" Title="Age" Property="@(p => p.Age)" Index="2" />
-	</PggmDataGrid>
+<PggmDataGrid TGridItem="Person" Items="@People.AsQueryable()" @ref="_codeSelectGrid" SelectedItemsChangedCallback="@(()=>StateHasChanged())">
+<SelectColumn />
+<PropertyColumn Title="Name" Property="@(p => p.Name)" />
+<PropertyColumn Title="Age" Property="@(p => p.Age)" />
+</PggmDataGrid>
 
 	<div style="margin:8px 0 24px 0;">
 		<strong>Selected (code):</strong>
@@ -63,16 +63,16 @@
 	<p>Demonstrates multi-select, async provider, and single-select modes.</p>
 
 	<PggmHeading Level="4">In-memory Grid (Multi-Select)</PggmHeading>
-	<PggmDataGrid TGridItem="Person" Items="@People.AsQueryable()" @ref="_multiGrid" SelectedItemsChangedCallback="@(()=>StateHasChanged())">
-		<SelectColumn TGridItem="Person" Index="0" />
-		<PropertyColumn TGridItem="Person" TProp="string" Title="Name" Property="@(p => p.Name)" Sortable="true" Index="1" />
-		<PropertyColumn TGridItem="Person" TProp="int" Title="Age" Property="@(p => p.Age)" Sortable="true" Index="2" />
-		<TemplateColumn TGridItem="Person" Index="3" Title="Actions">
-			<Template Context="p">
-				<button class="pggm-btn" @onclick="() => ShowDetails(p)">Details</button>
-			</Template>
-		</TemplateColumn>
-	</PggmDataGrid>
+<PggmDataGrid TGridItem="Person" Items="@People.AsQueryable()" @ref="_multiGrid" SelectedItemsChangedCallback="@(()=>StateHasChanged())">
+<SelectColumn />
+<PropertyColumn Title="Name" Property="@(p => p.Name)" Sortable="true" />
+<PropertyColumn Title="Age" Property="@(p => p.Age)" Sortable="true" />
+<TemplateColumn Title="Actions">
+<Template Context="p">
+<button class="pggm-btn" @onclick="() => ShowDetails(p)">Details</button>
+</Template>
+</TemplateColumn>
+</PggmDataGrid>
 	<div style="margin:8px 0 24px 0;">
 		<strong>Selected (multi):</strong>
 		@if (_multiGrid?.SelectedItems?.Any() == true)
@@ -86,18 +86,18 @@
 	</div>
 
 	<PggmHeading Level="4">Async ItemsProvider Grid</PggmHeading>
-	<PggmDataGrid TGridItem="Person" ItemsProvider="@LoadPeopleAsync">
-		<SelectColumn TGridItem="Person" Index="0" />
-		<PropertyColumn TGridItem="Person" TProp="string" Title="Name" Property="@(p => p.Name)" Sortable="true" Index="1" />
-		<PropertyColumn TGridItem="Person" TProp="int" Title="Age" Property="@(p => p.Age)" Sortable="true" Index="2" />
-	</PggmDataGrid>
+<PggmDataGrid TGridItem="Person" ItemsProvider="@LoadPeopleAsync">
+<SelectColumn />
+<PropertyColumn Title="Name" Property="@(p => p.Name)" Sortable="true" />
+<PropertyColumn Title="Age" Property="@(p => p.Age)" Sortable="true" />
+</PggmDataGrid>
 
 	<PggmHeading Level="4">Single Select Grid</PggmHeading>
-	<PggmDataGrid TGridItem="Person" Items="@People.AsQueryable()" SingleSelect="true" @ref="_singleGrid" SelectedItemsChangedCallback="@(()=>StateHasChanged())">
-		<SelectColumn TGridItem="Person" Index="0" />
-		<PropertyColumn TGridItem="Person" TProp="string" Title="Name" Property="@(p => p.Name)" Sortable="true" Index="1" />
-		<PropertyColumn TGridItem="Person" TProp="int" Title="Age" Property="@(p => p.Age)" Sortable="true" Index="2" />
-	</PggmDataGrid>
+<PggmDataGrid TGridItem="Person" Items="@People.AsQueryable()" SingleSelect="true" @ref="_singleGrid" SelectedItemsChangedCallback="@(()=>StateHasChanged())">
+<SelectColumn />
+<PropertyColumn Title="Name" Property="@(p => p.Name)" Sortable="true" />
+<PropertyColumn Title="Age" Property="@(p => p.Age)" Sortable="true" />
+</PggmDataGrid>
 	<div style="margin:8px 0 24px 0;">
 		<strong>Selected (single):</strong>
 		@if (_singleGrid?.SelectedItems?.Any() == true)
@@ -118,16 +118,16 @@
 		<button class="pggm-btn" @onclick="() => SortByNameAsc()">Sort Name ↑</button>
 		<button class="pggm-btn" @onclick="() => ClearSort()">Clear Sort</button>
 	</div>
-	<PggmDataGrid @ref="_progGrid" TGridItem="Person" Items="@People.AsQueryable()">
-		<SelectColumn TGridItem="Person" Index="0" />
-		<PropertyColumn TGridItem="Person" TProp="string" Title="Name" Property="@(p => p.Name)" Sortable="true" Index="1" Width="200px" Alignment="ColumnAlignment.Left" />
-		<PropertyColumn TGridItem="Person" TProp="int" Title="Age" Property="@(p => p.Age)" Sortable="true" Index="2" Width="80px" Alignment="ColumnAlignment.Center" />
-		<TemplateColumn TGridItem="Person" Index="3" Title="Actions" Width="120px" Alignment="ColumnAlignment.Center">
-			<Template Context="p">
-				<button class="pggm-btn" @onclick="() => ShowDetails(p)">Details</button>
-			</Template>
-		</TemplateColumn>
-	</PggmDataGrid>
+<PggmDataGrid @ref="_progGrid" TGridItem="Person" Items="@People.AsQueryable()">
+<SelectColumn />
+<PropertyColumn Title="Name" Property="@(p => p.Name)" Sortable="true" Width="200px" Alignment="ColumnAlignment.Left" />
+<PropertyColumn Title="Age" Property="@(p => p.Age)" Sortable="true" Width="80px" Alignment="ColumnAlignment.Center" />
+<TemplateColumn Title="Actions" Width="120px" Alignment="ColumnAlignment.Center">
+<Template Context="p">
+<button class="pggm-btn" @onclick="() => ShowDetails(p)">Details</button>
+</Template>
+</TemplateColumn>
+</PggmDataGrid>
 </DemoSection>
 
 <DemoSection Title="Pagination (ItemsProvider)" Code="@paginationSource" CodeBehind="@paginationBehind">
@@ -155,11 +155,11 @@
 			<span style="margin-left:8px;">Loading…</span>
 		}
 	</div>
-	<PggmDataGrid @ref="_pagerGrid" TGridItem="Person" ItemsProvider="@LoadPeopleAsync" Pagination="_pagerState">
-		<SelectColumn TGridItem="Person" Index="0" />
-		<PropertyColumn TGridItem="Person" TProp="string" Title="Name" Property="@(p => p.Name)" Sortable="true" Index="1" />
-		<PropertyColumn TGridItem="Person" TProp="int" Title="Age" Property="@(p => p.Age)" Sortable="true" Index="2" />
-	</PggmDataGrid>
+<PggmDataGrid @ref="_pagerGrid" TGridItem="Person" ItemsProvider="@LoadPeopleAsync" Pagination="_pagerState">
+<SelectColumn />
+<PropertyColumn Title="Name" Property="@(p => p.Name)" Sortable="true" />
+<PropertyColumn Title="Age" Property="@(p => p.Age)" Sortable="true" />
+</PggmDataGrid>
 </DemoSection>
 
 <DemoSection Title="DX: auto-index, OnRowClick, RowClass &amp; CellClass" Code="@dxSource" CodeBehind="@dxBehind">
@@ -172,14 +172,13 @@
 		<li><strong>RowClass</strong> – applies conditional CSS to an entire row.</li>
 		<li><strong>CellClass</strong> – applies conditional CSS to individual cells in a column.</li>
 	</ul>
-	<PggmDataGrid TGridItem="Person" Items="@People.AsQueryable()"
-	              OnRowClick="@(p => { _lastClickedRow = p.Name; StateHasChanged(); })"
-	              RowClass="@(p => p.Age >= 40 ? "demo-row-highlight" : null)">
-		<SelectColumn TGridItem="Person" />
-		<PropertyColumn TGridItem="Person" TProp="string" Title="Name" Property="@(p => p.Name)" Sortable="true" />
-		<PropertyColumn TGridItem="Person" TProp="int" Title="Age" Property="@(p => p.Age)" Sortable="true"
-		                CellClass="@(p => p.Age >= 40 ? "demo-cell-warning" : null)" />
-	</PggmDataGrid>
+<PggmDataGrid TGridItem="Person" Items="@People.AsQueryable()"
+              OnRowClick="@(p => { _lastClickedRow = p.Name; StateHasChanged(); })"
+              RowClass="@(p => p.Age >= 40 ? "demo-row-highlight" : null)">
+<SelectColumn />
+<PropertyColumn Title="Name" Property="@(p => p.Name)" Sortable="true" />
+<PropertyColumn Title="Age" Property="@(p => p.Age)" Sortable="true" CellClass="@(p => p.Age >= 40 ? "demo-cell-warning" : null)" />
+</PggmDataGrid>
 	<div style="margin: 8px 0 4px;">
 		<strong>Last clicked:</strong> <span>@(_lastClickedRow ?? "—")</span>
 	</div>
@@ -193,12 +192,12 @@
     private string? _lastClickedRow;
 
     private string dxSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<PggmDataGrid TGridItem=\"Person\" Items=\"@People.AsQueryable()\"",
+        "<PggmDataGrid Items=\"@People.AsQueryable()\"",
         "              OnRowClick=\"@(p => { _lastClickedRow = p.Name; StateHasChanged(); })\"",
         "              RowClass=\"@(p => p.Age >= 40 ? \\\"demo-row-highlight\\\" : null)\">",
-        "    <SelectColumn TGridItem=\"Person\" />",
-        "    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Property=\"@(p => p.Name)\" Sortable=\"true\" />",
-        "    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Property=\"@(p => p.Age)\" Sortable=\"true\"",
+        "    <SelectColumn />",
+        "    <PropertyColumn Title=\"Name\" Property=\"@(p => p.Name)\" Sortable=\"true\" />",
+        "    <PropertyColumn Title=\"Age\" Property=\"@(p => p.Age)\" Sortable=\"true\"",
         "                    CellClass=\"@(p => p.Age >= 40 ? \\\"demo-cell-warning\\\" : null)\" />",
         "</PggmDataGrid>");
 
@@ -243,23 +242,23 @@
 		public int Age { get; set; }
 	}
 
-	private string sortingSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-		"<div class=\"demo-toolbar\" style=\"margin-bottom:8px;\">",
-		"    <button class=\"pggm-btn\" @onclick=\"() => SortByAgeDesc()\">Sort Age ↓</button>",
-		"    <button class=\"pggm-btn\" @onclick=\"() => SortByNameAsc()\">Sort Name ↑</button>",
-		"    <button class=\"pggm-btn\" @onclick=\"() => ClearSort()\">Clear Sort</button>",
-		"</div>",
-		"",
-		"<PggmDataGrid @ref=\"_progGrid\" TGridItem=\"Person\" Items=\"@People.AsQueryable()\">",
-		"    <SelectColumn TGridItem=\"Person\" Index=\"0\" />",
-		"    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Property=\"@(p => p.Name)\" Sortable=\"true\" Index=\"1\" Width=\"200px\" Alignment=\"ColumnAlignment.Left\" />",
-		"    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Property=\"@(p => p.Age)\" Sortable=\"true\" Index=\"2\" Width=\"80px\" Alignment=\"ColumnAlignment.Center\" />",
-		"    <TemplateColumn TGridItem=\"Person\" Index=\"3\" Title=\"Actions\" Width=\"120px\" Alignment=\"ColumnAlignment.Center\">",
-		"        <Template Context=\"p\">",
-		"            <button class=\"pggm-btn\" @onclick=\"() => ShowDetails(p)\">Details</button>",
-		"        </Template>",
-		"    </TemplateColumn>",
-		"</PggmDataGrid>");
+private string sortingSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+"<div class=\"demo-toolbar\" style=\"margin-bottom:8px;\">",
+"    <button class=\"pggm-btn\" @onclick=\"() => SortByAgeDesc()\">Sort Age ↓</button>",
+"    <button class=\"pggm-btn\" @onclick=\"() => SortByNameAsc()\">Sort Name ↑</button>",
+"    <button class=\"pggm-btn\" @onclick=\"() => ClearSort()\">Clear Sort</button>",
+"</div>",
+"",
+"<PggmDataGrid @ref=\"_progGrid\" Items=\"@People.AsQueryable()\">",
+"    <SelectColumn />",
+"    <PropertyColumn Title=\"Name\" Property=\"@(p => p.Name)\" Sortable=\"true\" Width=\"200px\" Alignment=\"ColumnAlignment.Left\" />",
+"    <PropertyColumn Title=\"Age\" Property=\"@(p => p.Age)\" Sortable=\"true\" Width=\"80px\" Alignment=\"ColumnAlignment.Center\" />",
+"    <TemplateColumn Title=\"Actions\" Width=\"120px\" Alignment=\"ColumnAlignment.Center\">",
+"        <Template Context=\"p\">",
+"            <button class=\"pggm-btn\" @onclick=\"() => ShowDetails(p)\">Details</button>",
+"        </Template>",
+"    </TemplateColumn>",
+"</PggmDataGrid>");
 
 	private string sortingBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
 		"private PggmDataGrid<Person>? _progGrid;",
@@ -268,56 +267,56 @@
 		"private Task SortByNameAsc() => _progGrid?.SetSortAsync(\"Name\", true) ?? Task.CompletedTask;",
 		"private Task ClearSort() => _progGrid?.ClearSortAsync() ?? Task.CompletedTask;");
 
-	private string selectionSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-		"<PggmDataGrid TGridItem=\"Person\" Items=\"@People.AsQueryable()\" @ref=\"_multiGrid\"",
-		"              SelectedItemsChangedCallback=\"@(()=>StateHasChanged())\">",
-		"    <SelectColumn TGridItem=\"Person\" Index=\"0\" />",
-		"    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Property=\"@(p => p.Name)\" Sortable=\"true\" Index=\"1\" />",
-		"    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Property=\"@(p => p.Age)\" Sortable=\"true\" Index=\"2\" />",
-		"    <TemplateColumn TGridItem=\"Person\" Index=\"3\" Title=\"Actions\">",
-		"        <Template Context=\"p\">",
-		"            <button class=\"pggm-btn\" @onclick=\"() => ShowDetails(p)\">Details</button>",
-		"        </Template>",
-		"    </TemplateColumn>",
-		"</PggmDataGrid>",
-		"",
-		"<PggmDataGrid TGridItem=\"Person\" ItemsProvider=\"@LoadPeopleAsync\">",
-		"    <SelectColumn TGridItem=\"Person\" Index=\"0\" />",
-		"    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Property=\"@(p => p.Name)\" Sortable=\"true\" Index=\"1\" />",
-		"    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Property=\"@(p => p.Age)\" Sortable=\"true\" Index=\"2\" />",
-		"</PggmDataGrid>",
-		"",
-		"<PggmDataGrid TGridItem=\"Person\" Items=\"@People.AsQueryable()\" SingleSelect=\"true\" @ref=\"_singleGrid\"",
-		"              SelectedItemsChangedCallback=\"@(()=>StateHasChanged())\">",
-		"    <SelectColumn TGridItem=\"Person\" Index=\"0\" />",
-		"    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Property=\"@(p => p.Name)\" Sortable=\"true\" Index=\"1\" />",
-		"    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Property=\"@(p => p.Age)\" Sortable=\"true\" Index=\"2\" />",
-		"</PggmDataGrid>");
+private string selectionSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+"<PggmDataGrid Items=\"@People.AsQueryable()\" @ref=\"_multiGrid\"",
+"              SelectedItemsChangedCallback=\"@(()=>StateHasChanged())\">",
+"    <SelectColumn />",
+"    <PropertyColumn Title=\"Name\" Property=\"@(p => p.Name)\" Sortable=\"true\" />",
+"    <PropertyColumn Title=\"Age\" Property=\"@(p => p.Age)\" Sortable=\"true\" />",
+"    <TemplateColumn Title=\"Actions\">",
+"        <Template Context=\"p\">",
+"            <button class=\"pggm-btn\" @onclick=\"() => ShowDetails(p)\">Details</button>",
+"        </Template>",
+"    </TemplateColumn>",
+"</PggmDataGrid>",
+"",
+"<PggmDataGrid ItemsProvider=\"@LoadPeopleAsync\">",
+"    <SelectColumn />",
+"    <PropertyColumn Title=\"Name\" Property=\"@(p => p.Name)\" Sortable=\"true\" />",
+"    <PropertyColumn Title=\"Age\" Property=\"@(p => p.Age)\" Sortable=\"true\" />",
+"</PggmDataGrid>",
+"",
+"<PggmDataGrid Items=\"@People.AsQueryable()\" SingleSelect=\"true\" @ref=\"_singleGrid\"",
+"              SelectedItemsChangedCallback=\"@(()=>StateHasChanged())\">",
+"    <SelectColumn />",
+"    <PropertyColumn Title=\"Name\" Property=\"@(p => p.Name)\" Sortable=\"true\" />",
+"    <PropertyColumn Title=\"Age\" Property=\"@(p => p.Age)\" Sortable=\"true\" />",
+"</PggmDataGrid>");
 
 	private string selectionBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
 		"private PggmDataGrid<Person>? _multiGrid;",
 		"private PggmDataGrid<Person>? _singleGrid;");
 
-		private string paginationSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-			"<div class=\"demo-toolbar\" style=\"display:flex; align-items:center; gap:8px;\">",
-			"    <button class=\"pggm-btn\" @onclick=\"() => _pagerFirst()\" disabled=\"@(_pagerState.PageIndex == 0)\">First</button>",
-			"    <button class=\"pggm-btn\" @onclick=\"() => _pagerPrev()\" disabled=\"@(_pagerState.PageIndex == 0)\">Prev</button>",
-			"    <span>Page</span>",
-			"    <input type=\"number\" value=\"@(_pagerState.PageIndex + 1)\" @onchange=\"OnPageNumberChanged\" style=\"width:64px\" />",
-			"    <span>of @_pagerTotalPagesComputed</span>",
-			"    <button class=\"pggm-btn\" @onclick=\"() => _pagerNext()\">Next</button>",
-			"    <button class=\"pggm-btn\" @onclick=\"() => _pagerLast()\">Last</button>",
-			"    <select @onchange=\"OnPageSizeChanged\" value=\"@_pagerState.PageSize\">",
-			"        <option value=\"2\">2</option> <option value=\"5\">5</option>",
-			"        <option value=\"10\">10</option> <option value=\"20\">20</option>",
-			"    </select>",
-			"</div>",
-			"",
-			"<PggmDataGrid @ref=\"_pagerGrid\" TGridItem=\"Person\" ItemsProvider=\"@LoadPeopleAsync\" Pagination=\"_pagerState\">",
-			"    <SelectColumn TGridItem=\"Person\" Index=\"0\" />",
-			"    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Property=\"@(p => p.Name)\" Sortable=\"true\" Index=\"1\" />",
-			"    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Property=\"@(p => p.Age)\" Sortable=\"true\" Index=\"2\" />",
-			"</PggmDataGrid>");
+private string paginationSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+"<div class=\"demo-toolbar\" style=\"display:flex; align-items:center; gap:8px;\">",
+"    <button class=\"pggm-btn\" @onclick=\"() => _pagerFirst()\" disabled=\"@(_pagerState.PageIndex == 0)\">First</button>",
+"    <button class=\"pggm-btn\" @onclick=\"() => _pagerPrev()\" disabled=\"@(_pagerState.PageIndex == 0)\">Prev</button>",
+"    <span>Page</span>",
+"    <input type=\"number\" value=\"@(_pagerState.PageIndex + 1)\" @onchange=\"OnPageNumberChanged\" style=\"width:64px\" />",
+"    <span>of @_pagerTotalPagesComputed</span>",
+"    <button class=\"pggm-btn\" @onclick=\"() => _pagerNext()\">Next</button>",
+"    <button class=\"pggm-btn\" @onclick=\"() => _pagerLast()\">Last</button>",
+"    <select @onchange=\"OnPageSizeChanged\" value=\"@_pagerState.PageSize\">",
+"        <option value=\"2\">2</option> <option value=\"5\">5</option>",
+"        <option value=\"10\">10</option> <option value=\"20\">20</option>",
+"    </select>",
+"</div>",
+"",
+"<PggmDataGrid @ref=\"_pagerGrid\" ItemsProvider=\"@LoadPeopleAsync\" Pagination=\"_pagerState\">",
+"    <SelectColumn />",
+"    <PropertyColumn Title=\"Name\" Property=\"@(p => p.Name)\" Sortable=\"true\" />",
+"    <PropertyColumn Title=\"Age\" Property=\"@(p => p.Age)\" Sortable=\"true\" />",
+"</PggmDataGrid>");
 
 		private string paginationBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
 			"private PaginationState _pagerState = new() { PageIndex = 0, PageSize = 2 };",
@@ -342,13 +341,13 @@
 
 	private IEnumerable<Person> _initialSelection => People.Where(p => p.Name == "Alice" || p.Name == "Carol");
 
-	private string initialSelectionSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-		"<PggmDataGrid TGridItem=\"Person\" Items=\"@People.AsQueryable()\" @ref=\"_initialSelectGrid\"",
-		"              SelectedItemsChangedCallback=\"@(()=>StateHasChanged())\">",
-		"    <SelectColumn TGridItem=\"Person\" Index=\"0\" SelectedItems=\"@_initialSelection\" />",
-		"    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Property=\"@(p => p.Name)\" Index=\"1\" />",
-		"    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Property=\"@(p => p.Age)\" Index=\"2\" />",
-		"</PggmDataGrid>");
+private string initialSelectionSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+"<PggmDataGrid Items=\"@People.AsQueryable()\" @ref=\"_initialSelectGrid\"",
+"              SelectedItemsChangedCallback=\"@(()=>StateHasChanged())\">",
+"    <SelectColumn SelectedItems=\"@_initialSelection\" />",
+"    <PropertyColumn Title=\"Name\" Property=\"@(p => p.Name)\" />",
+"    <PropertyColumn Title=\"Age\" Property=\"@(p => p.Age)\" />",
+"</PggmDataGrid>");
 
 	private string initialSelectionBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
 		"private PggmDataGrid<Person>? _initialSelectGrid;",
@@ -383,20 +382,20 @@
 			await _codeSelectGrid.SetSelectedItemsAsync(null);
 	}
 
-	private string programmaticSelectionSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-		"<div class=\"demo-toolbar\" style=\"display:flex; gap:8px;\">",
-		"    <button class=\"pggm-btn\" @onclick=\"SelectAliceAsync\">Select Alice</button>",
-		"    <button class=\"pggm-btn\" @onclick=\"SelectAliceAndBobAsync\">Select Alice &amp; Bob</button>",
-		"    <button class=\"pggm-btn\" @onclick='() => SelectByNameAsync(\"Frank\")'>Select Frank</button>",
-		"    <button class=\"pggm-btn\" @onclick=\"ClearCodeSelectionAsync\">Clear</button>",
-		"</div>",
-		"",
-		"<PggmDataGrid TGridItem=\"Person\" Items=\"@People.AsQueryable()\" @ref=\"_codeSelectGrid\"",
-		"              SelectedItemsChangedCallback=\"@(()=>StateHasChanged())\">",
-		"    <SelectColumn TGridItem=\"Person\" Index=\"0\" />",
-		"    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Property=\"@(p => p.Name)\" Index=\"1\" />",
-		"    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Property=\"@(p => p.Age)\" Index=\"2\" />",
-		"</PggmDataGrid>");
+private string programmaticSelectionSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+"<div class=\"demo-toolbar\" style=\"display:flex; gap:8px;\">",
+"    <button class=\"pggm-btn\" @onclick=\"SelectAliceAsync\">Select Alice</button>",
+"    <button class=\"pggm-btn\" @onclick=\"SelectAliceAndBobAsync\">Select Alice & Bob</button>",
+"    <button class=\"pggm-btn\" @onclick='() => SelectByNameAsync(\"Frank\")'>Select Frank</button>",
+"    <button class=\"pggm-btn\" @onclick=\"ClearCodeSelectionAsync\">Clear</button>",
+"</div>",
+"",
+"<PggmDataGrid Items=\"@People.AsQueryable()\" @ref=\"_codeSelectGrid\"",
+"              SelectedItemsChangedCallback=\"@(()=>StateHasChanged())\">",
+"    <SelectColumn />",
+"    <PropertyColumn Title=\"Name\" Property=\"@(p => p.Name)\" />",
+"    <PropertyColumn Title=\"Age\" Property=\"@(p => p.Age)\" />",
+"</PggmDataGrid>");
 
 	private string programmaticSelectionBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
 		"private PggmDataGrid<Person>? _codeSelectGrid;",

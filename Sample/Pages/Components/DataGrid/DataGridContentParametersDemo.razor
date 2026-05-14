@@ -16,11 +16,11 @@
     <PggmButton OnClick="LoadData">Load Data</PggmButton>
 </div>
 
-<PggmDataGrid TGridItem="Person" Items="@_people.AsQueryable()" Loading="@_isLoading">
+<PggmDataGrid Items="@_people.AsQueryable()" Loading="@_isLoading">
     <ChildContent>
-        <PropertyColumn TGridItem="Person" TProp="int" Title="Id" Property="@(p => p.Id)" Index="0" />
-        <PropertyColumn TGridItem="Person" TProp="string" Title="Name" Property="@(p => p.Name)" Index="1" />
-        <PropertyColumn TGridItem="Person" TProp="int" Title="Age" Property="@(p => p.Age)" Index="2" />
+        <PropertyColumn Title="Id" Property="@(p => p.Id)" />
+        <PropertyColumn Title="Name" Property="@(p => p.Name)" />
+        <PropertyColumn Title="Age" Property="@(p => p.Age)" />
     </ChildContent>
     <EmptyContent>
         <div>

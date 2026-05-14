@@ -15,13 +15,12 @@
 <DemoSection Title="Client-side pagination">
     <PggmPaginator State="@_pagination" ItemsPerPageOptions="@(new[] { 5, 10, 25 })" />
 
-    <PggmDataGrid TGridItem="Employee"
-                  Items="@_employees.AsQueryable()"
-                  Pagination="@_pagination">
-        <PropertyColumn TGridItem="Employee" TProp="string"  Title="Name"       Property="@(x => x.Name)"       Index="0" Sortable="true" IsDefaultSortColumn="true" />
-        <PropertyColumn TGridItem="Employee" TProp="string"  Title="Department" Property="@(x => x.Department)"  Index="1" Sortable="true" />
-        <PropertyColumn TGridItem="Employee" TProp="string"  Title="Location"   Property="@(x => x.Location)"    Index="2" />
-        <PropertyColumn TGridItem="Employee" TProp="decimal" Title="Salary"     Property="@(x => x.Salary)"      Index="3" Width="120px" Alignment="Pggm.Components.Components.PggmDataGrid.ColumnAlignment.Right" />
+    <PggmDataGrid Items="@_employees.AsQueryable()"
+                      Pagination="@_pagination">
+        <PropertyColumn Title="Name" Property="@(x => x.Name)" Index="0" Sortable="true" IsDefaultSortColumn="true" />
+        <PropertyColumn Title="Department" Property="@(x => x.Department)" Index="1" Sortable="true" />
+        <PropertyColumn Title="Location" Property="@(x => x.Location)" Index="2" />
+        <PropertyColumn Title="Salary" Property="@(x => x.Salary)" Index="3" Width="120px" Alignment="Pggm.Components.Components.PggmDataGrid.ColumnAlignment.Right" />
     </PggmDataGrid>
 
     <PggmPaginator State="@_pagination" NumericNavigation="true" />
@@ -37,13 +36,12 @@
         </SummaryTemplate>
     </PggmPaginator>
 
-    <PggmDataGrid TGridItem="Employee"
-                  Items="@_employees.AsQueryable()"
+    <PggmDataGrid Items="@_employees.AsQueryable()"
                   Pagination="@_pagination2">
-        <PropertyColumn TGridItem="Employee" TProp="string"  Title="Name"       Property="@(x => x.Name)"       Index="0" Sortable="true" IsDefaultSortColumn="true" />
-        <PropertyColumn TGridItem="Employee" TProp="string"  Title="Department" Property="@(x => x.Department)"  Index="1" />
-        <PropertyColumn TGridItem="Employee" TProp="string"  Title="Location"   Property="@(x => x.Location)"    Index="2" />
-        <PropertyColumn TGridItem="Employee" TProp="decimal" Title="Salary"     Property="@(x => x.Salary)"      Index="3" Width="120px" Alignment="Pggm.Components.Components.PggmDataGrid.ColumnAlignment.Right" />
+        <PropertyColumn Title="Name" Property="@(x => x.Name)" Index="0" Sortable="true" IsDefaultSortColumn="true" />
+        <PropertyColumn Title="Department" Property="@(x => x.Department)" Index="1" />
+        <PropertyColumn Title="Location" Property="@(x => x.Location)" Index="2" />
+        <PropertyColumn Title="Salary" Property="@(x => x.Salary)" Index="3" Width="120px" Alignment="Pggm.Components.Components.PggmDataGrid.ColumnAlignment.Right" />
     </PggmDataGrid>
 </DemoSection>
 

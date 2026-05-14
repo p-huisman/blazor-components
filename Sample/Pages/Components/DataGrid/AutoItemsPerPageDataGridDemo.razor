@@ -31,18 +31,17 @@
     </div>
 
     <PggmDataGrid @ref="_grid"
-                  TGridItem="Employee"
                   Items="@_employees.AsQueryable()"
                   Pagination="_pagination"
                   AutoItemsPerPage="true"
                   AutoItemsPerPageRowHeight="41"
                   OnAutoItemsPerPageChanged="@(_ => StateHasChanged())">
-        <PropertyColumn TGridItem="Employee" TProp="string"  Title="Name"       Property="@(x => x.Name)"       Index="0" Sortable="true" IsDefaultSortColumn="true" />
-        <PropertyColumn TGridItem="Employee" TProp="string"  Title="Department" Property="@(x => x.Department)"  Index="1" Sortable="true" />
-        <PropertyColumn TGridItem="Employee" TProp="string"  Title="Location"   Property="@(x => x.Location)"    Index="2" Sortable="true" />
-        <PropertyColumn TGridItem="Employee" TProp="string"  Title="Role"       Property="@(x => x.Role)"        Index="3" />
-        <PropertyColumn TGridItem="Employee" TProp="decimal" Title="Salary"     Property="@(x => x.Salary)"
-                        Index="4" Width="120px"
+        <PropertyColumn Title="Name"       Property="@(x => x.Name)"       Sortable="true" IsDefaultSortColumn="true" />
+        <PropertyColumn Title="Department" Property="@(x => x.Department)"  Sortable="true" />
+        <PropertyColumn Title="Location"   Property="@(x => x.Location)"    Sortable="true" />
+        <PropertyColumn Title="Role"       Property="@(x => x.Role)"        />
+        <PropertyColumn Title="Salary"     Property="@(x => x.Salary)"
+                        Width="120px"
                         Alignment="Pggm.Components.Components.PggmDataGrid.ColumnAlignment.Right" />
     </PggmDataGrid>
 </DemoSection>
@@ -65,7 +64,6 @@
                        that the ResizeObserver can track as the splitter is dragged. *@
                     <div style="flex: 1; min-height: 0; overflow-y: auto;">
                         <PggmDataGrid @ref="_splitterGrid"
-                                      TGridItem="Employee"
                                       Items="@_employees.AsQueryable()"
                                       SingleSelect="true"
                                       Pagination="@_splitterPagination"
@@ -73,13 +71,13 @@
                                       AutoItemsPerPageRowHeight="41"
                                       OnAutoItemsPerPageChanged="@(_ => StateHasChanged())"
                                       SelectedItemsChangedCallback="@EventCallback.Factory.Create(this, StateHasChanged)">
-                            <SelectColumn TGridItem="Employee" Index="0" />
-                            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Name"       Property="@(x => x.Name)"       Index="1" Sortable="true" IsDefaultSortColumn="true" />
-                            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Department" Property="@(x => x.Department)"  Index="2" />
-                            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Location"   Property="@(x => x.Location)"    Index="3" />
-                            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Role"       Property="@(x => x.Role)"        Index="4" />
-                            <PropertyColumn TGridItem="Employee" TProp="decimal" Title="Salary"     Property="@(x => x.Salary)"
-                                            Index="5" Width="120px"
+                            <SelectColumn />
+                            <PropertyColumn Title="Name"       Property="@(x => x.Name)"       Sortable="true" IsDefaultSortColumn="true" />
+                            <PropertyColumn Title="Department" Property="@(x => x.Department)"  />
+                            <PropertyColumn Title="Location"   Property="@(x => x.Location)"    />
+                            <PropertyColumn Title="Role"       Property="@(x => x.Role)"        />
+                            <PropertyColumn Title="Salary"     Property="@(x => x.Salary)"
+                                            Width="120px"
                                             Alignment="Pggm.Components.Components.PggmDataGrid.ColumnAlignment.Right" />
                         </PggmDataGrid>
                     </div>
@@ -165,16 +163,16 @@
     ];
 
     private static readonly string _source = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<PggmDataGrid TGridItem=\"Employee\"",
+        "<PggmDataGrid",
         "              Items=\"@_employees.AsQueryable()\"",
         "              Pagination=\"_pagination\"",
         "              AutoItemsPerPage=\"true\"",
         "              AutoItemsPerPageRowHeight=\"41\">",
-        "    <PropertyColumn Title=\"Name\"       Property=\"@(x => x.Name)\"       Index=\"0\" />",
-        "    <PropertyColumn Title=\"Department\" Property=\"@(x => x.Department)\"  Index=\"1\" />",
-        "    <PropertyColumn Title=\"Location\"   Property=\"@(x => x.Location)\"    Index=\"2\" />",
-        "    <PropertyColumn Title=\"Role\"       Property=\"@(x => x.Role)\"        Index=\"3\" />",
-        "    <PropertyColumn Title=\"Salary\"     Property=\"@(x => x.Salary)\"      Index=\"4\" />",
+        "    <PropertyColumn Title=\"Name\"       Property=\"@(x => x.Name)\"       />",
+        "    <PropertyColumn Title=\"Department\" Property=\"@(x => x.Department)\"  />",
+        "    <PropertyColumn Title=\"Location\"   Property=\"@(x => x.Location)\"    />",
+        "    <PropertyColumn Title=\"Role\"       Property=\"@(x => x.Role)\"        />",
+        "    <PropertyColumn Title=\"Salary\"     Property=\"@(x => x.Salary)\"      />",
         "</PggmDataGrid>",
         "",
         "@code {",
@@ -208,15 +206,15 @@
         "<!-- The bottom panel needs overflow-y: auto so the ResizeObserver",
         "     tracks the panel height rather than the full page. -->",
         "<div style=\"height: 500px; overflow: hidden;\">",
-        "  <PggmSplitter Orientation=\"SplitterOrientation.Vertical\" @bind-Position=\"_pos\">",
+        "  <PggmSplitter Orientation=\"SplitterOrientation.Vertical\" @bind-Position=\"_splitterPos\">",
         "    <StartContent><!-- top panel content --></StartContent>",
         "    <EndContent>",
         "      <div style=\"overflow-y: auto; height: 100%;\">",
-        "        <PggmDataGrid TGridItem=\"Employee\"",
-        "                      Items=\"@_employees.AsQueryable()\"",
-        "                      Pagination=\"_pagination\"",
-        "                      AutoItemsPerPage=\"true\"",
-        "                      AutoItemsPerPageRowHeight=\"41\" />",
+        "        <PggmDataGrid",
+"                      Items=\"@_employees.AsQueryable()\"",
+"                      Pagination=\"_splitterPagination\"",
+"                      AutoItemsPerPage=\"true\"",
+"                      AutoItemsPerPageRowHeight=\"41\" />",
         "      </div>",
         "    </EndContent>",
         "  </PggmSplitter>",

@@ -16,12 +16,12 @@
 
 <DemoSection Title="Organisational hierarchy" Code="@_razorSource" CodeBehind="@_csSource">
     <PggmDataGrid TGridItem="OrgGridItem" Items="@_gridItems.AsQueryable()">
-        <PropertyColumn TGridItem="OrgGridItem" TProp="string" Title="Name"
-                        Property="@(x => x.Item.Name)" HierarchicalToggle="true" Index="0" />
-        <PropertyColumn TGridItem="OrgGridItem" TProp="string" Title="Role"
-                        Property="@(x => x.Item.Role)" Index="1" Width="160px" />
-        <PropertyColumn TGridItem="OrgGridItem" TProp="int" Title="Headcount"
-                        Property="@(x => x.Item.Headcount)" Index="2" Width="120px"
+        <PropertyColumn Title="Name"
+                        Property="@(x => x.Item.Name)" HierarchicalToggle="true" />
+        <PropertyColumn Title="Role"
+                        Property="@(x => x.Item.Role)" Width="160px" />
+        <PropertyColumn Title="Headcount"
+                        Property="@(x => x.Item.Headcount)" Width="120px"
                         Alignment="Pggm.Components.Components.PggmDataGrid.ColumnAlignment.Right" />
     </PggmDataGrid>
 </DemoSection>
@@ -34,12 +34,12 @@
         the user expands the row.
     </p>
     <PggmDataGrid TGridItem="OrgGridItem" Items="@_collapsedGridItems.AsQueryable()">
-        <PropertyColumn TGridItem="OrgGridItem" TProp="string" Title="Name"
-                        Property="@(x => x.Item.Name)" HierarchicalToggle="true" Index="0" />
-        <PropertyColumn TGridItem="OrgGridItem" TProp="string" Title="Role"
-                        Property="@(x => x.Item.Role)" Index="1" Width="160px" />
-        <PropertyColumn TGridItem="OrgGridItem" TProp="int" Title="Headcount"
-                        Property="@(x => x.Item.Headcount)" Index="2" Width="120px"
+        <PropertyColumn Title="Name"
+                        Property="@(x => x.Item.Name)" HierarchicalToggle="true" />
+        <PropertyColumn Title="Role"
+                        Property="@(x => x.Item.Role)" Width="160px" />
+        <PropertyColumn Title="Headcount"
+                        Property="@(x => x.Item.Headcount)" Width="120px"
                         Alignment="Pggm.Components.Components.PggmDataGrid.ColumnAlignment.Right" />
     </PggmDataGrid>
 </DemoSection>
@@ -110,13 +110,13 @@
     // ── Code snippets ────────────────────────────────────────────────────────
 
     private readonly string _razorSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<PggmDataGrid TGridItem=\"OrgGridItem\" Items=\"@_gridItems.AsQueryable()\">",
-        "    <PropertyColumn TGridItem=\"OrgGridItem\" TProp=\"string\" Title=\"Name\"",
-        "                    Property=\"@(x => x.Item.Name)\" HierarchicalToggle=\"true\" Index=\"0\" />",
-        "    <PropertyColumn TGridItem=\"OrgGridItem\" TProp=\"string\" Title=\"Role\"",
-        "                    Property=\"@(x => x.Item.Role)\" Index=\"1\" Width=\"160px\" />",
-        "    <PropertyColumn TGridItem=\"OrgGridItem\" TProp=\"int\" Title=\"Headcount\"",
-        "                    Property=\"@(x => x.Item.Headcount)\" Index=\"2\" Width=\"120px\" />",
+        "<PggmDataGrid Items=\"@_gridItems.AsQueryable()\">",
+"    <PropertyColumn Title=\"Name\"",
+"                    Property=\"@(x => x.Item.Name)\" HierarchicalToggle=\"true\" />",
+"    <PropertyColumn Title=\"Role\"",
+"                    Property=\"@(x => x.Item.Role)\" Width=\"160px\" />",
+"    <PropertyColumn Title=\"Headcount\"",
+"                    Property=\"@(x => x.Item.Headcount)\" Width=\"120px\" />",
         "</PggmDataGrid>");
 
     private readonly string _csSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
@@ -137,15 +137,15 @@
         "        item => false);",
         "}");
 
-    private readonly string _collapsedRazorSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<PggmDataGrid TGridItem=\"OrgGridItem\" Items=\"@_collapsedGridItems.AsQueryable()\">",
-        "    <PropertyColumn TGridItem=\"OrgGridItem\" TProp=\"string\" Title=\"Name\"",
-        "                    Property=\"@(x => x.Item.Name)\" HierarchicalToggle=\"true\" Index=\"0\" />",
-        "    <PropertyColumn TGridItem=\"OrgGridItem\" TProp=\"string\" Title=\"Role\"",
-        "                    Property=\"@(x => x.Item.Role)\" Index=\"1\" Width=\"160px\" />",
-        "    <PropertyColumn TGridItem=\"OrgGridItem\" TProp=\"int\" Title=\"Headcount\"",
-        "                    Property=\"@(x => x.Item.Headcount)\" Index=\"2\" Width=\"120px\" />",
-        "</PggmDataGrid>");
+private readonly string _collapsedRazorSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+"<PggmDataGrid Items=\"@_collapsedGridItems.AsQueryable()\">",
+"    <PropertyColumn Title=\"Name\"",
+"                    Property=\"@(x => x.Item.Name)\" HierarchicalToggle=\"true\" />",
+"    <PropertyColumn Title=\"Role\"",
+"                    Property=\"@(x => x.Item.Role)\" Width=\"160px\" />",
+"    <PropertyColumn Title=\"Headcount\"",
+"                    Property=\"@(x => x.Item.Headcount)\" Width=\"120px\" />",
+"</PggmDataGrid>");
 
     private readonly string _collapsedCsSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
         "// Pass `item => true` as the isCollapsed selector — every node starts collapsed.",

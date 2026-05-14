@@ -37,18 +37,12 @@
     </div>
 
     <PggmDataGrid @ref="_grid" TGridItem="FoodEnforcementItem" ItemsProvider="@LoadItemsAsync" Virtualize="true" Height="500px">
-        <PropertyColumn TGridItem="FoodEnforcementItem" TProp="string" Title="Recall #"
-                        Property="@(x => x.RecallNumber)" Index="0" Width="130px" />
-        <PropertyColumn TGridItem="FoodEnforcementItem" TProp="string" Title="State"
-                        Property="@(x => x.State)" Index="1" Width="70px" />
-        <PropertyColumn TGridItem="FoodEnforcementItem" TProp="string" Title="City"
-                        Property="@(x => x.City)" Index="2" Width="140px" />
-        <PropertyColumn TGridItem="FoodEnforcementItem" TProp="string" Title="Firm"
-                        Property="@(x => x.RecallingFirm)" Index="3" />
-        <PropertyColumn TGridItem="FoodEnforcementItem" TProp="string" Title="Status"
-                        Property="@(x => x.Status)" Index="4" Width="110px" />
-        <PropertyColumn TGridItem="FoodEnforcementItem" TProp="string" Title="Date"
-                        Property="@(x => x.RecallInitiationDate)" Sortable="true" Index="5" Width="100px" />
+        <PropertyColumn Title="Recall #" Property="@(x => x.RecallNumber)" Width="130px" />
+        <PropertyColumn Title="State" Property="@(x => x.State)" Width="70px" />
+        <PropertyColumn Title="City" Property="@(x => x.City)" Width="140px" />
+        <PropertyColumn Title="Firm" Property="@(x => x.RecallingFirm)" />
+        <PropertyColumn Title="Status" Property="@(x => x.Status)" Width="110px" />
+        <PropertyColumn Title="Date" Property="@(x => x.RecallInitiationDate)" Sortable="true" Width="100px" />
     </PggmDataGrid>
 </DemoSection>
 
@@ -129,12 +123,12 @@
     private readonly string _source = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
         "@inject OpenFdaService FdaService",
         "",
-        "<PggmDataGrid TGridItem=\"FoodEnforcementItem\" ItemsProvider=\"@LoadItemsAsync\" Virtualize=\"true\">",
-        "    <PropertyColumn Title=\"Recall #\" Property=\"@(x => x.RecallNumber)\" Index=\"0\" />",
-        "    <PropertyColumn Title=\"State\" Property=\"@(x => x.State)\" Index=\"1\" />",
-        "    <PropertyColumn Title=\"City\" Property=\"@(x => x.City)\" Index=\"2\" />",
-        "    <PropertyColumn Title=\"Firm\" Property=\"@(x => x.RecallingFirm)\" Index=\"3\" />",
-        "    <PropertyColumn Title=\"Status\" Property=\"@(x => x.Status)\" Index=\"4\" />",
-        "    <PropertyColumn Title=\"Date\" Property=\"@(x => x.RecallInitiationDate)\" Sortable=\"true\" Index=\"5\" />",
+        "<PggmDataGrid ItemsProvider=\"@LoadItemsAsync\" Virtualize=\"true\">",
+        "    <PropertyColumn Title=\"Recall #\" Property=\"@(x => x.RecallNumber)\" Width=\"130px\" />",
+        "    <PropertyColumn Title=\"State\" Property=\"@(x => x.State)\" Width=\"70px\" />",
+        "    <PropertyColumn Title=\"City\" Property=\"@(x => x.City)\" Width=\"140px\" />",
+        "    <PropertyColumn Title=\"Firm\" Property=\"@(x => x.RecallingFirm)\" />",
+        "    <PropertyColumn Title=\"Status\" Property=\"@(x => x.Status)\" Width=\"110px\" />",
+        "    <PropertyColumn Title=\"Date\" Property=\"@(x => x.RecallInitiationDate)\" Sortable=\"true\" Width=\"100px\" />",
         "</PggmDataGrid>");
 }

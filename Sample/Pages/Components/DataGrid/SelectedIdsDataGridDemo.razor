@@ -22,9 +22,9 @@
                   ItemId="@(e => e.Id)"
                   @ref="_multiGrid"
                   SelectedItemsChangedCallback="@(() => StateHasChanged())">
-        <SelectColumn TGridItem="Employee" Index="0" />
-        <PropertyColumn TGridItem="Employee" TProp="string" Title="Name"       Property="@(e => e.Name)"       Index="2" />
-        <PropertyColumn TGridItem="Employee" TProp="string" Title="Department" Property="@(e => e.Department)"  Index="3" />
+        <SelectColumn />
+        <PropertyColumn Title="Name"       Property="@(e => e.Name)"       />
+        <PropertyColumn Title="Department" Property="@(e => e.Department)"  />
     </PggmDataGrid>
 
     <div style="margin-top:12px;">
@@ -64,10 +64,10 @@
                   SingleSelect="true"
                   @ref="_singleGrid"
                   SelectedItemsChangedCallback="@(() => StateHasChanged())">
-        <SelectColumn TGridItem="Employee" Index="0" />
-        <PropertyColumn TGridItem="Employee" TProp="int"    Title="Id"         Property="@(e => e.Id)"         Index="1" Width="60px" />
-        <PropertyColumn TGridItem="Employee" TProp="string" Title="Name"       Property="@(e => e.Name)"       Index="2" />
-        <PropertyColumn TGridItem="Employee" TProp="string" Title="Department" Property="@(e => e.Department)"  Index="3" />
+        <SelectColumn />
+        <PropertyColumn Title="Id"         Property="@(e => e.Id)"         Width="60px" />
+        <PropertyColumn Title="Name"       Property="@(e => e.Name)"       />
+        <PropertyColumn Title="Department" Property="@(e => e.Department)"  />
     </PggmDataGrid>
 
     <div style="margin-top:12px;">
@@ -105,26 +105,26 @@
     }
 
     private string _multiCode = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<PggmDataGrid TGridItem=\"Employee\"",
+        "<PggmDataGrid",
         "              Items=\"@_employees.AsQueryable()\"",
         "              ItemId=\"@(e => e.Id)\">",
-        "    <SelectColumn TGridItem=\"Employee\" Index=\"0\" />",
-        "    <PropertyColumn TGridItem=\"Employee\" TProp=\"string\" Title=\"Name\"       Property=\"@(e => e.Name)\"       Index=\"2\" />",
-        "    <PropertyColumn TGridItem=\"Employee\" TProp=\"string\" Title=\"Department\" Property=\"@(e => e.Department)\" Index=\"3\" />",
+"    <SelectColumn />",
+"    <PropertyColumn Title=\"Name\"       Property=\"@(e => e.Name)\"       />",
+"    <PropertyColumn Title=\"Department\" Property=\"@(e => e.Department)\" />",
         "</PggmDataGrid>",
         "",
         "// Access selected keys directly:",
         "@string.Join(\", \", _grid.SelectedIds)");
 
     private string _singleCode = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<PggmDataGrid TGridItem=\"Employee\"",
+        "<PggmDataGrid",
         "              Items=\"@_employees.AsQueryable()\"",
         "              ItemId=\"@(e => e.Id)\"",
         "              SingleSelect=\"true\">",
-        "    <SelectColumn TGridItem=\"Employee\" Index=\"0\" />",
-        "    <PropertyColumn TGridItem=\"Employee\" TProp=\"int\"    Title=\"Id\"         Property=\"@(e => e.Id)\"         Index=\"1\" />",
-        "    <PropertyColumn TGridItem=\"Employee\" TProp=\"string\" Title=\"Name\"       Property=\"@(e => e.Name)\"       Index=\"2\" />",
-        "    <PropertyColumn TGridItem=\"Employee\" TProp=\"string\" Title=\"Department\" Property=\"@(e => e.Department)\" Index=\"3\" />",
+"    <SelectColumn />",
+"    <PropertyColumn Title=\"Id\"         Property=\"@(e => e.Id)\"         Width=\"60px\" />",
+"    <PropertyColumn Title=\"Name\"       Property=\"@(e => e.Name)\"       />",
+"    <PropertyColumn Title=\"Department\" Property=\"@(e => e.Department)\" />",
         "</PggmDataGrid>",
         "",
         "// Access the single selected key directly:",

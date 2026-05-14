@@ -25,12 +25,12 @@
 <DemoSection Title="External GridContext with multi-select" Code="@_razorSource" CodeBehind="@_csSource">
     <PggmDataGrid TGridItem="Person" GridContext="@_context" Items="@_people.AsQueryable()" AutoItemsPerPage="false"
                   ItemId="p => p.Name!" OnRowSelected="OnSelectionChanged">
-        <SelectColumn TGridItem="Person" Index="0" />
+        <SelectColumn />
         <!-- TemplateColumn demonstrates use of the render-fragment parameter. -->
         <!-- The fragment parameter is implicitly available as @@context, or you can rename it with Context="...". -->
-        <PropertyColumn TGridItem="Person" TProp="string" Title="Name" Property="p => p.Name" Index="1" />
+        <PropertyColumn Title="Name" Property="p => p.Name" />
         
-        <TemplateColumn TGridItem="Person" Index="2">
+        <TemplateColumn>
             <Template Context="p">
                 <div @onclick="() => _context.ToggleItem(p)"
                      style="padding:.5em; background:@(_context.IsSelected(p) ? "#e0f0ff" : "transparent")">
@@ -95,9 +95,9 @@
         "              AutoItemsPerPage=\"false\"",
         "              ItemId=\"p => p.Name!\"",
         "              OnRowSelected=\"OnSelectionChanged\">",
-        "    <SelectColumn TGridItem=\"Person\" Index=\"0\" />",
-        "    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Property=\"p => p.Name\" Index=\"1\" />",
-        "    <TemplateColumn TGridItem=\"Person\" Index=\"2\">",
+"    <SelectColumn />",
+"    <PropertyColumn Title=\"Name\" Property=\"p => p.Name\" />",
+"    <TemplateColumn>",
         "        <Template Context=\"p\">",
         "            <div @onclick=\"() => _context.ToggleItem(p)\"",
         "                 style=\"padding:.5em; background:@(_context.IsSelected(p) ? \"#e0f0ff\" : \"transparent\")\">",
