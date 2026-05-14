@@ -11,9 +11,9 @@
     <p>Enable <code>EnableColumnFiltering</code> and mark columns as <code>Filterable</code>. Set <code>FilterType</code> to <code>FilterType.Number</code> or <code>FilterType.Date</code> for numeric and date columns.</p>
 
     <PggmDataGrid TGridItem="Person" Items="@People.AsQueryable()" EnableColumnFiltering="true">
-        <PropertyColumn TGridItem="Person" TProp="string" Title="Name" Value="@(p => p.Name)" SortByExpression="@(p => p.Name)" FilterByExpression="@(p => p.Name)" Filterable="true" FilterType="FilterType.String" Field="Name" Index="1" />
-        <PropertyColumn TGridItem="Person" TProp="int" Title="Age" Value="@(p => p.Age)" SortByExpression="@(p => p.Age)" FilterByExpression="@(p => p.Age)" Filterable="true" FilterType="FilterType.Number" Field="Age" Index="2" />
-        <PropertyColumn TGridItem="Person" TProp="DateOnly" Title="Date of Birth" Value="@(p => p.DateOfBirth)" SortByExpression="@(p => p.DateOfBirth)" FilterByExpression="@(p => p.DateOfBirth)" Filterable="true" FilterType="FilterType.Date" Field="DateOfBirth" Index="3" DisplayFormat="d MMMM yyyy" />
+        <PropertyColumn TGridItem="Person" TProp="string" Title="Name" Property="@(p => p.Name)" Sortable="true" Filterable="true" FilterType="FilterType.String" Field="Name" Index="1" />
+        <PropertyColumn TGridItem="Person" TProp="int" Title="Age" Property="@(p => p.Age)" Sortable="true" Filterable="true" FilterType="FilterType.Number" Field="Age" Index="2" />
+        <PropertyColumn TGridItem="Person" TProp="DateOnly" Title="Date of Birth" Property="@(p => p.DateOfBirth)" Sortable="true" Filterable="true" FilterType="FilterType.Date" Field="DateOfBirth" Index="3" Format="d MMMM yyyy" />
     </PggmDataGrid>
 </DemoSection>
 
@@ -34,9 +34,9 @@
 
     private string _source = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
         "<PggmDataGrid TGridItem=\"Person\" Items=\"@People.AsQueryable()\" EnableColumnFiltering=\"true\">",
-        "    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Value=\"@(p => p.Name)\" FilterByExpression=\"@(p => p.Name)\" Filterable=\"true\" FilterType=\"FilterType.String\" Field=\"Name\" Index=\"1\" />",
-        "    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Value=\"@(p => p.Age)\" FilterByExpression=\"@(p => p.Age)\" Filterable=\"true\" FilterType=\"FilterType.Number\" Field=\"Age\" Index=\"2\" />",
-        "    <PropertyColumn TGridItem=\"Person\" TProp=\"DateOnly\" Title=\"Date of Birth\" Value=\"@(p => p.DateOfBirth)\" FilterByExpression=\"@(p => p.DateOfBirth)\" Filterable=\"true\" FilterType=\"FilterType.Date\" Field=\"DateOfBirth\" Index=\"3\" />",
+        "    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Property=\"@(p => p.Name)\" Filterable=\"true\" FilterType=\"FilterType.String\" Field=\"Name\" Index=\"1\" />",
+        "    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Property=\"@(p => p.Age)\" Filterable=\"true\" FilterType=\"FilterType.Number\" Field=\"Age\" Index=\"2\" />",
+        "    <PropertyColumn TGridItem=\"Person\" TProp=\"DateOnly\" Title=\"Date of Birth\" Property=\"@(p => p.DateOfBirth)\" Filterable=\"true\" FilterType=\"FilterType.Date\" Field=\"DateOfBirth\" Index=\"3\" />",
         "</PggmDataGrid>");
 
     private class Person

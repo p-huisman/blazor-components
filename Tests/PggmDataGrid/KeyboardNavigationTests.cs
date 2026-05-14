@@ -65,7 +65,7 @@ public class KeyboardNavigationTests : TestContext
         var pagination = new PaginationState { PageSize = 10, PageIndex = 0 };
         var comp = RenderDataGrid(items, pagination);
 
-        var headerButton = comp.Find("th[col-index='0'] .pggm-grid-header-button");
+        var headerButton = comp.Find("th[col-index='0'] .pggm-grid-header-sort");
         headerButton.TriggerEvent("onfocusin", new FocusEventArgs());
 
         var grid = comp.Find("div[role='grid']");
@@ -88,7 +88,7 @@ public class KeyboardNavigationTests : TestContext
                 builder.OpenComponent(0, typeof(PropertyColumn<RowItem, string>));
                 builder.AddAttribute(1, "Title", "Name");
                 builder.AddAttribute(2, "Index", 0);
-                builder.AddAttribute(3, "Value", (Func<RowItem, string>)(x => x.Name));
+                builder.AddAttribute(3, "Property", (System.Linq.Expressions.Expression<Func<RowItem, string>>)(x => x.Name));
                 builder.CloseComponent();
             }));
     }

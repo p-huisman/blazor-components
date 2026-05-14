@@ -37,11 +37,11 @@
                   AutoItemsPerPage="true"
                   AutoItemsPerPageRowHeight="41"
                   OnAutoItemsPerPageChanged="@(_ => StateHasChanged())">
-        <PropertyColumn TGridItem="Employee" TProp="string"  Title="Name"       Value="@(x => x.Name)"       Index="0" SortByExpression="@(x => x.Name)" IsDefaultSortColumn="true" />
-        <PropertyColumn TGridItem="Employee" TProp="string"  Title="Department" Value="@(x => x.Department)"  Index="1" SortByExpression="@(x => x.Department)" />
-        <PropertyColumn TGridItem="Employee" TProp="string"  Title="Location"   Value="@(x => x.Location)"    Index="2" SortByExpression="@(x => x.Location)" />
-        <PropertyColumn TGridItem="Employee" TProp="string"  Title="Role"       Value="@(x => x.Role)"        Index="3" />
-        <PropertyColumn TGridItem="Employee" TProp="decimal" Title="Salary"     Value="@(x => x.Salary)"
+        <PropertyColumn TGridItem="Employee" TProp="string"  Title="Name"       Property="@(x => x.Name)"       Index="0" Sortable="true" IsDefaultSortColumn="true" />
+        <PropertyColumn TGridItem="Employee" TProp="string"  Title="Department" Property="@(x => x.Department)"  Index="1" Sortable="true" />
+        <PropertyColumn TGridItem="Employee" TProp="string"  Title="Location"   Property="@(x => x.Location)"    Index="2" Sortable="true" />
+        <PropertyColumn TGridItem="Employee" TProp="string"  Title="Role"       Property="@(x => x.Role)"        Index="3" />
+        <PropertyColumn TGridItem="Employee" TProp="decimal" Title="Salary"     Property="@(x => x.Salary)"
                         Index="4" Width="120px"
                         Alignment="Pggm.Components.Components.PggmDataGrid.ColumnAlignment.Right" />
     </PggmDataGrid>
@@ -74,11 +74,11 @@
                                       OnAutoItemsPerPageChanged="@(_ => StateHasChanged())"
                                       SelectedItemsChangedCallback="@EventCallback.Factory.Create(this, StateHasChanged)">
                             <SelectColumn TGridItem="Employee" Index="0" />
-                            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Name"       Value="@(x => x.Name)"       Index="1" SortByExpression="@(x => x.Name)" IsDefaultSortColumn="true" />
-                            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Department" Value="@(x => x.Department)"  Index="2" />
-                            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Location"   Value="@(x => x.Location)"    Index="3" />
-                            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Role"       Value="@(x => x.Role)"        Index="4" />
-                            <PropertyColumn TGridItem="Employee" TProp="decimal" Title="Salary"     Value="@(x => x.Salary)"
+                            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Name"       Property="@(x => x.Name)"       Index="1" Sortable="true" IsDefaultSortColumn="true" />
+                            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Department" Property="@(x => x.Department)"  Index="2" />
+                            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Location"   Property="@(x => x.Location)"    Index="3" />
+                            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Role"       Property="@(x => x.Role)"        Index="4" />
+                            <PropertyColumn TGridItem="Employee" TProp="decimal" Title="Salary"     Property="@(x => x.Salary)"
                                             Index="5" Width="120px"
                                             Alignment="Pggm.Components.Components.PggmDataGrid.ColumnAlignment.Right" />
                         </PggmDataGrid>
@@ -170,11 +170,11 @@
         "              Pagination=\"_pagination\"",
         "              AutoItemsPerPage=\"true\"",
         "              AutoItemsPerPageRowHeight=\"41\">",
-        "    <PropertyColumn Title=\"Name\"       Value=\"@(x => x.Name)\"       Index=\"0\" />",
-        "    <PropertyColumn Title=\"Department\" Value=\"@(x => x.Department)\"  Index=\"1\" />",
-        "    <PropertyColumn Title=\"Location\"   Value=\"@(x => x.Location)\"    Index=\"2\" />",
-        "    <PropertyColumn Title=\"Role\"       Value=\"@(x => x.Role)\"        Index=\"3\" />",
-        "    <PropertyColumn Title=\"Salary\"     Value=\"@(x => x.Salary)\"      Index=\"4\" />",
+        "    <PropertyColumn Title=\"Name\"       Property=\"@(x => x.Name)\"       Index=\"0\" />",
+        "    <PropertyColumn Title=\"Department\" Property=\"@(x => x.Department)\"  Index=\"1\" />",
+        "    <PropertyColumn Title=\"Location\"   Property=\"@(x => x.Location)\"    Index=\"2\" />",
+        "    <PropertyColumn Title=\"Role\"       Property=\"@(x => x.Role)\"        Index=\"3\" />",
+        "    <PropertyColumn Title=\"Salary\"     Property=\"@(x => x.Salary)\"      Index=\"4\" />",
         "</PggmDataGrid>",
         "",
         "@code {",

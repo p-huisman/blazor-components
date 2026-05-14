@@ -18,9 +18,9 @@
 
 <PggmDataGrid TGridItem="Person" Items="@_people.AsQueryable()" Loading="@_isLoading">
     <ChildContent>
-        <PropertyColumn TGridItem="Person" TProp="int" Title="Id" Value="@(p => p.Id)" Index="0" />
-        <PropertyColumn TGridItem="Person" TProp="string" Title="Name" Value="@(p => p.Name)" Index="1" />
-        <PropertyColumn TGridItem="Person" TProp="int" Title="Age" Value="@(p => p.Age)" Index="2" />
+        <PropertyColumn TGridItem="Person" TProp="int" Title="Id" Property="@(p => p.Id)" Index="0" />
+        <PropertyColumn TGridItem="Person" TProp="string" Title="Name" Property="@(p => p.Name)" Index="1" />
+        <PropertyColumn TGridItem="Person" TProp="int" Title="Age" Property="@(p => p.Age)" Index="2" />
     </ChildContent>
     <EmptyContent>
         <div>

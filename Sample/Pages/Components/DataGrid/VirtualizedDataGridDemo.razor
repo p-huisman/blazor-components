@@ -8,13 +8,13 @@
 <PggmHeading Level="1">Virtualized Pggm DataGrid Demo</PggmHeading>
 
 
-<p>This demo uses `EnableVirtualization` with an `ItemsProvider` to fetch pages on demand.</p>
+<p>This demo uses `Virtualize` with an `ItemsProvider` to fetch pages on demand.</p>
 
 <DemoSection Title="Virtualized DataGrid" Code="@_source">
-    <PggmDataGrid TGridItem="Person" ItemsProvider="@LoadPeopleAsync" EnableVirtualization="true" VirtualizeItemSize="40" Height="400px">
+    <PggmDataGrid TGridItem="Person" ItemsProvider="@LoadPeopleAsync" Virtualize="true" VirtualizeItemSize="40" Height="400px">
         <SelectColumn TGridItem="Person" Index="0" ShowSelectAll="false" />
-        <PropertyColumn TGridItem="Person" TProp="string" Title="Name" Value="@(p => p.Name)" SortByExpression="@(p => p.Name)" Index="1" />
-        <PropertyColumn TGridItem="Person" TProp="int" Title="Age" Value="@(p => p.Age)" SortByExpression="@(p => p.Age)" Index="2" />
+        <PropertyColumn TGridItem="Person" TProp="string" Title="Name" Property="@(p => p.Name)" Sortable="true" Index="1" />
+        <PropertyColumn TGridItem="Person" TProp="int" Title="Age" Property="@(p => p.Age)" Sortable="true" Index="2" />
     </PggmDataGrid>
 </DemoSection>
 
@@ -60,9 +60,9 @@
     private class Person { public string? Name { get; set; } public int Age { get; set; } }
 
     private string _source = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<PggmDataGrid TGridItem=\"Person\" ItemsProvider=\"@LoadPeopleAsync\" EnableVirtualization=\"true\" VirtualizeItemSize=\"40\">",
+        "<PggmDataGrid TGridItem=\"Person\" ItemsProvider=\"@LoadPeopleAsync\" Virtualize=\"true\" VirtualizeItemSize=\"40\">",
         "    <SelectColumn TGridItem=\"Person\" Index=\"0\" ShowSelectAll=\"false\" />",
-        "    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Value=\"@(p => p.Name)\" SortByExpression=\"@(p => p.Name)\" Index=\"1\" />",
-        "    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Value=\"@(p => p.Age)\" SortByExpression=\"@(p => p.Age)\" Index=\"2\" />",
+        "    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Property=\"@(p => p.Name)\" Sortable=\"true\" Index=\"1\" />",
+        "    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Property=\"@(p => p.Age)\" Sortable=\"true\" Index=\"2\" />",
         "</PggmDataGrid>");
 }

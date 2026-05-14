@@ -14,7 +14,7 @@ namespace Pggm.Components.Tests
         public void ToPropertyList_MixedThenBy_DirectionsRespectOverallAscending()
         {
             // Arrange: create GridSort with first Name ascending, then Age descending
-            var sort = GridSort<Person>.CreateFromExpression(p => p.Name)
+            var sort = GridSort<Person>.ByAscending(p => p.Name)
                 .ThenByDescending(p => p.Age);
 
             // Act: when overall ascending = true
@@ -43,7 +43,7 @@ namespace Pggm.Components.Tests
         {
             // Arrange: create GridSort where expression includes a convert (e.g., object cast)
             Expression<Func<Person, object>> expr = p => (object)p.Name;
-            var sort = GridSort<Person>.CreateFromExpression(expr)
+            var sort = GridSort<Person>.ByAscending(expr)
                 .ThenBy(p => p.Age);
 
             // Act
@@ -60,10 +60,11 @@ namespace Pggm.Components.Tests
         {
             // Arrange: expression that is a binary operation (unsupported for property extraction)
             Expression<Func<Person, object>> expr = p => p.Name + "x";
-            var sort = GridSort<Person>.CreateFromExpression(expr);
+            var sort = GridSort<Person>.ByAscending(expr);
 
             // Act & Assert
-            Assert.Throws<InvalidOperationException>(() => sort.ToPropertyList(true));
+            Action act = () => sort.ToPropertyList(true);
+            Assert.Throws<InvalidOperationException>(act);
         }
 
         [Fact]
@@ -71,10 +72,11 @@ namespace Pggm.Components.Tests
         {
             // Arrange: method call in expression (unsupported)
             Expression<Func<Person, object>> expr = p => p.Name.Substring(0, 1);
-            var sort = GridSort<Person>.CreateFromExpression(expr);
+            var sort = GridSort<Person>.ByAscending(expr);
 
             // Act & Assert
-            Assert.Throws<InvalidOperationException>(() => sort.ToPropertyList(true));
+            Action act = () => sort.ToPropertyList(true);
+            Assert.Throws<InvalidOperationException>(act);
         }
     }
 }

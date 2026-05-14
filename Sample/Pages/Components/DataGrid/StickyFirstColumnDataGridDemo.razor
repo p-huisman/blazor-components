@@ -16,11 +16,11 @@
 <DemoSection Title="Sticky first column" Code="@_basicSource">
     <div style="overflow-x:auto; max-width:480px;">
         <PggmDataGrid TGridItem="Employee" Items="@_employees.AsQueryable()" StickyFirstColumn="true">
-            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Name"         Value="@(x => x.Name)"         Index="0" Width="160px" />
-            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Department"   Value="@(x => x.Department)"   Index="1" Width="160px" />
-            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Location"     Value="@(x => x.Location)"     Index="2" Width="160px" />
-            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Role"         Value="@(x => x.Role)"         Index="3" Width="200px" />
-            <PropertyColumn TGridItem="Employee" TProp="decimal" Title="Salary"       Value="@(x => x.Salary)"       Index="4" Width="120px"
+            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Name"         Property="@(x => x.Name)"         Index="0" Width="160px" />
+            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Department"   Property="@(x => x.Department)"   Index="1" Width="160px" />
+            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Location"     Property="@(x => x.Location)"     Index="2" Width="160px" />
+            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Role"         Property="@(x => x.Role)"         Index="3" Width="200px" />
+            <PropertyColumn TGridItem="Employee" TProp="decimal" Title="Salary"       Property="@(x => x.Salary)"       Index="4" Width="120px"
                             Alignment="ColumnAlignment.Right" />
         </PggmDataGrid>
     </div>
@@ -33,11 +33,11 @@
     <div style="overflow-x:auto; max-width:480px;">
         <PggmDataGrid TGridItem="Employee" Items="@_employees.AsQueryable()" StickyFirstColumn="true">
             <SelectColumn TGridItem="Employee" Index="0" Width="40px" />
-            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Name"         Value="@(x => x.Name)"         Index="1" Width="160px" />
-            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Department"   Value="@(x => x.Department)"   Index="2" Width="160px" />
-            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Location"     Value="@(x => x.Location)"     Index="3" Width="160px" />
-            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Role"         Value="@(x => x.Role)"         Index="4" Width="200px" />
-            <PropertyColumn TGridItem="Employee" TProp="decimal" Title="Salary"       Value="@(x => x.Salary)"       Index="5" Width="120px"
+            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Name"         Property="@(x => x.Name)"         Index="1" Width="160px" />
+            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Department"   Property="@(x => x.Department)"   Index="2" Width="160px" />
+            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Location"     Property="@(x => x.Location)"     Index="3" Width="160px" />
+            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Role"         Property="@(x => x.Role)"         Index="4" Width="200px" />
+            <PropertyColumn TGridItem="Employee" TProp="decimal" Title="Salary"       Property="@(x => x.Salary)"       Index="5" Width="120px"
                             Alignment="ColumnAlignment.Right" />
         </PggmDataGrid>
     </div>
@@ -49,11 +49,11 @@
     </p>
     <div style="overflow-x:auto; max-width:480px;">
         <PggmDataGrid TGridItem="Employee" Items="@_employees.AsQueryable()" StickyFirstColumn="true" ResizableColumns="true">
-            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Name"         Value="@(x => x.Name)"         Index="0" Width="160px" MinWidth="80px" />
-            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Department"   Value="@(x => x.Department)"   Index="1" Width="160px" MinWidth="80px" />
-            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Location"     Value="@(x => x.Location)"     Index="2" Width="160px" MinWidth="60px" />
-            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Role"         Value="@(x => x.Role)"         Index="3" Width="200px" MinWidth="60px" />
-            <PropertyColumn TGridItem="Employee" TProp="decimal" Title="Salary"       Value="@(x => x.Salary)"       Index="4" Width="120px" MinWidth="80px"
+            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Name"         Property="@(x => x.Name)"         Index="0" Width="160px" MinWidth="80px" />
+            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Department"   Property="@(x => x.Department)"   Index="1" Width="160px" MinWidth="80px" />
+            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Location"     Property="@(x => x.Location)"     Index="2" Width="160px" MinWidth="60px" />
+            <PropertyColumn TGridItem="Employee" TProp="string"  Title="Role"         Property="@(x => x.Role)"         Index="3" Width="200px" MinWidth="60px" />
+            <PropertyColumn TGridItem="Employee" TProp="decimal" Title="Salary"       Property="@(x => x.Salary)"       Index="4" Width="120px" MinWidth="80px"
                             Alignment="ColumnAlignment.Right" />
         </PggmDataGrid>
     </div>
@@ -82,11 +82,11 @@
         "<!-- Wrap the grid in an overflow-x:auto container to trigger horizontal scrolling -->",
         "<div style=\"overflow-x:auto; max-width:480px;\">",
         "    <PggmDataGrid TGridItem=\"Employee\" Items=\"@_employees.AsQueryable()\" StickyFirstColumn=\"true\">",
-        "        <PropertyColumn Title=\"Name\"       Value=\"@(x => x.Name)\"       Index=\"0\" Width=\"160px\" />",
-        "        <PropertyColumn Title=\"Department\" Value=\"@(x => x.Department)\"  Index=\"1\" Width=\"160px\" />",
-        "        <PropertyColumn Title=\"Location\"   Value=\"@(x => x.Location)\"    Index=\"2\" Width=\"160px\" />",
-        "        <PropertyColumn Title=\"Role\"       Value=\"@(x => x.Role)\"        Index=\"3\" Width=\"200px\" />",
-        "        <PropertyColumn Title=\"Salary\"     Value=\"@(x => x.Salary)\"      Index=\"4\" Width=\"120px\" />",
+        "        <PropertyColumn Title=\"Name\"       Property=\"@(x => x.Name)\"       Index=\"0\" Width=\"160px\" />",
+        "        <PropertyColumn Title=\"Department\" Property=\"@(x => x.Department)\"  Index=\"1\" Width=\"160px\" />",
+        "        <PropertyColumn Title=\"Location\"   Property=\"@(x => x.Location)\"    Index=\"2\" Width=\"160px\" />",
+        "        <PropertyColumn Title=\"Role\"       Property=\"@(x => x.Role)\"        Index=\"3\" Width=\"200px\" />",
+        "        <PropertyColumn Title=\"Salary\"     Property=\"@(x => x.Salary)\"      Index=\"4\" Width=\"120px\" />",
         "    </PggmDataGrid>",
         "</div>");
 
@@ -95,11 +95,11 @@
         "<div style=\"overflow-x:auto; max-width:480px;\">",
         "    <PggmDataGrid TGridItem=\"Employee\" Items=\"@_employees.AsQueryable()\" StickyFirstColumn=\"true\">",
         "        <SelectColumn TGridItem=\"Employee\" Index=\"0\" Width=\"40px\" />",
-        "        <PropertyColumn Title=\"Name\"       Value=\"@(x => x.Name)\"       Index=\"1\" Width=\"160px\" />",
-        "        <PropertyColumn Title=\"Department\" Value=\"@(x => x.Department)\"  Index=\"2\" Width=\"160px\" />",
-        "        <PropertyColumn Title=\"Location\"   Value=\"@(x => x.Location)\"    Index=\"3\" Width=\"160px\" />",
-        "        <PropertyColumn Title=\"Role\"       Value=\"@(x => x.Role)\"        Index=\"4\" Width=\"200px\" />",
-        "        <PropertyColumn Title=\"Salary\"     Value=\"@(x => x.Salary)\"      Index=\"5\" Width=\"120px\" />",
+        "        <PropertyColumn Title=\"Name\"       Property=\"@(x => x.Name)\"       Index=\"1\" Width=\"160px\" />",
+        "        <PropertyColumn Title=\"Department\" Property=\"@(x => x.Department)\"  Index=\"2\" Width=\"160px\" />",
+        "        <PropertyColumn Title=\"Location\"   Property=\"@(x => x.Location)\"    Index=\"3\" Width=\"160px\" />",
+        "        <PropertyColumn Title=\"Role\"       Property=\"@(x => x.Role)\"        Index=\"4\" Width=\"200px\" />",
+        "        <PropertyColumn Title=\"Salary\"     Property=\"@(x => x.Salary)\"      Index=\"5\" Width=\"120px\" />",
         "    </PggmDataGrid>",
         "</div>");
 
@@ -107,11 +107,11 @@
         "<!-- StickyFirstColumn and ResizableColumns can be combined -->",
         "<div style=\"overflow-x:auto; max-width:480px;\">",
         "    <PggmDataGrid TGridItem=\"Employee\" Items=\"@_employees.AsQueryable()\" StickyFirstColumn=\"true\" ResizableColumns=\"true\">",
-        "        <PropertyColumn Title=\"Name\"       Value=\"@(x => x.Name)\"       Index=\"0\" Width=\"160px\" MinWidth=\"80px\" />",
-        "        <PropertyColumn Title=\"Department\" Value=\"@(x => x.Department)\"  Index=\"1\" Width=\"160px\" MinWidth=\"80px\" />",
-        "        <PropertyColumn Title=\"Location\"   Value=\"@(x => x.Location)\"    Index=\"2\" Width=\"160px\" MinWidth=\"60px\" />",
-        "        <PropertyColumn Title=\"Role\"       Value=\"@(x => x.Role)\"        Index=\"3\" Width=\"200px\" MinWidth=\"60px\" />",
-        "        <PropertyColumn Title=\"Salary\"     Value=\"@(x => x.Salary)\"      Index=\"4\" Width=\"120px\" MinWidth=\"80px\" />",
+        "        <PropertyColumn Title=\"Name\"       Property=\"@(x => x.Name)\"       Index=\"0\" Width=\"160px\" MinWidth=\"80px\" />",
+        "        <PropertyColumn Title=\"Department\" Property=\"@(x => x.Department)\"  Index=\"1\" Width=\"160px\" MinWidth=\"80px\" />",
+        "        <PropertyColumn Title=\"Location\"   Property=\"@(x => x.Location)\"    Index=\"2\" Width=\"160px\" MinWidth=\"60px\" />",
+        "        <PropertyColumn Title=\"Role\"       Property=\"@(x => x.Role)\"        Index=\"3\" Width=\"200px\" MinWidth=\"60px\" />",
+        "        <PropertyColumn Title=\"Salary\"     Property=\"@(x => x.Salary)\"      Index=\"4\" Width=\"120px\" MinWidth=\"80px\" />",
         "    </PggmDataGrid>",
         "</div>");
 }

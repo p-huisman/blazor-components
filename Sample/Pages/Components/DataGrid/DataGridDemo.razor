@@ -13,8 +13,8 @@
 	<PggmDataGrid TGridItem="Person" Items="@People.AsQueryable()" @ref="_initialSelectGrid"
 	              SelectedItemsChangedCallback="@(()=>StateHasChanged())">
 		<SelectColumn TGridItem="Person" Index="0" SelectedItems="@_initialSelection" />
-		<PropertyColumn TGridItem="Person" TProp="string" Title="Name" Value="@(p => p.Name)" Index="1" />
-		<PropertyColumn TGridItem="Person" TProp="int" Title="Age" Value="@(p => p.Age)" Index="2" />
+		<PropertyColumn TGridItem="Person" TProp="string" Title="Name" Property="@(p => p.Name)" Index="1" />
+		<PropertyColumn TGridItem="Person" TProp="int" Title="Age" Property="@(p => p.Age)" Index="2" />
 	</PggmDataGrid>
 
 	<div style="margin:8px 0 24px 0;">
@@ -42,8 +42,8 @@
 
 	<PggmDataGrid TGridItem="Person" Items="@People.AsQueryable()" @ref="_codeSelectGrid" SelectedItemsChangedCallback="@(()=>StateHasChanged())">
 		<SelectColumn TGridItem="Person" Index="0" />
-		<PropertyColumn TGridItem="Person" TProp="string" Title="Name" Value="@(p => p.Name)" Index="1" />
-		<PropertyColumn TGridItem="Person" TProp="int" Title="Age" Value="@(p => p.Age)" Index="2" />
+		<PropertyColumn TGridItem="Person" TProp="string" Title="Name" Property="@(p => p.Name)" Index="1" />
+		<PropertyColumn TGridItem="Person" TProp="int" Title="Age" Property="@(p => p.Age)" Index="2" />
 	</PggmDataGrid>
 
 	<div style="margin:8px 0 24px 0;">
@@ -65,8 +65,8 @@
 	<PggmHeading Level="4">In-memory Grid (Multi-Select)</PggmHeading>
 	<PggmDataGrid TGridItem="Person" Items="@People.AsQueryable()" @ref="_multiGrid" SelectedItemsChangedCallback="@(()=>StateHasChanged())">
 		<SelectColumn TGridItem="Person" Index="0" />
-		<PropertyColumn TGridItem="Person" TProp="string" Title="Name" Value="@(p => p.Name)" SortByExpression="@(p => p.Name)" Index="1" />
-		<PropertyColumn TGridItem="Person" TProp="int" Title="Age" Value="@(p => p.Age)" SortByExpression="@(p => p.Age)" Index="2" />
+		<PropertyColumn TGridItem="Person" TProp="string" Title="Name" Property="@(p => p.Name)" Sortable="true" Index="1" />
+		<PropertyColumn TGridItem="Person" TProp="int" Title="Age" Property="@(p => p.Age)" Sortable="true" Index="2" />
 		<TemplateColumn TGridItem="Person" Index="3" Title="Actions">
 			<Template Context="p">
 				<button class="pggm-btn" @onclick="() => ShowDetails(p)">Details</button>
@@ -88,15 +88,15 @@
 	<PggmHeading Level="4">Async ItemsProvider Grid</PggmHeading>
 	<PggmDataGrid TGridItem="Person" ItemsProvider="@LoadPeopleAsync">
 		<SelectColumn TGridItem="Person" Index="0" />
-		<PropertyColumn TGridItem="Person" TProp="string" Title="Name" Value="@(p => p.Name)" SortByExpression="@(p => p.Name)" Index="1" />
-		<PropertyColumn TGridItem="Person" TProp="int" Title="Age" Value="@(p => p.Age)" SortByExpression="@(p => p.Age)" Index="2" />
+		<PropertyColumn TGridItem="Person" TProp="string" Title="Name" Property="@(p => p.Name)" Sortable="true" Index="1" />
+		<PropertyColumn TGridItem="Person" TProp="int" Title="Age" Property="@(p => p.Age)" Sortable="true" Index="2" />
 	</PggmDataGrid>
 
 	<PggmHeading Level="4">Single Select Grid</PggmHeading>
 	<PggmDataGrid TGridItem="Person" Items="@People.AsQueryable()" SingleSelect="true" @ref="_singleGrid" SelectedItemsChangedCallback="@(()=>StateHasChanged())">
 		<SelectColumn TGridItem="Person" Index="0" />
-		<PropertyColumn TGridItem="Person" TProp="string" Title="Name" Value="@(p => p.Name)" SortByExpression="@(p => p.Name)" Index="1" />
-		<PropertyColumn TGridItem="Person" TProp="int" Title="Age" Value="@(p => p.Age)" SortByExpression="@(p => p.Age)" Index="2" />
+		<PropertyColumn TGridItem="Person" TProp="string" Title="Name" Property="@(p => p.Name)" Sortable="true" Index="1" />
+		<PropertyColumn TGridItem="Person" TProp="int" Title="Age" Property="@(p => p.Age)" Sortable="true" Index="2" />
 	</PggmDataGrid>
 	<div style="margin:8px 0 24px 0;">
 		<strong>Selected (single):</strong>
@@ -120,8 +120,8 @@
 	</div>
 	<PggmDataGrid @ref="_progGrid" TGridItem="Person" Items="@People.AsQueryable()">
 		<SelectColumn TGridItem="Person" Index="0" />
-		<PropertyColumn TGridItem="Person" TProp="string" Title="Name" Value="@(p => p.Name)" SortByExpression="@(p => p.Name)" Index="1" Width="200px" Alignment="ColumnAlignment.Left" />
-		<PropertyColumn TGridItem="Person" TProp="int" Title="Age" Value="@(p => p.Age)" SortByExpression="@(p => p.Age)" Index="2" Width="80px" Alignment="ColumnAlignment.Center" />
+		<PropertyColumn TGridItem="Person" TProp="string" Title="Name" Property="@(p => p.Name)" Sortable="true" Index="1" Width="200px" Alignment="ColumnAlignment.Left" />
+		<PropertyColumn TGridItem="Person" TProp="int" Title="Age" Property="@(p => p.Age)" Sortable="true" Index="2" Width="80px" Alignment="ColumnAlignment.Center" />
 		<TemplateColumn TGridItem="Person" Index="3" Title="Actions" Width="120px" Alignment="ColumnAlignment.Center">
 			<Template Context="p">
 				<button class="pggm-btn" @onclick="() => ShowDetails(p)">Details</button>
@@ -157,8 +157,8 @@
 	</div>
 	<PggmDataGrid @ref="_pagerGrid" TGridItem="Person" ItemsProvider="@LoadPeopleAsync" Pagination="_pagerState">
 		<SelectColumn TGridItem="Person" Index="0" />
-		<PropertyColumn TGridItem="Person" TProp="string" Title="Name" Value="@(p => p.Name)" SortByExpression="@(p => p.Name)" Index="1" />
-		<PropertyColumn TGridItem="Person" TProp="int" Title="Age" Value="@(p => p.Age)" SortByExpression="@(p => p.Age)" Index="2" />
+		<PropertyColumn TGridItem="Person" TProp="string" Title="Name" Property="@(p => p.Name)" Sortable="true" Index="1" />
+		<PropertyColumn TGridItem="Person" TProp="int" Title="Age" Property="@(p => p.Age)" Sortable="true" Index="2" />
 	</PggmDataGrid>
 </DemoSection>
 
@@ -176,8 +176,8 @@
 	              OnRowClick="@(p => { _lastClickedRow = p.Name; StateHasChanged(); })"
 	              RowClass="@(p => p.Age >= 40 ? "demo-row-highlight" : null)">
 		<SelectColumn TGridItem="Person" />
-		<PropertyColumn TGridItem="Person" TProp="string" Title="Name" Value="@(p => p.Name)" SortByExpression="@(p => p.Name)" />
-		<PropertyColumn TGridItem="Person" TProp="int" Title="Age" Value="@(p => p.Age)" SortByExpression="@(p => p.Age)"
+		<PropertyColumn TGridItem="Person" TProp="string" Title="Name" Property="@(p => p.Name)" Sortable="true" />
+		<PropertyColumn TGridItem="Person" TProp="int" Title="Age" Property="@(p => p.Age)" Sortable="true"
 		                CellClass="@(p => p.Age >= 40 ? "demo-cell-warning" : null)" />
 	</PggmDataGrid>
 	<div style="margin: 8px 0 4px;">
@@ -197,8 +197,8 @@
         "              OnRowClick=\"@(p => { _lastClickedRow = p.Name; StateHasChanged(); })\"",
         "              RowClass=\"@(p => p.Age >= 40 ? \\\"demo-row-highlight\\\" : null)\">",
         "    <SelectColumn TGridItem=\"Person\" />",
-        "    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Value=\"@(p => p.Name)\" SortByExpression=\"@(p => p.Name)\" />",
-        "    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Value=\"@(p => p.Age)\" SortByExpression=\"@(p => p.Age)\"",
+        "    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Property=\"@(p => p.Name)\" Sortable=\"true\" />",
+        "    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Property=\"@(p => p.Age)\" Sortable=\"true\"",
         "                    CellClass=\"@(p => p.Age >= 40 ? \\\"demo-cell-warning\\\" : null)\" />",
         "</PggmDataGrid>");
 
@@ -252,8 +252,8 @@
 		"",
 		"<PggmDataGrid @ref=\"_progGrid\" TGridItem=\"Person\" Items=\"@People.AsQueryable()\">",
 		"    <SelectColumn TGridItem=\"Person\" Index=\"0\" />",
-		"    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Value=\"@(p => p.Name)\" SortByExpression=\"@(p => p.Name)\" Index=\"1\" Width=\"200px\" Alignment=\"ColumnAlignment.Left\" />",
-		"    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Value=\"@(p => p.Age)\" SortByExpression=\"@(p => p.Age)\" Index=\"2\" Width=\"80px\" Alignment=\"ColumnAlignment.Center\" />",
+		"    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Property=\"@(p => p.Name)\" Sortable=\"true\" Index=\"1\" Width=\"200px\" Alignment=\"ColumnAlignment.Left\" />",
+		"    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Property=\"@(p => p.Age)\" Sortable=\"true\" Index=\"2\" Width=\"80px\" Alignment=\"ColumnAlignment.Center\" />",
 		"    <TemplateColumn TGridItem=\"Person\" Index=\"3\" Title=\"Actions\" Width=\"120px\" Alignment=\"ColumnAlignment.Center\">",
 		"        <Template Context=\"p\">",
 		"            <button class=\"pggm-btn\" @onclick=\"() => ShowDetails(p)\">Details</button>",
@@ -272,8 +272,8 @@
 		"<PggmDataGrid TGridItem=\"Person\" Items=\"@People.AsQueryable()\" @ref=\"_multiGrid\"",
 		"              SelectedItemsChangedCallback=\"@(()=>StateHasChanged())\">",
 		"    <SelectColumn TGridItem=\"Person\" Index=\"0\" />",
-		"    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Value=\"@(p => p.Name)\" SortByExpression=\"@(p => p.Name)\" Index=\"1\" />",
-		"    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Value=\"@(p => p.Age)\" SortByExpression=\"@(p => p.Age)\" Index=\"2\" />",
+		"    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Property=\"@(p => p.Name)\" Sortable=\"true\" Index=\"1\" />",
+		"    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Property=\"@(p => p.Age)\" Sortable=\"true\" Index=\"2\" />",
 		"    <TemplateColumn TGridItem=\"Person\" Index=\"3\" Title=\"Actions\">",
 		"        <Template Context=\"p\">",
 		"            <button class=\"pggm-btn\" @onclick=\"() => ShowDetails(p)\">Details</button>",
@@ -283,15 +283,15 @@
 		"",
 		"<PggmDataGrid TGridItem=\"Person\" ItemsProvider=\"@LoadPeopleAsync\">",
 		"    <SelectColumn TGridItem=\"Person\" Index=\"0\" />",
-		"    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Value=\"@(p => p.Name)\" SortByExpression=\"@(p => p.Name)\" Index=\"1\" />",
-		"    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Value=\"@(p => p.Age)\" SortByExpression=\"@(p => p.Age)\" Index=\"2\" />",
+		"    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Property=\"@(p => p.Name)\" Sortable=\"true\" Index=\"1\" />",
+		"    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Property=\"@(p => p.Age)\" Sortable=\"true\" Index=\"2\" />",
 		"</PggmDataGrid>",
 		"",
 		"<PggmDataGrid TGridItem=\"Person\" Items=\"@People.AsQueryable()\" SingleSelect=\"true\" @ref=\"_singleGrid\"",
 		"              SelectedItemsChangedCallback=\"@(()=>StateHasChanged())\">",
 		"    <SelectColumn TGridItem=\"Person\" Index=\"0\" />",
-		"    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Value=\"@(p => p.Name)\" SortByExpression=\"@(p => p.Name)\" Index=\"1\" />",
-		"    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Value=\"@(p => p.Age)\" SortByExpression=\"@(p => p.Age)\" Index=\"2\" />",
+		"    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Property=\"@(p => p.Name)\" Sortable=\"true\" Index=\"1\" />",
+		"    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Property=\"@(p => p.Age)\" Sortable=\"true\" Index=\"2\" />",
 		"</PggmDataGrid>");
 
 	private string selectionBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
@@ -315,8 +315,8 @@
 			"",
 			"<PggmDataGrid @ref=\"_pagerGrid\" TGridItem=\"Person\" ItemsProvider=\"@LoadPeopleAsync\" Pagination=\"_pagerState\">",
 			"    <SelectColumn TGridItem=\"Person\" Index=\"0\" />",
-			"    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Value=\"@(p => p.Name)\" SortByExpression=\"@(p => p.Name)\" Index=\"1\" />",
-			"    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Value=\"@(p => p.Age)\" SortByExpression=\"@(p => p.Age)\" Index=\"2\" />",
+			"    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Property=\"@(p => p.Name)\" Sortable=\"true\" Index=\"1\" />",
+			"    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Property=\"@(p => p.Age)\" Sortable=\"true\" Index=\"2\" />",
 			"</PggmDataGrid>");
 
 		private string paginationBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
@@ -346,8 +346,8 @@
 		"<PggmDataGrid TGridItem=\"Person\" Items=\"@People.AsQueryable()\" @ref=\"_initialSelectGrid\"",
 		"              SelectedItemsChangedCallback=\"@(()=>StateHasChanged())\">",
 		"    <SelectColumn TGridItem=\"Person\" Index=\"0\" SelectedItems=\"@_initialSelection\" />",
-		"    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Value=\"@(p => p.Name)\" Index=\"1\" />",
-		"    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Value=\"@(p => p.Age)\" Index=\"2\" />",
+		"    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Property=\"@(p => p.Name)\" Index=\"1\" />",
+		"    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Property=\"@(p => p.Age)\" Index=\"2\" />",
 		"</PggmDataGrid>");
 
 	private string initialSelectionBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
@@ -394,8 +394,8 @@
 		"<PggmDataGrid TGridItem=\"Person\" Items=\"@People.AsQueryable()\" @ref=\"_codeSelectGrid\"",
 		"              SelectedItemsChangedCallback=\"@(()=>StateHasChanged())\">",
 		"    <SelectColumn TGridItem=\"Person\" Index=\"0\" />",
-		"    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Value=\"@(p => p.Name)\" Index=\"1\" />",
-		"    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Value=\"@(p => p.Age)\" Index=\"2\" />",
+		"    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Property=\"@(p => p.Name)\" Index=\"1\" />",
+		"    <PropertyColumn TGridItem=\"Person\" TProp=\"int\" Title=\"Age\" Property=\"@(p => p.Age)\" Index=\"2\" />",
 		"</PggmDataGrid>");
 
 	private string programmaticSelectionBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(

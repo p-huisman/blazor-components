@@ -28,7 +28,7 @@
         <SelectColumn TGridItem="Person" Index="0" />
         <!-- TemplateColumn demonstrates use of the render-fragment parameter. -->
         <!-- The fragment parameter is implicitly available as @@context, or you can rename it with Context="...". -->
-        <PropertyColumn TGridItem="Person" TProp="string" Title="Name" Value="p => p.Name" Index="1" />
+        <PropertyColumn TGridItem="Person" TProp="string" Title="Name" Property="p => p.Name" Index="1" />
         
         <TemplateColumn TGridItem="Person" Index="2">
             <Template Context="p">
@@ -96,7 +96,7 @@
         "              ItemId=\"p => p.Name!\"",
         "              OnRowSelected=\"OnSelectionChanged\">",
         "    <SelectColumn TGridItem=\"Person\" Index=\"0\" />",
-        "    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Value=\"p => p.Name\" Index=\"1\" />",
+        "    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Property=\"p => p.Name\" Index=\"1\" />",
         "    <TemplateColumn TGridItem=\"Person\" Index=\"2\">",
         "        <Template Context=\"p\">",
         "            <div @onclick=\"() => _context.ToggleItem(p)\"",

@@ -158,21 +158,21 @@ namespace Pggm.Components.Components.PggmDataGrid
         public PaginationState? Pagination { get; set; }
 
         [Parameter]
-        public bool EnableVirtualization { get; set; }
+        public bool Virtualize { get; set; }
 
         /// <summary>
         /// Height of the grid when virtualization is enabled (e.g. "400px", "60vh").
         /// The grid becomes its own scroll container so the sticky header works correctly.
-        /// Defaults to "400px" when not specified and EnableVirtualization is true.
+        /// Defaults to "400px" when not specified and Virtualize is true.
         /// </summary>
         [Parameter]
         public string? Height { get; set; }
 
         [Parameter]
-        public int VirtualizeItemSize { get; set; } = 40;
+        public float ItemSize { get; set; } = 40;
 
         [Parameter]
-        public int VirtualizeOverscanCount { get; set; } = 3;
+        public int OverscanCount { get; set; } = 3;
 
         /// <summary>
         /// Gets or sets the content to render when there are no items.
@@ -241,10 +241,6 @@ namespace Pggm.Components.Components.PggmDataGrid
         public bool AutoItemsPerPage { get; set; }
 
         /// <summary>
-        /// The assumed height of a single data row in pixels used when <see cref="AutoItemsPerPage"/> is
-        /// enabled. Defaults to 40, matching <see cref="VirtualizeItemSize"/>.
-        /// </summary>
-        [Parameter]
         public int AutoItemsPerPageRowHeight { get; set; } = 40;
 
         /// <summary>
@@ -299,7 +295,7 @@ namespace Pggm.Components.Components.PggmDataGrid
             // For virtualized grids, Virtualize manages its own data fetching via RefreshDataAsync.
             // Calling RefreshDataAsync here would invoke ItemsProvider outside Virtualize's lifecycle,
             // producing results that Virtualize ignores and causing the initial empty-rows problem.
-            if (!EnableVirtualization)
+            if (!Virtualize)
             {
                 await RefreshDataAsync(CancellationToken.None);
             }
@@ -349,7 +345,7 @@ namespace Pggm.Components.Components.PggmDataGrid
                     }
                 }
 
-                if (EnableVirtualization)
+                if (Virtualize)
                 {
                     // Request a render to display the TableVirtualize component now that columns are collected
                     StateHasChanged();
@@ -388,7 +384,7 @@ namespace Pggm.Components.Components.PggmDataGrid
             // Set virtualized height (via CSS variable) and apply per-row indents via JS
             if (_columnsRendered)
             {
-                if (EnableVirtualization)
+                if (Virtualize)
                 {
                     try
                     {
@@ -419,8 +415,8 @@ namespace Pggm.Components.Components.PggmDataGrid
             // Tab into the grid. We set the logical position here but do NOT call FocusCell
             // so the grid never steals focus from the browser's natural focus order.
             if (!_hasSetInitialFocus && !_isLoading
-                && ((EnableVirtualization && GetCurrentRowCount() > 0)
-                    || (!EnableVirtualization && _itemsToRender is not null && _itemsToRender.Any()))
+                && ((Virtualize && GetCurrentRowCount() > 0)
+                    || (!Virtualize && _itemsToRender is not null && _itemsToRender.Any()))
                 && _focusManager.Active.Row < 0)
             {
                 var firstCol = InternalContext.Columns.OrderBy(c => c.Index).FirstOrDefault();
@@ -437,7 +433,7 @@ namespace Pggm.Components.Components.PggmDataGrid
             // because keyboard navigation is currently unstable with Virtualize rendering.
             if (_columnsRendered)
             {
-                if (EnableVirtualization)
+                if (Virtualize)
                 {
                     _keyboardNavEnabled = false;
                     try
@@ -446,7 +442,7 @@ namespace Pggm.Components.Components.PggmDataGrid
                     }
                     catch { /* Suppress interop errors; not critical for UX */ }
                 }
-                else if (!_keyboardNavEnabled && !EnableVirtualization)
+                else if (!_keyboardNavEnabled && !Virtualize)
                 {
                     _keyboardNavEnabled = true;
                     try
@@ -566,9 +562,9 @@ namespace Pggm.Components.Components.PggmDataGrid
             {
                 try
                 {
-                    if (EnableVirtualization)
+                    if (Virtualize)
                     {
-                        await JSRuntime.InvokeVoidAsync("pggmDataGrid.focusCellByLogical", _gridId, rowIndex, colIndex, VirtualizeItemSize);
+                        await JSRuntime.InvokeVoidAsync("pggmDataGrid.focusCellByLogical", _gridId, rowIndex, colIndex, ItemSize);
                     }
                     else
                     {
@@ -593,7 +589,7 @@ namespace Pggm.Components.Components.PggmDataGrid
             await CancelCtsAsync(_loadCts).ConfigureAwait(false);
             _isFirstVirtualizeProviderCall = true;
 
-            if (EnableVirtualization)
+            if (Virtualize)
             {
                 await InvokeAsync(StateHasChanged);
                 // ensure the scroll container resets to the top so the first visible item is the first sorted item
@@ -628,7 +624,7 @@ namespace Pggm.Components.Components.PggmDataGrid
             await CancelCtsAsync(_loadCts).ConfigureAwait(false);
             _isFirstVirtualizeProviderCall = true;
 
-            if (EnableVirtualization)
+            if (Virtualize)
             {
                 await InvokeAsync(StateHasChanged);
                 if (_tableVirtualizeRef is not null)
@@ -661,7 +657,7 @@ namespace Pggm.Components.Components.PggmDataGrid
             await CancelCtsAsync(_loadCts).ConfigureAwait(false);
             _isFirstVirtualizeProviderCall = true;
 
-            if (EnableVirtualization)
+            if (Virtualize)
             {
                 await InvokeAsync(StateHasChanged);
                 if (_tableVirtualizeRef is not null)
@@ -696,7 +692,7 @@ namespace Pggm.Components.Components.PggmDataGrid
             await CancelCtsAsync(_loadCts).ConfigureAwait(false);
             _isFirstVirtualizeProviderCall = true;
 
-            if (EnableVirtualization)
+            if (Virtualize)
             {
                 await InvokeAsync(StateHasChanged);
                 if (_tableVirtualizeRef is not null)
@@ -720,7 +716,7 @@ namespace Pggm.Components.Components.PggmDataGrid
         {
             // When virtualization is enabled, delegate to TableVirtualize so the
             // Virtualize component re-fetches from the correct scroll position.
-            if (EnableVirtualization && _tableVirtualizeRef is not null)
+            if (Virtualize && _tableVirtualizeRef is not null)
             {
                 _isFirstVirtualizeProviderCall = true;
                 await _tableVirtualizeRef.RefreshDataAsync();
@@ -797,7 +793,7 @@ namespace Pggm.Components.Components.PggmDataGrid
             var providerReq = new GridItemsProviderRequest<TGridItem>
             {
                 StartIndex = startIndex,
-                Count = (count.HasValue && count.Value > 0) ? count : Math.Max(1, VirtualizeOverscanCount * 5),
+                Count = (count.HasValue && count.Value > 0) ? count : Math.Max(1, OverscanCount * 5),
                 SortByColumn = _currentSortColumn,
                 SortByAscending = _currentSortAscending,
                 CancellationToken = request.CancellationToken
@@ -904,7 +900,7 @@ namespace Pggm.Components.Components.PggmDataGrid
                 if (string.IsNullOrWhiteSpace(fd.Field)) continue;
                 var col = InternalContext.Columns.FirstOrDefault(c => string.Equals(c.Field ?? c.Title, fd.Field, StringComparison.Ordinal));
                 if (col is null) continue;
-                var selectorObj = col.GetType().GetProperty("FilterByExpression")?.GetValue(col) as LambdaExpression;
+                var selectorObj = col.GetType().GetProperty("Property")?.GetValue(col) as LambdaExpression;
                 if (selectorObj is null && !string.IsNullOrWhiteSpace(fd.Field))
                 {
                     var itemType = typeof(TGridItem);
@@ -951,7 +947,7 @@ namespace Pggm.Components.Components.PggmDataGrid
                         if (string.IsNullOrWhiteSpace(fd.Field)) continue;
                         var col = InternalContext.Columns.FirstOrDefault(c => string.Equals(c.Field ?? c.Title, fd.Field, StringComparison.Ordinal));
                         if (col is null) continue;
-                        var selectorObj = col.GetType().GetProperty("FilterByExpression")?.GetValue(col) as LambdaExpression;
+                        var selectorObj = col.GetType().GetProperty("Property")?.GetValue(col) as LambdaExpression;
                         var pred = BuildPredicateFromDescriptor(selectorObj, fd);
                         if (pred is not null)
                             query = query.Where(pred);
@@ -1046,7 +1042,7 @@ namespace Pggm.Components.Components.PggmDataGrid
             await CancelCtsAsync(_loadCts).ConfigureAwait(false);
             _isFirstVirtualizeProviderCall = true;
 
-            if (EnableVirtualization)
+            if (Virtualize)
             {
                 await InvokeAsync(StateHasChanged);
                 if (_tableVirtualizeRef is not null)
@@ -1159,7 +1155,7 @@ namespace Pggm.Components.Components.PggmDataGrid
             var key = column.Field ?? column.Title;
             if (key is null) return;
             InternalContext.SetFilter(key, fd);
-            if (EnableVirtualization && _tableVirtualizeRef is not null)
+            if (Virtualize && _tableVirtualizeRef is not null)
             {
                 await _tableVirtualizeRef.RefreshDataAsync();
             }
@@ -1175,7 +1171,7 @@ namespace Pggm.Components.Components.PggmDataGrid
             var key = column.Field ?? column.Title;
             if (key is null) return;
             InternalContext.ClearFilter(key);
-            if (EnableVirtualization && _tableVirtualizeRef is not null)
+            if (Virtualize && _tableVirtualizeRef is not null)
             {
                 await _tableVirtualizeRef.RefreshDataAsync();
             }
@@ -1375,7 +1371,7 @@ namespace Pggm.Components.Components.PggmDataGrid
 
         private int GetCurrentRowCount()
         {
-            if (!EnableVirtualization)
+            if (!Virtualize)
             {
                 return _itemsToRender?.Count() ?? 0;
             }
@@ -1385,7 +1381,7 @@ namespace Pggm.Components.Components.PggmDataGrid
 
         private bool TryGetRowItem(int rowIndex, out TGridItem? item)
         {
-            if (EnableVirtualization)
+            if (Virtualize)
             {
                 return _virtualizedItemsByRow.TryGetValue(rowIndex, out item);
             }
@@ -1465,7 +1461,7 @@ namespace Pggm.Components.Components.PggmDataGrid
 
         private async Task HandleGridKeyDown(KeyboardEventArgs e)
         {
-            if (EnableVirtualization || _filterDialogOpen)
+            if (Virtualize || _filterDialogOpen)
             {
                 return;
             }
