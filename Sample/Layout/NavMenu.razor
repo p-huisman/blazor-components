@@ -57,7 +57,8 @@
     "pggm-datagrid-remote-data", "pggm-datagrid-hierarchical", "pggm-datagrid-resizable-columns",
     "pggm-datagrid-sticky-first-column", "pggm-table-formatters", "pggm-table-data-adapter", "pggm-validation-message",
     "pggm-validation-summary","pggm-datagrid-auto-items-per-page", "pggm-paginator",
-    "pggm-data-grid-content-parameters-demo", "pggm-data-grid-api", "pggm-datagrid-filtering"]
+    "pggm-data-grid-content-parameters-demo", "pggm-data-grid-api", "pggm-datagrid-filtering",
+    "pggm-data-grid-selected-ids", "pggm-datagrid-context"]
     };
 
     private readonly HashSet<string> _expandedCategories = new();
@@ -157,8 +158,10 @@
             new NavMenuItem{ Title="Sticky First Column 🛠️", Url="pggm-datagrid-sticky-first-column" },
             new NavMenuItem{ Title="Auto Items Per Page 🛠️", Url="pggm-datagrid-auto-items-per-page" },
             new NavMenuItem{ Title="Filtering 🛠️", Url="pggm-datagrid-filtering" },
+            new NavMenuItem{ Title="ItemId & SelectedIds 🛠️", Url="pggm-data-grid-selected-ids" },
             new NavMenuItem{ Title="Paginator", Url="pggm-paginator" },
-            new NavMenuItem{ Title="Content Parameters 🛠️", Url="pggm-data-grid-content-parameters-demo" }
+            new NavMenuItem{ Title="Content Parameters 🛠️", Url="pggm-data-grid-content-parameters-demo" },
+            new NavMenuItem{ Title="GridContext 🛠️", Url="pggm-datagrid-context" }
         });
         NavService.Add(data);
     }
