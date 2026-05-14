@@ -1,0 +1,151 @@
+@page "/pggm-datagrid-context"
+@using System.Linq
+@using Pggm.Components.Components.PggmDataGrid
+
+<PageTitle>DataGrid – GridContext</PageTitle>
+
+<PggmHeading Level="1">DataGrid – GridContext</PggmHeading>
+
+<p>
+    The <code>GridContext</code> parameter lets you supply an external <code>GridContext&lt;TGridItem&gt;</code>
+    instance to the grid. The grid cascades this context to all child columns, enabling advanced scenarios
+    such as pre-wiring selection callbacks or sharing context state across sibling components.
+    When omitted the grid creates and manages its own internal context.
+</p>
+
+<p>
+    Template columns accept a typed render fragment (e.g. <code>RenderFragment&lt;TGridItem&gt;</code>).
+    The fragment parameter is implicitly available as <code>@@context</code> inside the template;
+    you can rename it with the <code>Context="..."</code> attribute (for example <code>Context="p"</code>).
+    Because the external <code>GridContext</code> is in scope, the template cell can call
+    <code>_context.ToggleItem(p)</code> to toggle selection and <code>_context.IsSelected(p)</code>
+    to read the current selection state — without needing a separate local <code>HashSet</code>.
+</p>
+
+<DemoSection Title="External GridContext with multi-select" Code="@_razorSource" CodeBehind="@_csSource">
+    <PggmDataGrid TGridItem="Person" GridContext="@_context" Items="@_people.AsQueryable()" AutoItemsPerPage="false"
+                  ItemId="p => p.Name!" OnRowSelected="OnSelectionChanged">
+        <SelectColumn TGridItem="Person" Index="0" />
+        <!-- TemplateColumn demonstrates use of the render-fragment parameter. -->
+        <!-- The fragment parameter is implicitly available as @@context, or you can rename it with Context="...". -->
+        <PropertyColumn TGridItem="Person" TProp="string" Title="Name" Value="p => p.Name" Index="1" />
+        
+        <TemplateColumn TGridItem="Person" Index="2">
+            <Template Context="p">
+                <div @onclick="() => _context.ToggleItem(p)"
+                     style="padding:.5em; background:@(_context.IsSelected(p) ? "#e0f0ff" : "transparent")">
+                    <PggmAvatar 
+                        Characters="@p.Initals" 
+                        Label="@p.Name"
+                        Background="@p.Background"
+                        Color="@p.Color" /> 
+                    @p.Age years
+                </div>
+            </Template>
+        </TemplateColumn>
+    </PggmDataGrid>
+
+    <div style="margin-top:12px;">
+        <strong>Selected names:</strong>
+        @if (!_selectedNames.Any())
+        {
+            <span><em>none</em></span>
+        }
+        else
+        {
+            <span>@string.Join(", ", _selectedNames)</span>
+        }
+    </div>
+</DemoSection>
+
+@code {
+    private GridContext<Person> _context = new();
+    private IEnumerable<string> _selectedNames = Array.Empty<string>();
+
+    private void OnSelectionChanged(IEnumerable<Person> items)
+    {
+        _selectedNames = items.Select(p => p.Name!).ToList();
+    }
+
+    private readonly List<Person> _people = new()
+    {
+        new Person { Name = "Alice Foo", Age = 30, Initals = "AF", Background = "#ffdddd", Color = "#880000" },
+        new Person { Name = "Bob Bar", Age = 42, Initals = "BB", Background = "#ddffdd", Color = "#008800" },
+        new Person { Name = "Carol Baz", Age = 27, Initals = "CB", Background = "#ddddff", Color = "#000088" }
+    };
+
+    private class Person
+    {
+        public string? Name { get; set; }
+        public int Age { get; set; }
+        public string? Initals { get; set; }
+
+        public string? Background { get; set; }
+
+        public string? Color { get; set; }
+
+    }
+
+    private readonly string _razorSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "@using Pggm.Components.Components.PggmDataGrid",
+        "",
+        "<PggmDataGrid TGridItem=\"Person\"",
+        "              GridContext=\"@_context\"",
+        "              Items=\"@_people.AsQueryable()\"",
+        "              AutoItemsPerPage=\"false\"",
+        "              ItemId=\"p => p.Name!\"",
+        "              OnRowSelected=\"OnSelectionChanged\">",
+        "    <SelectColumn TGridItem=\"Person\" Index=\"0\" />",
+        "    <PropertyColumn TGridItem=\"Person\" TProp=\"string\" Title=\"Name\" Value=\"p => p.Name\" Index=\"1\" />",
+        "    <TemplateColumn TGridItem=\"Person\" Index=\"2\">",
+        "        <Template Context=\"p\">",
+        "            <div @onclick=\"() => _context.ToggleItem(p)\"",
+        "                 style=\"padding:.5em; background:@(_context.IsSelected(p) ? \"#e0f0ff\" : \"transparent\")\">",
+        "                <PggmAvatar",
+        "                    Characters=\"@p.Initals\"",
+        "                    Label=\"@p.Name\"",
+        "                    Background=\"@p.Background\"",
+        "                    Color=\"@p.Color\" />",
+        "                @p.Age years",
+        "            </div>",
+        "        </Template>",
+        "    </TemplateColumn>",
+        "</PggmDataGrid>",
+        "",
+        "<div style=\"margin-top:12px;\">",
+        "    <strong>Selected names:</strong>",
+        "    @if (!_selectedNames.Any())",
+        "    {",
+        "        <span><em>none</em></span>",
+        "    }",
+        "    else",
+        "    {",
+        "        <span>@string.Join(\", \", _selectedNames)</span>",
+        "    }",
+        "</div>");
+
+    private readonly string _csSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private GridContext<Person> _context = new();",
+        "private IEnumerable<string> _selectedNames = Array.Empty<string>();",
+        "",
+        "private void OnSelectionChanged(IEnumerable<Person> items)",
+        "{",
+        "    _selectedNames = items.Select(p => p.Name!).ToList();",
+        "}",
+        "",
+        "private readonly List<Person> _people = new()",
+        "{",
+        "    new Person { Name = \"Alice Foo\", Age = 30, Initals = \"AF\", Background = \"#ffdddd\", Color = \"#880000\" },",
+        "    new Person { Name = \"Bob Bar\",   Age = 42, Initals = \"BB\", Background = \"#ddffdd\", Color = \"#008800\" },",
+        "    new Person { Name = \"Carol Baz\", Age = 27, Initals = \"CB\", Background = \"#ddddff\", Color = \"#000088\" },",
+        "};",
+        "",
+        "private class Person",
+        "{",
+        "    public string? Name { get; set; }",
+        "    public int Age { get; set; }",
+        "    public string? Initals { get; set; }",
+        "    public string? Background { get; set; }",
+        "    public string? Color { get; set; }",
+        "}");
+}

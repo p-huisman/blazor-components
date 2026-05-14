@@ -8,13 +8,18 @@ namespace Pggm.Components.Components.PggmDataGrid
     {
         public override string TagName => "pggm-column";
         [CascadingParameter]
-        internal InternalGridContext<TGridItem> InternalGridContext { get; set; } = default!;
+        internal GridContext<TGridItem> InternalGridContext { get; set; } = default!;
 
         [Parameter]
         public string? Title { get; set; }
 
+        /// <summary>
+        /// Column display order. When left at the default (-1) the column is automatically
+        /// assigned the next sequential index based on declaration order, so callers do not
+        /// need to specify this explicitly.
+        /// </summary>
         [Parameter]
-        public int Index { get; set; }
+        public int Index { get; set; } = -1;
 
         [Parameter]
         public string? Class { get; set; }
@@ -73,6 +78,13 @@ namespace Pggm.Components.Components.PggmDataGrid
         [Parameter]
         public string MinWidth { get; set; } = "50px";
 
+        /// <summary>
+        /// Optional callback that returns extra CSS class names to apply to each cell in this column.
+        /// Receives the row item and should return a class string or <c>null</c>.
+        /// </summary>
+        [Parameter]
+        public Func<TGridItem, string?>? CellClass { get; set; }
+
         public abstract IGridSort<TGridItem>? SortBy { get; set; }
 
         protected internal virtual RenderFragment HeaderTitleContent => builder => builder.AddContent(0, Title);
@@ -87,6 +99,8 @@ namespace Pggm.Components.Components.PggmDataGrid
 
         protected override void OnInitialized()
         {
+            if (Index < 0)
+                Index = InternalGridContext.Columns.Count;
             InternalGridContext.AddColumn(this, Index, IsDefaultSortColumn);
             base.OnInitialized();
         }

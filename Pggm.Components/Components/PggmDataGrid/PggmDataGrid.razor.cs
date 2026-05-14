@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Pggm.Components.Base;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace Pggm.Components.Components.PggmDataGrid
 {
@@ -27,7 +28,17 @@ namespace Pggm.Components.Components.PggmDataGrid
         [Parameter]
         public EventCallback SelectedItemsChangedCallback { get; set; }
         public override string TagName => "pggm-data-grid";
-        internal InternalGridContext<TGridItem> InternalContext { get; } = new();
+        private readonly GridContext<TGridItem> _defaultInternalContext = new();
+
+        /// <summary>
+        /// Optional externally-provided grid context. When set this instance will be
+        /// cascaded to child components instead of the grid's internal context.
+        /// Prefer the clearer `GridContext<TGridItem>` type for public usage.
+        /// </summary>
+        [Parameter]
+        public GridContext<TGridItem>? GridContext { get; set; }
+
+        internal GridContext<TGridItem> InternalContext => GridContext ?? _defaultInternalContext;
 
         /// <summary>
         /// Gets the currently selected items in the grid.
@@ -82,8 +93,9 @@ namespace Pggm.Components.Components.PggmDataGrid
 
         private IEnumerable<TGridItem>? _itemsToRender;
         private bool _columnsRendered;
-        private System.Action? _selectionChangedHandler;
-        private Func<Task>? _paginationCurrentPageHandler;
+        private readonly Action _selectionChangedHandler;
+        private readonly Func<Task> _paginationCurrentPageHandler;
+        private bool _selectionHandlerSubscribed;
         private PaginationState? _subscribedPagination;
         private ColumnBase<TGridItem>? _currentSortColumn;
         private bool _currentSortAscending = true;
@@ -91,12 +103,15 @@ namespace Pggm.Components.Components.PggmDataGrid
         private int _totalItemCount;
         private System.Threading.CancellationTokenSource? _loadCts;
         private bool _isLoading;
-        private bool _hasLoadedData;
+        private bool _hasLoadedData = false;
         private bool _isFirstVirtualizeProviderCall = true;
-        private TableVirtualize<TGridItem>? _tableVirtualizeRef;
-        private ElementReference _rootElement;
-        private readonly RenderFragment _renderEmptyContent;
-        private readonly RenderFragment _renderLoadingContent;
+        private TableVirtualize<TGridItem>? _tableVirtualizeRef = null;
+        private ElementReference _rootElement = default;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor", "S2325", Justification = "Referenced by Razor markup; must be instance member.")]
+        private RenderFragment _renderEmptyContent => RenderEmptyContent;
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor", "S2325", Justification = "Referenced by Razor markup; must be instance member.")]
+        private RenderFragment _renderLoadingContent => RenderLoadingContent;
         private readonly string _gridId = $"pggm-grid-{Guid.NewGuid():N}";
         private DotNetObjectReference<PggmDataGrid<TGridItem>>? _autoItemsDotNetRef;
         private bool _autoItemsPerPageInitialized;
@@ -106,6 +121,27 @@ namespace Pggm.Components.Components.PggmDataGrid
         private bool _filterDialogOpen;
         private ColumnBase<TGridItem>? _activeFilterColumn;
 
+
+        /// <summary>
+        /// Optionally defines a selector that returns a stable identifier for a given item.
+        /// Mirrors <c>ItemKey</c> in FluentDataGrid.
+        /// When provided:
+        /// <list type="bullet">
+        ///   <item>Selection comparisons use the key instead of object reference equality,
+        ///         so selection survives item-instance replacements (e.g. after re-querying).</item>
+        ///   <item><see cref="SelectedIds"/> returns the selected keys without manual projection.</item>
+        /// </list>
+        /// If not set, item instances themselves are used as identity (existing behaviour).
+        /// </summary>
+        [Parameter]
+        public Func<TGridItem, object> ItemId { get; set; } = x => x!;
+
+        /// <summary>
+        /// Returns the keys of the currently selected items as projected by <see cref="ItemId"/>.
+        /// When <see cref="ItemId"/> is the default identity selector the values equal the items themselves.
+        /// </summary>
+        public IEnumerable<object> SelectedIds =>
+            InternalContext.SelectedItems.Select(item => ItemId(item));
 
         [Parameter]
         public IQueryable<TGridItem>? Items { get; set; }
@@ -167,6 +203,21 @@ namespace Pggm.Components.Components.PggmDataGrid
         public EventCallback<TGridItem> OnToggle { get; set; }
 
         /// <summary>
+        /// Optional callback invoked whenever a data row is clicked, regardless of selection state.
+        /// Use this for navigation or detail-panel patterns that should not depend on selection.
+        /// </summary>
+        [Parameter]
+        public EventCallback<TGridItem> OnRowClick { get; set; }
+
+        /// <summary>
+        /// Optional callback that returns one or more CSS class names to apply to a data row.
+        /// Receives the row item and should return a class string or <c>null</c>.
+        /// Selection classes are applied independently of this callback.
+        /// </summary>
+        [Parameter]
+        public Func<TGridItem, string?>? RowClass { get; set; }
+
+        /// <summary>
         /// When <c>true</c>, draggable resize handles are rendered on each column header,
         /// allowing the user to resize columns by dragging. Size changes are not persisted.
         /// Per-column opt-in is also possible via <see cref="ColumnBase{TGridItem}.Resizable"/>.
@@ -207,28 +258,40 @@ namespace Pggm.Components.Components.PggmDataGrid
 
         public PggmDataGrid()
         {
-            _renderEmptyContent = RenderEmptyContent;
-            _renderLoadingContent = RenderLoadingContent;
+            // Default empty/loading render fragments are provided by methods; explicit fields removed.
+
+            _selectionChangedHandler = () =>
+            {
+                _ = InvokeAsync(StateHasChanged);
+                SelectedItemsChanged?.Invoke();
+                _ = SelectedItemsChangedCallback.InvokeAsync(null);
+                if (OnRowSelected.HasDelegate)
+                    _ = OnRowSelected.InvokeAsync(SelectedItems.ToList());
+            };
+
+            _paginationCurrentPageHandler = async () =>
+            {
+                await RefreshDataAsync(CancellationToken.None);
+                await InvokeAsync(StateHasChanged);
+            };
         }
 
         protected override async Task OnParametersSetAsync()
         {
             await base.OnParametersSetAsync();
 
+            // Keep the internal context selector in sync when ItemId changes.
+            InternalContext.ItemKeySelector = ItemId;
+
             // Re-subscribe to CurrentPageChanged when Pagination instance changes.
             if (!ReferenceEquals(_subscribedPagination, Pagination))
             {
-                if (_subscribedPagination is not null && _paginationCurrentPageHandler is not null)
+                if (_subscribedPagination is not null)
                     _subscribedPagination.CurrentPageChanged -= _paginationCurrentPageHandler;
 
                 _subscribedPagination = Pagination;
                 if (Pagination is not null)
                 {
-                    _paginationCurrentPageHandler = async () =>
-                    {
-                        await RefreshDataAsync(CancellationToken.None);
-                        await InvokeAsync(StateHasChanged);
-                    };
                     Pagination.CurrentPageChanged += _paginationCurrentPageHandler;
                 }
             }
@@ -245,17 +308,16 @@ namespace Pggm.Components.Components.PggmDataGrid
         protected override void OnInitialized()
         {
             InternalContext.SingleSelect = SingleSelect;
+            InternalContext.ItemKeySelector = ItemId;
             base.OnInitialized();
             // allow columns to enumerate current visible items for selection operations
             InternalContext.GetCurrentItems = () => _itemsToRender;
-            // subscribe to selection changes to refresh UI and notify parent
-            _selectionChangedHandler = () =>
+            // subscribe to selection changes to refresh UI and notify parent (subscribe once)
+            if (!_selectionHandlerSubscribed)
             {
-                _ = InvokeAsync(StateHasChanged);
-                SelectedItemsChanged?.Invoke();
-                _ = SelectedItemsChangedCallback.InvokeAsync(null);
-            };
-            InternalContext.SelectionChanged += _selectionChangedHandler;
+                InternalContext.SelectionChanged += _selectionChangedHandler;
+                _selectionHandlerSubscribed = true;
+            }
             // react to filter changes (local or remote) by refreshing data
             InternalContext.FiltersChanged += () =>
             {
@@ -296,6 +358,7 @@ namespace Pggm.Components.Components.PggmDataGrid
                 {
                     await RefreshDataAsync(CancellationToken.None);
                 }
+
             }
 
             if (_columnsRendered && HasResizableColumns())
@@ -331,25 +394,25 @@ namespace Pggm.Components.Components.PggmDataGrid
                     {
                         await JSRuntime.InvokeVoidAsync("pggmDataGrid.setVirtualizedHeight", _rootElement, Height ?? "400px");
                     }
-                    catch { }
+                    catch { /* Suppress interop errors; not critical for UX */ }
                 }
 
                 try
                 {
                     await JSRuntime.InvokeVoidAsync("pggmDataGrid.applyRowIndents", _rootElement);
                 }
-                catch { }
+                catch { /* Suppress interop errors; not critical for UX */ }
 
                 try
                 {
                     await JSRuntime.InvokeVoidAsync("pggmDataGrid.syncColumnWidths", _rootElement);
                 }
-                catch { }
+                catch { /* Suppress interop errors; not critical for UX */ }
                 try
                 {
                     await JSRuntime.InvokeVoidAsync("pggmDataGrid.syncStickyOffsets", _rootElement);
                 }
-                catch { }
+                catch { /* Suppress interop errors; not critical for UX */ }
             }
 
             // Ensure the first cell has tabindex=0 (roving-tabindex pattern) so users can
@@ -381,7 +444,7 @@ namespace Pggm.Components.Components.PggmDataGrid
                     {
                         await JSRuntime.InvokeVoidAsync("pggmDataGrid.disableKeyboardNav", _rootElement);
                     }
-                    catch { }
+                    catch { /* Suppress interop errors; not critical for UX */ }
                 }
                 else if (!_keyboardNavEnabled && !EnableVirtualization)
                 {
@@ -390,7 +453,7 @@ namespace Pggm.Components.Components.PggmDataGrid
                     {
                         await JSRuntime.InvokeVoidAsync("pggmDataGrid.enableKeyboardNav", _rootElement);
                     }
-                    catch { }
+                    catch { /* Suppress interop errors; not critical for UX */ }
                 }
             }
         }
@@ -450,6 +513,36 @@ namespace Pggm.Components.Components.PggmDataGrid
         internal string GetStickyClass(ColumnBase<TGridItem> col) =>
             IsColumnSticky(col) ? "pggm-sticky-col" : "";
 
+        /// <summary>
+        /// Builds the full CSS class string for a data row, combining the selection class with any
+        /// value returned by the <see cref="RowClass"/> callback.
+        /// </summary>
+        internal string? BuildRowClass(TGridItem item)
+        {
+            var selected = InternalContext.IsSelected(item) ? "pggm-data-grid-row--selected" : null;
+            var custom = RowClass?.Invoke(item);
+            if (selected is null && custom is null) return null;
+            if (selected is null) return custom;
+            if (custom is null) return selected;
+            return $"{selected} {custom}";
+        }
+
+        /// <summary>
+        /// Builds the full CSS class string for a cell, combining alignment and sticky classes
+        /// with any value returned by the column's <see cref="ColumnBase{TGridItem}.CellClass"/> callback.
+        /// </summary>
+        internal string BuildCellClass(ColumnBase<TGridItem> col, TGridItem item)
+        {
+            var sticky = GetStickyClass(col);
+            var alignment = col.Alignment == ColumnAlignment.Center ? "pggm-align-center"
+                          : col.Alignment == ColumnAlignment.Right  ? "pggm-align-right"
+                          : "pggm-align-left";
+            var nowrap = !string.IsNullOrWhiteSpace(col.Width) ? "nowrap" : null;
+            var custom = col.CellClass?.Invoke(item);
+            return string.Join(" ", new[] { sticky, col.Class, nowrap, alignment, custom }
+                .Where(s => !string.IsNullOrWhiteSpace(s))!);
+        }
+
 
 
         // Public API: programmatic sorting
@@ -483,15 +576,21 @@ namespace Pggm.Components.Components.PggmDataGrid
                         await JSRuntime.InvokeVoidAsync("pggmDataGrid.focusCellById", id);
                     }
                 }
-                catch { }
+                catch { /* Suppress interop errors; not critical for UX */ }
             }
+        /// <summary>
+        /// Programmatically set the current sort column by index and refresh the grid.
+        /// When virtualization is enabled this triggers a virtualized refresh; otherwise data is reloaded.
+        /// </summary>
+        /// <param name="columnIndex">Zero-based index of the column to sort by.</param>
+        /// <param name="ascending">True for ascending sort, false for descending.</param>
         public async Task SetSortAsync(int columnIndex, bool ascending)
         {
             var col = InternalContext.Columns.FirstOrDefault(c => c.Index == columnIndex);
             if (col is null) return;
             _currentSortColumn = col;
             _currentSortAscending = ascending;
-            _loadCts?.Cancel();
+            await CancelCtsAsync(_loadCts).ConfigureAwait(false);
             _isFirstVirtualizeProviderCall = true;
 
             if (EnableVirtualization)
@@ -502,7 +601,7 @@ namespace Pggm.Components.Components.PggmDataGrid
                 {
                     await JSRuntime.InvokeVoidAsync("pggmDataGrid.scrollToTop", _rootElement);
                 }
-                catch { }
+                catch { /* Suppress interop errors; not critical for UX */ }
                 if (_tableVirtualizeRef is not null)
                 {
                     await _tableVirtualizeRef.RefreshDataAsync();
@@ -515,13 +614,18 @@ namespace Pggm.Components.Components.PggmDataGrid
             }
         }
 
+        /// <summary>
+        /// Programmatically set the current sort column by column title and refresh the grid.
+        /// </summary>
+        /// <param name="columnTitle">The title of the column to sort by.</param>
+        /// <param name="ascending">True for ascending sort, false for descending.</param>
         public async Task SetSortAsync(string columnTitle, bool ascending)
         {
             var col = InternalContext.Columns.FirstOrDefault(c => string.Equals(c.Title, columnTitle, StringComparison.Ordinal));
             if (col is null) return;
             _currentSortColumn = col;
             _currentSortAscending = ascending;
-            _loadCts?.Cancel();
+            await CancelCtsAsync(_loadCts).ConfigureAwait(false);
             _isFirstVirtualizeProviderCall = true;
 
             if (EnableVirtualization)
@@ -539,6 +643,11 @@ namespace Pggm.Components.Components.PggmDataGrid
             }
         }
 
+        /// <summary>
+        /// Programmatically set the current sort column by column reference and refresh the grid.
+        /// </summary>
+        /// <param name="column">The column to sort by. Must belong to this grid's column collection.</param>
+        /// <param name="ascending">True for ascending sort, false for descending.</param>
         public async Task SetSortAsync(ColumnBase<TGridItem> column, bool ascending)
         {
             if (column is null) return;
@@ -549,7 +658,7 @@ namespace Pggm.Components.Components.PggmDataGrid
             }
             _currentSortColumn = column;
             _currentSortAscending = ascending;
-            _loadCts?.Cancel();
+            await CancelCtsAsync(_loadCts).ConfigureAwait(false);
             _isFirstVirtualizeProviderCall = true;
 
             if (EnableVirtualization)
@@ -567,11 +676,24 @@ namespace Pggm.Components.Components.PggmDataGrid
             }
         }
 
+        /// <summary>
+        /// Programmatically set the currently selected items on the grid.
+        /// The provided items should be instances that match those in the grid's item source.
+        /// </summary>
+        public async Task SetSelectedItemsAsync(IEnumerable<TGridItem>? items)
+        {
+            InternalContext.SetSelectedItems(items);
+            await InvokeAsync(StateHasChanged);
+        }
+
+        /// <summary>
+        /// Clear any active sort on the grid and refresh the items view.
+        /// </summary>
         public async Task ClearSortAsync()
         {
             _currentSortColumn = null;
             _currentSortAscending = true;
-            _loadCts?.Cancel();
+            await CancelCtsAsync(_loadCts).ConfigureAwait(false);
             _isFirstVirtualizeProviderCall = true;
 
             if (EnableVirtualization)
@@ -589,6 +711,11 @@ namespace Pggm.Components.Components.PggmDataGrid
             }
         }
 
+        /// <summary>
+        /// Refresh grid items from the configured <c>ItemsProvider</c> or local <c>Items</c> collection.
+        /// Cancels any in-flight load, applies sorting, filtering and pagination, and updates the UI state.
+        /// </summary>
+        /// <param name="cancellationToken">Token used to cancel the refresh operation.</param>
         public async Task RefreshDataAsync(CancellationToken cancellationToken)
         {
             // When virtualization is enabled, delegate to TableVirtualize so the
@@ -601,7 +728,7 @@ namespace Pggm.Components.Components.PggmDataGrid
             }
 
             // cancel any previous load if we're initiating a new one
-            _loadCts?.Cancel();
+            await CancelCtsAsync(_loadCts).ConfigureAwait(false);
             _loadCts = new System.Threading.CancellationTokenSource();
             using var linked = System.Threading.CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _loadCts.Token);
 
@@ -610,59 +737,11 @@ namespace Pggm.Components.Components.PggmDataGrid
 
             if (ItemsProvider is not null)
             {
-                var start = 0;
-                int? count = null;
-                if (Pagination is not null)
-                {
-                    start = Math.Max(0, Pagination.PageIndex * Pagination.PageSize);
-                    count = Pagination.PageSize;
-                }
-
-                var req = new GridItemsProviderRequest<TGridItem> { StartIndex = start, Count = count, SortByColumn = _currentSortColumn, SortByAscending = _currentSortAscending, CancellationToken = linked.Token };
-                var res = await ItemsProvider(req);
-                _itemsToRender = res.Items;
-                _totalItemCount = res.TotalItemCount;
+                await LoadFromItemsProviderAsync(linked.Token);
             }
             else if (Items is not null)
             {
-                var query = _currentSortColumn?.SortBy is not null
-                    ? _currentSortColumn.SortBy.Apply(Items, _currentSortAscending)
-                    : Items;
-
-                // Apply active column filters (only PropertyColumn with FilterByExpression and string type supported for now)
-                var filters = InternalContext.GetFilters();
-                foreach (var fd in filters.Values)
-                {
-                    if (string.IsNullOrWhiteSpace(fd.Field)) continue;
-                    var col = InternalContext.Columns.FirstOrDefault(c => string.Equals(c.Field ?? c.Title, fd.Field, StringComparison.Ordinal));
-                    if (col is null) continue;
-                    var selectorObj = col.GetType().GetProperty("FilterByExpression")?.GetValue(col) as LambdaExpression;
-                    // If column didn't provide a FilterByExpression, attempt to build one from the Field name for string properties
-                    if (selectorObj is null && !string.IsNullOrWhiteSpace(fd.Field))
-                    {
-                        var itemType = typeof(TGridItem);
-                        var prop = itemType.GetProperty(fd.Field);
-                        if (prop is not null && prop.PropertyType == typeof(string))
-                        {
-                            var param = Expression.Parameter(itemType, "x");
-                            var body = Expression.Property(param, prop);
-                            selectorObj = Expression.Lambda(body, param);
-                        }
-                    }
-                    var pred = BuildPredicateFromDescriptor(selectorObj, fd);
-                    if (pred is not null)
-                        query = query.Where(pred);
-                }
-
-                _totalItemCount = query.Count();
-
-                if (Pagination is not null)
-                {
-                    var start = Math.Max(0, Pagination.PageIndex * Pagination.PageSize);
-                    query = query.Skip(start).Take(Pagination.PageSize);
-                }
-
-                _itemsToRender = query.ToList();
+                await LoadFromItemsCollectionAsync();
             }
             else
             {
@@ -679,6 +758,12 @@ namespace Pggm.Components.Components.PggmDataGrid
         }
 
         // Provider adapter for TableVirtualize: debounce, sort injection, pagination, cancel/retry
+        /// <summary>
+        /// TableVirtualize provider adapter: applies debounce, sort/pagination injection and retry logic,
+        /// and returns the requested page of items for virtualization scenarios.
+        /// </summary>
+        /// <param name="request">The provider request from the virtualize component.</param>
+        /// <returns>A <see cref="GridItemsProviderResult{TGridItem}"/> with items and the current total count.</returns>
         internal async ValueTask<GridItemsProviderResult<TGridItem>> ProvideGridItemsAsync(GridItemsProviderRequest<TGridItem> request)
         {
             _virtualizedItemsByRow.Clear();
@@ -755,6 +840,91 @@ namespace Pggm.Components.Components.PggmDataGrid
             }
         }
 
+        private async Task LoadFromItemsProviderAsync(CancellationToken token)
+        {
+            if (ItemsProvider is null)
+            {
+                _itemsToRender = Array.Empty<TGridItem>();
+                _totalItemCount = 0;
+                return;
+            }
+
+            var start = 0;
+            int? count = null;
+            if (Pagination is not null)
+            {
+                start = Math.Max(0, Pagination.PageIndex * Pagination.PageSize);
+                count = Pagination.PageSize;
+            }
+
+            var req = new GridItemsProviderRequest<TGridItem>
+            {
+                StartIndex = start,
+                Count = count,
+                SortByColumn = _currentSortColumn,
+                SortByAscending = _currentSortAscending,
+                CancellationToken = token
+            };
+            var res = await ItemsProvider(req);
+            _itemsToRender = res.Items ?? Array.Empty<TGridItem>();
+            _totalItemCount = res.TotalItemCount;
+        }
+
+        private async Task LoadFromItemsCollectionAsync()
+        {
+            if (Items is null)
+            {
+                _itemsToRender = Array.Empty<TGridItem>();
+                _totalItemCount = 0;
+                return;
+            }
+
+            var query = _currentSortColumn?.SortBy is not null
+                ? _currentSortColumn.SortBy.Apply(Items!, _currentSortAscending)
+                : Items!;
+
+            query = ApplyFiltersToQuery(query);
+
+            _totalItemCount = query.Count();
+
+            if (Pagination is not null)
+            {
+                var start = Math.Max(0, Pagination.PageIndex * Pagination.PageSize);
+                query = query.Skip(start).Take(Pagination.PageSize);
+            }
+
+            _itemsToRender = query.ToList();
+        }
+
+        private IQueryable<TGridItem> ApplyFiltersToQuery(IQueryable<TGridItem> query)
+        {
+            var filters = InternalContext.GetFilters();
+            foreach (var fd in filters.Values)
+            {
+                if (string.IsNullOrWhiteSpace(fd.Field)) continue;
+                var col = InternalContext.Columns.FirstOrDefault(c => string.Equals(c.Field ?? c.Title, fd.Field, StringComparison.Ordinal));
+                if (col is null) continue;
+                var selectorObj = col.GetType().GetProperty("FilterByExpression")?.GetValue(col) as LambdaExpression;
+                if (selectorObj is null && !string.IsNullOrWhiteSpace(fd.Field))
+                {
+                    var itemType = typeof(TGridItem);
+                    var prop = itemType.GetProperty(fd.Field);
+                    if (prop is not null && prop.PropertyType == typeof(string))
+                    {
+                        var param = Expression.Parameter(itemType, "x");
+                        var body = Expression.Property(param, prop);
+                        selectorObj = Expression.Lambda(body, param);
+                    }
+                }
+
+                var pred = BuildPredicateFromDescriptor(selectorObj, fd);
+                if (pred is not null)
+                    query = query.Where(pred);
+            }
+
+            return query;
+        }
+
         // Normalize provider call handling (similar to Fluent's ResolveItemsRequestAsync)
         private async ValueTask<GridItemsProviderResult<TGridItem>> ResolveItemsRequestAsync(GridItemsProviderRequest<TGridItem> request)
         {
@@ -800,8 +970,10 @@ namespace Pggm.Components.Components.PggmDataGrid
             {
                 // suppressed
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                // Log unexpected provider-resolve errors in debug builds; callers receive an empty result.
+                Debug.WriteLine($"PggmDataGrid.ResolveItemsRequestAsync: {ex}");
             }
 
             return GridItemsProviderResult.From(new List<TGridItem>(), 0);
@@ -871,7 +1043,7 @@ namespace Pggm.Components.Components.PggmDataGrid
 
             // Cancel any in-flight provider loads and reset virtualize first-call behavior so
             // the next Virtualize request immediately reflects the new sort.
-            _loadCts?.Cancel();
+            await CancelCtsAsync(_loadCts).ConfigureAwait(false);
             _isFirstVirtualizeProviderCall = true;
 
             if (EnableVirtualization)
@@ -889,14 +1061,17 @@ namespace Pggm.Components.Components.PggmDataGrid
             }
         }
 
+        /// <summary>
+        /// Dispose the component, unsubscribing internal handlers and disposing any JS interop references.
+        /// </summary>
         public override async ValueTask DisposeAsync()
         {
-            // unsubscribe selection changes
-            if (_selectionChangedHandler is not null)
+            // unsubscribe selection changes (if we subscribed)
+            if (_selectionHandlerSubscribed)
                 InternalContext.SelectionChanged -= _selectionChangedHandler;
 
             // unsubscribe pagination
-            if (_subscribedPagination is not null && _paginationCurrentPageHandler is not null)
+            if (_subscribedPagination is not null)
                 _subscribedPagination.CurrentPageChanged -= _paginationCurrentPageHandler;
 
             // clean up auto-items-per-page observer
@@ -906,10 +1081,29 @@ namespace Pggm.Components.Components.PggmDataGrid
                 {
                     await JSRuntime.InvokeVoidAsync("pggmDataGrid.disableAutoItemsPerPage", _rootElement);
                 }
-                catch { }
+                catch { /* Suppress interop errors; not critical for UX */ }
             }
 
             _autoItemsDotNetRef?.Dispose();
+
+            // Ensure `_hasLoadedData` is referenced from C# so static analysis recognizes usage
+            _ = _hasLoadedData; // referenced by Razor markup for empty/loading templates
+
+            // Cancel and dispose any outstanding load cancellation token source
+            if (_loadCts is not null)
+            {
+                try
+                {
+                    await CancelCtsAsync(_loadCts).ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    // Cancellation failed; log in debug to aid troubleshooting without throwing during dispose.
+                    Debug.WriteLine($"PggmDataGrid.DisposeAsync: CancelCtsAsync failed: {ex}");
+                }
+                _loadCts.Dispose();
+                _loadCts = null;
+            }
 
             await base.DisposeAsync();
         }
@@ -926,9 +1120,11 @@ namespace Pggm.Components.Components.PggmDataGrid
             }
         }
 
-        private void OnRowClicked(TGridItem item)
+        private async Task OnRowClicked(TGridItem item)
         {
             InternalContext.ToggleItem(item);
+            if (OnRowClick.HasDelegate)
+                await OnRowClick.InvokeAsync(item);
         }
 
         private void OpenFilterDialog(ColumnBase<TGridItem> col)
@@ -1004,12 +1200,12 @@ namespace Pggm.Components.Components.PggmDataGrid
             // ── Number filtering ────────────────────────────────────────────────────
             if (fd.FilterType == FilterType.Number || (fd.FilterType == FilterType.String && (propType == typeof(int) || propType == typeof(long) || propType == typeof(double) || propType == typeof(float) || propType == typeof(decimal))))
             {
-                if (string.IsNullOrEmpty(fd.Value) && fd.Operator != "between") return null;
+                if (string.IsNullOrEmpty(fd.Value) && fd.Operator != FilterOperators.Between) return null;
                 if (!double.TryParse(fd.Value, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var numVal)) return null;
 
                 Expression memberAsDouble = Expression.Convert(body, typeof(double));
 
-                if (fd.Operator == "between")
+                if (fd.Operator == FilterOperators.Between)
                 {
                     if (fd.Values is not { Length: >= 2 }) return null;
                     if (!double.TryParse(fd.Values[0], System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var lo)) return null;
@@ -1023,11 +1219,11 @@ namespace Pggm.Components.Components.PggmDataGrid
                 var constDouble = Expression.Constant(numVal);
                 Expression numCmp = fd.Operator switch
                 {
-                    "notEquals" => Expression.NotEqual(memberAsDouble, constDouble),
-                    "greaterThan" => Expression.GreaterThan(memberAsDouble, constDouble),
-                    "greaterThanOrEqual" => Expression.GreaterThanOrEqual(memberAsDouble, constDouble),
-                    "lessThan" => Expression.LessThan(memberAsDouble, constDouble),
-                    "lessThanOrEqual" => Expression.LessThanOrEqual(memberAsDouble, constDouble),
+                    FilterOperators.NotEquals => Expression.NotEqual(memberAsDouble, constDouble),
+                    FilterOperators.GreaterThan => Expression.GreaterThan(memberAsDouble, constDouble),
+                    FilterOperators.GreaterThanOrEqual => Expression.GreaterThanOrEqual(memberAsDouble, constDouble),
+                    FilterOperators.LessThan => Expression.LessThan(memberAsDouble, constDouble),
+                    FilterOperators.LessThanOrEqual => Expression.LessThanOrEqual(memberAsDouble, constDouble),
                     _ => Expression.Equal(memberAsDouble, constDouble)
                 };
                 return Expression.Lambda<Func<TGridItem, bool>>(numCmp, param);
@@ -1036,18 +1232,22 @@ namespace Pggm.Components.Components.PggmDataGrid
             // ── Date filtering ──────────────────────────────────────────────────────
             if (fd.FilterType == FilterType.Date || (fd.FilterType == FilterType.String && (propType == typeof(DateTime) || propType == typeof(DateOnly) || propType == typeof(DateTimeOffset))))
             {
-                if (string.IsNullOrEmpty(fd.Value) && fd.Operator != "between") return null;
+                if (string.IsNullOrEmpty(fd.Value) && fd.Operator != FilterOperators.Between) return null;
 
                 if (propType == typeof(DateOnly))
                 {
-                    if (!DateOnly.TryParse(fd.Value, out var dateVal)) return null;
+                    // Use invariant culture parsing and normalize via DateOnly
+                    if (!System.DateTime.TryParse(fd.Value, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var parsedDate)) return null;
+                    var dateVal = DateOnly.FromDateTime(parsedDate);
                     Expression memberAsDate = body;
 
-                    if (fd.Operator == "between")
+                    if (fd.Operator == FilterOperators.Between)
                     {
                         if (fd.Values is not { Length: >= 2 }) return null;
-                        if (!DateOnly.TryParse(fd.Values[0], out var lo)) return null;
-                        if (!DateOnly.TryParse(fd.Values[1], out var hi)) return null;
+                        if (!System.DateTime.TryParse(fd.Values[0], System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var loDt)) return null;
+                        if (!System.DateTime.TryParse(fd.Values[1], System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var hiDt)) return null;
+                        var lo = DateOnly.FromDateTime(loDt);
+                        var hi = DateOnly.FromDateTime(hiDt);
                         var between = Expression.AndAlso(
                             Expression.GreaterThanOrEqual(memberAsDate, Expression.Constant(lo)),
                             Expression.LessThanOrEqual(memberAsDate, Expression.Constant(hi)));
@@ -1056,23 +1256,23 @@ namespace Pggm.Components.Components.PggmDataGrid
 
                     Expression dateCmp = fd.Operator switch
                     {
-                        "before" => Expression.LessThan(memberAsDate, Expression.Constant(dateVal)),
-                        "after" => Expression.GreaterThan(memberAsDate, Expression.Constant(dateVal)),
+                        FilterOperators.Before => Expression.LessThan(memberAsDate, Expression.Constant(dateVal)),
+                        FilterOperators.After => Expression.GreaterThan(memberAsDate, Expression.Constant(dateVal)),
                         _ => Expression.Equal(memberAsDate, Expression.Constant(dateVal))
                     };
                     return Expression.Lambda<Func<TGridItem, bool>>(dateCmp, param);
                 }
                 else
                 {
-                    if (!DateTime.TryParse(fd.Value, out var dtVal)) return null;
+                    if (!DateTime.TryParse(fd.Value, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var dtVal)) return null;
                     // Normalize to Date portion for date-only comparisons
                     Expression memberAsDate = Expression.Property(Expression.Convert(body, typeof(DateTime)), nameof(DateTime.Date));
 
-                    if (fd.Operator == "between")
+                    if (fd.Operator == FilterOperators.Between)
                     {
                         if (fd.Values is not { Length: >= 2 }) return null;
-                        if (!DateTime.TryParse(fd.Values[0], out var lo)) return null;
-                        if (!DateTime.TryParse(fd.Values[1], out var hi)) return null;
+                        if (!DateTime.TryParse(fd.Values[0], System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var lo)) return null;
+                        if (!DateTime.TryParse(fd.Values[1], System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var hi)) return null;
                         var between = Expression.AndAlso(
                             Expression.GreaterThanOrEqual(memberAsDate, Expression.Constant(lo.Date)),
                             Expression.LessThanOrEqual(memberAsDate, Expression.Constant(hi.Date)));
@@ -1081,8 +1281,8 @@ namespace Pggm.Components.Components.PggmDataGrid
 
                     Expression dateCmp = fd.Operator switch
                     {
-                        "before" => Expression.LessThan(memberAsDate, Expression.Constant(dtVal.Date)),
-                        "after" => Expression.GreaterThan(memberAsDate, Expression.Constant(dtVal.Date)),
+                        FilterOperators.Before => Expression.LessThan(memberAsDate, Expression.Constant(dtVal.Date)),
+                        FilterOperators.After => Expression.GreaterThan(memberAsDate, Expression.Constant(dtVal.Date)),
                         _ => Expression.Equal(memberAsDate, Expression.Constant(dtVal.Date))
                     };
                     return Expression.Lambda<Func<TGridItem, bool>>(dateCmp, param);
@@ -1112,17 +1312,16 @@ namespace Pggm.Components.Components.PggmDataGrid
             Expression comparison;
             switch (fd.Operator)
             {
-                case "equals":
+                case FilterOperators.EqualsOperator:
                     comparison = Expression.Equal(memberForCompare, constExpr);
                     break;
-                case "startsWith":
+                case FilterOperators.StartsWith:
                     comparison = Expression.Call(memberForCompare, startsWithMethod!, constExpr);
                     break;
-                case "endsWith":
+                case FilterOperators.EndsWith:
                     comparison = Expression.Call(memberForCompare, endsWithMethod!, constExpr);
                     break;
                 default:
-                case "contains":
                     comparison = Expression.Call(memberForCompare, containsMethod!, constExpr);
                     break;
             }
@@ -1231,15 +1430,47 @@ namespace Pggm.Components.Components.PggmDataGrid
             return true;
         }
 
+        private static async ValueTask CancelCtsAsync(System.Threading.CancellationTokenSource? cts)
+        {
+            if (cts is null) return;
+            try
+            {
+                var mi = typeof(System.Threading.CancellationTokenSource).GetMethod("CancelAsync", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public, null, Type.EmptyTypes, null);
+                if (mi is not null)
+                {
+                    var res = mi.Invoke(cts, null);
+                    if (res is System.Threading.Tasks.Task t)
+                        await t.ConfigureAwait(false);
+                    else if (res is System.ValueType) { /* ignore other return types */ }
+                }
+                else
+                {
+                    await System.Threading.Tasks.Task.Run(() => cts.Cancel()).ConfigureAwait(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                // If invoking CancelAsync via reflection fails, fall back to synchronous Cancel on a background task.
+                Debug.WriteLine($"PggmDataGrid.CancelCtsAsync: reflection CancelAsync failed: {ex}");
+                try
+                {
+                    await System.Threading.Tasks.Task.Run(() => cts.Cancel()).ConfigureAwait(false);
+                }
+                catch (Exception ex2)
+                {
+                    Debug.WriteLine($"PggmDataGrid.CancelCtsAsync fallback cancel failed: {ex2}");
+                }
+            }
+        }
+
         private async Task HandleGridKeyDown(KeyboardEventArgs e)
         {
-            // When virtualization is enabled, we disable keyboard navigation for now —
-            // short-circuit so virtualized grids don't attempt server-side keyboard handling.
-            if (EnableVirtualization)
+            if (EnableVirtualization || _filterDialogOpen)
             {
                 return;
             }
-            // Only intercept navigation keys; let Enter/Space/Tab etc. through naturally.
+
+            // Only intercept navigation keys; forward others to consumer
             if (!_navigationKeys.Contains(e.Key))
             {
                 if (OnCellKeyDown.HasDelegate)
@@ -1247,12 +1478,9 @@ namespace Pggm.Components.Components.PggmDataGrid
                 return;
             }
 
-            // Read active cell — @onfocusin on each <td> keeps this current.
             var (rowIndex, colIndex) = _focusManager.Active;
             var hasActiveRow = rowIndex >= 0;
 
-            // Safety: if nothing is active yet (page loaded but user hasn't focused a cell),
-            // pick a valid column and let key-specific logic decide target row.
             if (colIndex < 0)
             {
                 if (GetCurrentRowCount() == 0) return;
@@ -1269,53 +1497,36 @@ namespace Pggm.Components.Components.PggmDataGrid
             var newRow = rowIndex;
             var newCol = colIndex;
 
+            // Delegate per-key logic to helpers to reduce method complexity
             switch (e.Key)
             {
                 case "ArrowRight":
-                    if (colPos < orderedCols.Count - 1) newCol = orderedCols[colPos + 1].Index;
+                    newCol = GetRightColumnIndex(orderedCols, colPos, colIndex);
                     break;
                 case "ArrowLeft":
-                    if (colPos > 0) newCol = orderedCols[colPos - 1].Index;
+                    newCol = GetLeftColumnIndex(orderedCols, colPos, colIndex);
                     break;
                 case "ArrowDown":
-                    if (!hasActiveRow)
-                    {
-                        newRow = 0;
-                    }
-                    else if (rowIndex < totalRows - 1)
-                    {
-                        newRow = rowIndex + 1;
-                    }
-                    else if (await TryMoveToAdjacentPageAsync(1, colIndex))
-                    {
-                        if (OnCellKeyDown.HasDelegate)
-                            await OnCellKeyDown.InvokeAsync((rowIndex, colIndex, e));
+                {
+                    var res = await HandleArrowDownAsync(rowIndex, totalRows, colIndex, hasActiveRow);
+                    if (res.earlyReturn)
                         return;
-                    }
+                    newRow = res.newRow;
                     break;
+                }
                 case "ArrowUp":
-                    if (!hasActiveRow)
-                    {
-                        newRow = 0;
-                    }
-                    else if (rowIndex > 0)
-                    {
-                        newRow = rowIndex - 1;
-                    }
-                    else if (await TryMoveToAdjacentPageAsync(-1, colIndex))
-                    {
-                        if (OnCellKeyDown.HasDelegate)
-                            await OnCellKeyDown.InvokeAsync((rowIndex, colIndex, e));
+                {
+                    var res = await HandleArrowUpAsync(rowIndex, totalRows, colIndex, hasActiveRow);
+                    if (res.earlyReturn)
                         return;
-                    }
+                    newRow = res.newRow;
                     break;
+                }
                 case "Home":
-                    // Ctrl+Home → first cell of first row; Home → first cell of current row.
                     if (e.CtrlKey) newRow = 0;
                     newCol = orderedCols.First().Index;
                     break;
                 case "End":
-                    // Ctrl+End → last cell of last row; End → last cell of current row.
                     if (e.CtrlKey) newRow = totalRows - 1;
                     newCol = orderedCols.Last().Index;
                     break;
@@ -1328,25 +1539,86 @@ namespace Pggm.Components.Components.PggmDataGrid
                 case " ":
                 case "Enter":
                 {
-                    // Toggle row selection for the focused row.
-                    if (TryGetRowItem(rowIndex, out var item) && item is not null)
-                    {
-                        OnRowClicked(item);
-                        await InvokeAsync(StateHasChanged);
-                    }
-                    if (OnCellKeyDown.HasDelegate)
-                        await OnCellKeyDown.InvokeAsync((rowIndex, colIndex, e));
-                    return; // Don't move focus for selection keys
+                    if (await HandleSelectionKeyAsync(rowIndex, colIndex, e))
+                        return;
+                    break;
                 }
             }
 
             _focusManager.SetActive(newRow, newCol);
-            // Re-render first so the new cell gets tabindex=0, then focus it via JS.
             await InvokeAsync(StateHasChanged);
             await FocusCell(newRow, newCol);
 
             if (OnCellKeyDown.HasDelegate)
                 await OnCellKeyDown.InvokeAsync((rowIndex, colIndex, e));
+        }
+
+        private int GetRightColumnIndex(List<ColumnBase<TGridItem>> orderedCols, int colPos, int currentCol)
+        {
+            if (colPos < orderedCols.Count - 1) return orderedCols[colPos + 1].Index;
+            return currentCol;
+        }
+
+        private int GetLeftColumnIndex(List<ColumnBase<TGridItem>> orderedCols, int colPos, int currentCol)
+        {
+            if (colPos > 0) return orderedCols[colPos - 1].Index;
+            return currentCol;
+        }
+
+        private async Task<(bool earlyReturn, int newRow)> HandleArrowDownAsync(int rowIndex, int totalRows, int colIndex, bool hasActiveRow)
+        {
+            if (!hasActiveRow)
+            {
+                return (false, 0);
+            }
+
+            if (rowIndex < totalRows - 1)
+            {
+                return (false, rowIndex + 1);
+            }
+
+            if (await TryMoveToAdjacentPageAsync(1, colIndex))
+            {
+                if (OnCellKeyDown.HasDelegate)
+                    await OnCellKeyDown.InvokeAsync((rowIndex, colIndex, new KeyboardEventArgs()));
+                return (true, rowIndex);
+            }
+
+            return (false, rowIndex);
+        }
+
+        private async Task<(bool earlyReturn, int newRow)> HandleArrowUpAsync(int rowIndex, int totalRows, int colIndex, bool hasActiveRow)
+        {
+            if (!hasActiveRow)
+            {
+                return (false, 0);
+            }
+
+            if (rowIndex > 0)
+            {
+                return (false, rowIndex - 1);
+            }
+
+            if (await TryMoveToAdjacentPageAsync(-1, colIndex))
+            {
+                if (OnCellKeyDown.HasDelegate)
+                    await OnCellKeyDown.InvokeAsync((rowIndex, colIndex, new KeyboardEventArgs()));
+                return (true, rowIndex);
+            }
+
+            return (false, rowIndex);
+        }
+
+        private async Task<bool> HandleSelectionKeyAsync(int rowIndex, int colIndex, KeyboardEventArgs e)
+        {
+            if (TryGetRowItem(rowIndex, out var item) && item is not null)
+            {
+                await OnRowClicked(item);
+                await InvokeAsync(StateHasChanged);
+            }
+            if (OnCellKeyDown.HasDelegate)
+                await OnCellKeyDown.InvokeAsync((rowIndex, colIndex, e));
+            return true; // selection keys do not move focus
         }
 
         private void OnHeaderFocus(int colIndex)

@@ -114,7 +114,7 @@
                 {
                     <TableVirtualize TItem="TGridItem" @ref="_tableVirtualizeRef" ItemsProvider="ProvideGridItemsAsync"
                                      ItemSize="@VirtualizeItemSize" OverscanCount="@VirtualizeOverscanCount" Context="rowContext"
-                                     RowClassProvider="@((item, idx) => InternalContext.IsSelected(item) ? "pggm-data-grid-row--selected" : null)">
+                                     RowClassProvider="@((item, idx) => BuildRowClass(item))">
                         @{
                             var item = rowContext.Item;
                             var rowCapture = rowContext.RowIndex;
@@ -128,8 +128,8 @@
                                 var indent = hierarchicalItem.Depth * 16;
                                 <td id="@($"{_gridId}-r{rowCapture}-c{colCapture.Index}")" role="gridcell"
                                     data-col-index="@colCapture.Index"
-                                    class="@GetStickyClass(colCapture) @colCapture.Class @( !string.IsNullOrWhiteSpace(colCapture.Width) ? "nowrap" : "") @(colCapture.Alignment == ColumnAlignment.Center ? "pggm-align-center" : colCapture.Alignment == ColumnAlignment.Right ? "pggm-align-right" : "pggm-align-left")"
-                                    @onclick="() => OnRowClicked(item)">
+                                    class="@BuildCellClass(colCapture, item)"
+                                    @onclick="async () => await OnRowClicked(item)">
                                     <span class="pggm-hierarchical-toggle-container" data-indent="@indent">
                                         <span
                                             class="pggm-hierarchical-expander @(hierarchicalItem.HasChildren ? (hierarchicalItem.IsCollapsed ? "pggm-hierarchical-collapsed" : "pggm-hierarchical-expanded") : "pggm-hierarchical-leaf")">
@@ -154,8 +154,8 @@
                             {
                                 <td id="@($"{_gridId}-r{rowCapture}-c{colCapture.Index}")" role="gridcell"
                                     data-col-index="@colCapture.Index"
-                                    class="@GetStickyClass(colCapture) @colCapture.Class @( !string.IsNullOrWhiteSpace(colCapture.Width) ? "nowrap" : "") @(colCapture.Alignment == ColumnAlignment.Center ? "pggm-align-center" : colCapture.Alignment == ColumnAlignment.Right ? "pggm-align-right" : "pggm-align-left")"
-                                    @onclick="() => OnRowClicked(item)">
+                                    class="@BuildCellClass(colCapture, item)"
+                                    @onclick="async () => await OnRowClicked(item)">
                                     @colCapture.CellContentFragment(item)
                                 </td>
                             }
@@ -163,7 +163,7 @@
                             {
                                 <td id="@($"{_gridId}-r{rowCapture}-c{colCapture.Index}")" role="gridcell"
                                     data-col-index="@colCapture.Index"
-                                    class="@GetStickyClass(colCapture) @colCapture.Class @( !string.IsNullOrWhiteSpace(colCapture.Width) ? "nowrap" : "") @(colCapture.Alignment == ColumnAlignment.Center ? "pggm-align-center" : colCapture.Alignment == ColumnAlignment.Right ? "pggm-align-right" : "pggm-align-left")">
+                                    class="@BuildCellClass(colCapture, item)">
                                     @colCapture.CellContentFragment(item)
                                 </td>
                             }
@@ -280,7 +280,7 @@
                         }
                         var rowCapture = _rowIndex;
                         <tr role="row" data-row-index="@rowCapture"
-                            class="@(InternalContext.IsSelected(item) ? "pggm-data-grid-row--selected" : null)">
+                            class="@BuildRowClass(item)">
                             @foreach (var col in InternalContext.Columns.OrderBy(c => c.Index))
                             {
                                 // col is already loop-local per inner foreach iteration.
@@ -289,8 +289,8 @@
                                 {
                                     var indent = hierarchicalItem.Depth * 16;
                                     <td role="gridcell"
-                                        class="@GetStickyClass(colCapture) @colCapture.Class @( !string.IsNullOrWhiteSpace(colCapture.Width) ? "nowrap" : "") @(colCapture.Alignment == ColumnAlignment.Center ? "pggm-align-center" : colCapture.Alignment == ColumnAlignment.Right ? "pggm-align-right" : "pggm-align-left")"
-                                        @onclick="() => OnRowClicked(item)">
+                                        class="@BuildCellClass(colCapture, item)"
+                                        @onclick="async () => await OnRowClicked(item)">
                                         <span class="pggm-hierarchical-toggle-container" data-indent="@indent">
                                             <span
                                                 class="pggm-hierarchical-expander @(hierarchicalItem.HasChildren ? (hierarchicalItem.IsCollapsed ? "pggm-hierarchical-collapsed" : "pggm-hierarchical-expanded") : "pggm-hierarchical-leaf")">
@@ -316,8 +316,8 @@
                                     <td id="@($"{_gridId}-r{rowCapture}-c{colCapture.Index}")" role="gridcell"
                                         tabindex="@GetTabIndex(rowCapture, colCapture.Index)"
                                         @onfocusin="() => _focusManager.SetActive(rowCapture, colCapture.Index)"
-                                        class="@GetStickyClass(colCapture) @colCapture.Class @( !string.IsNullOrWhiteSpace(colCapture.Width) ? "nowrap" : "") @(colCapture.Alignment == ColumnAlignment.Center ? "pggm-align-center" : colCapture.Alignment == ColumnAlignment.Right ? "pggm-align-right" : "pggm-align-left")"
-                                        @onclick="() => OnRowClicked(item)">
+                                        class="@BuildCellClass(colCapture, item)"
+                                        @onclick="async () => await OnRowClicked(item)">
                                         @colCapture.CellContentFragment(item)
                                     </td>
                                 }
@@ -326,7 +326,7 @@
                                     <td id="@($"{_gridId}-r{rowCapture}-c{colCapture.Index}")" role="gridcell"
                                         tabindex="@GetTabIndex(rowCapture, colCapture.Index)"
                                         @onfocusin="() => _focusManager.SetActive(rowCapture, colCapture.Index)"
-                                        class="@GetStickyClass(colCapture) @colCapture.Class @( !string.IsNullOrWhiteSpace(colCapture.Width) ? "nowrap" : "") @(colCapture.Alignment == ColumnAlignment.Center ? "pggm-align-center" : colCapture.Alignment == ColumnAlignment.Right ? "pggm-align-right" : "pggm-align-left")">
+                                        class="@BuildCellClass(colCapture, item)">
                                         @colCapture.CellContentFragment(item)
                                     </td>
                                 }
@@ -342,7 +342,7 @@
     }
     @if (EnableColumnFiltering)
     {
-        <PggmDialog @bind-Open="_filterDialogOpen" Modal="false" HeaderContent="@($"Filter: {_activeFilterColumn?.Title}")"
+        <PggmDialog @bind-Open="_filterDialogOpen" Modal="true" HeaderContent="@($"Filter: {_activeFilterColumn?.Title}")"
                     CloseLabel="Close">
             @if (_activeFilterColumn is not null)
             {

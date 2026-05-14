@@ -112,6 +112,7 @@
         new ApiMember { Name = "AutoItemsPerPage",         Type = "bool",                                     DefaultValue = "false",      Description = "Dynamically adapts page size to available container height. Requires Pagination to be set. The container must have a fixed or flex-constrained height." },
         new ApiMember { Name = "AutoItemsPerPageRowHeight",Type = "int",                                      DefaultValue = "40",         Description = "Assumed row height in pixels used for AutoItemsPerPage calculations." },
         new ApiMember { Name = "RefreshItems",             Type = "Func<GridItemsProviderRequest<TGridItem>, Task>?", DefaultValue = "null", Description = "Optional callback invoked after each internal data refresh cycle." },
+        new ApiMember { Name = "RowClass",                 Type = "Func<TGridItem, string?>?",                DefaultValue = "null",       Description = "Optional callback returning extra CSS classes for a row. Applied in addition to the built-in selection class. Useful for conditional row highlighting." },
     };
 
     private readonly IEnumerable<ApiMember> _gridPublicProperties = new[]
@@ -124,6 +125,7 @@
     {
         new ApiMember { Name = "SelectedItemsChanged",         Type = "event Action?",          Description = "Fired when the row selection changes." },
         new ApiMember { Name = "SelectedItemsChangedCallback", Type = "EventCallback",           Description = "Blazor EventCallback alternative for selection changes. Use when a parent component needs to be notified." },
+        new ApiMember { Name = "OnRowClick",                      Type = "EventCallback<TGridItem>",Description = "Fired on every row click, independent of selection. Use for navigation or detail-panel patterns. Fires after selection is toggled." },
         new ApiMember { Name = "OnToggle",                     Type = "EventCallback<TGridItem>",Description = "Fired when a hierarchical row is expanded or collapsed. The toggled item is passed as the argument." },
         new ApiMember { Name = "OnAutoItemsPerPageChanged",    Type = "EventCallback<int>",      Description = "Fired when AutoItemsPerPage recalculates the items-per-page value due to a container resize. The new page size is passed as the argument." },
     };
@@ -181,7 +183,7 @@
     private readonly IEnumerable<ApiMember> _columnBaseParameters = new[]
     {
         new ApiMember { Name = "Title",              Type = "string?",                  DefaultValue = "null",     Description = "Column header text." },
-        new ApiMember { Name = "Index",              Type = "int",                      DefaultValue = "0",        Description = "Display order. Columns are rendered in ascending Index order." },
+        new ApiMember { Name = "Index",              Type = "int",                      DefaultValue = "auto",     Description = "Display order. When omitted, columns are automatically numbered in declaration order (0, 1, 2, …). An explicit value overrides auto-assignment." },
         new ApiMember { Name = "Class",              Type = "string?",                  DefaultValue = "null",     Description = "Additional CSS class applied to header and cell elements." },
         new ApiMember { Name = "Style",              Type = "string?",                  DefaultValue = "null",     Description = "Inline CSS style applied to cell elements." },
         new ApiMember { Name = "Width",              Type = "string?",                  DefaultValue = "null",     Description = "CSS width value (e.g. \"200px\"). When set, cells also apply overflow:hidden and text-overflow:ellipsis." },
@@ -193,6 +195,7 @@
         new ApiMember { Name = "ShowSortButton",     Type = "bool",                     DefaultValue = "true",     Description = "Controls visibility of the sort icon button in the header." },
         new ApiMember { Name = "Resizable",          Type = "bool",                     DefaultValue = "false",    Description = "Per-column opt-in for drag-to-resize. Can also be enabled globally via PggmDataGrid.ResizableColumns." },
         new ApiMember { Name = "HierarchicalToggle", Type = "bool",                     DefaultValue = "false",    Description = "When true, this column renders the expand/collapse toggle for hierarchical (tree) rows. Only one column per grid should have this set." },
+        new ApiMember { Name = "CellClass",          Type = "Func<TGridItem, string?>?",DefaultValue = "null",     Description = "Optional callback returning extra CSS classes for each cell in this column. Useful for per-cell conditional styling (e.g. highlighting negative values)." },
     };
 
     // ── TemplateColumn ────────────────────────────────────────────────────────

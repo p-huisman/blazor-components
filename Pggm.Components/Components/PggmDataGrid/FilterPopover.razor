@@ -7,32 +7,32 @@
             <PggmSelect TOption="string" @bind-Value="_operator" @onkeydown="HandleInputKeyDown">
                 @if (FilterType == FilterType.Number)
                 {
-                    <option value="equals">equals</option>
-                    <option value="notEquals">not equals</option>
-                    <option value="greaterThan">greater than</option>
-                    <option value="greaterThanOrEqual">greater than or equal</option>
-                    <option value="lessThan">less than</option>
-                    <option value="lessThanOrEqual">less than or equal</option>
-                    <option value="between">between</option>
+                    <option value="@FilterOperators.EqualsOperator">equals</option>
+                    <option value="@FilterOperators.NotEquals">not equals</option>
+                    <option value="@FilterOperators.GreaterThan">greater than</option>
+                    <option value="@FilterOperators.GreaterThanOrEqual">greater than or equal</option>
+                    <option value="@FilterOperators.LessThan">less than</option>
+                    <option value="@FilterOperators.LessThanOrEqual">less than or equal</option>
+                    <option value="@FilterOperators.Between">between</option>
                 }
                 else if (FilterType == FilterType.Date)
                 {
-                    <option value="equals">equals</option>
-                    <option value="before">before</option>
-                    <option value="after">after</option>
-                    <option value="between">between</option>
+                    <option value="@FilterOperators.EqualsOperator">equals</option>
+                    <option value="@FilterOperators.Before">before</option>
+                    <option value="@FilterOperators.After">after</option>
+                    <option value="@FilterOperators.Between">between</option>
                 }
                 else
                 {
-                    <option value="contains">contains</option>
-                    <option value="equals">equals</option>
-                    <option value="startsWith">starts with</option>
-                    <option value="endsWith">ends with</option>
+                    <option value="@FilterOperators.Contains">contains</option>
+                    <option value="@FilterOperators.EqualsOperator">equals</option>
+                    <option value="@FilterOperators.StartsWith">starts with</option>
+                    <option value="@FilterOperators.EndsWith">ends with</option>
                 }
             </PggmSelect>
             @if (FilterType == FilterType.Date)
             {
-                @if (_operator == "between")
+                @if (_operator == FilterOperators.Between)
                 {
                     <PggmStack Orientation='Pggm.Components.Orientation.Vertical' VerticalGap='4'>
                         <PggmInputDate @ref="_inputDateRef" @bind-Value="_value" />
@@ -46,7 +46,7 @@
             }
             else
             {
-                @if (_operator == "between")
+                @if (_operator == FilterOperators.Between)
                 {
                     <PggmStack Orientation='Pggm.Components.Orientation.Vertical' VerticalGap='4'>
                         <PggmInput @ref="_inputRef" @bind-Value="_value" Placeholder="@(FilterType == FilterType.Number ? "From" : "From")"
@@ -65,7 +65,7 @@
         @if (FilterType == FilterType.String)
         {
             <PggmStack Orientation='Pggm.Components.Orientation.Horizontal' HorizontalAlignment='Pggm.Components.HorizontalAlignment.Left' HorizontalGap='8' MarginTop='8'>
-                <PggmCheckbox @bind-Checked="_caseSensitive" @onkeydown="HandleInputKeyDown">Case sensitive</PggmCheckbox>
+                <PggmCheckbox @bind-Value="_caseSensitive">Case sensitive</PggmCheckbox>
             </PggmStack>
         }
         <PggmStack Orientation='Pggm.Components.Orientation.Horizontal' HorizontalAlignment='Pggm.Components.HorizontalAlignment.End' HorizontalGap='8' MarginTop='8'>
@@ -82,7 +82,7 @@
     [Parameter] public EventCallback<FilterDescriptor> OnApply { get; set; }
     [Parameter] public EventCallback OnClearFilter { get; set; }
 
-    private string _operator = "contains";
+    private string _operator = FilterOperators.Contains;
     private string? _value;
     private string? _value2;
     private bool _caseSensitive;
@@ -116,9 +116,9 @@
         {
             _operator = FilterType switch
             {
-                FilterType.Number => "equals",
-                FilterType.Date => "equals",
-                _ => "contains"
+                FilterType.Number => FilterOperators.EqualsOperator,
+                FilterType.Date => FilterOperators.EqualsOperator,
+                _ => FilterOperators.Contains
             };
             _value = null;
             _value2 = null;
@@ -152,12 +152,12 @@
 
     private async System.Threading.Tasks.Task Apply()
     {
-        var fd = new FilterDescriptor
+            var fd = new FilterDescriptor
         {
             FilterType = FilterType,
             Operator = _operator,
             Value = _value,
-            Values = _operator == "between" ? new[] { _value ?? string.Empty, _value2 ?? string.Empty } : null,
+            Values = _operator == FilterOperators.Between ? new[] { _value ?? string.Empty, _value2 ?? string.Empty } : null,
             CaseSensitive = _caseSensitive
         };
         await OnApply.InvokeAsync(fd);

@@ -1,0 +1,132 @@
+@page "/pggm-data-grid-selected-ids"
+@using System.Linq
+@using Pggm.Components.Components.PggmDataGrid
+
+<PageTitle>DataGrid – ItemId & SelectedIds</PageTitle>
+
+<PggmHeading Level="1">DataGrid – ItemId &amp; SelectedIds</PggmHeading>
+
+<p>
+    The <code>ItemId</code> parameter (a <code>Func&lt;TGridItem, object&gt;</code>) tells the grid
+    which property is the stable identifier of each row — identical to <code>ItemKey</code> in
+    FluentDataGrid. Once set, the grid:
+</p>
+<ul>
+    <li>compares selection by <em>key</em> instead of object reference, so selection survives re-queries;</li>
+    <li>exposes <code>SelectedIds</code> — a ready-to-use enumerable of the selected keys.</li>
+</ul>
+
+<DemoSection Title="ItemId + SelectedIds (multi-select)" Code="@_multiCode">
+    <PggmDataGrid TGridItem="Employee"
+                  Items="@_employees.AsQueryable()"
+                  ItemId="@(e => e.Id)"
+                  @ref="_multiGrid"
+                  SelectedItemsChangedCallback="@(() => StateHasChanged())">
+        <SelectColumn TGridItem="Employee" Index="0" />
+        <PropertyColumn TGridItem="Employee" TProp="string" Title="Name"       Value="@(e => e.Name)"       Index="2" />
+        <PropertyColumn TGridItem="Employee" TProp="string" Title="Department" Value="@(e => e.Department)"  Index="3" />
+    </PggmDataGrid>
+
+    <div style="margin-top:12px;">
+        <strong>SelectedIds:</strong>
+        @if (_multiGrid?.SelectedIds?.Any() == true)
+        {
+            <span>@string.Join(", ", _multiGrid.SelectedIds)</span>
+        }
+        else
+        {
+            <span><em>none</em></span>
+        }
+    </div>
+
+    <div style="margin-top:4px;">
+        <strong>SelectedItems (full objects):</strong>
+        @if (_multiGrid?.SelectedItems?.Any() == true)
+        {
+            <ul style="margin:4px 0 0 16px;">
+                @foreach (var e in _multiGrid.SelectedItems)
+                {
+                    <li>[@e.Id] @e.Name – @e.Department</li>
+                }
+            </ul>
+        }
+        else
+        {
+            <span><em>none</em></span>
+        }
+    </div>
+</DemoSection>
+
+<DemoSection Title="ItemId + SelectedIds (single-select)" Code="@_singleCode">
+    <PggmDataGrid TGridItem="Employee"
+                  Items="@_employees.AsQueryable()"
+                  ItemId="@(e => e.Id)"
+                  SingleSelect="true"
+                  @ref="_singleGrid"
+                  SelectedItemsChangedCallback="@(() => StateHasChanged())">
+        <SelectColumn TGridItem="Employee" Index="0" />
+        <PropertyColumn TGridItem="Employee" TProp="int"    Title="Id"         Value="@(e => e.Id)"         Index="1" Width="60px" />
+        <PropertyColumn TGridItem="Employee" TProp="string" Title="Name"       Value="@(e => e.Name)"       Index="2" />
+        <PropertyColumn TGridItem="Employee" TProp="string" Title="Department" Value="@(e => e.Department)"  Index="3" />
+    </PggmDataGrid>
+
+    <div style="margin-top:12px;">
+        <strong>Selected id:</strong>
+        @if (_singleGrid?.SelectedIds?.Any() == true)
+        {
+            <span>@_singleGrid.SelectedIds.First()</span>
+        }
+        else
+        {
+            <span><em>none</em></span>
+        }
+    </div>
+</DemoSection>
+
+@code {
+    private PggmDataGrid<Employee>? _multiGrid;
+    private PggmDataGrid<Employee>? _singleGrid;
+
+    private readonly List<Employee> _employees = new()
+    {
+        new Employee { Id = 1, Name = "Alice",   Department = "Engineering" },
+        new Employee { Id = 2, Name = "Bob",     Department = "Marketing"   },
+        new Employee { Id = 3, Name = "Carol",   Department = "Engineering" },
+        new Employee { Id = 4, Name = "David",   Department = "HR"          },
+        new Employee { Id = 5, Name = "Eve",     Department = "Finance"     },
+        new Employee { Id = 6, Name = "Frank",   Department = "Engineering" },
+    };
+
+    private class Employee
+    {
+        public int    Id         { get; set; }
+        public string Name       { get; set; } = string.Empty;
+        public string Department { get; set; } = string.Empty;
+    }
+
+    private string _multiCode = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmDataGrid TGridItem=\"Employee\"",
+        "              Items=\"@_employees.AsQueryable()\"",
+        "              ItemId=\"@(e => e.Id)\">",
+        "    <SelectColumn TGridItem=\"Employee\" Index=\"0\" />",
+        "    <PropertyColumn TGridItem=\"Employee\" TProp=\"string\" Title=\"Name\"       Value=\"@(e => e.Name)\"       Index=\"2\" />",
+        "    <PropertyColumn TGridItem=\"Employee\" TProp=\"string\" Title=\"Department\" Value=\"@(e => e.Department)\" Index=\"3\" />",
+        "</PggmDataGrid>",
+        "",
+        "// Access selected keys directly:",
+        "@string.Join(\", \", _grid.SelectedIds)");
+
+    private string _singleCode = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmDataGrid TGridItem=\"Employee\"",
+        "              Items=\"@_employees.AsQueryable()\"",
+        "              ItemId=\"@(e => e.Id)\"",
+        "              SingleSelect=\"true\">",
+        "    <SelectColumn TGridItem=\"Employee\" Index=\"0\" />",
+        "    <PropertyColumn TGridItem=\"Employee\" TProp=\"int\"    Title=\"Id\"         Value=\"@(e => e.Id)\"         Index=\"1\" />",
+        "    <PropertyColumn TGridItem=\"Employee\" TProp=\"string\" Title=\"Name\"       Value=\"@(e => e.Name)\"       Index=\"2\" />",
+        "    <PropertyColumn TGridItem=\"Employee\" TProp=\"string\" Title=\"Department\" Value=\"@(e => e.Department)\" Index=\"3\" />",
+        "</PggmDataGrid>",
+        "",
+        "// Access the single selected key directly:",
+        "@_grid.SelectedIds.FirstOrDefault()");
+}
