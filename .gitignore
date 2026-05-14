@@ -452,3 +452,6 @@ $RECYCLE.BIN/
 # Compiled CSS/JS bundles (if using bundling)
 wwwroot/css/site.min.css
 wwwroot/js/site.min.js
+
+# scratch
+scratch
