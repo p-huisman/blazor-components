@@ -30,10 +30,9 @@
         <!-- The fragment parameter is implicitly available as @@context, or you can rename it with Context="...". -->
         <PropertyColumn Title="Name" Property="p => p.Name" />
         
-        <TemplateColumn MinWidth="2`50">
+        <TemplateColumn MinWidth="2`50" ToggleSelection="false">
             <Template Context="p">
-                <div @onclick="() => _context.ToggleItem(p)"
-                     style="padding:.5em; background:@(_context.IsSelected(p) ? "#e0f0ff" : "transparent")">
+                <div style="padding:.5em; background:@(_context.IsSelected(p) ? "#e0f0ff" : "transparent")">
                     <button Id="@($"{p.Name?.Replace(" ", "")}-avatar")" class="button-without-style">
                     <PggmAvatar 
                         Characters="@p.Initals" 

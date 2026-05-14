@@ -21,6 +21,9 @@ namespace Pggm.Components.Components.PggmDataGrid
         public static GridSort<TGridItem> ByAscending<U>(Expression<Func<TGridItem, U>> expression)
             => new((q, asc) => asc ? q.OrderBy(expression) : q.OrderByDescending(expression), (expression, true));
 
+        public static GridSort<TGridItem> CreateFromExpression<U>(Expression<Func<TGridItem, U>> expression)
+            => ByAscending(expression);
+
         public static GridSort<TGridItem> ByAscending<U>(Expression<Func<TGridItem, U>> expression, IComparer<U> comparer)
             => new((q, asc) => asc ? q.OrderBy(expression, comparer) : q.OrderByDescending(expression, comparer), (expression, true));
 

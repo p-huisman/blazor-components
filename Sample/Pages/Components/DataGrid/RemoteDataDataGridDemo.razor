@@ -37,12 +37,17 @@
     </div>
 
     <PggmDataGrid @ref="_grid" TGridItem="FoodEnforcementItem" ItemsProvider="@LoadItemsAsync" Virtualize="true" Height="500px">
+        <SelectColumn />
         <PropertyColumn Title="Recall #" Property="@(x => x.RecallNumber)" Width="130px" />
         <PropertyColumn Title="State" Property="@(x => x.State)" Width="70px" />
         <PropertyColumn Title="City" Property="@(x => x.City)" Width="140px" />
         <PropertyColumn Title="Firm" Property="@(x => x.RecallingFirm)" />
         <PropertyColumn Title="Status" Property="@(x => x.Status)" Width="110px" />
-        <PropertyColumn Title="Date" Property="@(x => x.RecallInitiationDate)" Sortable="true" Width="100px" />
+        <TemplateColumn Title="Date" Sortable="true" Width="100px">
+            <Template Context="item">
+                @FormatIsoDate(item.RecallInitiationDate)
+            </Template>
+        </TemplateColumn>
     </PggmDataGrid>
 </DemoSection>
 
@@ -118,6 +123,35 @@
     {
         if (_grid is not null)
             await _grid.RefreshDataAsync(CancellationToken.None);
+    }
+
+    private static string FormatIsoDate(string? raw)
+    {
+        if (string.IsNullOrWhiteSpace(raw))
+            return string.Empty;
+
+        // Try common OpenFDA date formats and ISO variants
+        var formats = new[]
+        {
+            "yyyyMMdd",
+            "yyyy-MM-dd",
+            "yyyy/MM/dd",
+            "yyyyMMddHHmmss",
+            "yyyy-MM-ddTHH:mm:ssZ",
+            "yyyy-MM-ddTHH:mm:ss"
+        };
+
+        if (DateTime.TryParseExact(raw, formats, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var dt))
+        {
+            return dt.ToString("yyyy-MM-dd");
+        }
+
+        if (DateTime.TryParse(raw, out dt))
+        {
+            return dt.ToString("yyyy-MM-dd");
+        }
+
+        return raw;
     }
 
     private readonly string _source = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(

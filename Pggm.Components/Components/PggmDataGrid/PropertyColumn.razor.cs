@@ -16,15 +16,8 @@ namespace Pggm.Components.Components.PggmDataGrid
         [Parameter]
         public IComparer<TProp>? Comparer { get; set; } = null;
 
-        private GridSort<TGridItem>? _sortBy;
-        private IGridSort<TGridItem>? _customSortBy;
-
         [Parameter]
-        public override IGridSort<TGridItem>? SortBy
-        {
-            get => _customSortBy ?? _sortBy;
-            set => _customSortBy = value;
-        }
+        public override IGridSort<TGridItem>? SortBy { get; set; }
 
         protected internal override void CellContent(RenderTreeBuilder builder, TGridItem item)
         {
@@ -67,7 +60,10 @@ namespace Pggm.Components.Components.PggmDataGrid
             base.OnInitialized();
             if (Sortable == true && Property is not null)
             {
-                _sortBy = Comparer is not null ? GridSort<TGridItem>.ByAscending(Property, Comparer) : GridSort<TGridItem>.ByAscending(Property);
+                if (SortBy is null)
+                {
+                    SortBy = Comparer is not null ? GridSort<TGridItem>.ByAscending(Property, Comparer) : GridSort<TGridItem>.ByAscending(Property);
+                }
             }
         }
     }
