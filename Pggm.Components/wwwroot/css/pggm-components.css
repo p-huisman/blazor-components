@@ -361,6 +361,15 @@
   }
 }
 
+/* Visible utilities */
+.button-without-style {
+  appearance: none;
+  border: none;
+  padding: 0;
+  background: none;
+  margin: 0;
+}
+
 /* ── DataGrid ────────────────────────────────────────────── */
 
 :root {
@@ -387,10 +396,14 @@
 }
 
 .pggm-data-grid-table th,
-.pggm-data-grid-table td {
+.pggm-data-grid-table td{
   padding: 8px 12px;
   border-bottom: 1px solid #e6e6e6;
   text-align: left;
+}
+
+.pggm-data-grid-table th,
+.pggm-data-grid-table td.pggm-data-grid-cell--property-column {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -428,7 +441,7 @@
 
 .pggm-sticky-col,
 .pggm-data-grid--auto-height .pggm-data-grid-table th,
-.pggm-data-grid--auto-height .pggm-data-grid-table td {
+.pggm-data-grid--auto-height .pggm-data-grid-table td.pggm-data-grid-cell--property-column {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

@@ -30,16 +30,22 @@
         <!-- The fragment parameter is implicitly available as @@context, or you can rename it with Context="...". -->
         <PropertyColumn Title="Name" Property="p => p.Name" />
         
-        <TemplateColumn>
+        <TemplateColumn MinWidth="2`50">
             <Template Context="p">
                 <div @onclick="() => _context.ToggleItem(p)"
                      style="padding:.5em; background:@(_context.IsSelected(p) ? "#e0f0ff" : "transparent")">
+                    <button Id="@($"{p.Name?.Replace(" ", "")}-avatar")" class="button-without-style">
                     <PggmAvatar 
                         Characters="@p.Initals" 
                         Label="@p.Name"
                         Background="@p.Background"
-                        Color="@p.Color" /> 
+                        Color="@p.Color" /></button>
                     @p.Age years
+
+                    <PggmToggletip For="@($"{p.Name?.Replace(" ", "")}-avatar")" Id="@($"{p.Name?.Replace(" ", "")}-toggletip")" Position="above">
+                        This toggletip for @p.Name appears only on click. Click again to close or press Esc. There can only be one open toggletip at a time. 
+                    </PggmToggletip>
+
                 </div>
             </Template>
         </TemplateColumn>

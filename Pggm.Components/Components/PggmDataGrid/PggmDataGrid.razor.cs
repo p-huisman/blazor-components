@@ -535,7 +535,24 @@ namespace Pggm.Components.Components.PggmDataGrid
                           : "pggm-align-left";
             var nowrap = !string.IsNullOrWhiteSpace(col.Width) ? "nowrap" : null;
             var custom = col.CellClass?.Invoke(item);
-            return string.Join(" ", new[] { sticky, col.Class, nowrap, alignment, custom }
+
+            // Derive a column-type class (kebab-case) from the concrete column type name,
+            // e.g. SelectColumn`1 -> select-column, PropertyColumn`2 -> property-column
+            string? typeClass = null;
+            try
+            {
+                var typeName = col.GetType().Name;
+                var tick = typeName.IndexOf('`');
+                if (tick >= 0) typeName = typeName.Substring(0, tick);
+                var kebab = System.Text.RegularExpressions.Regex.Replace(typeName, "([a-z0-9])([A-Z])", "$1-$2").ToLowerInvariant();
+                typeClass = $"pggm-data-grid-cell--{kebab}";
+            }
+            catch
+            {
+                // ignore; don't break rendering on unexpected errors
+            }
+
+            return string.Join(" ", new[] { sticky, col.Class, nowrap, alignment, custom, typeClass }
                 .Where(s => !string.IsNullOrWhiteSpace(s))!);
         }
 
