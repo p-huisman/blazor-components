@@ -1,0 +1,24 @@
+#AppHeader{
+    display: flex;
+    grid-area: header;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    flex-direction: row;
+    justify-content: space-between;
+    .app-header-content{
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .hamburger-menu{
+        cursor: pointer;
+    }
+}
+
+@media screen and (min-width: 690px) {
+    #AppHeader{
+        .hamburger-menu{
+            display: none;
+        }
+    }
+}

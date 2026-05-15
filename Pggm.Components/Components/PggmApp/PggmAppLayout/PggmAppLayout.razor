@@ -1,19 +1,19 @@
 @inherits LayoutComponentBase
 
 @using Pggm.Components.Components.PggmApp.PggmAppSidebar
-@using Pggm.Components.Components.PggmApp.PggmTopMenu
+@using Pggm.Components.Components.PggmApp.PggmAppHeader
 @using Pggm.Components.Components.PggmApp.PggmAsideMenu
 
-<div class="app-layout">
-    <header class="header">
-        <PggmTopMenu />
-    </header>
+<div class="app-layout @( _isSidebarOpen ? "sidebar-open" : "")">
+    <PggmAppHeader OnToggleSidebar="ToggleSidebar" />
     
-    <article class="main">
-        @Body
-    </article>
+    <main class="main">
+        <article class="main-content">
+            @Body
+        </article>
+    </main>
 
-    <PggmAppSidebar />
+    <PggmAppSidebar Open="_isSidebarOpen" OnClose="CloseSidebar" />
     
 </div>
 

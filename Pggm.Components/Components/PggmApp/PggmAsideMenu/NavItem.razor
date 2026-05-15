@@ -1,0 +1,22 @@
+@using Microsoft.AspNetCore.Components.Routing
+@using Pggm.Components.Components.PggmApp.PggmAppSidebarMenuLink
+
+@if (IsTextOnly)
+{
+    <span class="nav-item nav-item--l3 nav-item-text-only">
+        <span class="nav-item__label">@Label</span>
+    </span>
+}
+else
+{
+    <PggmAppSidebarMenuLink Href="@Href" Match="@Match" Class="nav-item nav-item--l3">
+        <span class="nav-item__label">@Label</span>
+    </PggmAppSidebarMenuLink>
+}
+
+@code {
+    [Parameter, EditorRequired] public string Href { get; set; } = string.Empty;
+    [Parameter, EditorRequired] public string Label { get; set; } = string.Empty;
+    [Parameter] public NavLinkMatch Match { get; set; } = NavLinkMatch.All;
+    private bool IsTextOnly => string.IsNullOrEmpty(Href) || Href == "#";
+}

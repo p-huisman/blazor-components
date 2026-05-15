@@ -1,24 +1,43 @@
 .app-layout {
-  
-    h1:focus-visible {
-    outline: none !important;
-  }
-
+  box-sizing: border-box;
   display: grid;
-  grid-template-columns: 1fr;
+  overflow: hidden;
+  max-height: 100dvh;
+  width: 100dvw;
+  grid-template-columns: auto;
   grid-template-rows: 80px calc(100dvh - 80px);
-  grid-gap: 1em;
   grid-template-areas:
     "header"
     "main"; 
 }
 
-.app-layout .app-header {
-  grid-area: header;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 1em;
-  background-color: var(--pggm-color-primary);
-  color: white;
+.app-layout * {
+  box-sizing: border-box;
+}
+
+main.main {
+  grid-area: main;
+  overflow-y: auto;
+  max-height: calc(100dvh - 80px );
+  font-size: var(--pggm-typography-base-font-size, 1em);
+  line-height: var(--pggm-typography-line-height, 1.5);
+  font-family: var(--pggm-typography-font-family, 'Open Sans', Arial, NantesWeb Tahoma, Verdana, sans-serif);
+  background-color: rgba(245, 245, 245, 1);
+  color: var(--pggm-color-text, #383a3c);
+}
+
+article.main-content {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+@media screen and (min-width: 690px) {
+
+  .app-layout {
+    grid-template-columns: 280px 1fr;
+    grid-template-rows: 80px calc(100dvh - 80px);
+    grid-template-areas: "header header"
+    "aside main";
+  }
 }

@@ -1,11 +1,18 @@
+using Microsoft.AspNetCore.Components;
+
 namespace Pggm.Components.Components.PggmApp.PggmAppSidebar;
 
 public partial class PggmAppSidebar
 {
-    private void OnClose()
+    [Parameter]
+    public bool Open { get; set; }
+
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    public async Task OnCloseClicked()
     {
-        // Logic to close the sidebar, e.g., by toggling a CSS class or invoking
-        // a callback to the parent component
-        // For example, you could use a callback like this:
+        if (OnClose.HasDelegate)
+            await OnClose.InvokeAsync(null);
     }
 }

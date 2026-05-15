@@ -883,13 +883,13 @@ namespace Pggm.Components.Components.PggmDataGrid
             _totalItemCount = res.TotalItemCount;
         }
 
-        private async Task LoadFromItemsCollectionAsync()
+        private Task LoadFromItemsCollectionAsync()
         {
             if (Items is null)
             {
                 _itemsToRender = Array.Empty<TGridItem>();
                 _totalItemCount = 0;
-                return;
+                return Task.CompletedTask;
             }
 
             var query = _currentSortColumn?.SortBy is not null
@@ -907,6 +907,7 @@ namespace Pggm.Components.Components.PggmDataGrid
             }
 
             _itemsToRender = query.ToList();
+            return Task.CompletedTask;
         }
 
         private IQueryable<TGridItem> ApplyFiltersToQuery(IQueryable<TGridItem> query)
