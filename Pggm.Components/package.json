@@ -2,8 +2,8 @@
   "name": "pggm-components-ts",
   "private": true,
   "scripts": {
-    "build": "tsc --noEmit && esbuild ts/pggm-components.ts --bundle --minify --format=iife --outfile=wwwroot/js/pggm-components.js --target=es2020",
-    "watch": "esbuild ts/pggm-components.ts --bundle --minify --format=iife --outfile=wwwroot/js/pggm-components.js --target=es2020 --watch"
+    "build": "tsc --noEmit && esbuild ts/pggm-components.ts --bundle --minify --format=iife --outfile=wwwroot/js/pggm-components.js --target=es2020 && esbuild ts/install-pggm-components-interactive-server.ts --bundle --minify --format=iife --outfile=wwwroot/js/install-pggm-components-interactive-server.js --target=es2020",
+    "watch": "esbuild ts/pggm-components.ts --bundle --minify --format=iife --outfile=wwwroot/js/pggm-components.js --target=es2020 --watch & esbuild ts/install-pggm-components-interactive-server.ts --bundle --minify --format=iife --outfile=wwwroot/js/install-pggm-components-interactive-server.js --target=es2020 --watch"
   },
   "devDependencies": {
     "esbuild": "^0.25.0",
