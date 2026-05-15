@@ -531,7 +531,7 @@ namespace Pggm.Components.Components.PggmDataGrid
         {
             var sticky = GetStickyClass(col);
             var alignment = col.Alignment == ColumnAlignment.Center ? "pggm-align-center"
-                          : col.Alignment == ColumnAlignment.Right  ? "pggm-align-right"
+                          : col.Alignment == ColumnAlignment.Right ? "pggm-align-right"
                           : "pggm-align-left";
             var nowrap = !string.IsNullOrWhiteSpace(col.Width) ? "nowrap" : null;
             var custom = col.CellClass?.Invoke(item);
@@ -559,38 +559,38 @@ namespace Pggm.Components.Components.PggmDataGrid
 
 
         // Public API: programmatic sorting
-            /// <summary>
-            /// Returns the ARIA sort state for a given column.
-            /// </summary>
-            internal string GetAriaSort(ColumnBase<TGridItem>? col)
+        /// <summary>
+        /// Returns the ARIA sort state for a given column.
+        /// </summary>
+        internal string GetAriaSort(ColumnBase<TGridItem>? col)
+        {
+            if (col is null) return "none";
+            if (_currentSortColumn == col)
             {
-                if (col is null) return "none";
-                if (_currentSortColumn == col)
-                {
-                    return _currentSortAscending ? "ascending" : "descending";
-                }
-                return "none";
+                return _currentSortAscending ? "ascending" : "descending";
             }
+            return "none";
+        }
 
-            /// <summary>
-            /// Programmatically focus a cell. This is a stub that invokes JS interop to focus by element id.
-            /// </summary>
-            public async Task FocusCell(int rowIndex, int colIndex)
+        /// <summary>
+        /// Programmatically focus a cell. This is a stub that invokes JS interop to focus by element id.
+        /// </summary>
+        public async Task FocusCell(int rowIndex, int colIndex)
+        {
+            try
             {
-                try
+                if (Virtualize)
                 {
-                    if (Virtualize)
-                    {
-                        await JSRuntime.InvokeVoidAsync("pggmDataGrid.focusCellByLogical", _gridId, rowIndex, colIndex, ItemSize);
-                    }
-                    else
-                    {
-                        var id = $"{_gridId}-r{rowIndex}-c{colIndex}";
-                        await JSRuntime.InvokeVoidAsync("pggmDataGrid.focusCellById", id);
-                    }
+                    await JSRuntime.InvokeVoidAsync("pggmDataGrid.focusCellByLogical", _gridId, rowIndex, colIndex, ItemSize);
                 }
-                catch { /* Suppress interop errors; not critical for UX */ }
+                else
+                {
+                    var id = $"{_gridId}-r{rowIndex}-c{colIndex}";
+                    await JSRuntime.InvokeVoidAsync("pggmDataGrid.focusCellById", id);
+                }
             }
+            catch { /* Suppress interop errors; not critical for UX */ }
+        }
         /// <summary>
         /// Programmatically set the current sort column by index and refresh the grid.
         /// When virtualization is enabled this triggers a virtualized refresh; otherwise data is reloaded.
@@ -1520,21 +1520,21 @@ namespace Pggm.Components.Components.PggmDataGrid
                     newCol = GetLeftColumnIndex(orderedCols, colPos, colIndex);
                     break;
                 case "ArrowDown":
-                {
-                    var res = await HandleArrowDownAsync(rowIndex, totalRows, colIndex, hasActiveRow);
-                    if (res.earlyReturn)
-                        return;
-                    newRow = res.newRow;
-                    break;
-                }
+                    {
+                        var res = await HandleArrowDownAsync(rowIndex, totalRows, colIndex, hasActiveRow);
+                        if (res.earlyReturn)
+                            return;
+                        newRow = res.newRow;
+                        break;
+                    }
                 case "ArrowUp":
-                {
-                    var res = await HandleArrowUpAsync(rowIndex, totalRows, colIndex, hasActiveRow);
-                    if (res.earlyReturn)
-                        return;
-                    newRow = res.newRow;
-                    break;
-                }
+                    {
+                        var res = await HandleArrowUpAsync(rowIndex, totalRows, colIndex, hasActiveRow);
+                        if (res.earlyReturn)
+                            return;
+                        newRow = res.newRow;
+                        break;
+                    }
                 case "Home":
                     if (e.CtrlKey) newRow = 0;
                     newCol = orderedCols.First().Index;
@@ -1551,11 +1551,11 @@ namespace Pggm.Components.Components.PggmDataGrid
                     break;
                 case " ":
                 case "Enter":
-                {
-                    if (await HandleSelectionKeyAsync(rowIndex, colIndex, e))
-                        return;
-                    break;
-                }
+                    {
+                        if (await HandleSelectionKeyAsync(rowIndex, colIndex, e))
+                            return;
+                        break;
+                    }
             }
 
             _focusManager.SetActive(newRow, newCol);

@@ -1,7 +1,5 @@
 ﻿@page "/weather"
 @attribute [StreamRendering]
-@using Pggm.Components.Components.PggmDataGrid
-@using Pggm.Components.Components
 @using SampleInteractiveServer.Models
 
 <PageTitle>Weather</PageTitle>
@@ -17,12 +15,12 @@
 else
 {
     <PggmDataGrid TGridItem="WeatherForecast" Items="@forecasts.AsQueryable()" EnableColumnFiltering="true">
-        <PropertyColumn Title="Date" Property="@(f => f.Date)" Format="d"
-                        Sortable="true" Filterable="true" FilterType="FilterType.Date" />
-        <PropertyColumn Title="Temp. (C)" Property="@(f => f.TemperatureC)"
-                        Sortable="true" Filterable="true" FilterType="FilterType.Number" />
-        <PropertyColumn Title="Temp. (F)" Property="@(f => f.TemperatureF)"
-                        Sortable="true" Filterable="true" FilterType="FilterType.Number" />
+        <PropertyColumn Title="Date" Property="@(f => f.Date)" Format="d" Sortable="true" Filterable="true"
+                        FilterType="FilterType.Date" />
+        <PropertyColumn Title="Temp. (C)" Property="@(f => f.TemperatureC)" Sortable="true" Filterable="true"
+                        FilterType="FilterType.Number" />
+        <PropertyColumn Title="Temp. (F)" Property="@(f => f.TemperatureF)" Sortable="true" Filterable="true"
+                        FilterType="FilterType.Number" />
         <PropertyColumn Title="Summary" Property="@(f => f.Summary)" Sortable="true" />
     </PggmDataGrid>
 }

@@ -61,7 +61,7 @@ public partial class PggmPaginator : ComponentBase, IDisposable
         };
 
     private bool IsFirstPage => State is null || State.PageIndex == 0;
-    private bool IsLastPage  => State?.LastPageIndex is null || State.PageIndex >= State.LastPageIndex.Value;
+    private bool IsLastPage => State?.LastPageIndex is null || State.PageIndex >= State.LastPageIndex.Value;
 
     protected override void OnParametersSet()
     {
@@ -75,14 +75,14 @@ public partial class PggmPaginator : ComponentBase, IDisposable
     private void Subscribe()
     {
         if (_subscribedState is null) return;
-        _subscribedState.CurrentPageChanged    += OnStateChangedAsync;
+        _subscribedState.CurrentPageChanged += OnStateChangedAsync;
         _subscribedState.TotalItemCountChanged += OnStateChangedAsync;
     }
 
     private void Unsubscribe()
     {
         if (_subscribedState is null) return;
-        _subscribedState.CurrentPageChanged    -= OnStateChangedAsync;
+        _subscribedState.CurrentPageChanged -= OnStateChangedAsync;
         _subscribedState.TotalItemCountChanged -= OnStateChangedAsync;
     }
 

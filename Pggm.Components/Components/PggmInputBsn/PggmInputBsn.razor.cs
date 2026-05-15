@@ -281,10 +281,10 @@ public partial class PggmInputBsn : PggmEventComponentInputBase<string>
                 if (prop != null)
                 {
                     var attr = prop.GetCustomAttribute<PggmValidationAttribute>();
-                        if (attr != null)
-                        {
-                            _resolvedValidationMessage = attr.ErrorMessage ?? _resolvedValidationMessage;
-                        }
+                    if (attr != null)
+                    {
+                        _resolvedValidationMessage = attr.ErrorMessage ?? _resolvedValidationMessage;
+                    }
                 }
             }
         }
