@@ -1,0 +1,14 @@
+.app-layout {
+  
+    h1:focus-visible {
+    outline: none !important;
+  }
+
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 80px calc(100dvh - 80px);
+  grid-gap: 1em;
+  grid-template-areas:
+    "header"
+    "main"; 
+}

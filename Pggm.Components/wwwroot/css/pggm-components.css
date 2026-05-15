@@ -421,14 +421,10 @@
 }
 
 /* When grid has selectable column(s) */
-.pggm-data-grid--selectable {
-}  /* placeholder for select-mode styles (no visual changes by default) */
-
+/* .pggm-data-grid--selectable — no visual changes by default */
 
 /* Single-select mode */
-.pggm-data-grid--single-selectable {
-  /* placeholder for single-select specific styles */
-}
+/* .pggm-data-grid--single-selectable — no visual changes by default */
 
 /* Column header base — needed for absolute-positioned resize handle */
 .pggm-data-grid-table th.column-header {
@@ -545,13 +541,6 @@
 
 .pggm-grid-header-button > button:focus-visible {
   outline: var(--pggm-focus-outline-width, 2px) var(--pggm-focus-outline-style, solid) var(--pggm-focus-outline-color, blue);
-  /* outline-offset: -2px; */
-  /* border-radius: 4px; */
-  /* padding: 0; */
-  /* display: flex; */
-  /* align-items: center; */
-  /* gap: 8px; */
-  /* cursor: pointer; */
 }
 
 .pggm-grid-header-title {

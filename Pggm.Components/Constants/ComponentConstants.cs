@@ -34,19 +34,6 @@ public static class EventNames
 }
 
 /// <summary>
-/// Common attribute name constants used across components
-/// </summary>
-public static class AttributeNames
-{
-    public const string Value = "value";
-    public const string Placeholder = "placeholder";
-    public const string Name = "name";
-    public const string Disabled = "disabled";
-    public const string Required = "required";
-    public const string ReadOnly = "readonly";
-}
-
-/// <summary>
 /// Constants for CSS class names
 /// </summary>
 public static class CssClasses

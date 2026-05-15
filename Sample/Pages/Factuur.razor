@@ -1,0 +1,82 @@
+@page "/facturen/{instantie}/{id}"
+@using Pggm.Components
+@using Microsoft.Extensions.Configuration
+
+@inject IConfiguration Configuration
+
+<PggmHeading Level="1">Factuur Details</PggmHeading>
+
+<p>Factuur ID: @Id</p>
+
+<PggmTable FilterLabel="Filter instellen" ClearLabel="Filter wissen" Lang="nl" remote="simple"
+    remote-url="@($"{Configuration["ApiSettings:FactuurApi:BaseUrl"]}factuur/v1/instanties/{Instantie}/facturen/{Id}/specificaties")">
+
+    <PggmTh Field="burgerservicenummer" Format="string" Filterable="true" Sortable="true" Type="string">
+        BSN
+    </PggmTh>
+
+    <PggmTh Field="klantnummer" Format="string" Filterable="true" Sortable="true" Type="string">
+        Klantnr.
+    </PggmTh>
+
+    <PggmTh Field="persoonsnummer" Format="string" type="number" Filterable="true" Sortable="true" text-align="right">
+        Persoonsnr
+    </PggmTh>
+
+    <PggmTh Field="naam" Format="string" Filterable="true" Sortable="true" text-align="right">
+        Naam
+    </PggmTh>
+
+    <PggmTh Field="salaris" Filterable="true" Sortable="true" Format="currency" Type="number" TextAlign="right">
+        Voltijdsalaris
+    </PggmTh>
+
+    <PggmTh Field="onregelmatigheidstoeslag" Filterable="true" Sortable="true" Format="currency" Type="number"
+        TextAlign="right">
+        ORT
+    </PggmTh>
+
+    <PggmTh Field="verloonde_uren" Filterable="true" Sortable="true" Format="number" Type="number" TextAlign="right">
+        Verloonde Uren
+    </PggmTh>
+
+    <PggmTh Field="deeltijdfactor" Filterable="true" Sortable="true" Format="number" Type="number" TextAlign="right">
+        Deeltijdfactor
+    </PggmTh>
+
+    <PggmTh Field="soort" Filterable="true" Sortable="true" TextAlign="right" Type="string" Format="string">
+        Soort
+    </PggmTh>
+
+    <PggmTh Field="totaalpremie" Filterable="true" Sortable="true" Format="currency" Type="number" TextAlign="right">
+        Totaalpremie
+    </PggmTh>
+
+    <PggmTh Field="premiebasisregeling" Filterable="true" Sortable="true" Format="currency" Type="number"
+        TextAlign="right">
+        Basisregeling
+    </PggmTh>
+
+    <PggmTh Field="permiewiaexcedent" Filterable="true" Sortable="true" Format="currency" Type="number"
+        TextAlign="right">
+        WIAexcedent
+    </PggmTh>
+
+    <PggmTh Field="bijzonderheid" Filterable="true" Sortable="true" TextAlign="right" Width="auto" Type="string"
+        Format="string">
+        Bijzonderheid
+    </PggmTh>
+
+</PggmTable>
+
+<p>
+    <NavLink is="pggm-anchor-button" appearance="primary" href="/facturen">Terug naar facturenlijst</NavLink>
+</p>
+@code {
+
+    [Parameter]
+    public string Instantie { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Id { get; set; } = string.Empty;
+}

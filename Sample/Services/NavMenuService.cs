@@ -77,9 +77,18 @@ namespace Pggm.Components.Sample.Services
         // Allow external callers to request a notification when they update items
         public void Notify() => NotifyStateChanged();
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                OnChange = null;
+            }
+        }
+
         public void Dispose()
         {
-            OnChange = null;
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

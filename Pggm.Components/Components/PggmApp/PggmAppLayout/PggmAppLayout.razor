@@ -1,0 +1,24 @@
+@inherits LayoutComponentBase
+
+@using Pggm.Components.Components.PggmApp.PggmAppSidebar
+@using Pggm.Components.Components.PggmApp.PggmTopMenu
+@using Pggm.Components.Components.PggmApp.PggmAsideMenu
+
+<div class="app-layout">
+    <header class="header">
+        <PggmTopMenu />
+    </header>
+    
+    <article class="main">
+        @Body
+    </article>
+
+    <PggmAppSidebar />
+    
+</div>
+
+<div id="blazor-error-ui" data-nosnippet>
+    An unhandled error has occurred.
+    <a href="." class="reload">Reload</a>
+    <span class="dismiss">🗙</span>
+</div>

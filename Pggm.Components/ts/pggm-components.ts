@@ -162,7 +162,7 @@ globalThis.PggmComponents.getValidity = function (
   element: HTMLElement | null,
   validityState: string,
 ): boolean {
-  const el = element as (HTMLElement & { validity?: ValidityState }) | null;
+  const el = element as HTMLInputElement | null;
   return (el?.validity?.[validityState as keyof ValidityState] as boolean) ?? false;
 };
 
@@ -499,9 +499,9 @@ globalThis.pggmDataGrid.enableColumnResizing = function (gridElement: HTMLElemen
 
     handle.addEventListener('pointerdown', (e: PointerEvent) => {
       e.preventDefault();
-      curCol = handle.parentElement as HTMLElement;
+      curCol = handle.parentElement;
       startPageX = e.pageX;
-      curColWidth = curCol.offsetWidth - getPaddingDiff(curCol);
+      curColWidth = curCol ? curCol.offsetWidth - getPaddingDiff(curCol) : 0;
       document.addEventListener('pointermove', moveHandler);
       document.addEventListener('pointerup', upHandler);
     }, { signal: sig });

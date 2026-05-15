@@ -10,6 +10,15 @@ namespace Pggm.Components.Components.PggmDataGrid
         [Parameter, EditorRequired]
         public Expression<Func<TGridItem, TProp>> Property { get; set; } = default!;
 
+        /// <summary>
+        /// Legacy/value-style accessor (Func). When provided it is used as a fallback
+        /// to obtain the property value if the <see cref="Property"/> expression is not set.
+        /// This preserves compatibility with tests and callers that supply a Func instead
+        /// of an Expression.
+        /// </summary>
+        [Parameter]
+        public Func<TGridItem, TProp>? Value { get; set; }
+
         [Parameter]
         public string? Format { get; set; }
 
@@ -21,13 +30,30 @@ namespace Pggm.Components.Components.PggmDataGrid
 
         protected internal override void CellContent(RenderTreeBuilder builder, TGridItem item)
         {
-            if (Property is null)
+            TProp? v = default;
+            if (Property is not null)
             {
-                return;
+                try
+                {
+                    var compiledPropertyExpression = Property.Compile();
+                    v = compiledPropertyExpression(item);
+                }
+                catch
+                {
+                    // swallow; fallback to Value if available
+                }
             }
-
-            var compiledPropertyExpression = Property.Compile();
-            var v = compiledPropertyExpression(item);
+            else if (Value is not null)
+            {
+                try
+                {
+                    v = Value(item);
+                }
+                catch
+                {
+                    // swallow
+                }
+            }
             if (v is null)
             {
                 return;

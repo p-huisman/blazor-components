@@ -50,22 +50,4 @@ public static class AttributeHelper
             }
         });
     }
-
-    /// <summary>
-    /// Set an attribute only if the provided string value is not null or empty
-    /// </summary>
-    public static void SetAttributeIfNotEmpty(Dictionary<string, object> attributes, string name, string? value)
-    {
-        if (string.IsNullOrEmpty(value)) return;
-        attributes[name] = value!;
-    }
-
-    /// <summary>
-    /// Set a boolean attribute if true (for web components we typically render the attribute name without value when true)
-    /// </summary>
-    public static void SetBooleanAttribute(Dictionary<string, object> attributes, string name, bool value)
-    {
-        if (!value) return;
-        attributes[name] = true;
-    }
 }

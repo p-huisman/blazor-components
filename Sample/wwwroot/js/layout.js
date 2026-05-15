@@ -23,6 +23,64 @@ globalThis.blazorCulture = {
   },
 };
 
+function _isScrollable(node) {
+  if (!node) return false;
+  const overflowY = globalThis.getComputedStyle(node).overflowY;
+  return (overflowY === "auto" || overflowY === "scroll" || overflowY === "overlay")
+    && node.scrollHeight > node.clientHeight;
+}
+
+function _findScrollableContainer(el) {
+  let container = el;
+  while (container && container !== document.body && !_isScrollable(container)) {
+    container = container.parentElement;
+  }
+  if (!container || container === document.body) {
+    container =
+      document.getElementById("main-content") ||
+      document.querySelector(".main") ||
+      document.documentElement;
+  }
+  return container;
+}
+
+function _smoothScrollContainer(container, target) {
+  const isRoot = container === document.documentElement || container === document.body;
+  try {
+    if (isRoot) {
+      globalThis.scrollTo({ top: target, behavior: "smooth" });
+    } else {
+      container.scrollTo({ top: target, behavior: "smooth" });
+    }
+  } catch {
+    if (isRoot) {
+      globalThis.scrollTo(0, target);
+    } else {
+      container.scrollTop = target;
+    }
+  }
+}
+
+function _computeScrollTarget(el, container) {
+  const isRoot = container === document.documentElement || container === document.body;
+  const rectEl = el.getBoundingClientRect();
+  const containerTop = isRoot ? 0 : container.getBoundingClientRect().top;
+  const currentScroll = isRoot
+    ? (globalThis.pageYOffset || document.documentElement.scrollTop || 0)
+    : (container.scrollTop || 0);
+  return Math.max(0, Math.round(currentScroll + rectEl.top - containerTop));
+}
+
+function _computeOffsetFallback(el, container) {
+  let offset = 0;
+  let node = el;
+  while (node && node !== container) {
+    offset += node.offsetTop || 0;
+    node = node.offsetParent;
+  }
+  return Math.max(0, offset);
+}
+
 globalThis.blazorLayout = {
   scrollToId: async function (id) {
     try {
@@ -31,99 +89,14 @@ globalThis.blazorLayout = {
       const el = document.getElementById(id);
       if (!el) return;
 
-      // Find nearest scrollable ancestor (including the element itself)
-      function isScrollable(node) {
-        if (!node) return false;
-        const style = globalThis.getComputedStyle(node);
-        const overflowY = style.overflowY;
-        const canScroll =
-          overflowY === "auto" ||
-          overflowY === "scroll" ||
-          overflowY === "overlay";
-        return canScroll && node.scrollHeight > node.clientHeight;
-      }
-
-      let container = el;
-      while (
-        container &&
-        container !== document.body &&
-        !isScrollable(container)
-      ) {
-        container = container.parentElement;
-      }
-
-      // If no specific container found, fall back to main content or document
-      if (!container || container === document.body) {
-        container =
-          document.getElementById("main-content") ||
-          document.querySelector(".main") ||
-          document.documentElement;
-      }
-
-      // Compute offset of element relative to container by walking offsetParent
-      function computeOffsetWithinAncestor(element, anc) {
-        let offset = 0;
-        let elc = element;
-        while (elc && elc !== anc) {
-          offset += elc.offsetTop || 0;
-          elc = elc.offsetParent;
-        }
-        return offset;
-      }
+      const container = _findScrollableContainer(el);
 
       try {
-        const rectEl = el.getBoundingClientRect();
-        let containerRect;
-        let currentScroll = 0;
-
-        if (
-          container === document.documentElement ||
-          container === document.body
-        ) {
-          containerRect = { top: 0 };
-          currentScroll =
-            globalThis.pageYOffset || document.documentElement.scrollTop || 0;
-        } else {
-          containerRect = container.getBoundingClientRect();
-          currentScroll = container.scrollTop || 0;
-        }
-
-        const desiredTopInContainer = rectEl.top - containerRect.top;
-        const target = Math.max(
-          0,
-          Math.round(currentScroll + desiredTopInContainer),
-        );
-
-        // Prefer smooth scrollTo when available, fall back to directly setting scrollTop
-        if (
-          container === document.documentElement ||
-          container === document.body
-        ) {
-          try {
-            globalThis.scrollTo({ top: target, behavior: "smooth" });
-          } catch {
-            globalThis.scrollTo(0, target);
-          }
-        } else {
-          try {
-            container.scrollTo({ top: target, behavior: "smooth" });
-          } catch {
-            container.scrollTop = target;
-          }
-        }
+        const target = _computeScrollTarget(el, container);
+        _smoothScrollContainer(container, target);
       } catch {
-        // Fallback: use previous offsetParent-based calculation if bounding rect approach fails
         try {
-          const offsetWithin = computeOffsetWithinAncestor(el, container);
-          const fallbackTarget = Math.max(0, offsetWithin);
-          if (
-            container === document.documentElement ||
-            container === document.body
-          ) {
-            globalThis.scrollTo({ top: fallbackTarget, behavior: "smooth" });
-          } else {
-            container.scrollTop = fallbackTarget;
-          }
+          _smoothScrollContainer(container, _computeOffsetFallback(el, container));
         } catch {
           /* ignore */
         }

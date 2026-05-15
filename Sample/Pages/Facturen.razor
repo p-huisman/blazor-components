@@ -1,0 +1,141 @@
+@page "/facturen"
+@using Pggm.Components
+@using System.Globalization
+
+@inject Pggm.Components.Sample.Services.Client ApiClient
+@inject IJSRuntime JSRuntime
+@using Microsoft.JSInterop
+
+<PageTitle>Facturen</PageTitle>
+
+<PggmHeading Level="1">Facturen</PggmHeading>
+
+<p>Deze pagina toont een lijst van facturen opgehaald uit de API.</p>
+
+@if (facturen == null)
+{
+    <p><em>Bezig met laden...</em></p>
+}
+else if (!facturen.Any())
+{
+    <p>Geen facturen gevonden.</p>
+}
+else
+{
+    <table class="pggm-table">
+        <thead>
+            <tr>
+                <th>Factuurnummer</th>
+                <th>Factuurdatum</th>
+                <th>Bedrag</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var factuur in facturen)
+            {
+                <tr>
+                    <td>
+                        <NavLink is="pggm-link" standalone="standalone" href="@($"/facturen/{Instantie}/{factuur.Factuurnummer}")">
+                            @factuur.Factuurnummer
+                        </NavLink>
+                    </td>
+                    <td>@(factuur.Factuurdatum?.ToString("dd-MM-yyyy") ?? "N.v.t.")</td>
+                    <td>@factuur.Factuurbedrag.ToString("C", new CultureInfo("nl-NL"))</td>
+                    <td>@factuur.Factuurstatus</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<style>
+    .pggm-table thead tr th {
+        text-align: left;
+        border-bottom: 2px solid #ccc;
+        padding: 12px 8px;
+    }
+
+    .pggm-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+    
+    .pggm-table tbody tr td {
+        padding: 12px 8px;
+    }
+</style>
+
+@code {
+    private ICollection<Pggm.Components.Sample.Services.FactuurLijst>? facturen;
+
+    private string Instantie = "1050"; // Voorbeeld instantie, kan dynamisch worden ingesteld
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Wait for service worker to be ready
+            try
+            {
+                await JSRuntime.InvokeVoidAsync("eval", @"
+                    if ('serviceWorker' in navigator) {
+                        navigator.serviceWorker.ready.then(() => {
+                            console.log('Service worker is ready');
+                        });
+                    }
+                ");
+                
+                // Add a small delay to ensure everything is initialized
+                await Task.Delay(1000);
+                
+                await LoadFacturen();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in OnAfterRenderAsync: {ex.Message}");
+                facturen = new List<Pggm.Components.Sample.Services.FactuurLijst>();
+                StateHasChanged();
+            }
+        }
+    }
+
+    private async Task LoadFacturen()
+    {
+        try
+        {
+            var messageId = Guid.NewGuid();
+            var correlationId = Guid.NewGuid();
+            
+            facturen = await ApiClient.GetfacturenAsync(
+                null, // factuurnummer
+                Instantie, // organisatienummer
+                messageId,
+                "PFZW", // pGGM_Fondscode
+                correlationId,
+                null // pGGM_Correlation_History (IEnumerable<Guid>)
+            );
+        }
+        catch (Pggm.Components.Sample.Services.ApiException apiEx)
+        {
+            Console.WriteLine($"API Error: {apiEx.Message}");
+            Console.WriteLine($"Status Code: {apiEx.StatusCode}");
+            Console.WriteLine($"Response: {apiEx.Response}");
+            facturen = new List<Pggm.Components.Sample.Services.FactuurLijst>();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error calling API: {ex.Message}");
+            if (ex.InnerException != null)
+            {
+                Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+            }
+            facturen = new List<Pggm.Components.Sample.Services.FactuurLijst>();
+        }
+        finally
+        {
+            StateHasChanged();
+        }
+    }
+}

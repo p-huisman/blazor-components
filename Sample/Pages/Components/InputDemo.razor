@@ -153,9 +153,10 @@
 <PggmHeading Level="2">API</PggmHeading>
 
 <PggmHeading Level="3">PggmInput</PggmHeading>
-<ApiDocumentation Properties="inputProperties" Events="inputEvents" />
+<ApiDocumentation Properties="inputProperties" PublicProperties="inputPublicProperties" Events="inputEvents" />
 
 @code {
+    
     // EditForm demo model
     private DemoFormModel _formModel = new();
     private bool _formSubmitted = false;
@@ -250,22 +251,38 @@
     private string basicInputSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
         "<PggmFieldset>",
         "  <PggmLabel slot=\"label\" For=\"text-input\">Text Input</PggmLabel>",
-        "  <PggmInput @bind-Value=\"_textValue\" Id=\"text-input\" Type=\"text\" Name=\"text-input\" Placeholder=\"Enter some text...\" />",
+        "  <PggmInput @bind-Value=\"_textValue\" Id=\"text-input\" Type=\"text\" Name=\"text-input\" Required=\"true\" Placeholder=\"Enter some text...\" OnChange=\"OnTextChanged\" />",
         "  <small slot=\"description\" class=\"form-text text-muted\">Current value: @_textValue</small>",
         "</PggmFieldset>",
-        "@code {",
-        "  private string? _textValue = \"\";",
-        "}");
+        "<PggmFieldset>",
+        "  <PggmLabel slot=\"label\" For=\"email-input\">Email Input</PggmLabel>",
+        "  <PggmInput @bind-Value=\"_emailValue\" Id=\"email-input\" Type=\"email\" Name=\"email-input\" Placeholder=\"Enter your email...\" Required=\"true\" />",
+        "  <small slot=\"description\" class=\"form-text text-muted\">Current value: @_emailValue</small>",
+        "</PggmFieldset>",
+        "<PggmFieldset>",
+        "  <PggmLabel slot=\"label\" For=\"password-input\">Password Input</PggmLabel>",
+        "  <PggmInput @bind-Value=\"_passwordValue\" Id=\"password-input\" Type=\"password\" Name=\"password-input\" Placeholder=\"Enter password...\" MinLength=\"8\" />",
+        "  <small slot=\"description\" class=\"form-text text-muted\">Minimum 8 characters</small>",
+        "</PggmFieldset>",
+        "<PggmFieldset>",
+        "  <PggmLabel slot=\"label\" For=\"number-input\">Number Input</PggmLabel>",
+        "  <PggmInput @bind-Value=\"_numberValue\" Id=\"number-input\" Type=\"number\" Name=\"number-input\" Min=\"0\" Max=\"100\" Step=\"1\" Placeholder=\"Enter a number...\" />",
+        "  <small slot=\"description\" class=\"form-text text-muted\">Range: 0-100, Current value: @_numberValue</small>",
+        "</PggmFieldset>"
+    );
 
     private string advancedInputSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
         "<PggmFieldset>",
         "  <PggmLabel slot=\"label\" For=\"search-input\">Search Input</PggmLabel>",
-        "  <PggmInput @bind-Value=\"_searchValue\" Id=\"search-input\" Type=\"search\" Name=\"search-input\" Placeholder=\"Search...\" />",
+        "  <PggmInput @bind-Value=\"_searchValue\" Id=\"search-input\" Type=\"search\" Name=\"search-input\" Placeholder=\"Search...\" OnInput=\"OnSearchInput\" />",
         "  <small slot=\"description\" class=\"form-text text-muted\">Live search: @_searchValue</small>",
         "</PggmFieldset>",
-        "@code {",
-        "  private string? _searchValue = \"\";",
-        "}");
+        "<PggmFieldset>",
+        "  <PggmLabel slot=\"label\" For=\"url-input\">URL Input</PggmLabel>",
+        "  <PggmInput @bind-Value=\"_urlValue\" Id=\"url-input\" Type=\"url\" Name=\"url-input\" Placeholder=\"https://example.com\" />",
+        "  <small slot=\"description\" class=\"form-text text-muted\">Current URL: @_urlValue</small>",
+        "</PggmFieldset>"
+    );
 
     private string editFormInputSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
         "<EditForm Model=\"_formModel\" OnValidSubmit=\"HandleValidSubmit\">",
@@ -294,30 +311,53 @@
     private string statesInputSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
         "<PggmFieldset>",
         "  <PggmLabel slot=\"label\" For=\"disabled-input\">Disabled Input</PggmLabel>",
-        "  <PggmInput Id=\"disabled-input\" Value=\"_disabledValue\" Disabled=\"true\" />",
+        "  <PggmInput Id=\"disabled-input\" Value=\"_disabledValue\" ValueExpression=\"() => _disabledValue\" Disabled=\"true\" Placeholder=\"Disabled input\" />",
         "</PggmFieldset>",
-        "@code {",
-        "  private string _disabledValue = \"This input is disabled\";",
-        "}");
+        "<PggmFieldset>",
+        "  <PggmLabel slot=\"label\" For=\"required-input\">Required Input</PggmLabel>",
+        "  <PggmInput @bind-Value=\"_requiredValue\" Name=\"required-input\" Id=\"required-input\" Required=\"true\" Placeholder=\"This field is required\" />",
+        "  <small class=\"text-danger\">This field is required</small>",
+        "</PggmFieldset>",
+        "<PggmFieldset>",
+        "  <PggmLabel slot=\"label\" For=\"readonly-input\">Read-only Input</PggmLabel>",
+        "  <PggmInput Id=\"readonly-input\" Value=\"_readonlyValue\" ValueExpression=\"() => _readonlyValue\" ReadOnly=\"true\" />",
+        "</PggmFieldset>"
+    );
 
     private string eventInputSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
         "<PggmFieldset>",
         "  <PggmLabel slot=\"label\" For=\"event-input\">Event Demo Input</PggmLabel>",
-        "  <PggmInput @bind-Value=\"_eventValue\" Id=\"event-input\" OnChange=\"OnEventChange\" OnInput=\"OnEventInput\" OnFocus=\"OnEventFocus\" OnBlur=\"OnEventBlur\" />",
+        "  <PggmInput @bind-Value=\"_eventValue\" Name=\"event-input\" Id=\"event-input\"",
+        "             Placeholder=\"Type here to see events...\" OnChange=\"OnEventChange\" OnInput=\"OnEventInput\" OnFocus=\"OnEventFocus\" OnBlur=\"OnEventBlur\" />",
         "</PggmFieldset>",
+        "<div style=\"height: 200px; overflow-y: auto; font-family: monospace; font-size: 0.875rem;\">",
+        "  @foreach (var logEntry in _eventLog.AsEnumerable().Reverse().Take(20))",
+        "  {",
+        "    <div>",
+        "      <span class=\"text-muted\">[@logEntry.Timestamp.ToString(\"HH:mm:ss.fff\")]</span>",
+        "      <span class=\"fw-bold text-primary\">@logEntry.Event:</span>",
+        "      @logEntry.Details",
+        "    </div>",
+        "  }",
+        "</div>",
         "@code {",
         "  private string? _eventValue = \"\";",
+        "  // event logging omitted for brevity",
         "}");
 
     // Code-behind snippets (shown separately in demo)
     private string basicInputBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
         "@code {",
         "  private string? _textValue = \"\";",
+        "  private string? _emailValue = \"\";",
+        "  private string? _passwordValue = \"\";",
+        "  private string? _numberValue = \"\";",
         "}");
 
     private string advancedInputBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
         "@code {",
         "  private string? _searchValue = \"\";",
+        "  private string? _urlValue = \"\";",
         "}");
 
     private string editFormInputBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
@@ -354,16 +394,30 @@
 
     private IEnumerable<ApiMember> inputProperties = new[]
     {
-        new ApiMember { Name = "Value", Type = "string?", DefaultValue = "null", Description = "Two-way bound value (provided by InputBase<string>)." },
-        new ApiMember { Name = "Name", Type = "string?", DefaultValue = "null", Description = "Name attribute for underlying input." },
-        new ApiMember { Name = "Type", Type = "PggmInput.InputTypes", DefaultValue = "text", Description = "Input type (text, email, number, etc.)." },
-        new ApiMember { Name = "Placeholder", Type = "string?", DefaultValue = "null", Description = "Placeholder text shown when empty." },
-        new ApiMember { Name = "Required", Type = "bool", DefaultValue = "false", Description = "Whether the input is required for validation." },
-        new ApiMember { Name = "ReadOnly", Type = "bool", DefaultValue = "false", Description = "When true makes the input read-only." },
-        new ApiMember { Name = "Disabled", Type = "bool", DefaultValue = "false", Description = "When true disables the input." },
-        new ApiMember { Name = "Min", Type = "string?", DefaultValue = "null", Description = "Minimum value for numeric/date inputs." },
-        new ApiMember { Name = "Max", Type = "string?", DefaultValue = "null", Description = "Maximum value for numeric/date inputs." },
-        new ApiMember { Name = "ChildContent", Type = "RenderFragment?", DefaultValue = "null", Description = "Optional child content." }
+        new ApiMember { Name = "Value", Type = "string?", DefaultValue = "null", Description = "Value parameter. When two-way bound updates are emitted via `ValueChanged`. If unbound, this value is used as the initial displayed value." },
+        new ApiMember { Name = "ValueChanged", Type = "EventCallback<string>", DefaultValue = "null", Description = "Callback invoked for two-way binding updates." },
+        new ApiMember { Name = "ValueExpression", Type = "Expression<Func<string>>?", DefaultValue = "null", Description = "Expression used by EditForm validation to identify the field." },
+        new ApiMember { Name = "Type", Type = "string", DefaultValue = "text", Description = "Input type (text, email, number, password, etc.)." },
+        new ApiMember { Name = "Placeholder", Type = "string?", DefaultValue = "null", Description = "Placeholder text shown when the input is empty." },
+        new ApiMember { Name = "Disabled", Type = "bool", DefaultValue = "false", Description = "When true the input is disabled." },
+        new ApiMember { Name = "Required", Type = "bool", DefaultValue = "false", Description = "Marks the input required for validation (browser validation suppressed inside EditForm)." },
+        new ApiMember { Name = "ReadOnly", Type = "bool", DefaultValue = "false", Description = "Makes the input read-only." },
+        new ApiMember { Name = "Name", Type = "string?", DefaultValue = "null", Description = "Name attribute for the underlying input element." },
+        new ApiMember { Name = "Id", Type = "string?", DefaultValue = "null", Description = "Id attribute for the underlying input element." },
+        new ApiMember { Name = "MaxLength", Type = "int?", DefaultValue = "null", Description = "Limits the maximum number of characters (maxlength)." },
+        new ApiMember { Name = "MinLength", Type = "int?", DefaultValue = "null", Description = "Minimum number of characters (minlength). Not applied inside EditForm." },
+        new ApiMember { Name = "Pattern", Type = "string?", DefaultValue = "null", Description = "Regex pattern for browser validation (only applied outside EditForm)." },
+        new ApiMember { Name = "Min", Type = "string?", DefaultValue = "null", Description = "Minimum value for numeric/date inputs (applied outside EditForm)." },
+        new ApiMember { Name = "Max", Type = "string?", DefaultValue = "null", Description = "Maximum value for numeric/date inputs (applied outside EditForm)." },
+        new ApiMember { Name = "Step", Type = "string?", DefaultValue = "null", Description = "Step attribute for numeric inputs." },
+        new ApiMember { Name = "AdditionalAttributes", Type = "IDictionary<string, object>?", DefaultValue = "null", Description = "Additional attributes to be rendered on the underlying input element." },
+        new ApiMember { Name = "OnChange", Type = "EventCallback<ChangeEventArgs>", DefaultValue = "null", Description = "Invoked when the input value changes (on blur)." },
+        new ApiMember { Name = "OnInput", Type = "EventCallback<ChangeEventArgs>", DefaultValue = "null", Description = "Invoked on input events (keystrokes). Does not update bound value." }
+    };
+
+    private IEnumerable<ApiMember> inputPublicProperties = new[]
+    {
+        new ApiMember { Name = "ElementRef", Type = "ElementReference", DefaultValue = "default", Description = "Reference to the underlying input element." }
     };
 
     private IEnumerable<ApiMember> inputEvents = new[]
