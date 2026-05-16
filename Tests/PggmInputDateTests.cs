@@ -19,8 +19,8 @@ public class PggmInputDateTests : TestContext
     public void PggmInputDate_RendersCorrectly()
     {
         // Arrange & Act
-        var cut = RenderComponent<PggmInputDate>(parameters => parameters
-            .Add(p => p.Value, "2025-09-19")
+        var cut = RenderComponent<PggmInputDate<DateTime?>>(parameters => parameters
+            .Add(p => p.Value, new DateTime(2025, 9, 19))
             .Add(p => p.Name, "date")
             .Add(p => p.Required, true)
         );
@@ -32,7 +32,7 @@ public class PggmInputDateTests : TestContext
     [Fact]
     public void PggmInputDate_HandlesDisabledState()
     {
-        var cut = RenderComponent<PggmInputDate>(parameters => parameters
+        var cut = RenderComponent<PggmInputDate<DateTime?>>(parameters => parameters
             .Add(p => p.Disabled, true)
         );
 
