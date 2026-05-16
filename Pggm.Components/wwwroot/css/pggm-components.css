@@ -383,17 +383,10 @@
 }
 
 /* ── DataGrid ────────────────────────────────────────────── */
-
-:root {
-
-  
+.pggm-data-grid {
   --pggm-checkbox-size: 16px;
   --pggm-radio-size: 16px;
 
-  
-}
-
-.pggm-data-grid {
   --pggm-dialog-max-width: 400px;
   overflow-x: auto;
 }
