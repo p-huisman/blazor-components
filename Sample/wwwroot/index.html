@@ -55,6 +55,13 @@
     <script src="js/custom-formatters.js"></script>
 
     <script src="_content/Pggm.Components/js/pggm-components.js"></script>
+    <script>
+        if (sessionStorage.getItem("redirect")) {
+            const location = sessionStorage.getItem("redirect");
+            sessionStorage.removeItem("redirect");
+            history.replaceState(null, "", location);
+        }
+    </script>
     
 </body>
 
