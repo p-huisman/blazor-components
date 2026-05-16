@@ -10,13 +10,14 @@ using Pggm.Components.Constants;
 
 namespace Pggm.Components;
 
-public partial class PggmInputDate : PggmEventComponentInputBase<string>
+public partial class PggmInputDate<TValue> : PggmEventComponentInputBase<TValue>
 {
     public override string TagName => "pggm-input-date";
 
-    private string? _lastSyncedValue;
+    private TValue? _lastSyncedValue;
     private bool _hasUserInteracted;
-    private string? _lastUserSetValue = "__unset__";
+    private TValue? _lastUserSetValue;
+    private bool _isLastUserSetValueSet;
     private ValidationMessageStore? _messageStore;
     private string? _resolvedValidationMessage;
 
@@ -177,7 +178,7 @@ public partial class PggmInputDate : PggmEventComponentInputBase<string>
 
         if (!_hasUserInteracted)
         {
-            var safeValue = (Value == "null" || Value == "undefined") ? null : Value;
+            var safeValue = Value == null ? null : FormatValueAsString(Value);
             if (!string.IsNullOrEmpty(safeValue)) attributes["value"] = safeValue;
         }
 
@@ -189,19 +190,20 @@ public partial class PggmInputDate : PggmEventComponentInputBase<string>
         return attributes;
     }
 
-    private Task HandleValueChange(string? newValue, bool allowClear = true)
+    private Task HandleValueChange(TValue? newValue, bool allowClear = true)
     {
         _hasUserInteracted = true;
 
-        if (!allowClear && string.IsNullOrEmpty(newValue) && !string.IsNullOrEmpty(Value))
+        if (!allowClear && newValue == null && Value != null)
             return Task.CompletedTask;
 
         _lastUserSetValue = newValue;
+        _isLastUserSetValueSet = true;
 
-        if (Value != newValue)
+        if (!EqualityComparer<TValue>.Default.Equals(Value, newValue))
         {
             _lastSyncedValue = newValue;
-            CurrentValue = newValue;
+            CurrentValue = newValue ?? default!;
         }
         return Task.CompletedTask;
     }
@@ -241,7 +243,7 @@ public partial class PggmInputDate : PggmEventComponentInputBase<string>
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        _lastSyncedValue = null;
+        _lastSyncedValue = default;
 
         if (EditContext != null)
         {
@@ -278,11 +280,12 @@ public partial class PggmInputDate : PggmEventComponentInputBase<string>
     {
         base.OnParametersSet();
 
-        if (_hasUserInteracted && Value != _lastUserSetValue)
+        if (_hasUserInteracted && _isLastUserSetValueSet && !EqualityComparer<TValue>.Default.Equals(Value, _lastUserSetValue))
         {
             _hasUserInteracted = false;
-            _lastSyncedValue = null;
-            _lastUserSetValue = "__unset__";
+            _lastSyncedValue = default;
+            _lastUserSetValue = default;
+            _isLastUserSetValueSet = false;
         }
     }
 
@@ -302,13 +305,13 @@ public partial class PggmInputDate : PggmEventComponentInputBase<string>
             }
         }
 
-        if (!_hasUserInteracted && Value != _lastSyncedValue)
+        if (!_hasUserInteracted && !EqualityComparer<TValue>.Default.Equals(Value, _lastSyncedValue))
         {
             try
             {
                 if (!string.IsNullOrEmpty(ElementRef.Id))
                 {
-                    var safeValue = string.IsNullOrEmpty(Value) || Value == "null" || Value == "undefined" ? "" : Value;
+                    var safeValue = Value == null ? "" : FormatValueAsString(Value);
                     await JSRuntime.InvokeVoidAsync("PggmComponents.setProperty", ElementRef, "value", safeValue);
                     _lastSyncedValue = Value;
                 }
@@ -320,14 +323,18 @@ public partial class PggmInputDate : PggmEventComponentInputBase<string>
         }
     }
 
-    private async Task<string?> GetValueFromElementAsync()
+    private async Task<TValue?> GetValueFromElementAsync()
     {
         if (string.IsNullOrEmpty(ElementRef.Id)) return Value;
         try
         {
             var raw = await JSRuntime.InvokeAsync<string>("PggmComponents.getProperty", ElementRef, "value");
             var normalized = (raw == "null" || raw == "undefined") ? null : raw;
-            return normalized;
+            if (TryParseValueFromString(normalized, out var result, out _))
+            {
+                return result;
+            }
+            return Value;
         }
         catch
         {
@@ -335,11 +342,78 @@ public partial class PggmInputDate : PggmEventComponentInputBase<string>
         }
     }
 
-    protected override bool TryParseValueFromString(string? value, out string result, out string validationErrorMessage)
+    protected override bool TryParseValueFromString(string? value, out TValue result, out string validationErrorMessage)
     {
-        result = value ?? string.Empty;
         validationErrorMessage = string.Empty;
+        if (string.IsNullOrWhiteSpace(value) || value == "null" || value == "undefined")
+        {
+            result = default!;
+            return true;
+        }
+
+        var parts = value.Split(new[] { ',', '|', '/' }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        if (value.Contains(" - "))
+        {
+            parts = value.Split(new[] { " - " }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        }
+
+        var t = typeof(TValue);
+        var underlyingT = Nullable.GetUnderlyingType(t) ?? t;
+
+        if (underlyingT == typeof(DateTime))
+        {
+            if (parts.Length > 0 && DateTime.TryParse(parts[0], out var dt))
+            {
+                result = (TValue)(object)dt;
+                return true;
+            }
+        }
+        else if (t == typeof(DateTime[]) || t == typeof(DateTime?[]))
+        {
+            var dates = new List<DateTime>();
+            foreach (var part in parts)
+            {
+                if (DateTime.TryParse(part, out var dt))
+                {
+                    dates.Add(dt);
+                }
+            }
+
+            if (t == typeof(DateTime[]))
+            {
+                result = (TValue)(object)dates.ToArray();
+                return true;
+            }
+            else
+            {
+                result = (TValue)(object)dates.Cast<DateTime?>().ToArray();
+                return true;
+            }
+        }
+
+        result = default!;
         return true;
+    }
+
+    protected override string FormatValueAsString(TValue? value)
+    {
+        if (value == null) return string.Empty;
+        var format = "yyyy-MM-dd";
+
+        if (value is DateTime dt)
+        {
+            return dt.ToString(format);
+        }
+        if (value is DateTime[] dates)
+        {
+            return string.Join(",", dates.Select(d => d.ToString(format)));
+        }
+        if (value is DateTime?[] nullableDates)
+        {
+            return string.Join(",", nullableDates.Where(d => d.HasValue).Select(d => d!.Value.ToString(format)));
+        }
+
+        return value.ToString() ?? string.Empty;
     }
 
     /// <summary>

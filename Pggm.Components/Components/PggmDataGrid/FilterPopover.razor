@@ -35,13 +35,13 @@
                 @if (_operator == FilterOperators.Between)
                 {
                     <PggmStack Orientation='Pggm.Components.Orientation.Vertical' VerticalGap='4'>
-                        <PggmInputDate @ref="_inputDateRef" @bind-Value="_value" />
-                        <PggmInputDate @bind-Value="_value2" />
+                        <PggmInputDate @ref="_inputDateRef" @bind-Value="_dateValue" />
+                        <PggmInputDate @bind-Value="_dateValue2" />
                     </PggmStack>
                 }
                 else
                 {
-                    <PggmInputDate @ref="_inputDateRef" @bind-Value="_value" />
+                    <PggmInputDate @ref="_inputDateRef" @bind-Value="_dateValue" />
                 }
             }
             else
@@ -85,10 +85,12 @@
     private string _operator = FilterOperators.Contains;
     private string? _value;
     private string? _value2;
+    private DateTime? _dateValue;
+    private DateTime? _dateValue2;
     private bool _caseSensitive;
 
     private PggmInput? _inputRef;
-    private PggmInputDate? _inputDateRef;
+    private PggmInputDate<DateTime?>? _inputDateRef;
     private FilterDescriptor? _lastSyncedFilter;
     private FilterType _lastSyncedFilterType;
     private bool _lastIsOpen;
@@ -122,6 +124,8 @@
             };
             _value = null;
             _value2 = null;
+            _dateValue = null;
+            _dateValue2 = null;
             _caseSensitive = false;
         }
         else
@@ -129,6 +133,13 @@
             _operator = Filter.Operator ?? _operator;
             _value = Filter.Value;
             _value2 = Filter.Values?.Length > 1 ? Filter.Values[1] : null;
+
+            if (FilterType == FilterType.Date)
+            {
+                _dateValue = string.IsNullOrEmpty(_value) ? null : (DateTime.TryParse(_value, out var d1) ? d1 : null);
+                _dateValue2 = string.IsNullOrEmpty(_value2) ? null : (DateTime.TryParse(_value2, out var d2) ? d2 : null);
+            }
+
             _caseSensitive = Filter.CaseSensitive;
         }
     }
@@ -152,7 +163,13 @@
 
     private async System.Threading.Tasks.Task Apply()
     {
-            var fd = new FilterDescriptor
+        if (FilterType == FilterType.Date)
+        {
+            _value = _dateValue?.ToString("yyyy-MM-dd");
+            _value2 = _dateValue2?.ToString("yyyy-MM-dd");
+        }
+
+        var fd = new FilterDescriptor
         {
             FilterType = FilterType,
             Operator = _operator,
