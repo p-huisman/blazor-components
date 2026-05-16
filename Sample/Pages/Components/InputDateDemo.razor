@@ -24,6 +24,31 @@
     </Content>
 </DemoSection>
 
+<DemoSection Title="Pre-filled Date" Code="@birthdaySource" CodeBehind="@birthdayBehind">
+    <Description>
+        <p>Input initially set to 28-09-1971</p>
+    </Description>
+    <Content>
+        <PggmInputDate @bind-Value="birthday"
+                       Format="@(PggmInputDate<DateTime?>.DateFormats.DayMonthYear)"
+                       Name="birthday" />
+        <p><strong>Current Value:</strong> @birthday</p>
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Pre-filled Period" Code="@birthdayPeriodSource" CodeBehind="@birthdayPeriodBehind">
+    <Description>
+        <p>Period input initially set with start = 28-09-1971 and end = 05-10-1971</p>
+    </Description>
+    <Content>
+        <PggmInputDate @bind-Value="birthdayPeriod"
+                       Format="@(PggmInputDate<DateTime?[]>.DateFormats.DayMonthYear)"
+                       Name="birthday-period"
+                       Period="true" />
+        <p><strong>Current Value:</strong> @(birthdayPeriod != null ? string.Join(", ", birthdayPeriod.Select(d => d?.ToString("yyyy-MM-dd") ?? "null")) : "null")</p>
+    </Content>
+</DemoSection>
+
 <DemoSection Title="EditForm Example" Code="@editFormSource" CodeBehind="@editFormBehind">
     <Description>
         <p>Example showing <code>EditForm</code> integration with <code>PggmInputDate</code> and data-annotation validation.</p>
@@ -152,6 +177,8 @@
 
 @code {
     private DateTime? basicDate;
+    private DateTime? birthday = new DateTime(1971, 9, 28);
+    private DateTime?[]? birthdayPeriod = new DateTime?[] { new DateTime(1971, 9, 28), new DateTime(1971, 10, 5) };
     private DateTime?[]? periodDate;
     private DateTime? restrictedDate;
     private DateTime? usDate;
@@ -212,9 +239,26 @@
         "               Name=\"basic-date\"",
         "               Required=\"true\" />");
 
+    private string birthdaySource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmInputDate @bind-Value=\"@birthday\"",
+        "               Format=\"@PggmInputDate<DateTime?>.DateFormats.DayMonthYear\"",
+        "               Name=\"birthday\" />");
+
     private string basicDateBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
         "// backing field",
         "private DateTime? basicDate;"
+    );
+
+    private string birthdayBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private DateTime? birthday = new DateTime(1971, 9, 28);"
+    );
+
+    private string birthdayPeriodSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmInputDate @bind-Value=\"@birthdayPeriod\" Format=\"@PggmInputDate<DateTime?[]>.DateFormats.DayMonthYear\" Name=\"birthday-period\" Period=\"true\" />"
+    );
+
+    private string birthdayPeriodBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private DateTime?[]? birthdayPeriod = new DateTime?[] { new DateTime(1971, 9, 28), new DateTime(1971, 10, 5) };"
     );
 
     private string editFormSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
