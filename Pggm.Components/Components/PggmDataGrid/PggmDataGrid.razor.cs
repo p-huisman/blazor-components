@@ -1,15 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
-using Microsoft.AspNetCore.Components.Web;
-using Pggm.Components.Base;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
+
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
+
+using Pggm.Components.Base;
 
 namespace Pggm.Components.Components.PggmDataGrid
 {
@@ -883,13 +885,13 @@ namespace Pggm.Components.Components.PggmDataGrid
             _totalItemCount = res.TotalItemCount;
         }
 
-        private Task LoadFromItemsCollectionAsync()
+        private async Task LoadFromItemsCollectionAsync()
         {
             if (Items is null)
             {
                 _itemsToRender = Array.Empty<TGridItem>();
                 _totalItemCount = 0;
-                return Task.CompletedTask;
+                return;
             }
 
             var query = _currentSortColumn?.SortBy is not null
@@ -907,7 +909,6 @@ namespace Pggm.Components.Components.PggmDataGrid
             }
 
             _itemsToRender = query.ToList();
-            return Task.CompletedTask;
         }
 
         private IQueryable<TGridItem> ApplyFiltersToQuery(IQueryable<TGridItem> query)

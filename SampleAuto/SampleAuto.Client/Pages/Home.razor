@@ -1,0 +1,46 @@
+@page "/"
+@using Pggm.Components
+@rendermode InteractiveAuto
+
+<PageTitle>Home</PageTitle>
+
+<PggmHeading Level="1">Hello, world!</PggmHeading>
+
+Welcome to your new app.
+
+<PggmFieldset>
+    <PggmFieldsetLabel For="TextInput1">Naam</PggmFieldsetLabel>
+    <PggmFieldsetDescription>
+        <p>Vul uw naam in.</p>
+    </PggmFieldsetDescription>
+    <PggmFieldsetError>
+        <PggmErrorMessage slot="error" For="TextInput1" Validity="valueMissing">
+            Naam is een verplicht veld. Vul uw naam in.
+        </PggmErrorMessage>
+        <PggmErrorMessage slot="error" For="TextInput1" Validity="tooShort">
+            De naam is te kort. De naam moet tenminste 2 tekens lang zijn. Vul uw naam in.
+        </PggmErrorMessage>
+    </PggmFieldsetError>
+    <PggmInput Type="text" id="TextInput1" Required="true" MinLength="2" />
+</PggmFieldset>
+<PggmFieldset>
+    <PggmFieldsetLabel For="TextInput2">Naam</PggmFieldsetLabel>
+    <PggmFieldsetDescription>
+        <p>Vul uw naam in.</p>
+    </PggmFieldsetDescription>
+    <PggmFieldsetError>
+        <PggmErrorMessage slot="error" For="TextInput2" Validity="valueMissing">
+            Naam is een verplicht veld. Vul uw naam in.
+        </PggmErrorMessage>
+        <PggmErrorMessage slot="error" For="TextInput2" Validity="tooShort">
+            De naam is te kort. De naam moet tenminste 2 tekens lang zijn. Vul uw naam in.
+        </PggmErrorMessage>
+    </PggmFieldsetError>
+    <PggmCombobox TOption="object" Id="TextInput2" Name="basic-combo" Placeholder="Kies een land...">
+        <PggmComboboxItem Value="nl">Nederland</PggmComboboxItem>
+        <PggmComboboxItem Value="de">Duitsland</PggmComboboxItem>
+        <PggmComboboxItem Value="be">België</PggmComboboxItem>
+        <PggmComboboxItem Value="fr">Frankrijk</PggmComboboxItem>
+        <PggmComboboxItem Value="uk">Verenigd Koninkrijk</PggmComboboxItem>
+    </PggmCombobox>
+</PggmFieldset>

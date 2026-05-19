@@ -1,0 +1,6 @@
+#TopMenu {
+    --pggm-avatar-size: 2em;
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}

@@ -4,10 +4,10 @@
 @using Pggm.Components.Components.PggmApp.PggmAppHeader
 @using Pggm.Components.Components.PggmApp.PggmAsideMenu
 
-<div class="app-layout @( _isSidebarOpen ? "sidebar-open" : "")">
+<div id="AppLayout" class="app-layout @( _isSidebarOpen ? "sidebar-open" : "")">
     <PggmAppHeader OnToggleSidebar="ToggleSidebar" />
     
-    <main class="main">
+    <main id="MainContainer" class="main">
         <article class="main-content">
             @Body
         </article>

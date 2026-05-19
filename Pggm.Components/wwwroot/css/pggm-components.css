@@ -1,3 +1,86 @@
+/** Blasor defaults */
+#blazor-error-ui {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+#blazor-error-ui .dismiss {
+    cursor: pointer;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
+}
+
+/* Common styles */
+.screen-reader-only{
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Visible utilities */
+.button-without-style {
+  appearance: none;
+  border: none;
+  padding: 0;
+  background: none;
+  margin: 0;
+}
+
+/* When body contains AppLayout */
+
+html:has(#AppLayout),
+body:has(#AppLayout) {
+  margin: 0;
+  padding: 0;
+  font-size: var(--pggm-typography-base-font-size, 1em);
+  line-height: var(--pggm-typography-line-height, 1.5);
+  font-family: var(--pggm-typography-font-family, 'Open Sans', Arial, NantesWeb Tahoma, Verdana, sans-serif);
+}
+
+/* style issues solved but should be moved to web components*/
+:root {
+    --pggm-responsive-components-icons-large-width: 24px;
+    --pggm-responsive-components-icons-large-height: 24px;
+    --pggm-responsive-components-icons-medium-width: 20px;
+    --pggm-responsive-components-icons-medium-height: 20px;
+    --pggm-responsive-components-icons-small-width: 16px;
+    --pggm-responsive-components-icons-small-height: 16px;
+}
+
+/* these styles should not be needed, for now they solve some design issues  */
+pggm-fieldset [slot="label"],
+pggm-fieldset [slot="description"] {
+  margin: 0;
+  display: inline-block;
+}
+pggm-fieldset [slot="label"] > *:first-child,
+pggm-fieldset [slot="description"] > *:first-child {
+  margin-top: 0;
+}
+pggm-fieldset [slot="label"] > *:last-child,
+pggm-fieldset [slot="description"] > *:last-child {
+  margin-bottom: 0; 
+}
+
+pggm-dialog{
+  z-index: 4000;
+}
+/* */
+
 /* Responsive column span utilities */
 @media (max-width: 575.98px) {
   [class*="pggm-grid-item-col-xs-"] {
@@ -361,34 +444,16 @@
   }
 }
 
-/* ── Common helpers ───────────────────────────────────────── */
-.button-without-style {
-  appearance: none;
-  border: none;
-  padding: 0;
-  background: none;
-  margin: 0;
-}
 
-.screen-reader-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap; /* added line */
-  border: 0;
-}
 
 /* ── DataGrid ────────────────────────────────────────────── */
-.pggm-data-grid {
-  --pggm-checkbox-size: 16px;
-  --pggm-radio-size: 16px;
 
+
+.pggm-data-grid {
   --pggm-dialog-max-width: 400px;
   overflow-x: auto;
+  --pggm-checkbox-size: 16px;
+  --pggm-radio-size: 16px;
 }
 
 .pggm-data-grid-table {
@@ -762,32 +827,4 @@ input.pggm-data-grid-table-radio:disabled {
   .pggm-hierarchical-expand-button svg {
     transition: none;
   }
-}
-
-
-/* ── Blazor ────────────────────────────────────────────── */
-
-#blazor-error-ui {
-    color-scheme: light only;
-    background: lightyellow;
-    bottom: 0;
-    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
-    box-sizing: border-box;
-    display: none;
-    left: 0;
-    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
-    position: fixed;
-    width: 100%;
-    z-index: 1000;
-}
-
-#blazor-error-ui .dismiss {
-    cursor: pointer;
-    position: absolute;
-    right: 0.75rem;
-    top: 0.5rem;
-}
-
-h1:focus-visible {
-  outline: none !important;
 }

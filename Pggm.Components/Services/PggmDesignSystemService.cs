@@ -51,16 +51,20 @@ public class PggmDesignSystemService : IAsyncDisposable
         }
         catch (JSException ex)
         {
-            // Log the error but continue - the JavaScript will handle CORS issues gracefully
+            // JS runtime available but the call itself failed (e.g. CORS, script missing).
+            // Mark initialized to avoid retry loops — components fall back to CSS-only.
             _logger?.LogWarning(ex, "PGGM Design System initialization warning: {Message}", ex.Message);
             _logger?.LogInformation("Components will use fallback styling if PGGM assets fail to load due to CORS");
-            _isInitialized = true; // Mark as initialized to prevent retry loops
+            _isInitialized = true;
             return false;
         }
         catch (Exception ex)
         {
-            _logger?.LogError(ex, "Failed to initialize PGGM Design System: {Message}", ex.Message);
-            _isInitialized = true; // Mark as initialized to prevent retry loops
+            // JS interop is unavailable (prerender / circuit not yet established).
+            // Reset state so initialization is retried once the circuit is live.
+            _logger?.LogDebug(ex, "PGGM Design System init deferred (JS not available): {Message}", ex.Message);
+            _isInitialized = false;
+            _initializationTask = null;
             return false;
         }
     }

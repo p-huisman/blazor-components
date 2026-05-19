@@ -47,11 +47,24 @@
     </PggmDataGrid>
 </DemoSection>
 
+<DemoSection Title="Single page (controls hidden)">
+    <PggmPaginator State="@_singlePagination" />
+
+    <PggmDataGrid TGridItem="Employee"
+                  Items="@_singleEmployees.AsQueryable()"
+                  Pagination="@_singlePagination">
+        <PropertyColumn TGridItem="Employee" TProp="string"  Title="Name"       Property="@(x => x.Name)"       Index="0" Sortable="true" IsDefaultSortColumn="true" />
+        <PropertyColumn TGridItem="Employee" TProp="string"  Title="Department" Property="@(x => x.Department)"  Index="1" />
+        <PropertyColumn TGridItem="Employee" TProp="string"  Title="Location"   Property="@(x => x.Location)"    Index="2" />
+    </PggmDataGrid>
+</DemoSection>
+
 @code {
     private sealed record Employee(string Name, string Department, string Location, decimal Salary);
 
     private readonly PaginationState _pagination  = new() { PageIndex = 0, PageSize = 5 };
     private readonly PaginationState _pagination2 = new() { PageIndex = 0, PageSize = 5 };
+    private readonly PaginationState _singlePagination = new() { PageIndex = 0, PageSize = 10 };
 
     private static readonly List<Employee> _employees =
     [
@@ -76,4 +89,7 @@
         new("Sander Brouwer",  "Marketing",   "Amsterdam", 70_000m),
         new("Tessa van Loon",  "Finance",     "Rotterdam", 77_000m),
     ];
+
+    private static readonly List<Employee> _singleEmployees =
+        new() { new("Solo Tester", "QA", "Amsterdam", 50_000m) };
 }

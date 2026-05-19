@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+
 using Pggm.Components.Components.PggmDataGrid;
 
 namespace Pggm.Components;
@@ -62,6 +63,9 @@ public partial class PggmPaginator : ComponentBase, IDisposable
 
     private bool IsFirstPage => State is null || State.PageIndex == 0;
     private bool IsLastPage => State?.LastPageIndex is null || State.PageIndex >= State.LastPageIndex.Value;
+
+    // When true, there is one or zero pages available and controls should be hidden.
+    private bool ControlsShouldBeHidden => State?.LastPageIndex.HasValue == true && State.LastPageIndex.Value <= 0;
 
     protected override void OnParametersSet()
     {

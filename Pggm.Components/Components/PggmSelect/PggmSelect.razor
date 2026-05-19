@@ -3,6 +3,10 @@
 @inherits PggmEventComponentBase
 
 <select is="pggm-select" @ref="ElementRef" value="@Value" @onchange="HandleValueChanged" @attributes="GetAttributes()">
+  @if (!string.IsNullOrEmpty(Placeholder))
+  {
+    <option value="" disabled selected="@string.IsNullOrEmpty(Value)">@Placeholder</option>
+  }
   @ChildContent
   @if (Items is not null)
   {
@@ -14,10 +18,12 @@
       }
       else
       {
-        var val = OptionValue?.Invoke(item);
-        var text = OptionText?.Invoke(item) ?? val;
+        var val = OptionValue?.Invoke(item) ?? OptionText.Invoke(item) ?? item?.ToString();
+        var text = OptionText.Invoke(item) ?? val;
         var disabled = OptionDisabled?.Invoke(item) == true;
-        <option value="@val" disabled="@disabled">@text</option>
+        var title = OptionTitle?.Invoke(item);
+        var selected = IsOptionSelected(item);
+        <option value="@val" disabled="@disabled" selected="@selected" title="@title">@text</option>
       }
     }
   }

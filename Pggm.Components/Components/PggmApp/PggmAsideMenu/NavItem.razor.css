@@ -1,20 +1,63 @@
-.nav {
-    --nav-bg-primary: #ffffff;
-    --nav-text-main: #1e293b;
-    --nav-text-secondary: #64748b;
-    --nav-accent-green: #008751;
-    --nav-hover-bg: rgba(0, 135, 81, 0.05);
-    --nav-active-bg: rgba(0, 135, 81, 0.08);
-    --nav-font-family: 'Public Sans', 'Open Sans', sans-serif;
-    --nav-font-size-l1: 0.75rem;
-    --nav-font-size-l2: 0.875rem;
-    --nav-font-size-l3: 0.8125rem;
-    --nav-item-height: 40px;
-    --nav-indent-l2: 12px;
-    --nav-indent-l3: 24px;
-    --nav-transition: all 0.2s ease-in-out;
-
+.nav-item {
+    display: block;
+    padding: 0 1rem;
+    line-height: var(--nav-item-height);
+    min-height: var(--nav-item-height);
+    font-size: var(--nav-font-size-l2);
     font-family: var(--nav-font-family);
-    background-color: var(--nav-bg-primary);
-    padding: 0.5rem 0;
+    font-weight: 400;
+    color: var(--nav-text-main);
+    text-decoration: none;
+    border-left: 4px solid transparent;
+    transition: var(--nav-transition);
+    box-sizing: border-box;
 }
+
+.nav-item.nav-item--l3 {
+    padding-left: calc(1rem + var(--nav-indent-l3));
+    font-size: var(--nav-font-size-l3);
+    color: var(--nav-text-secondary);
+}
+
+.nav-item-text-only {
+    font-weight: 600;
+    color: var(--nav-text-main);
+    text-transform: uppercase;
+}
+
+.nav-item:hover {
+    background-color: var(--nav-hover-bg);
+    color: var(--nav-text-main);
+}
+
+.nav-item.nav-item--l3:hover {
+    background-color: var(--nav-hover-bg);
+    color: var(--nav-text-main);
+}
+
+.nav-item.nav-item--l3.nav-item-text-only:hover {
+    background-color: transparent;
+}
+
+.nav-item:focus-visible {
+    outline: 2px solid var(--nav-accent-green);
+    outline-offset: -2px;
+}
+
+.nav-item.active {
+    border-left-color: var(--nav-accent-green);
+    background-color: var(--nav-active-bg);
+}
+
+.nav-item__label {
+    margin-left: calc(24px + 0.5rem);
+}
+
+.nav-item.nav-item--l3 .nav-item__label {
+    margin-left: 0.5rem;
+}
+
+.nav-item.active .nav-item__label {
+    color: var(--nav-text-main);
+    font-weight: 600;
+} 

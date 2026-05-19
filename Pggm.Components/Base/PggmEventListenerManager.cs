@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
@@ -136,6 +137,11 @@ namespace Pggm.Components.Base
                 foreach (var e in list) _registeredEvents.Remove(e);
                 return;
             }
+            catch (JSDisconnectedException)
+            {
+                // Circuit has disconnected; JS interop is no longer possible. This is expected during disposal.
+                return;
+            }
             catch (JSException)
             {
                 // fall back to per-event
@@ -147,6 +153,11 @@ namespace Pggm.Components.Base
                 {
                     await _jsRuntime.InvokeVoidAsync("PggmComponents.removeEventListener", _elementRef, eventName);
                     _registeredEvents.Remove(eventName);
+                }
+                catch (JSDisconnectedException)
+                {
+                    // Circuit has disconnected; JS interop is no longer possible. This is expected during disposal.
+                    return;
                 }
                 catch (Exception ex)
                 {

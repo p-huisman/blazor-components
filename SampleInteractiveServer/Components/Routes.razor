@@ -1,6 +1,64 @@
+@inject IPggmAsideMenuService AsideMenuService
+
 <Router AppAssembly="typeof(Program).Assembly" NotFoundPage="typeof(Pages.NotFound)">
     <Found Context="routeData">
-        <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)" />
+        <RouteView RouteData="routeData" DefaultLayout="typeof(PggmAppLayout)" />
         <FocusOnNavigate RouteData="routeData" Selector="h1" />
     </Found>
 </Router>
+
+@code {
+    protected override void OnInitialized()
+    {
+        SetupMenu();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+            return;
+        SetupMenu();
+        await Task.CompletedTask;
+    }
+
+    private void SetupMenu()
+    {
+        AsideMenuService.SetSections(new NavSectionModel[]
+        {
+            new NavSectionModel
+            {
+                Title = "Demo",
+                Categories = new NavCategoryModel[]
+                {
+                    new NavCategoryModel
+                    {
+                        Label = "Standard demo",
+                        Items = new NavItemModel[]
+                        {
+                            new NavItemModel { Href = "/",        Label = "Home"    },
+                            new NavItemModel { Href = "/counter", Label = "Counter" },
+                            new NavItemModel { Href = "/sample",  Label = "Sample"  },
+                            new NavItemModel { Href = "/weather", Label = "Weather" },
+                        }
+                    }
+                }
+            },
+            new NavSectionModel
+            {
+                Title = "Lala",
+                Categories = new NavCategoryModel[]
+                {
+                    new NavCategoryModel
+                    {
+                        Label = "Lala demo",
+                        Items = new NavItemModel[]
+                        {
+                            new NavItemModel { Href = "/foobar",        Label = "Foo Bar"    },
+                            new NavItemModel { Href = "/weather?sf", Label = "Weather" }
+                        }
+                    }
+                }
+            }
+        });
+    }
+}

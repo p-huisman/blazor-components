@@ -1,4 +1,20 @@
 #AppSideBar {
+
+     --nav-bg-primary: #ffffff;
+    --nav-text-main: #1e293b;
+    --nav-text-secondary: #64748b;
+    --nav-accent-green: #008751;
+    --nav-hover-bg: rgba(0, 135, 81, 0.05);
+    --nav-active-bg: rgba(0, 135, 81, 0.08);
+    --nav-font-family: 'Public Sans', 'Open Sans', sans-serif;
+    --nav-font-size-l1: 0.75rem;
+    --nav-font-size-l2: 0.875rem;
+    --nav-font-size-l3: 0.8125rem;
+    --nav-item-height: 40px;
+    --nav-indent-l2: 12px;
+    --nav-indent-l3: 24px;
+    --nav-transition: all 0.2s ease-in-out;
+    
     transition: transform 0.3s ease;
     z-index: 100;
     position: fixed;
@@ -8,11 +24,17 @@
     width: 280px;
     background-color: #f8f9fa;
     border-right: 1px solid #dee2e6;
-    height: 100dvh;
+    height: 100%;
 }
 #AppSideBar.open {
     transform: translate(0, 0);
     filter: drop-shadow(-10px -18px 12px #dee2e6);
+}
+
+.sidebar-close-button{
+    appearance: none;
+    border: 0;
+    background: transparent;
 }
 
 @media screen and (min-width: 690px) {
@@ -34,7 +56,7 @@
         background-color: #fff;
         filter: drop-shadow(10px 18px 12px #dee2e6);
         border-right: 1px solid #dee2e6;
-        height: 100dvh;
+        height: 100%;
         overflow-y: auto;
         overflow-x: hidden;
     }
@@ -44,3 +66,4 @@
         visibility: hidden;
     }
 }
+

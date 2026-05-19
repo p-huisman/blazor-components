@@ -1,0 +1,46 @@
+@using Pggm.Components.Components.PggmApp.PggmAsideMenu.Services
+@using Pggm.Components.Components.PggmApp.PggmAsideMenu.Models
+@implements IDisposable
+@inject IPggmAsideMenuService AsideMenuService
+
+<nav id="AppSideBarMenu" class="nav aside-menu" aria-label="Navigation">
+    @foreach (var navSection in AsideMenuService.Sections)
+    {
+        <NavSection @key="@navSection.Title" Title="@navSection.Title">
+            @foreach (var category in navSection.Categories)
+            {
+                <NavCategory @key="@category.Label" Label="@category.Label" Icon="@category.Icon">
+                    @foreach (var item in category.Items)
+                    {
+                        <NavItem Href="@item.Href" Label="@item.Label" Match="@item.Match" />
+                    }
+                </NavCategory>
+            }
+        </NavSection>
+    }
+</nav>
+
+@code {
+    protected override void OnInitialized()
+    {
+        AsideMenuService.OnChanged += OnMenuChanged;
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        // Force a re-render after the first paint so that sections set by
+        // the parent's OnInitialized (before we subscribed to OnChanged) are visible.
+        if (firstRender)
+            StateHasChanged();
+    }
+
+    private void OnMenuChanged()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        AsideMenuService.OnChanged -= OnMenuChanged;
+    }
+}

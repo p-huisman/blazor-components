@@ -15,6 +15,7 @@ const _lazyScripts: Record<string, string> = {
   "pggm-drawer": "./_content/Pggm.Components/js/drawer.js",
   "pggm-avatar": "./_content/Pggm.Components/js/avatar.js",
   "pggm-splitter": "./_content/Pggm.Components/js/splitter.js",
+  "pggm-scroller": "./_content/Pggm.Components/js/scroller.js", 
 };
 
 const _scriptPromises = new Map<string, Promise<void>>();

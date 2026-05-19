@@ -41,6 +41,8 @@ export interface PggmComponentsNamespace {
   loadScript(id: string): Promise<void>;
   getValidity(element: HTMLElement | null, validityState: string): boolean;
   setStyle(element: HTMLElement | null, property: string, value: string): void;
+  openExternal?(url: string, target?: string): void;
+  scrollToTop?(): void;
 }
 
 declare global {

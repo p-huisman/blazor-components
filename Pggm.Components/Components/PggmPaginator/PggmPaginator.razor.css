@@ -55,6 +55,10 @@
     gap: 0.25rem;
 }
 
+.pggm-paginator__controls--hidden {
+    visibility: hidden;
+}
+
 .pggm-paginator__btn {
     display: inline-flex;
     align-items: center;

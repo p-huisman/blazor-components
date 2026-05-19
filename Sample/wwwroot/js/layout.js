@@ -1,27 +1,3 @@
-globalThis.blazorCulture = {
-  scrollMainToTop: function () {
-    const main = document.querySelector("main");
-    if (main) main.scrollTop = 0;
-  },
-
-  registerResizeHandler: function (dotNetHelper) {
-    let isLargeScreen = globalThis.innerWidth >= 690;
-
-    // Initial check
-    dotNetHelper.invokeMethodAsync("OnScreenSizeChanged", isLargeScreen);
-
-    // Listen for resize events
-    globalThis.addEventListener("resize", function () {
-      const newIsLargeScreen = globalThis.innerWidth >= 690;
-
-      // Only call the method if the screen size category changed
-      if (newIsLargeScreen !== isLargeScreen) {
-        isLargeScreen = newIsLargeScreen;
-        dotNetHelper.invokeMethodAsync("OnScreenSizeChanged", isLargeScreen);
-      }
-    });
-  },
-};
 
 function _isScrollable(node) {
   if (!node) return false;

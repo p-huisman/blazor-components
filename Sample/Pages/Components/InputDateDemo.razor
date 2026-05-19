@@ -1,395 +1,395 @@
-@page "/pggm-input-date"
+    @page "/pggm-input-date"
 
-@using Pggm.Components.Enums
-@using Pggm.Components.Sample.Components.ApiDocumentation
+    @using Pggm.Components.Enums
+    @using Pggm.Components.Sample.Components.ApiDocumentation
 
-<PageTitle>PGGM Input Date</PageTitle>
+    <PageTitle>PGGM Input Date</PageTitle>
 
-<PggmHeading Level="1">PGGM Input Date</PggmHeading>
+    <PggmHeading Level="1">PGGM Input Date</PggmHeading>
 
-<p>This page demonstrates the PGGM Input Date component with various configurations and features.</p>
+    <p>This page demonstrates the PGGM Input Date component with various configurations and features.</p>
 
-<p><strong>Note:</strong> The component's bound `Value` is a `DateTime` (or `DateTime[]` when `Period="true"`). It is no longer a string.</p>
+    <p><strong>Note:</strong> The component's bound `Value` is a `DateTime` (or `DateTime[]` when `Period="true"`). It is no longer a string.</p>
 
-<DemoSection Title="Basic Date Input" Code="@basicDateSource" CodeBehind="@basicDateBehind">
-    <Description>
-        <p>Basic date input with dd-mm-yyyy format</p>
-    </Description>
-    <Content>
-        <PggmInputDate @bind-Value="basicDate" 
-                       Format="@(PggmInputDate<DateTime?>.DateFormats.DayMonthYear)"
-                       Name="basic-date"
-                       Required="true" />
-        <p><strong>Current Value:</strong> @basicDate</p>
-    </Content>
-</DemoSection>
+    <DemoSection Title="Basic Date Input" Code="@basicDateSource" CodeBehind="@basicDateBehind">
+        <Description>
+            <p>Basic date input with dd-mm-yyyy format</p>
+        </Description>
+        <Content>
+            <PggmInputDate @bind-Value="basicDate" 
+                        Format="@(PggmInputDate.DateFormats.DayMonthYear)"
+                        Name="basic-date"
+                        Required="true" />
+            <p><strong>Current Value:</strong> @basicDate</p>
+        </Content>
+    </DemoSection>
 
-<DemoSection Title="Pre-filled Date" Code="@birthdaySource" CodeBehind="@birthdayBehind">
-    <Description>
-        <p>Input initially set to 28-09-1971</p>
-    </Description>
-    <Content>
-        <PggmInputDate @bind-Value="birthday"
-                       Format="@(PggmInputDate<DateTime?>.DateFormats.DayMonthYear)"
-                       Name="birthday" />
-        <p><strong>Current Value:</strong> @birthday</p>
-    </Content>
-</DemoSection>
+    <DemoSection Title="Pre-filled Date" Code="@birthdaySource" CodeBehind="@birthdayBehind">
+        <Description>
+            <p>Input initially set to 28-09-1971</p>
+        </Description>
+        <Content>
+            <PggmInputDate @bind-Value="birthday"
+                        Format="@(PggmInputDate.DateFormats.DayMonthYear)"
+                        Name="birthday" />
+            <p><strong>Current Value:</strong> @birthday</p>
+        </Content>
+    </DemoSection>
 
-<DemoSection Title="Pre-filled Period" Code="@birthdayPeriodSource" CodeBehind="@birthdayPeriodBehind">
-    <Description>
-        <p>Period input initially set with start = 28-09-1971 and end = 05-10-1971</p>
-    </Description>
-    <Content>
-        <PggmInputDate @bind-Value="birthdayPeriod"
-                       Format="@(PggmInputDate<DateTime?[]>.DateFormats.DayMonthYear)"
-                       Name="birthday-period"
-                       Period="true" />
-        <p><strong>Current Value:</strong> @(birthdayPeriod != null ? string.Join(", ", birthdayPeriod.Select(d => d?.ToString("yyyy-MM-dd") ?? "null")) : "null")</p>
-    </Content>
-</DemoSection>
+    <DemoSection Title="Pre-filled Period" Code="@birthdayPeriodSource" CodeBehind="@birthdayPeriodBehind">
+        <Description>
+            <p>Period input initially set with start = 28-09-1971 and end = 05-10-1971</p>
+        </Description>
+        <Content>
+            <PggmInputDate @bind-Value="birthdayPeriod"
+                        Format="@(PggmInputDate.DateFormats.DayMonthYear)"
+                        Name="birthday-period"
+                        Period="true" />
+            <p><strong>Current Value:</strong> @(birthdayPeriod != null ? string.Join(", ", birthdayPeriod.Select(d => d?.ToString("yyyy-MM-dd") ?? "null")) : "null")</p>
+        </Content>
+    </DemoSection>
 
-<DemoSection Title="EditForm Example" Code="@editFormSource" CodeBehind="@editFormBehind">
-    <Description>
-        <p>Example showing <code>EditForm</code> integration with <code>PggmInputDate</code> and data-annotation validation.</p>
-    </Description>
-    <Content>
-        <EditForm Model="@dateFormModel" OnSubmit="HandleDateFormSubmit">
-            <DataAnnotationsValidator />
-            <PggmValidationSummary>
-                Het formulier bevat fouten, controleer en corrigeer deze
-            </PggmValidationSummary>
-            <PggmFieldset>
-                <PggmLabel slot="label" For="dateForm">Select Date:</PggmLabel>
-                <PggmValidationMessage slot="error"  For="() => dateFormModel.Date">
-                    <p>Vul een geldige datum, de datum moet tussen 01-01-2024 en 31-12-2024 liggen.</p>
-                </PggmValidationMessage>
-                <PggmInputDate @bind-Value="@dateFormModel.Date"
-                               Format="@(PggmInputDate<DateTime?>.DateFormats.DayMonthYear)"
-                               Name="dateForm"
-                               Id="dateForm"
-                               Min="2024-01-01"
-                               Max="2024-12-31"
-                               Required />
-                </PggmFieldset>
+    <DemoSection Title="EditForm Example" Code="@editFormSource" CodeBehind="@editFormBehind">
+        <Description>
+            <p>Example showing <code>EditForm</code> integration with <code>PggmInputDate</code> and data-annotation validation.</p>
+        </Description>
+        <Content>
+            <EditForm Model="@dateFormModel" OnSubmit="HandleDateFormSubmit">
+                <DataAnnotationsValidator />
+                <PggmValidationSummary>
+                    Het formulier bevat fouten, controleer en corrigeer deze
+                </PggmValidationSummary>
+                <PggmFieldset>
+                    <PggmLabel slot="label" For="dateForm">Select Date:</PggmLabel>
+                    <PggmValidationMessage slot="error"  For="() => dateFormModel.Date">
+                        <p>Vul een geldige datum, de datum moet tussen 01-01-2024 en 31-12-2024 liggen.</p>
+                    </PggmValidationMessage>
+                    <PggmInputDate @bind-Value="@dateFormModel.Date"
+                                Format="@(PggmInputDate.DateFormats.DayMonthYear)"
+                                Name="dateForm"
+                                Id="dateForm"
+                                Min="2024-01-01"
+                                Max="2024-12-31"
+                                Required />
+                    </PggmFieldset>
 
-            <PggmButton Appearance="@ButtonAppearance.Primary" Type="@ButtonType.Submit">Submit</PggmButton>
-            
-        </EditForm>
+                <PggmButton Appearance="@ButtonAppearance.Primary" Type="@ButtonType.Submit">Submit</PggmButton>
+                
+            </EditForm>
 
-        @if (submittedDate != null)
-        {
-            <p><strong>Submitted date:</strong> @submittedDate</p>
-        }
-    </Content>
-</DemoSection>
-
-<DemoSection Title="Date Range (Period) Input" Code="@periodDateSource" CodeBehind="@periodDateBehind">
-    <Description>
-        <p>Date input with period enabled for date ranges</p>
-    </Description>
-    <Content>
-        <PggmInputDate @bind-Value="periodDate" 
-                       Format="@(PggmInputDate<DateTime?[]>.DateFormats.DayMonthYear)"
-                       Name="period-date"
-                       Period="true"
-                       Required="true" />
-        <p><strong>Current Value:</strong> @(periodDate != null ? string.Join(", ", periodDate.Select(d => d?.ToString("yyyy-MM-dd") ?? "null")) : "null")</p>
-    </Content>
-</DemoSection>
-
-<DemoSection Title="Date Input with Min/Max" Code="@minMaxSource" CodeBehind="@minMaxBehind">
-    <Description>
-        <p>Date input with minimum and maximum date restrictions</p>
-    </Description>
-    <Content>
-        <PggmInputDate @bind-Value="restrictedDate" 
-                       Format="@(PggmInputDate<DateTime?>.DateFormats.DayMonthYear)"
-                       Name="restricted-date"
-                       Min="2024-01-01"
-                       Max="2024-12-31"
-                       Required="true" />
-        <p><strong>Current Value:</strong> @restrictedDate</p>
-        <p><em>Only dates between 01-01-2024 and 31-12-2024 are allowed</em></p>
-    </Content>
-</DemoSection>
-
-<DemoSection Title="Different Date Formats" Code="@formatsSource" CodeBehind="@formatsBehind">
-    <Content>
-        <PggmHeading Level="3">US Format (mm-dd-yyyy)</PggmHeading>
-        <PggmInputDate @bind-Value="usDate" 
-                       Format="@(PggmInputDate<DateTime?>.DateFormats.MonthDayYear)"
-                       Name="us-date" />
-        <p><strong>Current Value:</strong> @usDate</p>
-        
-        <PggmHeading Level="3">ISO Format (yyyy-mm-dd)</PggmHeading>
-        <PggmInputDate @bind-Value="isoDate" 
-                       Format="@(PggmInputDate<DateTime?>.DateFormats.YearMonthDay)"
-                       Name="iso-date" />
-        <p><strong>Current Value:</strong> @isoDate</p>
-    </Content>
-</DemoSection>
-
-<DemoSection Title="Disabled and ReadOnly States" Code="@disabledSource" CodeBehind="@disabledBehind">
-    <Content>
-        <PggmHeading Level="3">Disabled</PggmHeading>
-        <PggmInputDate Value="@disabledDateValue" 
-                       Format="@(PggmInputDate<DateTime?>.DateFormats.DayMonthYear)"
-                       Name="disabled-date"
-                       Disabled="true" />
-        
-        <PggmHeading Level="3">ReadOnly</PggmHeading>
-        <PggmInputDate Value="@readonlyDateValue" 
-                       Format="@(PggmInputDate<DateTime?>.DateFormats.DayMonthYear)"
-                       Name="readonly-date"
-                       ReadOnly="true" />
-    </Content>
-</DemoSection>
-
-<DemoSection Title="Event Handling" Code="@eventSource" CodeBehind="@eventBehind">
-    <Description>
-        <p>Date input with event handlers</p>
-    </Description>
-    <Content>
-        <PggmInputDate @bind-Value="eventDate" 
-                       Format="@(PggmInputDate<DateTime?>.DateFormats.DayMonthYear)"
-                       Name="event-date"
-                       OnChange="OnDateChange"
-                       OnFocus="OnDateFocus"
-                       OnBlur="OnDateBlur" />
-
-        <p><strong>Current Value:</strong> @eventDate</p>
-
-        <PggmHeading Level="3">Event Log:</PggmHeading>
-        <div class="event-log">
-            @foreach (var logEntry in eventLog)
+            @if (submittedDate != null)
             {
-                <div>@logEntry</div>
+                <p><strong>Submitted date:</strong> @submittedDate</p>
             }
-        </div>
-    </Content>
-</DemoSection>
+        </Content>
+    </DemoSection>
 
-<PggmHeading Level="2">API</PggmHeading>
+    <DemoSection Title="Date Range (Period) Input" Code="@periodDateSource" CodeBehind="@periodDateBehind">
+        <Description>
+            <p>Date input with period enabled for date ranges</p>
+        </Description>
+        <Content>
+            <PggmInputDate @bind-Value="periodDate" 
+                        Format="@(PggmInputDate.DateFormats.DayMonthYear)"
+                        Name="period-date"
+                        Period="true"
+                        Required="true" />
+            <p><strong>Current Value:</strong> @(periodDate != null ? string.Join(", ", periodDate.Select(d => d?.ToString("yyyy-MM-dd") ?? "null")) : "null")</p>
+        </Content>
+    </DemoSection>
 
-<PggmHeading Level="3">PggmInputDate</PggmHeading>
-<ApiDocumentation Properties="dateProperties" Events="dateEvents" />
+    <DemoSection Title="Date Input with Min/Max" Code="@minMaxSource" CodeBehind="@minMaxBehind">
+        <Description>
+            <p>Date input with minimum and maximum date restrictions</p>
+        </Description>
+        <Content>
+            <PggmInputDate @bind-Value="restrictedDate" 
+                        Format="@(PggmInputDate.DateFormats.DayMonthYear)"
+                        Name="restricted-date"
+                        Min="2024-01-01"
+                        Max="2024-12-31"
+                        Required="true" />
+            <p><strong>Current Value:</strong> @restrictedDate</p>
+            <p><em>Only dates between 01-01-2024 and 31-12-2024 are allowed</em></p>
+        </Content>
+    </DemoSection>
 
-@code {
-    private DateTime? basicDate;
-    private DateTime? birthday = new DateTime(1971, 9, 28);
-    private DateTime?[]? birthdayPeriod = new DateTime?[] { new DateTime(1971, 9, 28), new DateTime(1971, 10, 5) };
-    private DateTime?[]? periodDate;
-    private DateTime? restrictedDate;
-    private DateTime? usDate;
-    private DateTime? isoDate;
-    private DateTime? eventDate;
-    
-    private DateTime? disabledDateValue = new DateTime(2024, 3, 15);
-    private DateTime? readonlyDateValue = new DateTime(2024, 3, 20);
+    <DemoSection Title="Different Date Formats" Code="@formatsSource" CodeBehind="@formatsBehind">
+        <Content>
+            <PggmHeading Level="3">US Format (mm-dd-yyyy)</PggmHeading>
+            <PggmInputDate @bind-Value="usDate" 
+                        Format="@(PggmInputDate.DateFormats.MonthDayYear)"
+                        Name="us-date" />
+            <p><strong>Current Value:</strong> @usDate</p>
+            
+            <PggmHeading Level="3">ISO Format (yyyy-mm-dd)</PggmHeading>
+            <PggmInputDate @bind-Value="isoDate" 
+                        Format="@(PggmInputDate.DateFormats.YearMonthDay)"
+                        Name="iso-date" />
+            <p><strong>Current Value:</strong> @isoDate</p>
+        </Content>
+    </DemoSection>
 
-    private List<string> eventLog = new();
+    <DemoSection Title="Disabled and ReadOnly States" Code="@disabledSource" CodeBehind="@disabledBehind">
+        <Content>
+            <PggmHeading Level="3">Disabled</PggmHeading>
+            <PggmInputDate Value="@disabledDateValue" 
+                        Format="@(PggmInputDate.DateFormats.DayMonthYear)"
+                        Name="disabled-date"
+                        Disabled="true" />
+            
+            <PggmHeading Level="3">ReadOnly</PggmHeading>
+            <PggmInputDate Value="@readonlyDateValue" 
+                        Format="@(PggmInputDate.DateFormats.DayMonthYear)"
+                        Name="readonly-date"
+                        ReadOnly="true" />
+        </Content>
+    </DemoSection>
 
-    private void OnDateChange(ChangeEventArgs args)
-    {
-        eventLog.Insert(0, $"[{DateTime.Now:HH:mm:ss}] Change: {args.Value}");
-        if (eventLog.Count > 10) eventLog.RemoveAt(10);
-    }
+    <DemoSection Title="Event Handling" Code="@eventSource" CodeBehind="@eventBehind">
+        <Description>
+            <p>Date input with event handlers</p>
+        </Description>
+        <Content>
+            <PggmInputDate @bind-Value="eventDate" 
+                        Format="@(PggmInputDate.DateFormats.DayMonthYear)"
+                        Name="event-date"
+                        OnChange="OnDateChange"
+                        OnFocus="OnDateFocus"
+                        OnBlur="OnDateBlur" />
 
-    private void OnDateFocus(FocusEventArgs args)
-    {
-        eventLog.Insert(0, $"[{DateTime.Now:HH:mm:ss}] Focus gained");
-        if (eventLog.Count > 10) eventLog.RemoveAt(10);
-    }
+            <p><strong>Current Value:</strong> @eventDate</p>
 
-    private void OnDateBlur(FocusEventArgs args)
-    {
-        eventLog.Insert(0, $"[{DateTime.Now:HH:mm:ss}] Focus lost");
-        if (eventLog.Count > 10) eventLog.RemoveAt(10);
-    }
+            <PggmHeading Level="3">Event Log:</PggmHeading>
+            <div class="event-log">
+                @foreach (var logEntry in eventLog)
+                {
+                    <div>@logEntry</div>
+                }
+            </div>
+        </Content>
+    </DemoSection>
 
-    // EditForm demo model and handler
-    private DateFormModel dateFormModel = new();
-    private DateTime? submittedDate;
+    <PggmHeading Level="2">API</PggmHeading>
 
-    private async Task HandleDateFormSubmit(EditContext editContext)
-    {
-        if (editContext.Validate())
-        {
-            HandleDateSubmit();
-        }
-    }
+    <PggmHeading Level="3">PggmInputDate</PggmHeading>
+    <ApiDocumentation Properties="dateProperties" Events="dateEvents" />
 
-    private void HandleDateSubmit()
-    {
-        submittedDate = dateFormModel.Date;
-    }
-
-    private class DateFormModel
-    {
-        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Date is required")]
-        [PggmValidation("Vul een geldig datum in")]
-        public DateTime? Date { get; set; }
-    }
-
-    // Code snippets for demo page
-    private string basicDateSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<PggmInputDate @bind-Value=\"@basicDate\"",
-        "               Format=\"@PggmInputDate<DateTime?>.DateFormats.DayMonthYear\"",
-        "               Name=\"basic-date\"",
-        "               Required=\"true\" />");
-
-    private string birthdaySource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<PggmInputDate @bind-Value=\"@birthday\"",
-        "               Format=\"@PggmInputDate<DateTime?>.DateFormats.DayMonthYear\"",
-        "               Name=\"birthday\" />");
-
-    private string basicDateBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "// backing field",
-        "private DateTime? basicDate;"
-    );
-
-    private string birthdayBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "private DateTime? birthday = new DateTime(1971, 9, 28);"
-    );
-
-    private string birthdayPeriodSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<PggmInputDate @bind-Value=\"@birthdayPeriod\" Format=\"@PggmInputDate<DateTime?[]>.DateFormats.DayMonthYear\" Name=\"birthday-period\" Period=\"true\" />"
-    );
-
-    private string birthdayPeriodBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "private DateTime?[]? birthdayPeriod = new DateTime?[] { new DateTime(1971, 9, 28), new DateTime(1971, 10, 5) };"
-    );
-
-    private string editFormSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<EditForm Model=\"@dateFormModel\" OnSubmit=\"HandleDateFormSubmit\">",
-        "  <DataAnnotationsValidator />",
-        "  <PggmValidationSummary>",
-        "    Het formulier bevat fouten, controleer en corrigeer deze",
-        "  </PggmValidationSummary>",
-        "  <PggmFieldset>",
-        "    <PggmLabel slot=\"label\" For=\"dateForm\">Select Date:</PggmLabel>",
-        "    <PggmValidationMessage slot=\"error\" For=\"() => dateFormModel.Date\">",
-        "      <p>Vul een geldige datum, de datum moet tussen 01-01-2024 en 31-12-2024 liggen.</p>",
-        "    </PggmValidationMessage>",
-        "    <PggmInputDate @bind-Value=\"@dateFormModel.Date\"",
-        "                   Format=\"@PggmInputDate<DateTime?>.DateFormats.DayMonthYear\"",
-        "                   Name=\"dateForm\"",
-        "                   Id=\"dateForm\"",
-        "                   Min=\"2024-01-01\"",
-        "                   Max=\"2024-12-31\"",
-        "                   Required />",
-        "  </PggmFieldset>",
-        "  <PggmButton Appearance=\"@ButtonAppearance.Primary\" Type=\"@ButtonType.Submit\">Submit</PggmButton>",
-        "</EditForm>"
-    );
-
-    private string editFormBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "private DateFormModel dateFormModel = new();",
-        "private DateTime? submittedDate;",
-        "",
-        "private async Task HandleDateFormSubmit(EditContext editContext)",
-        "{",
-        "    if (editContext.Validate())",
-        "    {",
-        "        submittedDate = dateFormModel.Date;",
-        "    }",
-        "}",
-        "",
-        "private class DateFormModel",
-        "{",
-        "    [Required(ErrorMessage = \"Date is required\")]",
-        "    [PggmValidation(\"Vul een geldig datum in\")]",
-        "    public DateTime? Date { get; set; }",
-        "}"
-    );
-
-    private string periodDateSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<PggmInputDate @bind-Value=\"@periodDate\" Format=\"@PggmInputDate<DateTime?[]>.DateFormats.DayMonthYear\" Name=\"period-date\" Period=\"true\" Required=\"true\" />"
-    );
-
-    private string periodDateBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "private DateTime?[]? periodDate;"
-    );
-
-    private string minMaxSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<PggmInputDate @bind-Value=\"@restrictedDate\" Format=\"@PggmInputDate<DateTime?>.DateFormats.DayMonthYear\" Name=\"restricted-date\" Min=\"2024-01-01\" Max=\"2024-12-31\" Required=\"true\" />"
-    );
-
-    private string minMaxBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "private DateTime? restrictedDate;"
-    );
-
-    private string formatsSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<PggmInputDate @bind-Value=\"@usDate\" Format=\"@PggmInputDate<DateTime?>.DateFormats.MonthDayYear\" Name=\"us-date\" />",
-        "<PggmInputDate @bind-Value=\"@isoDate\" Format=\"@PggmInputDate<DateTime?>.DateFormats.YearMonthDay\" Name=\"iso-date\" />"
+    @code {
+        private DateTime? basicDate;
+        private DateTime? birthday = new DateTime(1971, 9, 28);
+        private DateTime?[]? birthdayPeriod = new DateTime?[] { new DateTime(1971, 9, 28), new DateTime(1971, 10, 5) };
+        private DateTime?[]? periodDate;
+        private DateTime? restrictedDate;
+        private DateTime? usDate;
+        private DateTime? isoDate;
+        private DateTime? eventDate;
         
-    );
+        private DateTime? disabledDateValue = new DateTime(2024, 3, 15);
+        private DateTime? readonlyDateValue = new DateTime(2024, 3, 20);
 
-    private string formatsBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "private DateTime? usDate;",
-        "private DateTime? isoDate;"
-    );
+        private List<string> eventLog = new();
 
-    private string disabledSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<PggmInputDate Value=\"15-03-2024\" Format=\"@PggmInputDate<DateTime?>.DateFormats.DayMonthYear\" Name=\"disabled-date\" Disabled=\"true\" />",
-        "<PggmInputDate Value=\"20-03-2024\" Format=\"@PggmInputDate<DateTime?>.DateFormats.DayMonthYear\" Name=\"readonly-date\" ReadOnly=\"true\" />"
-    );
+        private void OnDateChange(ChangeEventArgs args)
+        {
+            eventLog.Insert(0, $"[{DateTime.Now:HH:mm:ss}] Change: {args.Value}");
+            if (eventLog.Count > 10) eventLog.RemoveAt(10);
+        }
 
-    private string disabledBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "// static values shown in markup"
-    );
+        private void OnDateFocus(FocusEventArgs args)
+        {
+            eventLog.Insert(0, $"[{DateTime.Now:HH:mm:ss}] Focus gained");
+            if (eventLog.Count > 10) eventLog.RemoveAt(10);
+        }
 
-    private string eventSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<PggmInputDate @bind-Value=\"@eventDate\" Format=\"@PggmInputDate<DateTime?>.DateFormats.DayMonthYear\" Name=\"event-date\" OnChange=\"OnDateChange\" OnFocus=\"OnDateFocus\" OnBlur=\"OnDateBlur\" />",
-        "@code { private DateTime? eventDate = null; }"
-    );
+        private void OnDateBlur(FocusEventArgs args)
+        {
+            eventLog.Insert(0, $"[{DateTime.Now:HH:mm:ss}] Focus lost");
+            if (eventLog.Count > 10) eventLog.RemoveAt(10);
+        }
 
-    private string eventBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "private void OnDateChange(ChangeEventArgs args) { /* ... */ }",
-        "private void OnDateFocus(FocusEventArgs args) { /* ... */ }",
-        "private void OnDateBlur(FocusEventArgs args) { /* ... */ }"
-    );
+        // EditForm demo model and handler
+        private DateFormModel dateFormModel = new();
+        private DateTime? submittedDate;
 
-    private IEnumerable<ApiMember> dateProperties = new[]
-    {
-        new ApiMember { Name = "Value", Type = "TValue?", DefaultValue = "null", Description = "Bound value of the component (two-way binding). Provided by InputBase<TValue>." },
-        new ApiMember { Name = "Name", Type = "string?", DefaultValue = "null", Description = "Name attribute for the underlying input element." },
-        new ApiMember { Name = "Format", Type = "string?", DefaultValue = "null", Description = "Expected date format (e.g., dd-mm-yyyy). Use DateFormats constants." },
-        new ApiMember { Name = "Period", Type = "bool", DefaultValue = "false", Description = "If true, shows a period (date range) input." },
-        new ApiMember { Name = "Min", Type = "string?", DefaultValue = "null", Description = "Minimum allowed date value (ISO format recommended)." },
-        new ApiMember { Name = "Max", Type = "string?", DefaultValue = "null", Description = "Maximum allowed date value (ISO format recommended)." },
-        new ApiMember { Name = "Lang", Type = "string?", DefaultValue = "null", Description = "Language/locale for the date input UI." },
-        new ApiMember { Name = "Required", Type = "bool", DefaultValue = "false", Description = "Whether the input is required for form validation." },
-        new ApiMember { Name = "ReadOnly", Type = "bool", DefaultValue = "false", Description = "When true, the input is read-only." },
-        new ApiMember { Name = "Disabled", Type = "bool", DefaultValue = "false", Description = "When true, the input is disabled." },
-        new ApiMember { Name = "ChildContent", Type = "RenderFragment?", DefaultValue = "null", Description = "Optional child content rendered inside the component." }
-    };
+        private async Task HandleDateFormSubmit(EditContext editContext)
+        {
+            if (editContext.Validate())
+            {
+                HandleDateSubmit();
+            }
+        }
 
-    private IEnumerable<ApiMember> dateEvents = new[]
-    {
-        new ApiMember { Name = "OnChange", Type = "EventCallback<ChangeEventArgs>", Description = "Invoked when the input value changes (on blur)." },
-        new ApiMember { Name = "OnInput", Type = "EventCallback<ChangeEventArgs>", Description = "Invoked on every input (keystroke)." },
-        new ApiMember { Name = "OnFocus", Type = "EventCallback<FocusEventArgs>", Description = "Invoked when the input gains focus." },
-        new ApiMember { Name = "OnBlur", Type = "EventCallback<FocusEventArgs>", Description = "Invoked when the input loses focus." },
-        new ApiMember { Name = "ValueChanged", Type = "EventCallback<TValue?>", Description = "Event callback for two-way binding updates." }
-    };
-}
+        private void HandleDateSubmit()
+        {
+            submittedDate = dateFormModel.Date;
+        }
 
-<style>
-    
-    .event-log {
-        background-color: #f5f5f5;
-        padding: 1rem;
-        border-radius: 4px;
-        font-family: monospace;
-        font-size: 0.9rem;
-        max-height: 200px;
-        overflow-y: auto;
+        private class DateFormModel
+        {
+            [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Date is required")]
+            [PggmValidation("Vul een geldig datum in")]
+            public DateTime? Date { get; set; }
+        }
+
+        // Code snippets for demo page
+        private string basicDateSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+            "<PggmInputDate @bind-Value=\"@basicDate\"",
+            "               Format=\"@PggmInputDate.DateFormats.DayMonthYear\"",
+            "               Name=\"basic-date\"",
+            "               Required=\"true\" />");
+
+        private string birthdaySource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+            "<PggmInputDate @bind-Value=\"@birthday\"",
+            "               Format=\"@PggmInputDate.DateFormats.DayMonthYear\"",
+            "               Name=\"birthday\" />");
+
+        private string basicDateBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+            "// backing field",
+            "private DateTime? basicDate;"
+        );
+
+        private string birthdayBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+            "private DateTime? birthday = new DateTime(1971, 9, 28);"
+        );
+
+        private string birthdayPeriodSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+            "<PggmInputDate @bind-Value=\"@birthdayPeriod\" Format=\"@PggmInputDate<DateTime?[]>.DateFormats.DayMonthYear\" Name=\"birthday-period\" Period=\"true\" />"
+        );
+
+        private string birthdayPeriodBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+            "private DateTime?[]? birthdayPeriod = new DateTime?[] { new DateTime(1971, 9, 28), new DateTime(1971, 10, 5) };"
+        );
+
+        private string editFormSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+            "<EditForm Model=\"@dateFormModel\" OnSubmit=\"HandleDateFormSubmit\">",
+            "  <DataAnnotationsValidator />",
+            "  <PggmValidationSummary>",
+            "    Het formulier bevat fouten, controleer en corrigeer deze",
+            "  </PggmValidationSummary>",
+            "  <PggmFieldset>",
+            "    <PggmLabel slot=\"label\" For=\"dateForm\">Select Date:</PggmLabel>",
+            "    <PggmValidationMessage slot=\"error\" For=\"() => dateFormModel.Date\">",
+            "      <p>Vul een geldige datum, de datum moet tussen 01-01-2024 en 31-12-2024 liggen.</p>",
+            "    </PggmValidationMessage>",
+            "    <PggmInputDate @bind-Value=\"@dateFormModel.Date\"",
+            "                   Format=\"@PggmInputDate.DateFormats.DayMonthYear\"",
+            "                   Name=\"dateForm\"",
+            "                   Id=\"dateForm\"",
+            "                   Min=\"2024-01-01\"",
+            "                   Max=\"2024-12-31\"",
+            "                   Required />",
+            "  </PggmFieldset>",
+            "  <PggmButton Appearance=\"@ButtonAppearance.Primary\" Type=\"@ButtonType.Submit\">Submit</PggmButton>",
+            "</EditForm>"
+        );
+
+        private string editFormBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+            "private DateFormModel dateFormModel = new();",
+            "private DateTime? submittedDate;",
+            "",
+            "private async Task HandleDateFormSubmit(EditContext editContext)",
+            "{",
+            "    if (editContext.Validate())",
+            "    {",
+            "        submittedDate = dateFormModel.Date;",
+            "    }",
+            "}",
+            "",
+            "private class DateFormModel",
+            "{",
+            "    [Required(ErrorMessage = \"Date is required\")]",
+            "    [PggmValidation(\"Vul een geldig datum in\")]",
+            "    public DateTime? Date { get; set; }",
+            "}"
+        );
+
+        private string periodDateSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+            "<PggmInputDate @bind-Value=\"@periodDate\" Format=\"@PggmInputDate<DateTime?[]>.DateFormats.DayMonthYear\" Name=\"period-date\" Period=\"true\" Required=\"true\" />"
+        );
+
+        private string periodDateBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+            "private DateTime?[]? periodDate;"
+        );
+
+        private string minMaxSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+            "<PggmInputDate @bind-Value=\"@restrictedDate\" Format=\"@PggmInputDate.DateFormats.DayMonthYear\" Name=\"restricted-date\" Min=\"2024-01-01\" Max=\"2024-12-31\" Required=\"true\" />"
+        );
+
+        private string minMaxBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+            "private DateTime? restrictedDate;"
+        );
+
+        private string formatsSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+            "<PggmInputDate @bind-Value=\"@usDate\" Format=\"@PggmInputDate.DateFormats.MonthDayYear\" Name=\"us-date\" />",
+            "<PggmInputDate @bind-Value=\"@isoDate\" Format=\"@PggmInputDate.DateFormats.YearMonthDay\" Name=\"iso-date\" />"
+            
+        );
+
+        private string formatsBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+            "private DateTime? usDate;",
+            "private DateTime? isoDate;"
+        );
+
+        private string disabledSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+            "<PggmInputDate Value=\"15-03-2024\" Format=\"@PggmInputDate.DateFormats.DayMonthYear\" Name=\"disabled-date\" Disabled=\"true\" />",
+            "<PggmInputDate Value=\"20-03-2024\" Format=\"@PggmInputDate.DateFormats.DayMonthYear\" Name=\"readonly-date\" ReadOnly=\"true\" />"
+        );
+
+        private string disabledBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+            "// static values shown in markup"
+        );
+
+        private string eventSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+            "<PggmInputDate @bind-Value=\"@eventDate\" Format=\"@PggmInputDate.DateFormats.DayMonthYear\" Name=\"event-date\" OnChange=\"OnDateChange\" OnFocus=\"OnDateFocus\" OnBlur=\"OnDateBlur\" />",
+            "@code { private DateTime? eventDate = null; }"
+        );
+
+        private string eventBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+            "private void OnDateChange(ChangeEventArgs args) { /* ... */ }",
+            "private void OnDateFocus(FocusEventArgs args) { /* ... */ }",
+            "private void OnDateBlur(FocusEventArgs args) { /* ... */ }"
+        );
+
+        private IEnumerable<ApiMember> dateProperties = new[]
+        {
+            new ApiMember { Name = "Value", Type = "TValue?", DefaultValue = "null", Description = "Bound value of the component (two-way binding). Provided by InputBase<TValue>." },
+            new ApiMember { Name = "Name", Type = "string?", DefaultValue = "null", Description = "Name attribute for the underlying input element." },
+            new ApiMember { Name = "Format", Type = "string?", DefaultValue = "null", Description = "Expected date format (e.g., dd-mm-yyyy). Use DateFormats constants." },
+            new ApiMember { Name = "Period", Type = "bool", DefaultValue = "false", Description = "If true, shows a period (date range) input." },
+            new ApiMember { Name = "Min", Type = "string?", DefaultValue = "null", Description = "Minimum allowed date value (ISO format recommended)." },
+            new ApiMember { Name = "Max", Type = "string?", DefaultValue = "null", Description = "Maximum allowed date value (ISO format recommended)." },
+            new ApiMember { Name = "Lang", Type = "string?", DefaultValue = "null", Description = "Language/locale for the date input UI." },
+            new ApiMember { Name = "Required", Type = "bool", DefaultValue = "false", Description = "Whether the input is required for form validation." },
+            new ApiMember { Name = "ReadOnly", Type = "bool", DefaultValue = "false", Description = "When true, the input is read-only." },
+            new ApiMember { Name = "Disabled", Type = "bool", DefaultValue = "false", Description = "When true, the input is disabled." },
+            new ApiMember { Name = "ChildContent", Type = "RenderFragment?", DefaultValue = "null", Description = "Optional child content rendered inside the component." }
+        };
+
+        private IEnumerable<ApiMember> dateEvents = new[]
+        {
+            new ApiMember { Name = "OnChange", Type = "EventCallback<ChangeEventArgs>", Description = "Invoked when the input value changes (on blur)." },
+            new ApiMember { Name = "OnInput", Type = "EventCallback<ChangeEventArgs>", Description = "Invoked on every input (keystroke)." },
+            new ApiMember { Name = "OnFocus", Type = "EventCallback<FocusEventArgs>", Description = "Invoked when the input gains focus." },
+            new ApiMember { Name = "OnBlur", Type = "EventCallback<FocusEventArgs>", Description = "Invoked when the input loses focus." },
+            new ApiMember { Name = "ValueChanged", Type = "EventCallback<TValue?>", Description = "Event callback for two-way binding updates." }
+        };
     }
-    
-    .event-log div {
-        margin-bottom: 0.25rem;
-    }
-    
-</style>
+
+    <style>
+        
+        .event-log {
+            background-color: #f5f5f5;
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .event-log div {
+            margin-bottom: 0.25rem;
+        }
+        
+    </style>

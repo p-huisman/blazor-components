@@ -1,7 +1,8 @@
 @using Pggm.Components.Components.PggmApp.PggmAsideMenu
 
-<aside id="AppSideBar" class="@(Open ? "open" : "")" aria-hidden="@(Open ? "false" : "true")">
-    <div class="nav-close-bar">
+<aside id="AppSideBar" class="@(Open ? "open" : "")">
+    
+    <div class="nav-close-sidebar">
         <button class="sidebar-close-button" @onclick="OnCloseClicked" aria-label="Close sidebar">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor" stroke-width="1.5" aria-hidden="true">
@@ -10,5 +11,7 @@
             <span class="screen-reader-only">Close menu</span>
         </button>
     </div>
-    <PggmAsideMenu />
+
+    <PggmAsideMenuProvider /> 
 </aside>
+    

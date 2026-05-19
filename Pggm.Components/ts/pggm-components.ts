@@ -176,6 +176,40 @@ globalThis.PggmComponents.setStyle = function (
   }
 };
 
+// Open an external URL in a new tab/window with a safe fallback.
+globalThis.PggmComponents.openExternal = function (url: string, target = '_blank'): void {
+  try {
+    const win = window.open(url, target);
+    // Try to remove opener reference for security when a window is returned
+    if (win && 'opener' in win) {
+      try { win.opener = null; } catch { /* ignore */ }
+    }
+  } catch {
+    // If popup blocked or unexpected error, navigate in current window as fallback
+    try { globalThis.location.assign(url); } catch { /* ignore */ }
+  }
+};
+
+// Scroll helpers (used by Blazor layout to reset page position)
+globalThis.PggmComponents.scrollToTop = function (): void {
+  try {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const main = document.getElementById('MainContainer') as HTMLElement | null;
+    if (main && main.scrollTo) {
+      if (prefersReduced) main.scrollTop = 0;
+      else main.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+      return;
+    }
+    if (prefersReduced) {
+      window.scrollTo(0, 0);
+    } else {
+      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    }
+  } catch {
+    try { window.scrollTo(0, 0); } catch { /* ignore */ }
+  }
+};
+
 
 // ─── DataGrid JS helpers ──────────────────────────────────────────────────────
 

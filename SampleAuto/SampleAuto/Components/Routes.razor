@@ -1,0 +1,47 @@
+﻿@inject IPggmAsideMenuService AsideMenuService
+
+<Router AppAssembly="typeof(Program).Assembly" AdditionalAssemblies="new[] { typeof(Client._Imports).Assembly }" NotFoundPage="typeof(Pages.NotFound)">
+    <Found Context="routeData">
+        <RouteView RouteData="routeData" DefaultLayout="typeof(PggmAppLayout)" />
+        <FocusOnNavigate RouteData="routeData" Selector="h1" />
+    </Found>
+</Router>
+
+@code {
+    protected override void OnInitialized()
+    {
+        SetupMenu();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+            return;
+        SetupMenu();
+        await Task.CompletedTask;
+    }
+
+    private void SetupMenu()
+    {
+        AsideMenuService.SetSections(new NavSectionModel[]
+        {
+            new NavSectionModel
+            {
+                Title = "Demo",
+                Categories = new NavCategoryModel[]
+                {
+                    new NavCategoryModel
+                    {
+                        Label = "Standard demo",
+                        Items = new NavItemModel[]
+                        {
+                            new NavItemModel { Href = "/",        Label = "Home"    },
+                            new NavItemModel { Href = "/counter", Label = "Counter" },
+                            new NavItemModel { Href = "/weather", Label = "Weather" },
+                        }
+                    }
+                }
+            }
+        });
+    }
+}

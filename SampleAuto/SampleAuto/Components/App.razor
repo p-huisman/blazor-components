@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+    <ResourcePreloader />
+    <link rel="stylesheet" href="@Assets["app.css"]" />
+    <link rel="stylesheet" href="@Assets["SampleAuto.styles.css"]" />
+    
+    <!-- start load pggm-components  -->
+    <!--
+        Load PGGM CSS and JS as static tags so the browser discovers and executes them
+        right after HTML parsing — before Blazor starts, before OnAfterRenderAsync fires.
+
+        The library's _loadCssTokens() checks document.getElementById("pggm-tokens-css")
+        and _loadBundle() checks document.getElementById("p-elements-core") / "pggm-bundle"
+        before injecting dynamically. Static tags with matching IDs short-circuit that
+        dynamic injection path entirely, eliminating the load-chain delay.
+
+        Lazy-loaded scripts (those not bundled) are given their map IDs so that
+        PggmComponents.loadScript() finds them already in the DOM and resolves instantly.
+    -->
+
+    <!-- PGGM CSS: loaded statically so tokens/fonts apply before first paint -->
+    <link id="pggm-tokens-css" rel="stylesheet" href="_content/Pggm.Components/css/tokens.css" />
+    <link rel="stylesheet" href="_content/Pggm.Components/css/fonts.css" />
+    <link rel="stylesheet" href="_content/Pggm.Components/css/pggm-components.css" />
+
+    <!-- Core web-component runtime + all bundled components -->
+    <script type="module" id="p-elements-core" src="_content/Pggm.Components/js/p-elements-core-modern.js"></script>
+    <script type="module" id="pggm-bundle" src="_content/Pggm.Components/js/bundle.js"></script>
+
+    <!-- Lazy-loaded components: IDs must match the map in pggm-components.js -->
+    <script type="module" id="pggm-card"               src="_content/Pggm.Components/js/card.js"></script>
+    <script type="module" id="pggm-slider"             src="_content/Pggm.Components/js/slider.js"></script>
+    <script type="module" id="pggm-wizard"             src="_content/Pggm.Components/js/wizard.js"></script>
+    <script type="module" id="pggm-table"              src="_content/Pggm.Components/js/table.js"></script>
+    <script type="module" id="pggm-signature-pad"      src="_content/Pggm.Components/js/signature-pad.js"></script>
+    <script type="module" id="pggm-address-input"      src="_content/Pggm.Components/js/address-input.js"></script>
+    <script type="module" id="pggm-bank-account-input" src="_content/Pggm.Components/js/bank-account-input.js"></script>
+    <script type="module" id="pggm-dropdown"           src="_content/Pggm.Components/js/dropdown.js"></script>
+    <script type="module" id="pggm-combobox"           src="_content/Pggm.Components/js/combobox.js"></script>
+    <script type="module" id="pggm-drawer"             src="_content/Pggm.Components/js/drawer.js"></script>
+    <script type="module" id="pggm-avatar"             src="_content/Pggm.Components/js/avatar.js"></script>
+    <script type="module" id="pggm-splitter"           src="_content/Pggm.Components/js/splitter.js"></script>
+
+    <!-- Event-listener registry, interop helpers, and Blazor Server circuit init -->
+    <script src="_content/Pggm.Components/js/pggm-components.js?v1"></script>
+    <script src="_content/Pggm.Components/js/install-pggm-components-interactive-server.js?v1"></script>
+    <!-- end load pggm-components -->
+
+    <ImportMap />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <HeadOutlet />
+</head>
+
+<body>
+    <Routes @rendermode="InteractiveServer" />
+    <ReconnectModal />
+    <script src="@Assets["_framework/blazor.web.js"]"></script>
+</body>
+
+</html>
