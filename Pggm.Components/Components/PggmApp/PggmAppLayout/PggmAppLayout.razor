@@ -3,6 +3,7 @@
 @using Pggm.Components.Components.PggmApp.PggmAppSidebar
 @using Pggm.Components.Components.PggmApp.PggmAppHeader
 @using Pggm.Components.Components.PggmApp.PggmAsideMenu
+@using Pggm.Components.Components.PggmDialog
 
 <div id="AppLayout" class="app-layout @( _isSidebarOpen ? "sidebar-open" : "")">
     <PggmAppHeader OnToggleSidebar="ToggleSidebar" />
@@ -16,6 +17,8 @@
     <PggmAppSidebar Open="_isSidebarOpen" OnClose="CloseSidebar" />
     
 </div>
+
+<DialogProvider />
 
 <div id="blazor-error-ui" data-nosnippet>
     An unhandled error has occurred.

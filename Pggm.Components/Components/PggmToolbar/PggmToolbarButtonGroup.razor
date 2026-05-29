@@ -1,0 +1,18 @@
+@namespace Pggm.Components
+@using Pggm.Components.Components.PggmToolbar
+
+@if (Group?.Visible == true)
+{
+    <div class="pggm-toolbar-group">
+        @if (!string.IsNullOrEmpty(Group.Label))
+        {
+            <div class="pggm-toolbar-group-label">@Group.Label</div>
+        }
+        <div class="pggm-toolbar-group-buttons">
+            @foreach (var btn in Group.Buttons)
+            {
+                <PggmToolbarButton Button="btn" />
+            }
+        </div>
+    </div>
+}

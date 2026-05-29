@@ -1,3 +1,0 @@
-/* Styles for .nav-item live in wwwroot/css/nav.css (global).
-   Blazor CSS isolation cannot scope into NavLink's rendered <a> because
-   NavLink is a Blazor component, not a plain HTML element. */

@@ -9,7 +9,8 @@
         <NavSection @key="@navSection.Title" Title="@navSection.Title">
             @foreach (var category in navSection.Categories)
             {
-                <NavCategory @key="@category.Label" Label="@category.Label" Icon="@category.Icon">
+                <NavCategory @key="@category.Label" Label="@category.Label" Icon="@category.Icon"
+                             ItemHrefs="@category.Items.Select(i => i.Href)">
                     @foreach (var item in category.Items)
                     {
                         <NavItem Href="@item.Href" Label="@item.Label" Match="@item.Match" />

@@ -27,18 +27,29 @@
     [Parameter] public RenderFragment? Icon { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
+    [Parameter] public IEnumerable<string>? ItemHrefs { get; set; }
+
     private bool _isExpanded;
     private readonly HashSet<string> _childHrefs = new(StringComparer.OrdinalIgnoreCase);
 
     protected override void OnInitialized()
     {
-        _isExpanded = AsideMenuService.IsCategoryExpanded(Label);
+        // Pre-populate hrefs from the model so HasActiveChild() works before children register
+        if (ItemHrefs != null)
+        {
+            foreach (var href in ItemHrefs)
+                if (!string.IsNullOrEmpty(href) && href != "#")
+                    _childHrefs.Add(href);
+        }
+
+        _isExpanded = AsideMenuService.IsCategoryExpanded(Label) || HasActiveChild();
         NavigationManager.LocationChanged += OnLocationChanged;
     }
 
     protected override void OnAfterRender(bool firstRender)
     {
-        if (firstRender && HasActiveChild())
+        // Fallback for when ItemHrefs was not provided
+        if (firstRender && !_isExpanded && HasActiveChild())
         {
             SetExpanded(true);
             StateHasChanged();

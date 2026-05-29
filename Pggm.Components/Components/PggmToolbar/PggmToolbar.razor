@@ -1,0 +1,26 @@
+@namespace Pggm.Components
+@using Pggm.Components.Components.PggmToolbar
+
+<div class="pggm-toolbar">
+    @if (State?.Buttons?.Count > 0)
+    {
+        foreach (var btn in State.Buttons)
+        {
+            if (btn.Visible)
+            {
+                <PggmToolbarButton Button="btn" />
+            }
+        }
+    }
+
+    @if (State?.Groups?.Count > 0)
+    {
+        foreach (var grp in State.Groups)
+        {
+            if (grp.Visible)
+            {
+                <PggmToolbarButtonGroup Group="grp" />
+            }
+        }
+    }
+</div>
