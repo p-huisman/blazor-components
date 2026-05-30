@@ -29,7 +29,13 @@
 #AppSideBar.open {
     transform: translate(0, 0);
     filter: drop-shadow(-10px -18px 12px #dee2e6);
+    .aside-menu{
+        height: calc(100vh - 2em);
+        overflow-y: auto;
+    }
+
 }
+
 
 .sidebar-close-button{
     appearance: none;
