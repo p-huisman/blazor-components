@@ -1,0 +1,13 @@
+.pggm-toolbar-checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0 0.5rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.pggm-toolbar-checkbox__label {
+    font-size: var(--pggm-font-size-small, 0.875rem);
+    color: var(--pggm-color-neutral-700, #374151);
+}

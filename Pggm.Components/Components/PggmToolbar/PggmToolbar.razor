@@ -23,4 +23,48 @@
             }
         }
     }
+
+    @if (State?.Separators?.Count > 0)
+    {
+        foreach (var sep in State.Separators)
+        {
+            if (sep.Visible)
+            {
+                <PggmToolbarSeparator State="sep" />
+            }
+        }
+    }
+
+    @if (State?.Dropdowns?.Count > 0)
+    {
+        foreach (var dropdown in State.Dropdowns)
+        {
+            if (dropdown.Visible)
+            {
+                <PggmToolbarDropdown Dropdown="dropdown" />
+            }
+        }
+    }
+
+    @if (State?.Checkboxes?.Count > 0)
+    {
+        foreach (var checkbox in State.Checkboxes)
+        {
+            if (checkbox.Visible)
+            {
+                <PggmToolbarCheckbox State="checkbox" />
+            }
+        }
+    }
+
+    @if (State?.ToggleGroups?.Count > 0)
+    {
+        foreach (var toggleGroup in State.ToggleGroups)
+        {
+            if (toggleGroup.Visible)
+            {
+                <PggmToolbarToggleButtonGroup Group="toggleGroup" />
+            }
+        }
+    }
 </div>

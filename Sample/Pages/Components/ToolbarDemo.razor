@@ -14,8 +14,15 @@
     </Content>
 </DemoSection>
 
+<DemoSection Title="Toolbar with Separator, Dropdown, Checkbox and Toggle Group" Code="@advancedSource" CodeBehind="@advancedBehind">
+    <Content>
+        <PggmToolbar State="advancedToolbarState" />
+    </Content>
+</DemoSection>
+
 @code {
     private PggmToolbarState toolbarState = new();
+    private PggmToolbarState advancedToolbarState = new();
 
     protected override void OnInitialized()
     {
@@ -46,6 +53,66 @@
             Icon = "filter",
             OnClick = async () => await HandleFilter()
         });
+
+        // Advanced toolbar setup
+        advancedToolbarState.AddButton(new PggmToolbarButtonState
+        {
+            Label = "New",
+            Icon = "plus",
+            OnClick = async () => await HandleNew()
+        });
+
+        advancedToolbarState.AddButton(new PggmToolbarButtonState
+        {
+            Label = "Save",
+            Icon = "flopy",
+            OnClick = async () => await HandleSave()
+        });
+
+        advancedToolbarState.AddSeparator(new PggmToolbarSeparatorState());
+
+        var exportDropdown = new PggmToolbarDropdownState
+        {
+            Label = "Export",
+            Icon = "export"
+        };
+        exportDropdown.Items.Add(new PggmToolbarDropdownItemState { Label = "PDF", Value = "pdf" });
+        exportDropdown.Items.Add(new PggmToolbarDropdownItemState { Label = "Excel", Value = "excel" });
+        exportDropdown.Items.Add(new PggmToolbarDropdownItemState { Label = "CSV", Value = "csv" });
+        exportDropdown.OnItemSelected = async (value) => await HandleExport(value);
+        advancedToolbarState.AddDropdown(exportDropdown);
+
+        advancedToolbarState.AddSeparator(new PggmToolbarSeparatorState());
+
+        advancedToolbarState.AddCheckbox(new PggmToolbarCheckboxState
+        {
+            Label = "Show deleted",
+            OnCheckedChanged = async (isChecked) => await HandleShowDeleted(isChecked)
+        });
+
+        advancedToolbarState.AddSeparator(new PggmToolbarSeparatorState());
+
+        var viewToggle = new PggmToolbarToggleButtonGroupState
+        {
+            Label = "View mode",
+            AllowMultiple = false
+        };
+        viewToggle.Buttons.Add(new PggmToolbarToggleButtonState { Label = "List", Selected = true });
+        viewToggle.Buttons.Add(new PggmToolbarToggleButtonState { Label = "Grid" });
+        viewToggle.Buttons.Add(new PggmToolbarToggleButtonState { Label = "Chart" });
+        viewToggle.OnToggle = async (id, selected) => await HandleViewToggle(id, selected);
+        advancedToolbarState.AddToggleGroup(viewToggle);
+
+        var filterToggle = new PggmToolbarToggleButtonGroupState
+        {
+            Label = "Filters",
+            AllowMultiple = true
+        };
+        filterToggle.Buttons.Add(new PggmToolbarToggleButtonState { Label = "Active" });
+        filterToggle.Buttons.Add(new PggmToolbarToggleButtonState { Label = "Pending" });
+        filterToggle.Buttons.Add(new PggmToolbarToggleButtonState { Label = "Archived" });
+        filterToggle.OnToggle = async (id, selected) => await HandleFilterToggle(id, selected);
+        advancedToolbarState.AddToggleGroup(filterToggle);
     }
 
     private async Task HandleAdd()
@@ -63,6 +130,42 @@
     private async Task HandleFilter()
     {
         Console.WriteLine("Filter clicked");
+        await Task.CompletedTask;
+    }
+
+    private async Task HandleNew()
+    {
+        Console.WriteLine("New clicked");
+        await Task.CompletedTask;
+    }
+
+    private async Task HandleSave()
+    {
+        Console.WriteLine("Save clicked");
+        await Task.CompletedTask;
+    }
+
+    private async Task HandleExport(string format)
+    {
+        Console.WriteLine($"Export to {format} selected");
+        await Task.CompletedTask;
+    }
+
+    private async Task HandleShowDeleted(bool show)
+    {
+        Console.WriteLine($"Show deleted: {show}");
+        await Task.CompletedTask;
+    }
+
+    private async Task HandleViewToggle(string id, bool selected)
+    {
+        Console.WriteLine($"View toggle: {id} = {selected}");
+        await Task.CompletedTask;
+    }
+
+    private async Task HandleFilterToggle(string id, bool selected)
+    {
+        Console.WriteLine($"Filter toggle: {id} = {selected}");
         await Task.CompletedTask;
     }
 
@@ -98,6 +201,100 @@
         private async Task HandleEdit()
         {
             // Handle edit action
+        }
+        """;
+
+    private string advancedSource = """
+        <PggmToolbar State="advancedToolbarState" />
+        """;
+
+    private string advancedBehind = """
+        private PggmToolbarState advancedToolbarState = new();
+
+        protected override void OnInitialized()
+        {
+            advancedToolbarState.AddButton(new PggmToolbarButtonState
+            {
+                Label = "New",
+                Icon = "plus",
+                OnClick = async () => await HandleNew()
+            });
+
+            advancedToolbarState.AddButton(new PggmToolbarButtonState
+            {
+                Label = "Save",
+                Icon = "flopy",
+                OnClick = async () => await HandleSave()
+            });
+
+            advancedToolbarState.AddSeparator(new PggmToolbarSeparatorState());
+
+            var exportDropdown = new PggmToolbarDropdownState
+            {
+                Label = "Export",
+                Icon = "export"
+            };
+            exportDropdown.Items.Add(new PggmToolbarDropdownItemState { Label = "PDF", Value = "pdf" });
+            exportDropdown.Items.Add(new PggmToolbarDropdownItemState { Label = "Excel", Value = "excel" });
+            exportDropdown.Items.Add(new PggmToolbarDropdownItemState { Label = "CSV", Value = "csv" });
+            exportDropdown.OnItemSelected = async (value) => await HandleExport(value);
+            advancedToolbarState.AddDropdown(exportDropdown);
+
+            advancedToolbarState.AddSeparator(new PggmToolbarSeparatorState());
+
+            advancedToolbarState.AddCheckbox(new PggmToolbarCheckboxState
+            {
+                Label = "Show deleted",
+                OnCheckedChanged = async (isChecked) => await HandleShowDeleted(isChecked)
+            });
+
+            advancedToolbarState.AddSeparator(new PggmToolbarSeparatorState());
+
+            var viewToggle = new PggmToolbarToggleButtonGroupState
+            {
+                Label = "View mode",
+                AllowMultiple = false
+            };
+            viewToggle.Buttons.Add(new PggmToolbarToggleButtonState { Label = "List", Selected = true });
+            viewToggle.Buttons.Add(new PggmToolbarToggleButtonState { Label = "Grid" });
+            viewToggle.Buttons.Add(new PggmToolbarToggleButtonState { Label = "Chart" });
+            viewToggle.OnToggle = async (id, selected) => await HandleViewToggle(id, selected);
+            advancedToolbarState.AddToggleGroup(viewToggle);
+
+            var filterToggle = new PggmToolbarToggleButtonGroupState
+            {
+                Label = "Filters",
+                AllowMultiple = true
+            };
+            filterToggle.Buttons.Add(new PggmToolbarToggleButtonState { Label = "Active" });
+            filterToggle.Buttons.Add(new PggmToolbarToggleButtonState { Label = "Pending" });
+            filterToggle.Buttons.Add(new PggmToolbarToggleButtonState { Label = "Archived" });
+            filterToggle.OnToggle = async (id, selected) => await HandleFilterToggle(id, selected);
+            advancedToolbarState.AddToggleGroup(filterToggle);
+        }
+
+        private async Task HandleExport(string format)
+        {
+            Console.WriteLine($"Export to {format} selected");
+            await Task.CompletedTask;
+        }
+
+        private async Task HandleShowDeleted(bool show)
+        {
+            Console.WriteLine($"Show deleted: {show}");
+            await Task.CompletedTask;
+        }
+
+        private async Task HandleViewToggle(string id, bool selected)
+        {
+            Console.WriteLine($"View toggle: {id} = {selected}");
+            await Task.CompletedTask;
+        }
+
+        private async Task HandleFilterToggle(string id, bool selected)
+        {
+            Console.WriteLine($"Filter toggle: {id} = {selected}");
+            await Task.CompletedTask;
         }
         """;
 }

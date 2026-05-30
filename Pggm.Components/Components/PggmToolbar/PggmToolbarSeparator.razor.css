@@ -1,0 +1,6 @@
+.pggm-toolbar-separator {
+    width: 1px;
+    background-color: var(--pggm-color-neutral-300, #d1d5db);
+    align-self: stretch;
+    margin: 0.25rem 0.5rem;
+}

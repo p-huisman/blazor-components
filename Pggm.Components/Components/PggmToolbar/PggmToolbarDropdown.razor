@@ -1,0 +1,38 @@
+@namespace Pggm.Components
+@using Pggm.Components.Components.PggmToolbar
+@using Pggm.Components.Constants
+
+@if (Dropdown?.Visible == true)
+{
+    <pggm-dropdown distance="4" align="start">
+        <button is="pggm-button"
+                type="button"
+                appearance="secondary"
+                size="medium"
+                disabled="@Dropdown.Disabled"
+                slot="trigger"
+                @attributes="IconOnlyAttributes">
+            @if (!string.IsNullOrEmpty(Dropdown.Icon))
+            {
+                <PggmIcon Size="@ComponentValues.IconSize.Small">
+                    <svg slot="svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                         class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-down">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M6 9l6 6l6 -6" />
+                    </svg>
+                </PggmIcon>
+            }
+            <span class="pggm-toolbar-button__label@(IsIconOnly ? " pggm-toolbar-button__label--hidden" : "")">@Dropdown.Label</span>
+        </button>
+        @foreach (var item in Dropdown.Items)
+        {
+            if (item.Visible)
+            {
+                <pggm-dropdown-item value="@item.Value" disabled="@item.Disabled" checked="@item.Checked" @onclick="() => HandleItemClick(item)">
+                    @item.Label
+                </pggm-dropdown-item>
+            }
+        }
+    </pggm-dropdown>
+}

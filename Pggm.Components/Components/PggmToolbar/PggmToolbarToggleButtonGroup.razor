@@ -1,0 +1,35 @@
+@namespace Pggm.Components
+@using Pggm.Components.Components.PggmToolbar
+@using Pggm.Components.Constants
+
+@if (Group?.Visible == true)
+{
+    <div class="pggm-toolbar-toggle-group" role="group" aria-label="@Group.Label">
+        @foreach (var btn in Group.Buttons)
+        {
+            if (btn.Visible)
+            {
+                <button is="pggm-button"
+                        type="button"
+                        appearance="@(btn.Selected ? "primary" : "secondary")"
+                        size="medium"
+                        disabled="@btn.Disabled"
+                        class="@(btn.Selected ? "pggm-toolbar-toggle-button--selected" : "")"
+                        @onclick="() => HandleToggle(btn)">
+                    @if (!string.IsNullOrEmpty(btn.Icon))
+                    {
+                        <PggmIcon Size="@ComponentValues.IconSize.Small">
+                            <svg slot="svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                 stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                                 class="icon icon-tabler icons-tabler-outline icon-tabler-check">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M5 12l5 5l10 -10" />
+                            </svg>
+                        </PggmIcon>
+                    }
+                    <span class="pggm-toolbar-button__label@(btn.IconOnly ? " pggm-toolbar-button__label--hidden" : "")">@btn.Label</span>
+                </button>
+            }
+        }
+    </div>
+}

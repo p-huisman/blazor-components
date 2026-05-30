@@ -1,0 +1,13 @@
+@namespace Pggm.Components
+@using Pggm.Components.Components.PggmToolbar
+
+@if (State?.Visible == true)
+{
+    <label class="pggm-toolbar-checkbox">
+        <PggmCheckbox Checked="State.Checked"
+                    Disabled="State.Disabled"
+                    CheckedChanged="HandleCheckedChanged"
+                    bind-Value="@State.Id" />
+        <span class="pggm-toolbar-checkbox__label">@State.Label</span>
+    </label>
+}
