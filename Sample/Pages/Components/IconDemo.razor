@@ -169,7 +169,7 @@
     </div>
 </DemoSection>
 
-<DemoSection Title="Interactive Example" Code="@interactiveSource">
+<DemoSection Title="Interactive Example" Code="@interactiveSource" CodeBehind="@interactiveBehind">
     <p>Try different combinations of icons, sizes, and styles:</p>
     
     <div class="interactive-demo">
@@ -232,6 +232,13 @@
     private string selectedIcon = ComponentValues.IconName.User;
     private string selectedSize = ComponentValues.IconSize.Medium;
     private bool isOutlined = false;
+
+    private string interactiveBehind =
+        "@code {\n" +
+        "    private string selectedIcon = ComponentValues.IconName.User;\n" +
+        "    private string selectedSize = ComponentValues.IconSize.Medium;\n" +
+        "    private bool isOutlined = false;\n" +
+        "}";
     
     // API table for docs
     private IEnumerable<ApiMember> _properties = new[]

@@ -14,7 +14,7 @@
     <Description>
         <p>A vertical scroller with a fixed height. Content that overflows is accessible via scroll.</p>
     </Description>
-    <ChildContent>
+    <Content>
         <PggmScroller Orientation="Orientation.Vertical" style="height: 150px;">
             @for (int i = 1; i <= 12; i++)
             {
@@ -22,14 +22,14 @@
                 <div style="padding: 8px 12px; border-bottom: 1px solid var(--color-border, #eee);">Item @index</div>
             }
         </PggmScroller>
-    </ChildContent>
+    </Content>
 </DemoSection>
 
 <DemoSection Title="Horizontal Scroller" Code="@horizontalSource">
     <Description>
         <p>A horizontal scroller. Set <code>Orientation="Orientation.Horizontal"</code> to enable left/right scrolling.</p>
     </Description>
-    <ChildContent>
+    <Content>
         <PggmScroller Orientation="Orientation.Horizontal">
             <div style="display: flex; gap: 12px; padding: 8px;">
                 @for (int i = 1; i <= 12; i++)
@@ -41,14 +41,14 @@
                 }
             </div>
         </PggmScroller>
-    </ChildContent>
+    </Content>
 </DemoSection>
 
 <DemoSection Title="Without Scrollbar" Code="@withoutScrollbarSource">
     <Description>
         <p>Add <code>WithoutScrollbar="true"</code> to hide the scrollbar while still allowing scroll interaction.</p>
     </Description>
-    <ChildContent>
+    <Content>
         <PggmScroller WithoutScrollbar="true" style="height: 150px;">
             @for (int i = 1; i <= 12; i++)
             {
@@ -56,14 +56,14 @@
                 <div style="padding: 8px 12px; border-bottom: 1px solid var(--color-border, #eee);">Item @index</div>
             }
         </PggmScroller>
-    </ChildContent>
+    </Content>
 </DemoSection>
 
 <DemoSection Title="Without Shadow" Code="@withoutShadowSource">
     <Description>
         <p>Add <code>WithoutShadow="true"</code> to remove the overflow shadow indicators at the edges of the scroller.</p>
     </Description>
-    <ChildContent>
+    <Content>
         <PggmScroller WithoutShadow="true" style="height: 150px;">
             @for (int i = 1; i <= 12; i++)
             {
@@ -71,14 +71,14 @@
                 <div style="padding: 8px 12px; border-bottom: 1px solid var(--color-border, #eee);">Item @index</div>
             }
         </PggmScroller>
-    </ChildContent>
+    </Content>
 </DemoSection>
 
 <DemoSection Title="Without Scrollbar and Shadow" Code="@withoutBothSource">
     <Description>
         <p>Combine both flags to produce a clean scrollable area with no visual scroll indicators.</p>
     </Description>
-    <ChildContent>
+    <Content>
         <PggmScroller WithoutScrollbar="true" WithoutShadow="true" style="height: 150px;">
             @for (int i = 1; i <= 12; i++)
             {
@@ -86,7 +86,7 @@
                 <div style="padding: 8px 12px; border-bottom: 1px solid var(--color-border, #eee);">Item @index</div>
             }
         </PggmScroller>
-    </ChildContent>
+    </Content>
 </DemoSection>
 
 @code {

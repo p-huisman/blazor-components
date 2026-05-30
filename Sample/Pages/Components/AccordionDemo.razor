@@ -66,7 +66,7 @@
     </Content>
 </DemoSection>
 
-<DemoSection Title="Interactive Accordion Demo" Code="@interactiveAccordionSource">
+<DemoSection Title="Interactive Accordion Demo" Code="@interactiveAccordionSource" CodeBehind="@interactiveAccordionBehind">
     <Description>
         <p>
             <label>
@@ -125,7 +125,7 @@
     </Content>
 </DemoSection>
 
-<DemoSection Title="Event Handling Demo" Code="@eventHandlingSource">
+<DemoSection Title="Event Handling Demo" Code="@eventHandlingSource" CodeBehind="@eventHandlingBehind">
     <Description>
         <p>This accordion item demonstrates the OnAccordionItemToggle event:</p>
         <p><strong>Toggle Count:</strong> @toggleCount</p>
@@ -141,7 +141,7 @@
     </Content>
 </DemoSection>
 
-<DemoSection Title="Interactive Demo" Code="@interactiveItemSource">
+<DemoSection Title="Interactive Demo" Code="@interactiveItemSource" CodeBehind="@interactiveItemBehind">
     <Description>
         <p>
             <label>
@@ -217,7 +217,6 @@
 
 
 
-    // Include backing field for @bind in displayed snippet
     private string interactiveAccordionSource = @"<label>
     <input type=""checkbox"" @bind=""allowMultiple"" />
     Allow Multiple Open
@@ -228,9 +227,9 @@
         <PggmAccordionItemTitle>Dynamic Section 1</PggmAccordionItemTitle>
         <p>Allow Multiple is currently: @allowMultiple</p>
     </PggmAccordionItem>
-</PggmAccordion>
+</PggmAccordion>";
 
-@code {
+    private string interactiveAccordionBehind = @"@code {
     private bool allowMultiple = false;
 }";
 
@@ -254,9 +253,20 @@
     <p>Click the title to toggle this accordion item and trigger the event.</p>
 </PggmAccordionItem>";
 
+    private string eventHandlingBehind = @"@code {
+    private int toggleCount = 0;
+    private string lastToggleTime = ""Never"";
+
+    private void HandleAccordionToggle(EventArgs args)
+    {
+        toggleCount++;
+        lastToggleTime = DateTime.Now.ToString(""HH:mm:ss"");
+        StateHasChanged();
+    }
+}";
 
 
-    // Include backing fields for @bind in displayed snippet
+
     private string interactiveItemSource = @"<label>
     <input type=""checkbox"" @bind=""isOpen"" />
     Open
@@ -269,9 +279,9 @@
 <PggmAccordionItem Open=""isOpen"" Disabled=""isDisabled"">
     <PggmAccordionItemTitle>Interactive Accordion Item</PggmAccordionItemTitle>
     <p>Use the checkboxes above to control this accordion item's state.</p>
-</PggmAccordionItem>
+</PggmAccordionItem>";
 
-@code {
+    private string interactiveItemBehind = @"@code {
     private bool isOpen = false;
     private bool isDisabled = false;
 }";

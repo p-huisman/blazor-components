@@ -72,3 +72,7 @@ h1[is^="pggm-heading"]:focus {
 .loading-progress-text:after {
   content: var(--blazor-load-percentage-text, "Loading");
 }
+
+h1[tabindex="0"] {
+  outline: none;
+}

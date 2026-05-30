@@ -133,7 +133,7 @@
                 </Content>
             </DemoSection>
 
-            <DemoSection Title="Card Grid" Code="@cardGridSource">
+            <DemoSection Title="Card Grid" Code="@cardGridSource" CodeBehind="@cardGridBehind">
                 <Description>
                     <p>Cards work well inside a grid or stack layout:</p>
                 </Description>
@@ -247,6 +247,15 @@
         "    <FooterContent><PggmLink Href=\"#\">Read more</PggmLink></FooterContent>",
         "  </PggmCard>",
         "</div>");
+
+    private string cardGridBehind = @"@code {
+    private readonly IEnumerable<(string Title, string Description)> _sampleItems =
+    [
+        (""Pension Planning"", ""Understand your retirement options and projected pension benefits.""),
+        (""Investment Overview"", ""Review your current investment portfolio and allocation.""),
+        (""Documents"", ""Access your annual statements and policy documents."")
+    ];
+}";
 
     // ── API table ────────────────────────────────────────────────────────────
 

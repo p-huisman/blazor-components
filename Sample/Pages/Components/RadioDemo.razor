@@ -9,7 +9,7 @@
 
 <p>This page demonstrates the PGGM Radio component with various configurations and usage examples.</p>
 
-<DemoSection Title="Bindable Radio with PggmRadio" Code="@bindExampleSource">
+<DemoSection Title="Bindable Radio with PggmRadio" Code="@bindExampleSource" CodeBehind="@bindExampleBehind">
     <Content>
     <p>Selected Bound: <strong>@selectedBound</strong></p>
     
@@ -21,7 +21,7 @@
     </Content>
 </DemoSection>
 
-<DemoSection Title="EditForm Example" Code="@editFormSource">
+<DemoSection Title="EditForm Example" Code="@editFormSource" CodeBehind="@editFormBehind">
     <Content>
  
     <EditForm Model="formModel" OnValidSubmit="HandleValidSubmit">
@@ -50,7 +50,7 @@
 </DemoSection>
 
 
-<DemoSection Title="Basic Radio Button Group" Code="@basicRadioSource">
+<DemoSection Title="Basic Radio Button Group" Code="@basicRadioSource" CodeBehind="@basicRadioBehind">
     <Content>
     <p>Selected Option: <strong>@selectedOption1</strong></p>
     
@@ -70,7 +70,7 @@
     </Content>
 </DemoSection>
 
-<DemoSection Title="Radio Buttons with Descriptions" Code="@planRadioSource">
+<DemoSection Title="Radio Buttons with Descriptions" Code="@planRadioSource" CodeBehind="@planRadioBehind">
     <Content>
     <p>Selected Plan: <strong>@selectedPlan</strong></p>
     
@@ -82,7 +82,7 @@
     </Content>
 </DemoSection>
 
-<DemoSection Title="Disabled Radio Buttons" Code="@disabledRadioSource">
+<DemoSection Title="Disabled Radio Buttons" Code="@disabledRadioSource" CodeBehind="@disabledRadioBehind">
     <Content>
     <p>Selected Theme: <strong>@selectedTheme</strong></p>
     
@@ -94,7 +94,7 @@
     </Content>
 </DemoSection>
 
-<DemoSection Title="Required Radio Button Group" Code="@requiredRadioSource">
+<DemoSection Title="Required Radio Button Group" Code="@requiredRadioSource" CodeBehind="@requiredRadioBehind">
     <Content>
     <p>Selected Priority: <strong>@selectedPriority</strong></p>
     
@@ -170,21 +170,51 @@
         "        </PggmStack>",
         "    </PggmFieldset>",
         "    <PggmButton Appearance=\"@ButtonAppearance.Primary\" Type=\"@ButtonType.Submit\">Submit</PggmButton>",
-        "</EditForm>",
-        ((char)64) + "code {",
-        "    private FormModel formModel = new FormModel();",
-        "    private void HandleValidSubmit() { /* submit */ }",
-        " }");
+        "</EditForm>");
 
     private string bindExampleSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
         "<PggmStack Orientation=\"Pggm.Components.Orientation.Horizontal\" HorizontalGap=\"16\">",
         "    <PggmRadio RadioValue=\"apple\" @bind-Value=\"selectedBound\">Apple</PggmRadio>",
         "    <PggmRadio RadioValue=\"banana\" @bind-Value=\"selectedBound\">Banana</PggmRadio>",
         "    <PggmRadio RadioValue=\"cherry\" @bind-Value=\"selectedBound\">Cherry</PggmRadio>",
-        "</PggmStack>",
-        ((char)64) + "code {",
-        "    private string? selectedBound = \"banana\";",
-        " }");
+        "</PggmStack>");
+
+    private string bindExampleBehind =
+        "@code {\n" +
+        "    private string? selectedBound = \"banana\";\n" +
+        "}";
+
+    private string editFormBehind =
+        "@code {\n" +
+        "    private FormModel formModel = new FormModel();\n" +
+        "    private void HandleValidSubmit() { /* submit */ }\n" +
+        "\n" +
+        "    private class FormModel\n" +
+        "    {\n" +
+        "        [Required]\n" +
+        "        public string? Fruit { get; set; }\n" +
+        "    }\n" +
+        "}";
+
+    private string basicRadioBehind =
+        "@code {\n" +
+        "    private string? selectedOption1 = \"option-a\";\n" +
+        "}";
+
+    private string planRadioBehind =
+        "@code {\n" +
+        "    private string? selectedPlan = \"basic\";\n" +
+        "}";
+
+    private string disabledRadioBehind =
+        "@code {\n" +
+        "    private string? selectedTheme = \"light\";\n" +
+        "}";
+
+    private string requiredRadioBehind =
+        "@code {\n" +
+        "    private string? selectedPriority;\n" +
+        "}";
 
     private IEnumerable<ApiMember> _properties = new[]
     {

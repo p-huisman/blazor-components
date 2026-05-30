@@ -10,7 +10,7 @@
 
 <p>This page demonstrates the PGGM Dropdown web component via the Blazor wrapper `PggmDropdown` and `PggmDropdownItem`.</p>
 
-<DemoSection Title="Basic Dropdown" Code="@_basicSource">
+<DemoSection Title="Basic Dropdown" Code="@_basicSource" CodeBehind="@_basicBehind">
     <Description>
         <p>A simple dropdown with iconed items and a submenu. Selection is reported below.</p>
     </Description>
@@ -101,6 +101,20 @@
 
     private Task HandleOpen() => Task.CompletedTask;
     private Task HandleClose() => Task.CompletedTask;
+
+    private string _basicBehind =
+        "@code {\n" +
+        "    private string? Selected;\n" +
+        "\n" +
+        "    private Task HandleSelect(object? detail)\n" +
+        "    {\n" +
+        "        Selected = detail?.ToString();\n" +
+        "        return Task.CompletedTask;\n" +
+        "    }\n" +
+        "\n" +
+        "    private Task HandleOpen() => Task.CompletedTask;\n" +
+        "    private Task HandleClose() => Task.CompletedTask;\n" +
+        "}";
 
     private IEnumerable<ApiMember> _properties = Array.Empty<ApiMember>();
     private IEnumerable<ApiMember> _events = Array.Empty<ApiMember>();

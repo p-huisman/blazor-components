@@ -12,7 +12,7 @@
 
 <p>This page demonstrates the PGGM Button component with various configurations and interactions.</p>
 
-<DemoSection Title="Basic PGGM Button Variants" Code="@basicButtonSource">
+<DemoSection Title="Basic PGGM Button Variants" Code="@basicButtonSource" CodeBehind="@basicButtonBehind">
     <Description>
         <p>The PGGM design system includes several button appearances to suit different use cases. Below are examples of the primary, secondary, tertiary, and sign-in button styles.</p>
         <p>Different PGGM Button appearances available in the PGGM design system:</p>
@@ -35,7 +35,7 @@
     </Content>
 </DemoSection>
 
-<DemoSection Title="PggmButton States" Code="@statesSource">
+<DemoSection Title="PggmButton States" Code="@statesSource" CodeBehind="@statesBehind">
     <Description>
         <p>PggmButtons in different states:</p>
     </Description>
@@ -55,7 +55,7 @@
     </Content>
 </DemoSection>
 
-<DemoSection Title="PggmButton Types" Code="@typesSource">
+<DemoSection Title="PggmButton Types" Code="@typesSource" CodeBehind="@typesBehind">
     <Description>
         <p>Different PggmButton types for forms:</p>
     </Description>
@@ -77,7 +77,7 @@
     </Content>
 </DemoSection>
 
-<DemoSection Title="Interactive Examples" Code="@interactiveSource">
+<DemoSection Title="Interactive Examples" Code="@interactiveSource" CodeBehind="@interactiveBehind">
     <Description>
         <p>PggmButtons with various interactive behaviors:</p>
     </Description>
@@ -233,6 +233,104 @@
         "    <PggmButton Appearance='@ButtonAppearance.Primary' OnClick='ToggleState'>Toggle</PggmButton>\n" +
         "  </div>\n" +
         "</div>";
+
+    private string basicButtonBehind =
+        "@code {\n" +
+        "    private string lastClickedPggmButton = string.Empty;\n" +
+        "    private DateTime lastClickTime;\n" +
+        "\n" +
+        "    private void HandlePggmButtonClick(string PggmButtonName)\n" +
+        "    {\n" +
+        "        lastClickedPggmButton = PggmButtonName;\n" +
+        "        lastClickTime = DateTime.Now;\n" +
+        "        StateHasChanged();\n" +
+        "    }\n" +
+        "}";
+
+    private string statesBehind =
+        "@code {\n" +
+        "    private string lastClickedPggmButton = string.Empty;\n" +
+        "    private DateTime lastClickTime;\n" +
+        "\n" +
+        "    private void HandlePggmButtonClick(string PggmButtonName)\n" +
+        "    {\n" +
+        "        lastClickedPggmButton = PggmButtonName;\n" +
+        "        lastClickTime = DateTime.Now;\n" +
+        "        StateHasChanged();\n" +
+        "    }\n" +
+        "}";
+
+    private string typesBehind =
+        "@code {\n" +
+        "    private string lastClickedPggmButton = string.Empty;\n" +
+        "    private DateTime lastClickTime;\n" +
+        "\n" +
+        "    private void HandlePggmButtonClick(string PggmButtonName)\n" +
+        "    {\n" +
+        "        lastClickedPggmButton = PggmButtonName;\n" +
+        "        lastClickTime = DateTime.Now;\n" +
+        "        StateHasChanged();\n" +
+        "    }\n" +
+        "}";
+
+    private string interactiveBehind =
+        "@code {\n" +
+        "    private string lastClickedPggmButton = string.Empty;\n" +
+        "    private DateTime lastClickTime;\n" +
+        "    private int counter = 0;\n" +
+        "    private bool isToggled = false;\n" +
+        "    private bool isLoading = false;\n" +
+        "    private string? asyncMessage = null;\n" +
+        "\n" +
+        "    private void HandlePggmButtonClick(string PggmButtonName)\n" +
+        "    {\n" +
+        "        lastClickedPggmButton = PggmButtonName;\n" +
+        "        lastClickTime = DateTime.Now;\n" +
+        "        StateHasChanged();\n" +
+        "    }\n" +
+        "\n" +
+        "    private void IncrementCounter()\n" +
+        "    {\n" +
+        "        counter++;\n" +
+        "        HandlePggmButtonClick($\"Increment (Counter: {counter})\");\n" +
+        "    }\n" +
+        "\n" +
+        "    private void DecrementCounter()\n" +
+        "    {\n" +
+        "        counter--;\n" +
+        "        HandlePggmButtonClick($\"Decrement (Counter: {counter})\");\n" +
+        "    }\n" +
+        "\n" +
+        "    private void ResetCounter()\n" +
+        "    {\n" +
+        "        counter = 0;\n" +
+        "        HandlePggmButtonClick(\"Reset Counter\");\n" +
+        "    }\n" +
+        "\n" +
+        "    private void ToggleState()\n" +
+        "    {\n" +
+        "        isToggled = !isToggled;\n" +
+        "        HandlePggmButtonClick($\"Toggle ({(isToggled ? \"ON\" : \"OFF\")})\");\n" +
+        "    }\n" +
+        "\n" +
+        "    private async Task SimulateAsyncOperation()\n" +
+        "    {\n" +
+        "        isLoading = true;\n" +
+        "        asyncMessage = \"Operation started...\";\n" +
+        "        StateHasChanged();\n" +
+        "\n" +
+        "        await Task.Delay(2000);\n" +
+        "\n" +
+        "        isLoading = false;\n" +
+        "        asyncMessage = \"Operation completed successfully!\";\n" +
+        "        HandlePggmButtonClick(\"Async Operation\");\n" +
+        "        StateHasChanged();\n" +
+        "\n" +
+        "        await Task.Delay(3000);\n" +
+        "        asyncMessage = null;\n" +
+        "        StateHasChanged();\n" +
+        "    }\n" +
+        "}";
 
         private IEnumerable<ApiMember> buttonProperties = new[]
     {

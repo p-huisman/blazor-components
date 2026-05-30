@@ -16,7 +16,7 @@
         <p>A simple dialog with content:</p>
     </Description>
 
-    <ChildContent>
+    <Content>
         <div class="demo-controls">
             <PggmButton Appearance="@ButtonAppearance.Primary" @onclick="OpenBasicDialog">
                 Open Basic Dialog
@@ -29,7 +29,7 @@
         </PggmDialog>
 
         <p><strong>Dialog State:</strong> @(isBasicDialogOpen ? "Open" : "Closed")</p>
-    </ChildContent>
+    </Content>
 </DemoSection>
 
 <DemoSection Title="Modal Dialog" Code="@modalDialogSource" CodeBehind="@modalDialogBehind">
@@ -37,7 +37,7 @@
         <p>A modal dialog that blocks interaction with the background:</p>
     </Description>
 
-    <ChildContent>
+    <Content>
         <div class="demo-controls">
             <PggmButton Appearance="@ButtonAppearance.Primary" @onclick="OpenModalDialog">
                 Open Modal Dialog
@@ -53,7 +53,7 @@
         </PggmDialog>
 
         <p><strong>Modal State:</strong> @(isModalDialogOpen ? "Open" : "Closed")</p>
-    </ChildContent>
+    </Content>
 </DemoSection>
 
 <DemoSection Title="Dialog with Custom Header Template" Code="@templateDialogSource" CodeBehind="@templateDialogBehind">
@@ -61,7 +61,7 @@
         <p>Dialog with a custom header using RenderFragment:</p>
     </Description>
 
-    <ChildContent>
+    <Content>
         <div class="demo-controls">
             <PggmButton Appearance="@ButtonAppearance.Primary" @onclick="OpenTemplateDialog">
                 Open Dialog with Template Header
@@ -83,7 +83,7 @@
         </PggmDialog>
 
         <p><strong>Template Dialog State:</strong> @(isTemplateDialogOpen ? "Open" : "Closed")</p>
-    </ChildContent>
+    </Content>
 </DemoSection>
 
 <DemoSection Title="Dialog with Action Buttons" Code="@actionDialogSource" CodeBehind="@actionDialogBehind">
@@ -91,7 +91,7 @@
         <p>Dialog with custom action buttons in the footer:</p>
     </Description>
 
-    <ChildContent>
+    <Content>
         <div class="demo-controls">
             <PggmButton Appearance="@ButtonAppearance.Primary" @onclick="OpenActionDialog">
                 Open Dialog with Actions
@@ -111,7 +111,7 @@
         {
             <p><strong>Last Action:</strong> @actionResult</p>
         }
-    </ChildContent>
+    </Content>
 </DemoSection>
 
 <DemoSection Title="Form Dialog" Code="@formDialogSource" CodeBehind="@formDialogBehind">
@@ -119,7 +119,7 @@
         <p>Dialog containing a form for user input:</p>
     </Description>
 
-    <ChildContent>
+    <Content>
         <div class="demo-controls">
             <PggmButton Appearance="@ButtonAppearance.Primary" @onclick="OpenFormDialog">
                 Open Form Dialog
@@ -177,7 +177,7 @@
         {
             <p><strong>Form Result:</strong> @formResult</p>
         }
-    </ChildContent>
+    </Content>
 </DemoSection>
 
 <DemoSection Title="Programmatic Control" Code="@programmaticSource" CodeBehind="@programmaticBehind">
@@ -185,7 +185,7 @@
         <p>Control dialogs programmatically using component methods:</p>
     </Description>
 
-    <ChildContent>
+    <Content>
         <div class="demo-controls">
             <PggmButton Appearance="@ButtonAppearance.Primary" @onclick="OpenProgrammatically">
                 Open Programmatically
@@ -215,7 +215,7 @@
                 </ul>
             </div>
         }
-    </ChildContent>
+    </Content>
 </DemoSection>
 
 <DemoSection Title="Service-based Dialog" Code="@serviceDialogSource" CodeBehind="@serviceDialogCodeBehind">
@@ -223,7 +223,7 @@
         <p>Open a dialog via the injected `IDialogService` — dialog is rendered by the global `DialogProvider`.</p>
         <p>Do not forget to add the global DialogProvider to your layout </p>
     </Description>
-    <ChildContent>
+    <Content>
         <div class="demo-controls">
             <PggmButton Appearance="@ButtonAppearance.Primary" @onclick="OpenServiceDialog">Open Service Dialog</PggmButton>
         </div>
@@ -232,14 +232,14 @@
         {
             <p><strong>Service Result:</strong> @serviceResult</p>
         }
-    </ChildContent>
+    </Content>
 </DemoSection>
 
 <DemoSection Title="Modal Service Dialog" Code="@modalDialogServiceSource" CodeBehind="@modalDialogServiceCodeBehind">
     <Description>
         <p>Open a <em>modal</em> dialog via the `IDialogService`. The dialog provider will render a modal dialog when `DialogParameters` includes `Modal = true`.</p>
     </Description>
-    <ChildContent>
+    <Content>
         <div class="demo-controls">
             <PggmButton Appearance="@ButtonAppearance.Primary" @onclick="OpenModalServiceDialog">Open Modal Service Dialog</PggmButton>
         </div>
@@ -248,7 +248,7 @@
         {
             <p><strong>Modal Service Result:</strong> @modalDialogServiceResult</p>
         }
-    </ChildContent>
+    </Content>
 </DemoSection>
 
 <PggmHeading Level="2">API</PggmHeading>

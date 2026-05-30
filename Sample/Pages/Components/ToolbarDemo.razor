@@ -1,0 +1,103 @@
+@page "/pggm-toolbar"
+@namespace Pggm.Components.Sample.Pages.Components
+@using Pggm.Components.Components.PggmToolbar
+
+<PageTitle>PggmToolbar Demo</PageTitle>
+
+<PggmHeading Level="1">PggmToolbar</PggmHeading>
+
+<p>Demonstration of the PggmToolbar component functionality.</p>
+
+<DemoSection Title="Basic Toolbar" Code="@basicSource" CodeBehind="@basicBehind">
+    <Content>
+        <PggmToolbar State="toolbarState" />
+    </Content>
+</DemoSection>
+
+@code {
+    private PggmToolbarState toolbarState = new();
+
+    protected override void OnInitialized()
+    {
+        toolbarState.AddButton(new PggmToolbarButtonState
+        {
+            Label = "Add",
+            Icon = "circle-plus",
+            OnClick = async () => await HandleAdd()
+        });
+
+        toolbarState.AddButton(new PggmToolbarButtonState
+        {
+            Label = "Edit",
+            Icon = "edit",
+            OnClick = async () => await HandleEdit()
+        });
+
+        toolbarState.AddButton(new PggmToolbarButtonState
+        {
+            Label = "Delete",
+            Icon = "trash",
+            Disabled = true
+        });
+
+        toolbarState.AddButton(new PggmToolbarButtonState
+        {
+            Label = "Filter",
+            Icon = "filter",
+            OnClick = async () => await HandleFilter()
+        });
+    }
+
+    private async Task HandleAdd()
+    {
+        Console.WriteLine("Add clicked");
+        await Task.CompletedTask;
+    }
+
+    private async Task HandleEdit()
+    {
+        Console.WriteLine("Edit clicked");
+        await Task.CompletedTask;
+    }
+
+    private async Task HandleFilter()
+    {
+        Console.WriteLine("Filter clicked");
+        await Task.CompletedTask;
+    }
+
+    private string basicSource = """
+        <PggmToolbar State="toolbarState" />
+        """;
+
+    private string basicBehind = """
+        private PggmToolbarState toolbarState = new();
+
+        protected override void OnInitialized()
+        {
+            toolbarState.AddButton(new PggmToolbarButtonState
+            {
+                Label = "Add",
+                Icon = "circle-plus",
+                OnClick = async () => await HandleAdd()
+            });
+
+            toolbarState.AddButton(new PggmToolbarButtonState
+            {
+                Label = "Edit",
+                Icon = "edit",
+                OnClick = async () => await HandleEdit()
+            });
+        }
+
+        private async Task HandleAdd()
+        {
+            // Handle add action
+        }
+
+        private async Task HandleEdit()
+        {
+            // Handle edit action
+        }
+        """;
+}

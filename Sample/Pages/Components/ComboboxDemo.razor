@@ -14,7 +14,7 @@
 </p>
 
 <!-- ── 1. Basic single-select ──────────────────────────────────────────────── -->
-<DemoSection Title="Basic Single-Select" Code="@_basicSource">
+<DemoSection Title="Basic Single-Select" Code="@_basicSource" CodeBehind="@_basicBehind">
     <Description>
         <p>Single-select combobox with <code>@@bind-Value</code> two-way binding. The selected value is displayed below the component.</p>
     </Description>
@@ -56,7 +56,7 @@
 </DemoSection>
 
 <!-- ── 3. Clear button ───────────────────────────────────────────────────── -->
-<DemoSection Title="Clear Button" Code="@_withClearSource">
+<DemoSection Title="Clear Button" Code="@_withClearSource" CodeBehind="@_withClearBehind">
     <Description>
         <p>
             Set <code>WithClear="true"</code> to render a clear button inside the combobox.
@@ -90,7 +90,7 @@
 </DemoSection>
 
 <!-- ── 4. Visible items ───────────────────────────────────────────────────── -->
-<DemoSection Title="Visible Items" Code="@_visibleItemsSource">
+<DemoSection Title="Visible Items" Code="@_visibleItemsSource" CodeBehind="@_visibleItemsBehind">
     <Description>
         <p>
             The <code>VisibleItems</code> parameter maps to the <code>visible-items</code> attribute
@@ -115,7 +115,7 @@
 </DemoSection>
 
 <!-- ── 5. Multi-select with string[] binding ──────────────────────────────── -->
-<DemoSection Title="Multi-Select with string[] Binding" Code="@_multiSource">
+<DemoSection Title="Multi-Select with string[] Binding" Code="@_multiSource" CodeBehind="@_multiBehind">
     <Description>
         <p>
             When <code>Multiple="true"</code> the component works with a <code>string[]</code> value.
@@ -141,7 +141,7 @@
 </DemoSection>
 
 <!-- ── 4. Event handling ───────────────────────────────────────────────────── -->
-<DemoSection Title="Event Handling" Code="@_eventsSource">
+<DemoSection Title="Event Handling" Code="@_eventsSource" CodeBehind="@_eventsBehind">
     <Description>
         <p>The combobox exposes <code>OnChange</code>, <code>OnFocus</code>, <code>OnBlur</code>, <code>OnOpen</code> and <code>OnClose</code> callbacks.</p>
     </Description>
@@ -166,7 +166,7 @@
 </DemoSection>
 
 <!-- ── 5. EditForm — required / data annotations ──────────────────────────── -->
-<DemoSection Title="EditForm — Required Validation" Code="@_editFormSource">
+<DemoSection Title="EditForm — Required Validation" Code="@_editFormSource" CodeBehind="@_editFormBehind">
     <Description>
         <p>
             <code>PggmCombobox</code> inherits from <code>InputBase&lt;string&gt;</code> and participates
@@ -218,7 +218,7 @@
 </DemoSection>
 
 <!-- ── 6. EditForm — multi-select Min/Max validation ──────────────────────── -->
-<DemoSection Title="EditForm — Multi-Select Min/Max Validation" Code="@_minMaxSource">
+<DemoSection Title="EditForm — Multi-Select Min/Max Validation" Code="@_minMaxSource" CodeBehind="@_minMaxBehind">
     <Description>
         <p>
             In multi-select mode the <code>Min</code> and <code>Max</code> parameters are enforced on blur
@@ -266,7 +266,7 @@
 </DemoSection>
 
 <!-- ── 7. PggmComboboxItem variations ─────────────────────────────────────── -->
-<DemoSection Title="PggmComboboxItem — Disabled & Pre-Selected" Code="@_itemsSource">
+<DemoSection Title="PggmComboboxItem — Disabled & Pre-Selected" Code="@_itemsSource" CodeBehind="@_itemsBehind">
     <Description>
         <p>
             <code>PggmComboboxItem</code> supports <code>Value</code>, <code>Disabled</code>
@@ -284,7 +284,7 @@
     </Content>
 </DemoSection>
 <!-- ── 8. Data binding with TOption ──────────────────────────────────────────── -->
-<DemoSection Title="Data Binding with TOption" Code="@_tOptionSource">
+<DemoSection Title="Data Binding with TOption" Code="@_tOptionSource" CodeBehind="@_tOptionBehind">
     <Description>
         <p>
             Pass a typed collection via <code>Items</code> and use <code>OptionValue</code>,
@@ -433,14 +433,7 @@
         "              OnOpen=\"HandleOpen\"\n" +
         "              OnClose=\"HandleClose\">\n" +
         "    <PggmComboboxItem Value=\"hr\">Human Resources</PggmComboboxItem>\n" +
-        "</PggmCombobox>\n\n" +
-        "@code {\n" +
-        "    private void HandleChange(ChangeEventArgs args) { /* ... */ }\n" +
-        "    private void HandleFocus(FocusEventArgs _) { /* ... */ }\n" +
-        "    private void HandleBlur(FocusEventArgs _) { /* ... */ }\n" +
-        "    private void HandleOpen() { /* ... */ }\n" +
-        "    private void HandleClose() { /* ... */ }\n" +
-        "}";
+        "</PggmCombobox>";
 
     private string _editFormSource =
         "<EditForm Model=\"_model\" OnValidSubmit=\"HandleSubmit\">\n" +
@@ -454,11 +447,7 @@
         "        </PggmCombobox>\n" +
         "    </PggmFieldset>\n" +
         "    <PggmButton Type=\"@ButtonType.Submit\">Verzenden</PggmButton>\n" +
-        "</EditForm>\n\n" +
-        "// Model:\n" +
-        "private class Model {\n" +
-        "    [Required] public string? Country { get; set; }\n" +
-        "}";
+        "</EditForm>";
 
     private string _minMaxSource =
         "<PggmCombobox Multiple=\"true\" Min=\"2\" Max=\"4\"\n" +
@@ -468,12 +457,7 @@
         "              @bind-Value=\"_model.SkillsJoined\">\n" +
         "    <PggmComboboxItem Value=\"blazor\">Blazor</PggmComboboxItem>\n" +
         "    ...\n" +
-        "</PggmCombobox>\n\n" +
-        "// Model:\n" +
-        "private class Model {\n" +
-        "    [Required] public string? SkillsJoined { get; set; }\n" +
-        "    public string[]? Skills { get; set; }\n" +
-        "}";
+        "</PggmCombobox>";
 
     private string _withClearSource =
         "<PggmCombobox @bind-Value=\"_value\" WithClear=\"true\" Placeholder=\"Kies een land...\">\n" +
@@ -500,14 +484,120 @@
         "              Value=\"@(_selectedEmployee?.Id.ToString())\"\n" +
         "              @bind-SelectedOption=\"_selectedEmployee\"\n" +
         "              WithClear=\"true\">\n" +
-        "</PggmCombobox>\n\n" +
-        "private record EmployeeOption(int Id, string Name, bool Inactive);";
+        "</PggmCombobox>";
     private string _itemsSource =
         "<PggmCombobox @bind-Value=\"_value\">\n" +
         "    <PggmComboboxItem Value=\"opt1\" Selected=\"true\">Optie 1 (voorgeselecteerd)</PggmComboboxItem>\n" +
         "    <PggmComboboxItem Value=\"opt2\">Optie 2</PggmComboboxItem>\n" +
         "    <PggmComboboxItem Value=\"opt3\" Disabled=\"true\">Optie 3 (uitgeschakeld)</PggmComboboxItem>\n" +
         "</PggmCombobox>";
+
+    private string _basicBehind =
+        "@code {\n" +
+        "    private string? _value;\n" +
+        "}";
+
+    private string _withClearBehind =
+        "@code {\n" +
+        "    private string? _value;\n" +
+        "    private string[]? _values;\n" +
+        "}";
+
+    private string _visibleItemsBehind =
+        "@code {\n" +
+        "    private string? _value;\n" +
+        "}";
+
+    private string _multiBehind =
+        "@code {\n" +
+        "    private string[]? _values;\n" +
+        "}";
+
+    private string _eventsBehind =
+        "@code {\n" +
+        "    private string? _value;\n" +
+        "    private string _lastEvent = \"Geen\";\n" +
+        "\n" +
+        "    private void HandleChange(ChangeEventArgs args) =\u003e\n" +
+        "        _lastEvent = $\"change → \\\"{args.Value}\\\" om {DateTime.Now:HH:mm:ss}\";\n" +
+        "\n" +
+        "    private void HandleFocus(FocusEventArgs _) =\u003e\n" +
+        "        _lastEvent = $\"focus om {DateTime.Now:HH:mm:ss}\";\n" +
+        "\n" +
+        "    private void HandleBlur(FocusEventArgs _) =\u003e\n" +
+        "        _lastEvent = $\"blur om {DateTime.Now:HH:mm:ss}\";\n" +
+        "\n" +
+        "    private void HandleOpen() =\u003e\n" +
+        "        _lastEvent = $\"open om {DateTime.Now:HH:mm:ss}\";\n" +
+        "\n" +
+        "    private void HandleClose() =\u003e\n" +
+        "        _lastEvent = $\"close om {DateTime.Now:HH:mm:ss}\";\n" +
+        "}";
+
+    private string _editFormBehind =
+        "@code {\n" +
+        "    private RequiredFormModel _model = new();\n" +
+        "    private bool _submitted;\n" +
+        "\n" +
+        "    private void HandleSubmit()\n" +
+        "    {\n" +
+        "        _submitted = true;\n" +
+        "    }\n" +
+        "\n" +
+        "    private class RequiredFormModel\n" +
+        "    {\n" +
+        "        [Required(ErrorMessage = \"Land is verplicht.\")]\n" +
+        "        public string? Country { get; set; }\n" +
+        "\n" +
+        "        [Required(ErrorMessage = \"Afdeling is verplicht.\")]\n" +
+        "        public string? Department { get; set; }\n" +
+        "    }\n" +
+        "}";
+
+    private string _minMaxBehind =
+        "@code {\n" +
+        "    private MinMaxFormModel _model = new();\n" +
+        "    private bool _submitted;\n" +
+        "\n" +
+        "    private void HandleSubmit()\n" +
+        "    {\n" +
+        "        _submitted = true;\n" +
+        "    }\n" +
+        "\n" +
+        "    private void HandleSkillsChanged(string[]? values)\n" +
+        "    {\n" +
+        "        _model.Skills = values;\n" +
+        "        _model.SkillsJoined = values is { Length: \u003e 0 } ? string.Join(\",\", values) : null;\n" +
+        "    }\n" +
+        "\n" +
+        "    private class MinMaxFormModel\n" +
+        "    {\n" +
+        "        [Required(ErrorMessage = \"Selecteer minimaal één vaardigheid.\")]\n" +
+        "        public string? SkillsJoined { get; set; }\n" +
+        "\n" +
+        "        public string[]? Skills { get; set; }\n" +
+        "    }\n" +
+        "}";
+
+    private string _itemsBehind =
+        "@code {\n" +
+        "    private string? _value = \"opt1\";\n" +
+        "}";
+
+    private string _tOptionBehind =
+        "@code {\n" +
+        "    private EmployeeOption? _selectedEmployee;\n" +
+        "    private readonly List\u003cEmployeeOption\u003e _employees = new()\n" +
+        "    {\n" +
+        "        new EmployeeOption(1, \"Anna de Vries\", false),\n" +
+        "        new EmployeeOption(2, \"Bas Jansen\", false),\n" +
+        "        new EmployeeOption(3, \"Carla Bakker\", false),\n" +
+        "        new EmployeeOption(4, \"Dirk Smit\", true),\n" +
+        "        new EmployeeOption(5, \"Eva van den Berg\", false),\n" +
+        "    };\n" +
+        "\n" +
+        "    private record EmployeeOption(int Id, string Name, bool Inactive);\n" +
+        "}";
 
     // ── API metadata ───────────────────────────────────────────────────────────
     private IEnumerable<ApiMember> _comboboxProperties = new[]

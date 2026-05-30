@@ -10,7 +10,7 @@
 <p>The Drawer component is a panel that slides in from the edge of the screen. It is useful for navigation, filters,
     or supplementary content that should not block the main content entirely.</p>
 
-<DemoSection Title="Default (end)" Code="@_defaultSource">
+<DemoSection Title="Default (end)" Code="@_defaultSource" CodeBehind="@_defaultBehind">
     <Description>
         <p>A basic drawer that slides in from the end (right in LTR layouts).</p>
     </Description>
@@ -28,7 +28,7 @@
     </Content>
 </DemoSection>
 
-<DemoSection Title="Placement: start" Code="@_startSource">
+<DemoSection Title="Placement: start" Code="@_startSource" CodeBehind="@_startBehind">
     <Description>
         <p>Drawer that slides in from the start (left in LTR layouts).</p>
     </Description>
@@ -43,7 +43,7 @@
     </Content>
 </DemoSection>
 
-<DemoSection Title="Placement: top" Code="@_topSource">
+<DemoSection Title="Placement: top" Code="@_topSource" CodeBehind="@_topBehind">
     <Description>
         <p>Drawer that slides down from the top of the viewport.</p>
     </Description>
@@ -58,7 +58,7 @@
     </Content>
 </DemoSection>
 
-<DemoSection Title="Placement: bottom" Code="@_bottomSource">
+<DemoSection Title="Placement: bottom" Code="@_bottomSource" CodeBehind="@_bottomBehind">
     <Description>
         <p>Drawer that slides up from the bottom of the viewport.</p>
     </Description>
@@ -73,7 +73,7 @@
     </Content>
 </DemoSection>
 
-<DemoSection Title="No Header" Code="@_noHeaderSource">
+<DemoSection Title="No Header" Code="@_noHeaderSource" CodeBehind="@_noHeaderBehind">
     <Description>
         <p>A drawer without a header. Useful when building fully custom layouts inside the panel.</p>
     </Description>
@@ -93,7 +93,7 @@
     </Content>
 </DemoSection>
 
-<DemoSection Title="Custom Size" Code="@_customSizeSource">
+<DemoSection Title="Custom Size" Code="@_customSizeSource" CodeBehind="@_customSizeBehind">
     <Description>
         <p>Use the <code>Size</code> parameter to control the panel width (or height for top/bottom placement)
             via the <code>--size</code> CSS custom property.</p>
@@ -109,7 +109,7 @@
     </Content>
 </DemoSection>
 
-<DemoSection Title="Scrolling Body Content" Code="@_scrollSource">
+<DemoSection Title="Scrolling Body Content" Code="@_scrollSource" CodeBehind="@_scrollBehind">
     <Description>
         <p>When the body content exceeds the drawer height, it scrolls independently while the header and footer
             remain fixed.</p>
@@ -136,7 +136,7 @@
     </Content>
 </DemoSection>
 
-<DemoSection Title="Preventing Overlay Close" Code="@_preventCloseSource">
+<DemoSection Title="Preventing Overlay Close" Code="@_preventCloseSource" CodeBehind="@_preventCloseBehind">
     <Description>
         <p>Handle the <code>OnRequestClose</code> event and set <code>Cancel = true</code> on the event args to
             prevent the drawer from closing when the user clicks the overlay. The close button and Escape key still
@@ -159,7 +159,7 @@
     </Content>
 </DemoSection>
 
-<DemoSection Title="Contained to Parent" Code="@_containedSource">
+<DemoSection Title="Contained to Parent" Code="@_containedSource" CodeBehind="@_containedBehind">
     <Description>
         <p>When <code>Contained</code> is true, the drawer is positioned relative to its nearest positioned
             ancestor instead of the viewport. The parent element must have <code>position: relative</code> and
@@ -179,7 +179,7 @@
     </Content>
 </DemoSection>
 
-<DemoSection Title="Programmatic Control &amp; Event Log" Code="@_programmaticSource">
+<DemoSection Title="Programmatic Control &amp; Event Log" Code="@_programmaticSource" CodeBehind="@_programmaticBehind">
     <Description>
         <p>Control the drawer programmatically via <code>ShowAsync()</code> / <code>HideAsync()</code> methods,
             and observe all lifecycle events.</p>
@@ -318,13 +318,7 @@
     private string _preventCloseSource =
         "<PggmDrawer @bind-Open=\"isOpen\" Label=\"...\" OnRequestClose=\"HandleRequestClose\">\n" +
         "    ...\n" +
-        "</PggmDrawer>\n\n" +
-        "@code {\n" +
-        "    private void HandleRequestClose(DrawerRequestCloseEventArgs args)\n" +
-        "    {\n" +
-        "        if (args.Source == \"overlay\") args.Cancel = true;\n" +
-        "    }\n" +
-        "}";
+        "</PggmDrawer>";
 
     private string _containedSource =
         "<div style=\"position: relative; overflow: hidden; height: 300px;\">\n" +
@@ -336,11 +330,86 @@
     private string _programmaticSource =
         "<PggmDrawer @ref=\"_drawer\" @bind-Open=\"isOpen\" Label=\"...\">\n" +
         "    ...\n" +
-        "</PggmDrawer>\n\n" +
+        "</PggmDrawer>";
+
+    private string _defaultBehind =
         "@code {\n" +
+        "    private bool isOpen;\n" +
+        "}";
+
+    private string _startBehind =
+        "@code {\n" +
+        "    private bool isOpen;\n" +
+        "}";
+
+    private string _topBehind =
+        "@code {\n" +
+        "    private bool isOpen;\n" +
+        "}";
+
+    private string _bottomBehind =
+        "@code {\n" +
+        "    private bool isOpen;\n" +
+        "}";
+
+    private string _noHeaderBehind =
+        "@code {\n" +
+        "    private bool isOpen;\n" +
+        "}";
+
+    private string _customSizeBehind =
+        "@code {\n" +
+        "    private bool isOpen;\n" +
+        "}";
+
+    private string _scrollBehind =
+        "@code {\n" +
+        "    private bool isOpen;\n" +
+        "}";
+
+    private string _preventCloseBehind =
+        "@code {\n" +
+        "    private bool isOpen;\n" +
+        "    private string requestCloseMessage = \"\";\n" +
+        "\n" +
+        "    private void HandleRequestClose(DrawerRequestCloseEventArgs args)\n" +
+        "    {\n" +
+        "        if (args.Source == \"overlay\")\n" +
+        "        {\n" +
+        "            args.Cancel = true;\n" +
+        "            requestCloseMessage = $\"Blocked close from: {args.Source}\";\n" +
+        "        }\n" +
+        "        else\n" +
+        "        {\n" +
+        "            requestCloseMessage = $\"Allowed close from: {args.Source}\";\n" +
+        "        }\n" +
+        "    }\n" +
+        "}";
+
+    private string _containedBehind =
+        "@code {\n" +
+        "    private bool isOpen;\n" +
+        "}";
+
+    private string _programmaticBehind =
+        "@code {\n" +
+        "    private bool isOpen;\n" +
         "    private PggmDrawer? _drawer;\n" +
+        "    private List<string> _events = new();\n" +
+        "\n" +
         "    private async Task Open() => await _drawer!.ShowAsync();\n" +
         "    private async Task Close() => await _drawer!.HideAsync();\n" +
+        "\n" +
+        "    private void LogEvent(string name)\n" +
+        "    {\n" +
+        "        _events.Add($\"{DateTime.Now:HH:mm:ss.fff} — {name}\");\n" +
+        "        StateHasChanged();\n" +
+        "    }\n" +
+        "\n" +
+        "    private void OnShow() => LogEvent(\"show\");\n" +
+        "    private void OnAfterShow() => LogEvent(\"afterShow\");\n" +
+        "    private void OnHide() => LogEvent(\"hide\");\n" +
+        "    private void OnAfterHide() => LogEvent(\"afterHide\");\n" +
         "}";
 
     // API documentation

@@ -7,38 +7,35 @@
 <p>Demonstrates the `PggmStack` layout helper for arranging child content horizontally or vertically.</p>
 
 <DemoSection Title="Vertical stack (default)" Code="@verticalStackSource">
-    <ChildContent>
-    <PggmStack>
-        <div class="pggm-box">Item 1</div>
-        <div class="pggm-box">Item 2</div>
-        <div class="pggm-box">Item 3</div>
-    </PggmStack>
-    </ChildContent>
+    <Content>
+        <PggmStack>
+            <div class="pggm-box">Item 1</div>
+            <div class="pggm-box">Item 2</div>
+            <div class="pggm-box">Item 3</div>
+        </PggmStack>
+    </Content>
 </DemoSection>
 
 <DemoSection Title="Horizontal stack with centered alignment" Code="@horizontalStackSource">
-    <ChildContent>
-    <PggmStack Orientation="Pggm.Components.Orientation.Horizontal" HorizontalAlignment="Pggm.Components.HorizontalAlignment.Center" HorizontalGap="16">
-        <div class="pggm-box">First</div>
-        <div class="pggm-box">Second</div>
-        <div class="pggm-box">Third</div>
-    </PggmStack>
-    </ChildContent>
+    <Content>
+        <PggmStack Orientation="Pggm.Components.Orientation.Horizontal" HorizontalAlignment="Pggm.Components.HorizontalAlignment.Center" HorizontalGap="16">
+            <div class="pggm-box">First</div>
+            <div class="pggm-box">Second</div>
+            <div class="pggm-box">Third</div>
+        </PggmStack>
+    </Content>
 </DemoSection>
 
 <DemoSection Title="Wrapping and reversed" Code="@wrappingStackSource">
-    <ChildContent>
-    <PggmStack Wrap="true" Reversed="true" HorizontalGap="20">
-        @for (int i = 1; i <= 8; i++)
-        {
-            <div class="pggm-box">Item @i</div>
-        }
-    </PggmStack>
-    </ChildContent>
+    <Content>
+        <PggmStack Wrap="true" Reversed="true" HorizontalGap="20">
+            @for (int i = 1; i <= 8; i++)
+            {
+                <div class="pggm-box">Item @i</div>
+            }
+        </PggmStack>
+    </Content>
 </DemoSection>
-
-@code {
-}
 
 @code {
     private string verticalStackSource =
