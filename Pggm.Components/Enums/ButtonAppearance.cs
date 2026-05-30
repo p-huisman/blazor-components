@@ -7,6 +7,7 @@ namespace Pggm.Components.Enums
         Primary,
         Secondary,
         Tertiary,
+        Quaternary,
         [Description("sign-in")]
         SignIn
     }

@@ -12,9 +12,9 @@
 
 <p>This page demonstrates the PGGM Button component with various configurations and interactions.</p>
 
-<DemoSection Title="Basic PGGM Button Variants" Code="@basicButtonSource" CodeBehind="@basicButtonBehind">
+<DemoSection Title="Basic PGGM Button Variants" Code="@basicButtonSource">
     <Description>
-        <p>The PGGM design system includes several button appearances to suit different use cases. Below are examples of the primary, secondary, tertiary, and sign-in button styles.</p>
+        <p>The PGGM design system includes several button appearances to suit different use cases. Below are examples of the primary, secondary, tertiary, quaternary, and sign-in button styles.</p>
         <p>Different PGGM Button appearances available in the PGGM design system:</p>
     </Description>
     <Content>
@@ -28,6 +28,9 @@
             <PggmButton Appearance="@ButtonAppearance.Tertiary" OnClick="@(() => HandlePggmButtonClick("Tertiary"))">
                 Tertiary
             </PggmButton>
+            <PggmButton Appearance="@ButtonAppearance.Quaternary" OnClick="@(() => HandlePggmButtonClick("Quaternary"))">
+                Quaternary
+            </PggmButton>
             <PggmButton Appearance="@ButtonAppearance.SignIn" OnClick="@(() => HandlePggmButtonClick("Sign In"))">
                 <PggmIcon Icon="user" Size="m" />Sign In
             </PggmButton>
@@ -35,7 +38,7 @@
     </Content>
 </DemoSection>
 
-<DemoSection Title="PggmButton States" Code="@statesSource" CodeBehind="@statesBehind">
+<DemoSection Title="PggmButton States" Code="@statesSource">
     <Description>
         <p>PggmButtons in different states:</p>
     </Description>
@@ -55,7 +58,7 @@
     </Content>
 </DemoSection>
 
-<DemoSection Title="PggmButton Types" Code="@typesSource" CodeBehind="@typesBehind">
+<DemoSection Title="PggmButton Types" Code="@typesSource">
     <Description>
         <p>Different PggmButton types for forms:</p>
     </Description>
@@ -77,7 +80,7 @@
     </Content>
 </DemoSection>
 
-<DemoSection Title="Interactive Examples" Code="@interactiveSource" CodeBehind="@interactiveBehind">
+<DemoSection Title="Interactive Examples" Code="@interactiveSource">
     <Description>
         <p>PggmButtons with various interactive behaviors:</p>
     </Description>
@@ -111,7 +114,7 @@
         <div class="async-example">
             <PggmHeading Level="3">Async Operation Example</PggmHeading>
             <p>Simulate async operations with loading states:</p>
-            <PggmButton Appearance="@ButtonAppearance.Primary" Disabled="@isLoading" OnClick="SimulateAsyncOperation">
+            <PggmButton Appearance="@ButtonAppearance.Primary" Disabled="@isLoading" IsLoading="@isLoading" OnClick="SimulateAsyncOperation">
                 @(isLoading ? "Loading..." : "Start Async Operation")
             </PggmButton>
             @if (asyncMessage != null)
@@ -122,6 +125,19 @@
             }
         </div>
     </div>
+    </Content>
+</DemoSection>
+
+<DemoSection Title="PggmButton Sizes" Code="@sizesSource">
+    <Description>
+        <p>Different PggmButton sizes: small, medium, and large.</p>
+    </Description>
+    <Content>
+        <PggmStack Orientation="Orientation.Horizontal" HorizontalGap="16" Wrap="true">
+            <PggmButton Size="@ButtonSize.Small" Appearance="@ButtonAppearance.Primary" OnClick="@(() => HandlePggmButtonClick("Small"))">Small</PggmButton>
+            <PggmButton Size="@ButtonSize.Medium" Appearance="@ButtonAppearance.Primary" OnClick="@(() => HandlePggmButtonClick("Medium"))">Medium</PggmButton>
+            <PggmButton Size="@ButtonSize.Large" Appearance="@ButtonAppearance.Primary" OnClick="@(() => HandlePggmButtonClick("Large"))">Large</PggmButton>
+        </PggmStack>
     </Content>
 </DemoSection>
 
@@ -202,6 +218,7 @@
         "    <PggmButton Appearance='@ButtonAppearance.Primary'>Primary</PggmButton>\n" +
         "    <PggmButton Appearance='@ButtonAppearance.Secondary'>Secondary</PggmButton>\n" +
         "    <PggmButton Appearance='@ButtonAppearance.Tertiary'>Tertiary</PggmButton>\n" +
+        "    <PggmButton Appearance='@ButtonAppearance.Quaternary'>Quaternary</PggmButton>\n" +
         "    <PggmButton Appearance='@ButtonAppearance.SignIn'><PggmIcon Icon='user' Size='m' />Sign In</PggmButton>\n" +
         "</PggmStack>";
 
@@ -234,110 +251,21 @@
         "  </div>\n" +
         "</div>";
 
-    private string basicButtonBehind =
-        "@code {\n" +
-        "    private string lastClickedPggmButton = string.Empty;\n" +
-        "    private DateTime lastClickTime;\n" +
-        "\n" +
-        "    private void HandlePggmButtonClick(string PggmButtonName)\n" +
-        "    {\n" +
-        "        lastClickedPggmButton = PggmButtonName;\n" +
-        "        lastClickTime = DateTime.Now;\n" +
-        "        StateHasChanged();\n" +
-        "    }\n" +
-        "}";
-
-    private string statesBehind =
-        "@code {\n" +
-        "    private string lastClickedPggmButton = string.Empty;\n" +
-        "    private DateTime lastClickTime;\n" +
-        "\n" +
-        "    private void HandlePggmButtonClick(string PggmButtonName)\n" +
-        "    {\n" +
-        "        lastClickedPggmButton = PggmButtonName;\n" +
-        "        lastClickTime = DateTime.Now;\n" +
-        "        StateHasChanged();\n" +
-        "    }\n" +
-        "}";
-
-    private string typesBehind =
-        "@code {\n" +
-        "    private string lastClickedPggmButton = string.Empty;\n" +
-        "    private DateTime lastClickTime;\n" +
-        "\n" +
-        "    private void HandlePggmButtonClick(string PggmButtonName)\n" +
-        "    {\n" +
-        "        lastClickedPggmButton = PggmButtonName;\n" +
-        "        lastClickTime = DateTime.Now;\n" +
-        "        StateHasChanged();\n" +
-        "    }\n" +
-        "}";
-
-    private string interactiveBehind =
-        "@code {\n" +
-        "    private string lastClickedPggmButton = string.Empty;\n" +
-        "    private DateTime lastClickTime;\n" +
-        "    private int counter = 0;\n" +
-        "    private bool isToggled = false;\n" +
-        "    private bool isLoading = false;\n" +
-        "    private string? asyncMessage = null;\n" +
-        "\n" +
-        "    private void HandlePggmButtonClick(string PggmButtonName)\n" +
-        "    {\n" +
-        "        lastClickedPggmButton = PggmButtonName;\n" +
-        "        lastClickTime = DateTime.Now;\n" +
-        "        StateHasChanged();\n" +
-        "    }\n" +
-        "\n" +
-        "    private void IncrementCounter()\n" +
-        "    {\n" +
-        "        counter++;\n" +
-        "        HandlePggmButtonClick($\"Increment (Counter: {counter})\");\n" +
-        "    }\n" +
-        "\n" +
-        "    private void DecrementCounter()\n" +
-        "    {\n" +
-        "        counter--;\n" +
-        "        HandlePggmButtonClick($\"Decrement (Counter: {counter})\");\n" +
-        "    }\n" +
-        "\n" +
-        "    private void ResetCounter()\n" +
-        "    {\n" +
-        "        counter = 0;\n" +
-        "        HandlePggmButtonClick(\"Reset Counter\");\n" +
-        "    }\n" +
-        "\n" +
-        "    private void ToggleState()\n" +
-        "    {\n" +
-        "        isToggled = !isToggled;\n" +
-        "        HandlePggmButtonClick($\"Toggle ({(isToggled ? \"ON\" : \"OFF\")})\");\n" +
-        "    }\n" +
-        "\n" +
-        "    private async Task SimulateAsyncOperation()\n" +
-        "    {\n" +
-        "        isLoading = true;\n" +
-        "        asyncMessage = \"Operation started...\";\n" +
-        "        StateHasChanged();\n" +
-        "\n" +
-        "        await Task.Delay(2000);\n" +
-        "\n" +
-        "        isLoading = false;\n" +
-        "        asyncMessage = \"Operation completed successfully!\";\n" +
-        "        HandlePggmButtonClick(\"Async Operation\");\n" +
-        "        StateHasChanged();\n" +
-        "\n" +
-        "        await Task.Delay(3000);\n" +
-        "        asyncMessage = null;\n" +
-        "        StateHasChanged();\n" +
-        "    }\n" +
-        "}";
+            private string sizesSource =
+                "<PggmStack Orientation='Orientation.Horizontal' HorizontalGap='16' Wrap='true'>\n" +
+                "  <PggmButton Size='@ButtonSize.Small' Appearance='@ButtonAppearance.Primary'>Small</PggmButton>\n" +
+                "  <PggmButton Size='@ButtonSize.Medium' Appearance='@ButtonAppearance.Primary'>Medium</PggmButton>\n" +
+                "  <PggmButton Size='@ButtonSize.Large' Appearance='@ButtonAppearance.Primary'>Large</PggmButton>\n" +
+                "</PggmStack>";
 
         private IEnumerable<ApiMember> buttonProperties = new[]
     {
-        new ApiMember { Name = "Appearance", Type = "ButtonAppearance", DefaultValue = "ButtonAppearance.Primary", Description = "Type-safe enum specifying appearance: Primary (default), Secondary, Tertiary, SignIn." },
+        new ApiMember { Name = "Appearance", Type = "ButtonAppearance", DefaultValue = "ButtonAppearance.Primary", Description = "Type-safe enum specifying appearance: Primary (default), Secondary, Tertiary, Quaternary, SignIn." },
         new ApiMember { Name = "Disabled", Type = "bool", DefaultValue = "false", Description = "When true, disables interaction and click handling." },
         new ApiMember { Name = "Type", Type = "ButtonType", DefaultValue = "ButtonType.Button", Description = "Type-safe enum for HTML button type: Button (default), Submit, Reset." },
-        new ApiMember { Name = "ChildContent", Type = "RenderFragment?", DefaultValue = "null", Description = "Content rendered inside the button (text, icons, etc.)." }
+        new ApiMember { Name = "ChildContent", Type = "RenderFragment?", DefaultValue = "null", Description = "Content rendered inside the button (text, icons, etc.)." },
+        new ApiMember { Name = "IsLoading", Type = "bool", DefaultValue = "false", Description = "When true, shows the component's loading spinner (maps to the is-loading attribute)." },
+        new ApiMember { Name = "Size", Type = "ButtonSize", DefaultValue = "ButtonSize.Medium", Description = "Type-safe enum specifying size: Small, Medium (default), Large." }
     };
 
     private IEnumerable<ApiMember> buttonEvents = new[]

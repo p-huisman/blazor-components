@@ -17,6 +17,11 @@ public partial class PggmButton : PggmEventComponentBase
     [Parameter] public ButtonAppearance Appearance { get; set; } = ButtonAppearance.Primary;
 
     /// <summary>
+    /// The button size (small, medium, large) as a type-safe enum.
+    /// </summary>
+    [Parameter] public ButtonSize Size { get; set; } = ButtonSize.Medium;
+
+    /// <summary>
     /// Whether the button is disabled
     /// </summary>
     [Parameter] public bool Disabled { get; set; }
@@ -30,6 +35,11 @@ public partial class PggmButton : PggmEventComponentBase
     /// Event callback for button click
     /// </summary>
     [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+    /// <summary>
+    /// Whether the button shows a loading spinner
+    /// </summary>
+    [Parameter] public bool IsLoading { get; set; } = false;
 
     protected override IEnumerable<string> GetEventNames()
     {
@@ -69,5 +79,10 @@ public partial class PggmButton : PggmEventComponentBase
         }
 
         return base.OnParametersSetAsync();
+    }
+
+    protected override void AddComponentAttributes(Dictionary<string, object> attributes)
+    {
+        if (IsLoading) attributes["is-loading"] = true; else attributes.Remove("is-loading");
     }
 }
