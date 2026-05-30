@@ -4,7 +4,7 @@
 
 @if (Dropdown?.Visible == true)
 {
-    <pggm-dropdown distance="4" align="start">
+    <PggmDropdown Distance="4" Align="start">
         <button is="pggm-button"
                 type="button"
                 appearance="secondary"
@@ -29,10 +29,10 @@
         {
             if (item.Visible)
             {
-                <pggm-dropdown-item value="@item.Value" disabled="@item.Disabled" checked="@item.Checked" @onclick="() => HandleItemClick(item)">
+                <PggmDropdownItem Value="@item.Value" Disabled="@item.Disabled" Checked="@item.Checked" OnItemSelect="async (_) => await HandleItemClick(item)">
                     @item.Label
-                </pggm-dropdown-item>
+                </PggmDropdownItem>
             }
         }
-    </pggm-dropdown>
+    </PggmDropdown>
 }

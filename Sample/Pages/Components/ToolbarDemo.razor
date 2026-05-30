@@ -1,28 +1,105 @@
 @page "/pggm-toolbar"
 @namespace Pggm.Components.Sample.Pages.Components
 @using Pggm.Components.Components.PggmToolbar
+@using Pggm.Components.Sample.Components.ApiDocumentation
 
 <PageTitle>PggmToolbar Demo</PageTitle>
 
 <PggmHeading Level="1">PggmToolbar</PggmHeading>
 
-<p>Demonstration of the PggmToolbar component functionality.</p>
+<p>
+    The <code>PggmToolbar</code> component provides a flexible, state-driven toolbar for Blazor applications.
+    It supports buttons, dropdowns, checkboxes, toggle button groups, and separators — all configured
+    through a single <code>PggmToolbarState</code> object. Each item type exposes event callbacks so you
+    can wire up handlers without writing any Razor markup beyond the top-level <code>&lt;PggmToolbar&gt;</code> tag.
+</p>
+
+@if (!string.IsNullOrEmpty(lastEventMessage))
+{
+    <div class="event-feedback">
+        <strong>Last event:</strong> @lastEventMessage at @lastEventTime.ToString("HH:mm:ss")
+    </div>
+}
 
 <DemoSection Title="Basic Toolbar" Code="@basicSource" CodeBehind="@basicBehind">
+    <Description>
+        <p>A minimal toolbar with four buttons. The <strong>Delete</strong> button is disabled, and every other button logs its click to the event banner above.</p>
+    </Description>
     <Content>
         <PggmToolbar State="toolbarState" />
     </Content>
 </DemoSection>
 
 <DemoSection Title="Toolbar with Separator, Dropdown, Checkbox and Toggle Group" Code="@advancedSource" CodeBehind="@advancedBehind">
+    <Description>
+        <p>
+            A richer toolbar demonstrating all supported item types:
+            <strong>buttons</strong>, <strong>separators</strong>, a <strong>dropdown</strong> menu,
+            a <strong>checkbox</strong>, and two <strong>toggle-button groups</strong>
+            (single-select <em>View mode</em> and multi-select <em>Filters</em>).
+        </p>
+    </Description>
     <Content>
         <PggmToolbar State="advancedToolbarState" />
     </Content>
 </DemoSection>
 
+<DemoSection Title="Dynamic Visibility" Code="@visibilitySource" CodeBehind="@visibilityBehind">
+    <Description>
+        <p>
+            Every toolbar item has a <code>Visible</code> property (default <code>true</code>) that controls whether it is rendered.
+            You can toggle visibility at runtime via <code>SetButtonVisible</code>, <code>RemoveButton</code>, or by mutating the state directly and calling <code>Notify()</code>.
+            Individual dropdown items also support <code>Visible</code>.
+        </p>
+    </Description>
+    <Content>
+        <PggmToolbar State="visibilityToolbarState" />
+        <div class="visibility-controls">
+            <PggmButton Appearance="@ButtonAppearance.Secondary" OnClick="ToggleAddVisibility">
+                @(addButtonVisible ? "Hide Add" : "Show Add")
+            </PggmButton>
+            <PggmButton Appearance="@ButtonAppearance.Secondary" OnClick="ToggleEditVisibility">
+                @(editButtonVisible ? "Hide Edit" : "Show Edit")
+            </PggmButton>
+            <PggmButton Appearance="@ButtonAppearance.Secondary" OnClick="ToggleDropdownVisibility">
+                @(dropdownVisible ? "Hide Export" : "Show Export")
+            </PggmButton>
+            <PggmButton Appearance="@ButtonAppearance.Secondary" OnClick="TogglePdfItemVisibility">
+                @(pdfItemVisible ? "Hide PDF item" : "Show PDF item")
+            </PggmButton>
+        </div>
+    </Content>
+</DemoSection>
+
+<PggmHeading Level="2">API</PggmHeading>
+
+<PggmHeading Level="3">PggmToolbar</PggmHeading>
+<ApiDocumentation Properties="toolbarProperties" />
+
+<PggmHeading Level="3">PggmToolbarState</PggmHeading>
+<ApiDocumentation Properties="toolbarStateProperties" Methods="toolbarStateMethods" />
+
+<PggmHeading Level="3">PggmToolbarButtonState</PggmHeading>
+<ApiDocumentation Properties="buttonStateProperties" />
+
+<PggmHeading Level="3">PggmToolbarDropdownState</PggmHeading>
+<ApiDocumentation Properties="dropdownStateProperties" />
+
+<PggmHeading Level="3">PggmToolbarCheckboxState</PggmHeading>
+<ApiDocumentation Properties="checkboxStateProperties" />
+
+<PggmHeading Level="3">PggmToolbarToggleButtonGroupState</PggmHeading>
+<ApiDocumentation Properties="toggleGroupStateProperties" />
+
 @code {
     private PggmToolbarState toolbarState = new();
     private PggmToolbarState advancedToolbarState = new();
+    private PggmToolbarState visibilityToolbarState = new();
+
+    private bool addButtonVisible = true;
+    private bool editButtonVisible = true;
+    private bool dropdownVisible = true;
+    private bool pdfItemVisible = true;
 
     protected override void OnInitialized()
     {
@@ -113,61 +190,237 @@
         filterToggle.Buttons.Add(new PggmToolbarToggleButtonState { Label = "Archived" });
         filterToggle.OnToggle = async (id, selected) => await HandleFilterToggle(id, selected);
         advancedToolbarState.AddToggleGroup(filterToggle);
+
+        // Visibility toolbar setup
+        visibilityToolbarState.AddButton(new PggmToolbarButtonState
+        {
+            Label = "Add",
+            Icon = "circle-plus",
+            Visible = true,
+            OnClick = async () => await HandleAdd()
+        });
+
+        visibilityToolbarState.AddButton(new PggmToolbarButtonState
+        {
+            Label = "Edit",
+            Icon = "edit",
+            Visible = true,
+            OnClick = async () => await HandleEdit()
+        });
+
+        visibilityToolbarState.AddSeparator(new PggmToolbarSeparatorState());
+
+        var visibilityDropdown = new PggmToolbarDropdownState
+        {
+            Label = "Export",
+            Icon = "export",
+            Visible = true
+        };
+        visibilityDropdown.Items.Add(new PggmToolbarDropdownItemState { Label = "PDF", Value = "pdf", Visible = true });
+        visibilityDropdown.Items.Add(new PggmToolbarDropdownItemState { Label = "Excel", Value = "excel", Visible = true });
+        visibilityDropdown.OnItemSelected = async (value) => await HandleExport(value);
+        visibilityToolbarState.AddDropdown(visibilityDropdown);
+    }
+
+    private string lastEventMessage = string.Empty;
+    private DateTime lastEventTime;
+
+    private void LogEvent(string message)
+    {
+        lastEventMessage = message;
+        lastEventTime = DateTime.Now;
+        StateHasChanged();
+    }
+
+    private void ToggleAddVisibility()
+    {
+        addButtonVisible = !addButtonVisible;
+        visibilityToolbarState.SetButtonVisible(visibilityToolbarState.Buttons[0].Id, addButtonVisible);
+        LogEvent($"Add button visible: {addButtonVisible}");
+    }
+
+    private void ToggleEditVisibility()
+    {
+        editButtonVisible = !editButtonVisible;
+        visibilityToolbarState.SetButtonVisible(visibilityToolbarState.Buttons[1].Id, editButtonVisible);
+        LogEvent($"Edit button visible: {editButtonVisible}");
+    }
+
+    private void ToggleDropdownVisibility()
+    {
+        dropdownVisible = !dropdownVisible;
+        var dropdown = visibilityToolbarState.Dropdowns.FirstOrDefault();
+        if (dropdown != null)
+        {
+            dropdown.Visible = dropdownVisible;
+            visibilityToolbarState.Notify();
+        }
+        LogEvent($"Export dropdown visible: {dropdownVisible}");
+    }
+
+    private void TogglePdfItemVisibility()
+    {
+        pdfItemVisible = !pdfItemVisible;
+        var dropdown = visibilityToolbarState.Dropdowns.FirstOrDefault();
+        if (dropdown != null)
+        {
+            var pdfItem = dropdown.Items.FirstOrDefault(i => i.Value == "pdf");
+            if (pdfItem != null)
+            {
+                pdfItem.Visible = pdfItemVisible;
+                visibilityToolbarState.Notify();
+            }
+        }
+        LogEvent($"PDF dropdown item visible: {pdfItemVisible}");
     }
 
     private async Task HandleAdd()
     {
-        Console.WriteLine("Add clicked");
+        LogEvent("Add button clicked");
         await Task.CompletedTask;
     }
 
     private async Task HandleEdit()
     {
-        Console.WriteLine("Edit clicked");
+        LogEvent("Edit button clicked");
         await Task.CompletedTask;
     }
 
     private async Task HandleFilter()
     {
-        Console.WriteLine("Filter clicked");
+        LogEvent("Filter button clicked");
         await Task.CompletedTask;
     }
 
     private async Task HandleNew()
     {
-        Console.WriteLine("New clicked");
+        LogEvent("New button clicked");
         await Task.CompletedTask;
     }
 
     private async Task HandleSave()
     {
-        Console.WriteLine("Save clicked");
+        LogEvent("Save button clicked");
         await Task.CompletedTask;
     }
 
     private async Task HandleExport(string format)
     {
-        Console.WriteLine($"Export to {format} selected");
+        LogEvent($"Export '{format}' selected");
         await Task.CompletedTask;
     }
 
     private async Task HandleShowDeleted(bool show)
     {
-        Console.WriteLine($"Show deleted: {show}");
+        LogEvent($"Show deleted checkbox: {show}");
         await Task.CompletedTask;
     }
 
     private async Task HandleViewToggle(string id, bool selected)
     {
-        Console.WriteLine($"View toggle: {id} = {selected}");
+        LogEvent($"View mode toggle '{id}': {selected}");
         await Task.CompletedTask;
     }
 
     private async Task HandleFilterToggle(string id, bool selected)
     {
-        Console.WriteLine($"Filter toggle: {id} = {selected}");
+        LogEvent($"Filter toggle '{id}': {selected}");
         await Task.CompletedTask;
     }
+
+    private string visibilitySource = """
+        <PggmToolbar State="visibilityToolbarState" />
+        <div class="visibility-controls">
+            <PggmButton Appearance="@ButtonAppearance.Secondary" OnClick="ToggleAddVisibility">
+                @(addButtonVisible ? "Hide Add" : "Show Add")
+            </PggmButton>
+            <PggmButton Appearance="@ButtonAppearance.Secondary" OnClick="ToggleEditVisibility">
+                @(editButtonVisible ? "Hide Edit" : "Show Edit")
+            </PggmButton>
+            <PggmButton Appearance="@ButtonAppearance.Secondary" OnClick="ToggleDropdownVisibility">
+                @(dropdownVisible ? "Hide Export" : "Show Export")
+            </PggmButton>
+            <PggmButton Appearance="@ButtonAppearance.Secondary" OnClick="TogglePdfItemVisibility">
+                @(pdfItemVisible ? "Hide PDF item" : "Show PDF item")
+            </PggmButton>
+        </div>
+        """;
+
+    private string visibilityBehind = """
+        private PggmToolbarState visibilityToolbarState = new();
+        private bool addButtonVisible = true;
+        private bool editButtonVisible = true;
+        private bool dropdownVisible = true;
+        private bool pdfItemVisible = true;
+
+        protected override void OnInitialized()
+        {
+            visibilityToolbarState.AddButton(new PggmToolbarButtonState
+            {
+                Label = "Add",
+                Icon = "circle-plus",
+                Visible = true,
+                OnClick = async () => await HandleAdd()
+            });
+
+            visibilityToolbarState.AddButton(new PggmToolbarButtonState
+            {
+                Label = "Edit",
+                Icon = "edit",
+                Visible = true,
+                OnClick = async () => await HandleEdit()
+            });
+
+            var exportDropdown = new PggmToolbarDropdownState
+            {
+                Label = "Export",
+                Icon = "export",
+                Visible = true
+            };
+            exportDropdown.Items.Add(new PggmToolbarDropdownItemState { Label = "PDF", Value = "pdf", Visible = true });
+            exportDropdown.Items.Add(new PggmToolbarDropdownItemState { Label = "Excel", Value = "excel", Visible = true });
+            exportDropdown.OnItemSelected = async (value) => await HandleExport(value);
+            visibilityToolbarState.AddDropdown(exportDropdown);
+        }
+
+        private void ToggleAddVisibility()
+        {
+            addButtonVisible = !addButtonVisible;
+            visibilityToolbarState.SetButtonVisible(visibilityToolbarState.Buttons[0].Id, addButtonVisible);
+        }
+
+        private void ToggleEditVisibility()
+        {
+            editButtonVisible = !editButtonVisible;
+            visibilityToolbarState.SetButtonVisible(visibilityToolbarState.Buttons[1].Id, editButtonVisible);
+        }
+
+        private void ToggleDropdownVisibility()
+        {
+            dropdownVisible = !dropdownVisible;
+            var dropdown = visibilityToolbarState.Dropdowns.FirstOrDefault();
+            if (dropdown != null)
+            {
+                dropdown.Visible = dropdownVisible;
+                visibilityToolbarState.Notify();
+            }
+        }
+
+        private void TogglePdfItemVisibility()
+        {
+            pdfItemVisible = !pdfItemVisible;
+            var dropdown = visibilityToolbarState.Dropdowns.FirstOrDefault();
+            if (dropdown != null)
+            {
+                var pdfItem = dropdown.Items.FirstOrDefault(i => i.Value == "pdf");
+                if (pdfItem != null)
+                {
+                    pdfItem.Visible = pdfItemVisible;
+                    visibilityToolbarState.Notify();
+                }
+            }
+        }
+        """;
 
     private string basicSource = """
         <PggmToolbar State="toolbarState" />
@@ -275,26 +528,130 @@
 
         private async Task HandleExport(string format)
         {
-            Console.WriteLine($"Export to {format} selected");
+            LogEvent($"Export '{format}' selected");
             await Task.CompletedTask;
         }
 
         private async Task HandleShowDeleted(bool show)
         {
-            Console.WriteLine($"Show deleted: {show}");
+            LogEvent($"Show deleted checkbox: {show}");
             await Task.CompletedTask;
         }
 
         private async Task HandleViewToggle(string id, bool selected)
         {
-            Console.WriteLine($"View toggle: {id} = {selected}");
+            LogEvent($"View mode toggle '{id}': {selected}");
             await Task.CompletedTask;
         }
 
         private async Task HandleFilterToggle(string id, bool selected)
         {
-            Console.WriteLine($"Filter toggle: {id} = {selected}");
+            LogEvent($"Filter toggle '{id}': {selected}");
             await Task.CompletedTask;
         }
         """;
+
+    // ── API tables ───────────────────────────────────────────────────────────
+
+    private IEnumerable<ApiMember> toolbarProperties = new[]
+    {
+        new ApiMember { Name = "State", Type = "PggmToolbarState", DefaultValue = "null", Description = "The state object that defines all toolbar items (buttons, dropdowns, checkboxes, toggle groups, separators)." },
+    };
+
+    private IEnumerable<ApiMember> toolbarStateProperties = new[]
+    {
+        new ApiMember { Name = "Buttons", Type = "IReadOnlyList<PggmToolbarButtonState>", DefaultValue = "empty", Description = "Collection of button items in the toolbar." },
+        new ApiMember { Name = "Groups", Type = "IReadOnlyList<PggmToolbarButtonGroupState>", DefaultValue = "empty", Description = "Collection of button groups in the toolbar." },
+        new ApiMember { Name = "Separators", Type = "IReadOnlyList<PggmToolbarSeparatorState>", DefaultValue = "empty", Description = "Collection of separator items in the toolbar." },
+        new ApiMember { Name = "Dropdowns", Type = "IReadOnlyList<PggmToolbarDropdownState>", DefaultValue = "empty", Description = "Collection of dropdown items in the toolbar." },
+        new ApiMember { Name = "Checkboxes", Type = "IReadOnlyList<PggmToolbarCheckboxState>", DefaultValue = "empty", Description = "Collection of checkbox items in the toolbar." },
+        new ApiMember { Name = "ToggleGroups", Type = "IReadOnlyList<PggmToolbarToggleButtonGroupState>", DefaultValue = "empty", Description = "Collection of toggle button groups in the toolbar." },
+        new ApiMember { Name = "OnChange", Type = "Action?", DefaultValue = "null", Description = "Raised when any part of the toolbar state changes and the UI should re-render." },
+    };
+
+    private IEnumerable<ApiMember> toolbarStateMethods = new[]
+    {
+        new ApiMember { Name = "AddButton", Signature = "void AddButton(PggmToolbarButtonState button)", Description = "Adds a button to the toolbar and notifies listeners." },
+        new ApiMember { Name = "RemoveButton", Signature = "bool RemoveButton(string id)", Description = "Removes a button by its Id. Returns true if removed." },
+        new ApiMember { Name = "AddGroup", Signature = "void AddGroup(PggmToolbarButtonGroupState group)", Description = "Adds a button group to the toolbar." },
+        new ApiMember { Name = "RemoveGroup", Signature = "bool RemoveGroup(string id)", Description = "Removes a button group by its Id. Returns true if removed." },
+        new ApiMember { Name = "AddSeparator", Signature = "void AddSeparator(PggmToolbarSeparatorState separator)", Description = "Adds a visual separator to the toolbar." },
+        new ApiMember { Name = "RemoveSeparator", Signature = "bool RemoveSeparator(string id)", Description = "Removes a separator by its Id. Returns true if removed." },
+        new ApiMember { Name = "AddDropdown", Signature = "void AddDropdown(PggmToolbarDropdownState dropdown)", Description = "Adds a dropdown menu to the toolbar." },
+        new ApiMember { Name = "RemoveDropdown", Signature = "bool RemoveDropdown(string id)", Description = "Removes a dropdown by its Id. Returns true if removed." },
+        new ApiMember { Name = "AddCheckbox", Signature = "void AddCheckbox(PggmToolbarCheckboxState checkbox)", Description = "Adds a checkbox item to the toolbar." },
+        new ApiMember { Name = "RemoveCheckbox", Signature = "bool RemoveCheckbox(string id)", Description = "Removes a checkbox by its Id. Returns true if removed." },
+        new ApiMember { Name = "AddToggleGroup", Signature = "void AddToggleGroup(PggmToolbarToggleButtonGroupState toggleGroup)", Description = "Adds a toggle button group to the toolbar." },
+        new ApiMember { Name = "RemoveToggleGroup", Signature = "bool RemoveToggleGroup(string id)", Description = "Removes a toggle group by its Id. Returns true if removed." },
+        new ApiMember { Name = "SetButtonVisible", Signature = "bool SetButtonVisible(string id, bool visible)", Description = "Changes the visibility of a button by Id." },
+        new ApiMember { Name = "SetButtonDisabled", Signature = "bool SetButtonDisabled(string id, bool disabled)", Description = "Changes the disabled state of a button by Id." },
+        new ApiMember { Name = "Notify", Signature = "void Notify()", Description = "Manually triggers the OnChange callback to force a re-render." },
+    };
+
+    private IEnumerable<ApiMember> buttonStateProperties = new[]
+    {
+        new ApiMember { Name = "Id", Type = "string", DefaultValue = "Guid.NewGuid()", Description = "Unique identifier auto-generated on creation." },
+        new ApiMember { Name = "Label", Type = "string", DefaultValue = "\"\"", Description = "Text displayed on the button." },
+        new ApiMember { Name = "Icon", Type = "string?", DefaultValue = "null", Description = "Optional icon name displayed alongside or instead of the label." },
+        new ApiMember { Name = "IconOnly", Type = "bool", DefaultValue = "false", Description = "When true, only the icon is shown." },
+        new ApiMember { Name = "Visible", Type = "bool", DefaultValue = "true", Description = "Controls whether the button is rendered." },
+        new ApiMember { Name = "Disabled", Type = "bool", DefaultValue = "false", Description = "When true, disables interaction and click handling." },
+        new ApiMember { Name = "OnClick", Type = "Func<Task>?", DefaultValue = "null", Description = "Async callback invoked when the button is clicked." },
+    };
+
+    private IEnumerable<ApiMember> dropdownStateProperties = new[]
+    {
+        new ApiMember { Name = "Id", Type = "string", DefaultValue = "Guid.NewGuid()", Description = "Unique identifier auto-generated on creation." },
+        new ApiMember { Name = "Label", Type = "string", DefaultValue = "\"\"", Description = "Text displayed on the dropdown trigger." },
+        new ApiMember { Name = "Icon", Type = "string?", DefaultValue = "null", Description = "Optional icon name displayed on the dropdown trigger." },
+        new ApiMember { Name = "IconOnly", Type = "bool", DefaultValue = "false", Description = "When true, only the icon is shown on the trigger." },
+        new ApiMember { Name = "Visible", Type = "bool", DefaultValue = "true", Description = "Controls whether the dropdown is rendered." },
+        new ApiMember { Name = "Disabled", Type = "bool", DefaultValue = "false", Description = "When true, disables the dropdown trigger." },
+        new ApiMember { Name = "Items", Type = "List<PggmToolbarDropdownItemState>", DefaultValue = "empty", Description = "Collection of items in the dropdown menu." },
+        new ApiMember { Name = "OnItemSelected", Type = "Func<string, Task>?", DefaultValue = "null", Description = "Async callback invoked with the selected item's Value when an item is chosen." },
+    };
+
+    private IEnumerable<ApiMember> checkboxStateProperties = new[]
+    {
+        new ApiMember { Name = "Id", Type = "string", DefaultValue = "Guid.NewGuid()", Description = "Unique identifier auto-generated on creation." },
+        new ApiMember { Name = "Label", Type = "string", DefaultValue = "\"\"", Description = "Text displayed next to the checkbox." },
+        new ApiMember { Name = "Checked", Type = "bool", DefaultValue = "false", Description = "Current checked state of the checkbox." },
+        new ApiMember { Name = "Visible", Type = "bool", DefaultValue = "true", Description = "Controls whether the checkbox is rendered." },
+        new ApiMember { Name = "Disabled", Type = "bool", DefaultValue = "false", Description = "When true, disables interaction." },
+        new ApiMember { Name = "OnCheckedChanged", Type = "Func<bool, Task>?", DefaultValue = "null", Description = "Async callback invoked when the checkbox is toggled, receiving the new checked state." },
+    };
+
+    private IEnumerable<ApiMember> toggleGroupStateProperties = new[]
+    {
+        new ApiMember { Name = "Id", Type = "string", DefaultValue = "Guid.NewGuid()", Description = "Unique identifier auto-generated on creation." },
+        new ApiMember { Name = "Label", Type = "string", DefaultValue = "\"\"", Description = "Text displayed as the group label." },
+        new ApiMember { Name = "Visible", Type = "bool", DefaultValue = "true", Description = "Controls whether the toggle group is rendered." },
+        new ApiMember { Name = "AllowMultiple", Type = "bool", DefaultValue = "false", Description = "When true, multiple buttons can be selected simultaneously." },
+        new ApiMember { Name = "Buttons", Type = "List<PggmToolbarToggleButtonState>", DefaultValue = "empty", Description = "Collection of toggle buttons in the group." },
+        new ApiMember { Name = "OnToggle", Type = "Func<string, bool, Task>?", DefaultValue = "null", Description = "Async callback invoked when a toggle button changes, receiving the button Id and new selected state." },
+    };
 }
+
+<style>
+    .event-feedback {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #007bff;
+        color: white;
+        padding: 0.75rem 1rem;
+        border-radius: 4px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+    }
+
+    .visibility-controls {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 1rem;
+        padding: 1rem;
+        background-color: #f8f9fa;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+    }
+</style>
