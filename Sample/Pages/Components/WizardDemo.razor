@@ -1,123 +1,163 @@
 
 @page "/pggm-wizard"
+@namespace Pggm.Components.Sample.Pages.Components
+@using Pggm.Components.Sample.Components.ApiDocumentation
 @inject IJSRuntime JSRuntime
 
-<PageTitle>PGGM Wizard</PageTitle>
+<PageTitle>PggmWizard Demo</PageTitle>
 
-<PggmHeading Level="1">PGGM Wizard</PggmHeading>
+<PggmHeading Level="1">PggmWizard</PggmHeading>
 
-<PggmWizard @ref="wizardRef" Method="POST" Action="/api/submit-wizard"
-    OnBeforeNavigate="HandleBeforeNavigate" OnBeforeSubmit="HandleBeforeSubmit"
-    OnWizardFinished="HandleWizardFinished">
+<p>
+    The <code>PggmWizard</code> component provides a multi-step form experience.
+    This demo shows validation, navigation cancellation, custom submit handling,
+    and how to wire up events from the component for reactive UI and logging.
+</p>
 
-    <ChildContent>
-        <PggmWizardForm Label="Personal Information" Active="true">
-            <form>
-                <PggmHeading Level="3">Enter Your Personal Information</PggmHeading>
-                <p>Please fill in your personal information.</p>
-                <PggmFieldset>
-                    <PggmFieldsetLabel For="firstName">First Name *</PggmFieldsetLabel>
-                    <PggmFieldsetDescription>
-                        <p>Vul uw naam in.</p>
-                    </PggmFieldsetDescription>
-                    <PggmFieldsetError>
-                        <PggmErrorMessage slot="error" For="firstName" Validity="@PggmErrorMessage.ValidityStates.ValueMissing">
-                            First name is required
-                        </PggmErrorMessage>
-                    </PggmFieldsetError>
-                        <PggmInput Id="firstName" Name="firstName" Required="true" @bind-value="@firstName" />
+@if (!string.IsNullOrEmpty(lastEventMessage))
+{
+    <div class="event-feedback">
+        <strong>Last event:</strong> @lastEventMessage at @lastEventTime.ToString("HH:mm:ss")
+    </div>
+}
 
-                </PggmFieldset>
-                <PggmFieldset>
-                    <PggmFieldsetLabel For="lastName">Last Name *</PggmFieldsetLabel>
-                    <PggmFieldsetDescription>
-                        <p>Vul uw achternaam in.</p>
-                    </PggmFieldsetDescription>
-                    <PggmFieldsetError>
-                        <PggmErrorMessage slot="error"  For="lastName" Validity="@PggmErrorMessage.ValidityStates.ValueMissing">
-                            Last name is required
-                        </PggmErrorMessage>
-                    </PggmFieldsetError>
-                        <PggmInput Id="lastName" Name="lastName" Required="true" @bind-value="@lastName" />
-                </PggmFieldset>
-                <PggmFieldset>
-                    <PggmFieldsetLabel For="email">Email *</PggmFieldsetLabel>
-                    <PggmFieldsetDescription>
-                        <p>Vul uw email in.</p>
-                    </PggmFieldsetDescription>
-                    <PggmFieldsetError>
-                        <PggmErrorMessage slot="error" For="email" Validity="@PggmErrorMessage.ValidityStates.ValueMissing">
-                            Email is required
-                        </PggmErrorMessage>
-                        <PggmErrorMessage slot="error"  For="email" Validity="@PggmErrorMessage.ValidityStates.TypeMismatch">
-                            Please enter a valid email address
-                        </PggmErrorMessage>
-                    </PggmFieldsetError>
-                        <PggmInput Id="email" Name="email" Type="@PggmInput.InputTypes.Email" Required="true"
-                            @bind-Value="@email" />
-                </PggmFieldset>
-            </form>
-        </PggmWizardForm>
+<DemoSection Title="Interactive Wizard" Code="@wizardSource" CodeBehind="@wizardBehind">
+    <Description>
+        <p>
+            A three-step wizard demonstrating required fields, optional fields, review/confirmation,
+            plus examples of cancelling navigation via <code>OnBeforeNavigate</code> and intercepting submit
+            via <code>OnBeforeSubmit</code>.
+        </p>
+    </Description>
+    <Content>
+        <PggmWizard @ref="wizardRef" Method="POST" Action="/api/submit-wizard"
+            OnBeforeNavigate="HandleBeforeNavigate" OnBeforeSubmit="HandleBeforeSubmit"
+            OnWizardFinished="HandleWizardFinished">
 
-        <PggmWizardForm Label="Additional Info" NextDisabled="@(!allowNextStep)">
-            <form>
-                <PggmHeading Level="3">Additional Information</PggmHeading>
-                <p>Provide any additional information you think is relevant.</p>
-                <PggmFieldset>
-                    <PggmFieldsetLabel For="phoneInput">Phone Number</PggmFieldsetLabel>
-                        <PggmInputPhone id="phoneInput" @bind-Value="@phoneNumber" TopCountries="NL,BE,DE,FR"
-                            CountryLabel="Choose country..." InitialCountry="NL" Name="phone" />
-                </PggmFieldset>
+            <ChildContent>
+                <PggmWizardForm Label="Personal Information" Active="true">
+                    <form>
+                        <PggmHeading Level="3">Enter Your Personal Information</PggmHeading>
+                        <p>Please fill in your personal information.</p>
+                        <PggmFieldset>
+                            <PggmFieldsetLabel For="firstName">First Name *</PggmFieldsetLabel>
+                            <PggmFieldsetError>
+                                <PggmErrorMessage slot="error" For="firstName" Validity="@PggmErrorMessage.ValidityStates.ValueMissing">First name is required</PggmErrorMessage>
+                            </PggmFieldsetError>
+                            <PggmInput Id="firstName" Name="firstName" Required="true" @bind-value="@firstName" />
+                        </PggmFieldset>
 
-                <PggmFieldset>
-                    <PggmCheckbox Id="subscribe" Name="allowNavigation" @bind-Value="allowNavigation">
-                        Allow navigation to next step (via event cancellation)
-                    </PggmCheckbox>
-                </PggmFieldset>
+                        <PggmFieldset>
+                            <PggmFieldsetLabel For="lastName">Last Name *</PggmFieldsetLabel>
+                            <PggmFieldsetError>
+                                <PggmErrorMessage slot="error" For="lastName" Validity="@PggmErrorMessage.ValidityStates.ValueMissing">Last name is required</PggmErrorMessage>
+                            </PggmFieldsetError>
+                            <PggmInput Id="lastName" Name="lastName" Required="true" @bind-value="@lastName" />
+                        </PggmFieldset>
 
-                <PggmFieldset>
-                    <PggmCheckbox Id="allowNextStep" Name="allowNextStep" @bind-Value="allowNextStep">
-                        Allow navigation to next step (via disable Next button)
-                    </PggmCheckbox>
-                </PggmFieldset>
+                        <PggmFieldset>
+                            <PggmFieldsetLabel For="email">Email *</PggmFieldsetLabel>
+                            <PggmFieldsetError>
+                                <PggmErrorMessage slot="error" For="email" Validity="@PggmErrorMessage.ValidityStates.ValueMissing">Email is required</PggmErrorMessage>
+                                <PggmErrorMessage slot="error" For="email" Validity="@PggmErrorMessage.ValidityStates.TypeMismatch">Please enter a valid email address</PggmErrorMessage>
+                            </PggmFieldsetError>
+                            <PggmInput Id="email" Name="email" Type="@PggmInput.InputTypes.Email" Required="true" @bind-Value="@email" />
+                        </PggmFieldset>
+                    </form>
+                </PggmWizardForm>
 
-            </form>
-        </PggmWizardForm>
+                <PggmWizardForm Label="Additional Info" NextDisabled="@(!allowNextStep)">
+                    <form>
+                        <PggmHeading Level="3">Additional Information</PggmHeading>
+                        <p>Optional details and controls that affect navigation.</p>
+                        <PggmFieldset>
+                            <PggmFieldsetLabel For="phoneInput">Phone Number</PggmFieldsetLabel>
+                            <PggmInputPhone id="phoneInput" @bind-Value="@phoneNumber" TopCountries="NL,BE,DE,FR" CountryLabel="Choose country..." InitialCountry="NL" Name="phone" />
+                        </PggmFieldset>
 
-        <PggmWizardForm Label="Confirmation">
-            <form>
-                <PggmHeading Level="3">Review Your Information</PggmHeading>
-                <p>Please review and confirm your information.</p>
+                        <PggmFieldset>
+                            <PggmCheckbox Id="subscribe" Name="allowNavigation" @bind-Value="allowNavigation">Allow navigation to next step (via event cancellation)</PggmCheckbox>
+                        </PggmFieldset>
 
-                <ul is="pggm-unordered-list">
-                    <li>First Name: @firstName</li>
-                    <li>Last Name: @lastName</li>
-                    <li>Email: @email</li>
-                    <li>Phone Number: @(string.IsNullOrWhiteSpace(phoneNumber) ? "N/A" : phoneNumber)</li>
-                </ul>
-                <PggmFieldset>
-                    <PggmFieldsetError>
-                        <PggmErrorMessage slot="error" For="terms" Validity="@PggmErrorMessage.ValidityStates.ValueMissing">
-                            You must agree to the terms and conditions
-                        </PggmErrorMessage>
-                    </PggmFieldsetError>
-                        <PggmCheckbox Id="terms" Name="terms" Required="true">
-                            I agree to the terms and conditions
-                        </PggmCheckbox>
-                </PggmFieldset>
+                        <PggmFieldset>
+                            <PggmCheckbox Id="allowNextStep" Name="allowNextStep" @bind-Value="allowNextStep">Allow navigation to next step (via disable Next button)</PggmCheckbox>
+                        </PggmFieldset>
+                    </form>
+                </PggmWizardForm>
 
-            </form>
-        </PggmWizardForm>
-    </ChildContent>
+                <PggmWizardForm Label="Confirmation">
+                    <form>
+                        <PggmHeading Level="3">Review Your Information</PggmHeading>
+                        <p>Please review and confirm your information.</p>
+                        <ul is="pggm-unordered-list">
+                            <li>First Name: @firstName</li>
+                            <li>Last Name: @lastName</li>
+                            <li>Email: @email</li>
+                            <li>Phone Number: @(string.IsNullOrWhiteSpace(phoneNumber) ? "N/A" : phoneNumber)</li>
+                        </ul>
+                        <PggmFieldset>
+                            <PggmFieldsetError>
+                                <PggmErrorMessage slot="error" For="terms" Validity="@PggmErrorMessage.ValidityStates.ValueMissing">You must agree to the terms and conditions</PggmErrorMessage>
+                            </PggmFieldsetError>
+                            <PggmCheckbox Id="terms" Name="terms" Required="true">I agree to the terms and conditions</PggmCheckbox>
+                        </PggmFieldset>
+                    </form>
+                </PggmWizardForm>
+            </ChildContent>
 
-    <FinishContent>
-        <p>Thank you for submitting your information!</p>
-    </FinishContent>
+            <FinishContent>
+                <p>Thank you for submitting your information!</p>
+            </FinishContent>
 
-    <ErrorContent>
-        <p>There was an error. Please try again.</p>
-    </ErrorContent>
-</PggmWizard>
+            <ErrorContent>
+                <p>There was an error. Please try again.</p>
+            </ErrorContent>
+        </PggmWizard>
+    </Content>
+</DemoSection>
+
+<DemoSection Title="PggmWizardForm — Step configuration" Code="@wizardFormSource" CodeBehind="@wizardFormBehind">
+    <Description>
+        <p>
+            `PggmWizardForm` represents a single step inside a `PggmWizard`.
+            Use the `Label` to set the step title, `Active` to make it the initial active step,
+            and `NextDisabled` to disable the Next button for that step.
+        </p>
+    </Description>
+    <Content>
+        <div class="pggm-wizardform-demo">
+            <PggmWizard>
+                <ChildContent>
+                    <PggmWizardForm Label="Example Step 1" Active="true" NextDisabled="@(!allowNextStep)">
+                        <form>
+                            <PggmFieldset>
+                                <PggmFieldsetLabel For="dummyInput">Example input</PggmFieldsetLabel>
+                                <PggmInput Id="dummyInput" @bind-Value="dummyValue" />
+                            </PggmFieldset>
+                        </form>
+                    </PggmWizardForm>
+
+                    <PggmWizardForm Label="Example Step 2">
+                        <form>
+                            <PggmFieldset>
+                                <PggmFieldsetLabel For="dummyInput2">Second input</PggmFieldsetLabel>
+                                <PggmInput Id="dummyInput2" @bind-Value="dummyValue2" />
+                            </PggmFieldset>
+                        </form>
+                    </PggmWizardForm>
+                </ChildContent>
+            </PggmWizard>
+        </div>
+    </Content>
+</DemoSection>
+
+<PggmHeading Level="2">API</PggmHeading>
+
+<PggmHeading Level="3">PggmWizard</PggmHeading>
+<ApiDocumentation Properties="wizardProperties" Events="wizardEvents" />
+
+<PggmHeading Level="3">PggmWizardForm</PggmHeading>
+<ApiDocumentation Properties="wizardFormProperties" />
 
 @code {
     private bool allowNavigation = true;
@@ -130,9 +170,19 @@
     private string? email;
     private string? phoneNumber;
 
+    private string lastEventMessage = string.Empty;
+    private DateTime lastEventTime;
+
+    private void LogEvent(string message)
+    {
+        lastEventMessage = message;
+        lastEventTime = DateTime.Now;
+        StateHasChanged();
+    }
+
     private Task HandleBeforeNavigate(Pggm.Components.Models.Wizard.BeforeNavigateEventArgs args)
     {
-        // Check cancellation logic
+        LogEvent($"BeforeNavigate: {args.Direction}");
         if (args?.Direction == "forwards" && !allowNavigation)
         {
             args.Cancel = true;
@@ -143,13 +193,11 @@
 
     private async Task HandleBeforeSubmit(Pggm.Components.Models.Wizard.BeforeSubmitEventArgs args)
     {
-        // Always cancel the default submit behavior
+        LogEvent("BeforeSubmit");
         args.Cancel = true;
 
-        // Show confirmation dialog
         var confirmed = await ShowConfirmationDialog();
 
-        // Call finish on the wizard with the user's choice
         if (wizardRef != null)
         {
             await wizardRef.FinishAsync(confirmed);
@@ -158,22 +206,86 @@
 
     private async Task<bool> ShowConfirmationDialog()
     {
-        // Use JavaScript confirm dialog for simplicity
-        // In a real application, you might want to use a custom modal component
         return await JSRuntime.InvokeAsync<bool>("confirm",
-        "Are you sure you want to submit this form?\n\n" +
-        $"First Name: {firstName}\n" +
-        $"Last Name: {lastName}\n" +
-        $"Email: {email}\n" +
-        $"Phone: {phoneNumber ?? "N/A"}\n\n" +
-        "Click OK to submit or Cancel to abort.");
+            "Are you sure you want to submit this form?\n\n" +
+            $"First Name: {firstName}\n" +
+            $"Last Name: {lastName}\n" +
+            $"Email: {email}\n" +
+            $"Phone: {phoneNumber ?? "N/A"}\n\n" +
+            "Click OK to submit or Cancel to abort.");
     }
 
     private Task HandleWizardFinished()
     {
+        LogEvent("WizardFinished");
         StateHasChanged();
         return Task.CompletedTask;
     }
 
-    // Use <PggmFieldsetLabel> element in markup for labels
+    private string wizardSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmWizard @ref=\"wizardRef\" Method=\"POST\" Action=\"/api/submit-wizard\"",
+        "    OnBeforeNavigate=\"HandleBeforeNavigate\" OnBeforeSubmit=\"HandleBeforeSubmit\"",
+        "    OnWizardFinished=\"HandleWizardFinished\">",
+        "  ...existing code...",
+        "</PggmWizard>");
+
+    private string wizardBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private bool allowNavigation = true;",
+        "private bool allowNextStep = true;",
+        "private PggmWizard? wizardRef;",
+        "...existing code...");
+
+    private IEnumerable<ApiMember> wizardProperties = new[] {
+        new ApiMember { Name = "Method", Type = "string", DefaultValue = "\"POST\"", Description = "HTTP method for form submission (GET or POST)." },
+        new ApiMember { Name = "Action", Type = "string", DefaultValue = "\"\"", Description = "Submission URL." },
+        new ApiMember { Name = "NextLabel", Type = "string", DefaultValue = "\"Volgende\"", Description = "Label for Next button." },
+        new ApiMember { Name = "BackLabel", Type = "string", DefaultValue = "\"Vorige\"", Description = "Label for Back button." },
+        new ApiMember { Name = "SubmitLabel", Type = "string", DefaultValue = "\"Verzenden\"", Description = "Label for Submit button." },
+        new ApiMember { Name = "FinishContent", Type = "RenderFragment?", DefaultValue = "null", Description = "Content shown after finish." },
+        new ApiMember { Name = "ErrorContent", Type = "RenderFragment?", DefaultValue = "null", Description = "Content shown on error." }
+    };
+
+    private IEnumerable<ApiMember> wizardEvents = new[] {
+        new ApiMember { Name = "OnBeforeNavigate", Type = "EventCallback<BeforeNavigateEventArgs>", Description = "Fired before navigation. Set Cancel = true to abort." },
+        new ApiMember { Name = "OnAfterNavigate", Type = "EventCallback<AfterNavigateEventArgs>", Description = "Fired after navigation." },
+        new ApiMember { Name = "OnBeforeSubmit", Type = "EventCallback<BeforeSubmitEventArgs>", Description = "Fired before submit. Set Cancel = true to abort." },
+        new ApiMember { Name = "OnWizardFinished", Type = "EventCallback", Description = "Fired when the wizard finishes." },
+        new ApiMember { Name = "OnWizardFormInvalid", Type = "EventCallback<WizardFormInvalidEventArgs>", Description = "Fired when a form is invalid." }
+    };
+
+    private IEnumerable<ApiMember> wizardFormProperties = new[] {
+        new ApiMember { Name = "Label", Type = "string", DefaultValue = "\"\"", Description = "Label in the step indicator." },
+        new ApiMember { Name = "Active", Type = "bool", DefaultValue = "false", Description = "Whether step is active by default." },
+        new ApiMember { Name = "NextDisabled", Type = "bool", DefaultValue = "false", Description = "When true the Next button is disabled." }
+    };
+
+    // Example values and snippets for the PggmWizardForm demo section
+    private string dummyValue = string.Empty;
+    private string dummyValue2 = string.Empty;
+
+    private string wizardFormSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmWizard>",
+        "  <PggmWizardForm Label=\"Example Step 1\" Active=\"true\" NextDisabled=\"@(!allowNextStep)\">",
+        "    <form>",
+        "      <PggmFieldset>",
+        "        <PggmFieldsetLabel For=\"dummyInput\">Example input</PggmFieldsetLabel>",
+        "        <PggmInput Id=\"dummyInput\" @bind-Value=\"dummyValue\" />",
+        "      </PggmFieldset>",
+        "    </form>",
+        "  </PggmWizardForm>",
+        "  <PggmWizardForm Label=\"Example Step 2\">",
+        "    <form>",
+        "      <PggmFieldset>",
+        "        <PggmFieldsetLabel For=\"dummyInput2\">Second input</PggmFieldsetLabel>",
+        "        <PggmInput Id=\"dummyInput2\" @bind-Value=\"dummyValue2\" />",
+        "      </PggmFieldset>",
+        "    </form>",
+        "  </PggmWizardForm>",
+        "</PggmWizard>");
+
+    private string wizardFormBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private string dummyValue = string.Empty;",
+        "private string dummyValue2 = string.Empty;",
+        "private bool allowNextStep = true;",
+        "// Bind your inputs to properties and use NextDisabled to block progression.");
 }

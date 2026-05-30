@@ -1,86 +1,91 @@
 
 @page "/pggm-tabs"
+@namespace Pggm.Components.Sample.Pages.Components
+@using Pggm.Components.Sample.Components.ApiDocumentation
 
 <PageTitle>Tabs</PageTitle>
 
 <PggmHeading Level="1">PGGM Tabs</PggmHeading>
 
-<PggmHeading Level="2">Basic Tabs</PggmHeading>
-<PggmTab OnTabChange="OnTabChanged">
-  <PggmTabPanel Title="Tab 1" Active="true">
-    <PggmHeading Level="3">Content for Tab 1</PggmHeading>
-    <p>This is the content for the first tab. It can contain any HTML or Blazor components.</p>
-  </PggmTabPanel>
-  
-  <PggmTabPanel Title="Tab 2">
-    <PggmHeading Level="3">Content for Tab 2</PggmHeading>
-    <p>This is the content for the second tab with different information.</p>
-    <ul>
-      <li>List item 1</li>
-      <li>List item 2</li>
-      <li>List item 3</li>
-    </ul>
-  </PggmTabPanel>
-  
-  <PggmTabPanel Title="Tab 3">
-    <PggmHeading Level="3">Content for Tab 3</PggmHeading>
-    <p>The third tab contains yet another set of content.</p>
-    <button class="btn btn-primary">Sample Button</button>
-  </PggmTabPanel>
-</PggmTab>
+@if (lastEventMessage != null)
+{
+    <div class="event-feedback">
+        <strong>Last tab event:</strong> @lastEventMessage
+    </div>
+}
 
-<PggmHeading Level="2">Multiple Tab Example</PggmHeading>
-<PggmTab OnTabChange="OnMultipleTabChanged">
-  <PggmTabPanel Title="First Tab" Active="true">
-    <p>Content for the first tab.</p>
-  </PggmTabPanel>
-  
-  <PggmTabPanel Title="Second Tab">
-    <p>Content for the second tab.</p>
-  </PggmTabPanel>
-  
-  <PggmTabPanel Title="Third Tab">
-    <p>Content for the third tab.</p>
-  </PggmTabPanel>
-  
-  <PggmTabPanel Title="Fourth Tab">
-    <p>Content for the fourth tab.</p>
-  </PggmTabPanel>
-  
-  <PggmTabPanel Title="Fifth Tab">
-    <p>Content for the fifth tab.</p>
-  </PggmTabPanel>
-  
-  <PggmTabPanel Title="Sixth Tab">
-    <p>Content for the sixth tab.</p>
-  </PggmTabPanel>
-</PggmTab>
+<DemoSection Title="Basic Tabs" Code="@basicTabsSource" CodeBehind="@basicTabsBehind">
+    <Description>
+        <p>Simple three-tab example demonstrating content containers inside <code>&lt;PggmTabPanel&gt;</code>.</p>
+    </Description>
+    <Content>
+        <PggmTab OnTabChange="OnTabChanged">
+            <PggmTabPanel Title="Tab 1" Active="true">
+                <PggmHeading Level="3">Content for Tab 1</PggmHeading>
+                <p>This is the content for the first tab. It can contain any HTML or Blazor components.</p>
+            </PggmTabPanel>
+            <PggmTabPanel Title="Tab 2">
+                <PggmHeading Level="3">Content for Tab 2</PggmHeading>
+                <p>This is the content for the second tab with different information.</p>
+                <ul><li>List item 1</li><li>List item 2</li><li>List item 3</li></ul>
+            </PggmTabPanel>
+            <PggmTabPanel Title="Tab 3">
+                <PggmHeading Level="3">Content for Tab 3</PggmHeading>
+                <p>The third tab contains yet another set of content.</p>
+                <button class="btn btn-primary">Sample Button</button>
+            </PggmTabPanel>
+        </PggmTab>
+    </Content>
+</DemoSection>
 
-<PggmHeading Level="2">Another Tab Example</PggmHeading>
-<PggmTab OnTabChange="OnAnotherTabChanged">
-  <PggmTabPanel Title="Example 1" Active="true">
-    <p>Example tab content 1.</p>
-  </PggmTabPanel>
-  
-  <PggmTabPanel Title="Example 2">
-    <p>Example tab content 2.</p>
-  </PggmTabPanel>
-</PggmTab>
+<DemoSection Title="Multiple Tabs" Code="@multipleTabsSource" CodeBehind="@multipleTabsBehind">
+    <Description>
+        <p>Shows many tabs in a single tabset to demonstrate overflow, wrapping and UI behaviour.</p>
+    </Description>
+    <Content>
+        <PggmTab OnTabChange="OnMultipleTabChanged">
+            <PggmTabPanel Title="First Tab" Active="true"><p>Content for the first tab.</p></PggmTabPanel>
+            <PggmTabPanel Title="Second Tab"><p>Content for the second tab.</p></PggmTabPanel>
+            <PggmTabPanel Title="Third Tab"><p>Content for the third tab.</p></PggmTabPanel>
+            <PggmTabPanel Title="Fourth Tab"><p>Content for the fourth tab.</p></PggmTabPanel>
+            <PggmTabPanel Title="Fifth Tab"><p>Content for the fifth tab.</p></PggmTabPanel>
+            <PggmTabPanel Title="Sixth Tab"><p>Content for the sixth tab.</p></PggmTabPanel>
+        </PggmTab>
+    </Content>
+</DemoSection>
 
-<PggmHeading Level="2">Tab Demo with Panels</PggmHeading>
-<PggmTab OnTabChange="OnDemoTabChanged">
-  <PggmTabPanel Title="Demo Tab 1" Active="true">
-    <p>This is a demo tab with content.</p>
-  </PggmTabPanel>
-  
-  <PggmTabPanel Title="Demo Tab 2">
-    <p>This is another demo tab.</p>
-  </PggmTabPanel>
-  
-  <PggmTabPanel Title="Demo Tab 3">
-    <p>This is the third demo tab.</p>
-  </PggmTabPanel>
-</PggmTab>
+<DemoSection Title="Small Example" Code="@anotherTabsSource" CodeBehind="@anotherTabsBehind">
+    <Description>
+        <p>Compact two-tab example used for simple switches or short flows.</p>
+    </Description>
+    <Content>
+        <PggmTab OnTabChange="OnAnotherTabChanged">
+            <PggmTabPanel Title="Example 1" Active="true"><p>Example tab content 1.</p></PggmTabPanel>
+            <PggmTabPanel Title="Example 2"><p>Example tab content 2.</p></PggmTabPanel>
+        </PggmTab>
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Tab Demo with Panels" Code="@demoTabsSource" CodeBehind="@demoTabsBehind">
+    <Description>
+        <p>Another three-panel demo showing basic panel content and tab change events.</p>
+    </Description>
+    <Content>
+        <PggmTab OnTabChange="OnDemoTabChanged">
+            <PggmTabPanel Title="Demo Tab 1" Active="true"><p>This is a demo tab with content.</p></PggmTabPanel>
+            <PggmTabPanel Title="Demo Tab 2"><p>This is another demo tab.</p></PggmTabPanel>
+            <PggmTabPanel Title="Demo Tab 3"><p>This is the third demo tab.</p></PggmTabPanel>
+        </PggmTab>
+    </Content>
+</DemoSection>
+
+<PggmHeading Level="2">API</PggmHeading>
+
+<PggmHeading Level="3">PggmTab</PggmHeading>
+<ApiDocumentation Properties="tabProperties" Events="tabEvents" />
+
+<PggmHeading Level="3">PggmTabPanel</PggmHeading>
+<ApiDocumentation Properties="tabPanelProperties" />
 
 @* <PggmHeading Level="2">Event Information</PggmHeading>
 <div class="alert alert-info">
@@ -96,28 +101,77 @@
   private int lastMultipleTabIndex = 0;
   private int lastAnotherTabIndex = 0;
   private int lastDemoTabIndex = 0;
+    private string? lastEventMessage;
 
   private void OnTabChanged(int tabIndex)
   {
-    lastBasicTabIndex = tabIndex;
-    StateHasChanged();
+        lastBasicTabIndex = tabIndex;
+        lastEventMessage = $"BasicTabs -> {tabIndex}";
+        StateHasChanged();
   }
 
   private void OnMultipleTabChanged(int tabIndex)
   {
-    lastMultipleTabIndex = tabIndex;
-    StateHasChanged();
+        lastMultipleTabIndex = tabIndex;
+        lastEventMessage = $"MultipleTabs -> {tabIndex}";
+        StateHasChanged();
   }
 
   private void OnAnotherTabChanged(int tabIndex)
   {
-    lastAnotherTabIndex = tabIndex;
-    StateHasChanged();
+        lastAnotherTabIndex = tabIndex;
+        lastEventMessage = $"SmallExample -> {tabIndex}";
+        StateHasChanged();
   }
 
   private void OnDemoTabChanged(int tabIndex)
   {
-    lastDemoTabIndex = tabIndex;
-    StateHasChanged();
+        lastDemoTabIndex = tabIndex;
+        lastEventMessage = $"DemoTabs -> {tabIndex}";
+        StateHasChanged();
   }
+
+    // --- Demo code snippets ---
+    private string basicTabsSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmTab OnTabChange=\"OnTabChanged\">",
+        "  <PggmTabPanel Title=\"Tab 1\" Active=\"true\">...</PggmTabPanel>",
+        "  <PggmTabPanel Title=\"Tab 2\">...</PggmTabPanel>",
+        "  <PggmTabPanel Title=\"Tab 3\">...</PggmTabPanel>",
+        "</PggmTab>");
+
+    private string basicTabsBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private void OnTabChanged(int tabIndex) { /* handle tab change */ }");
+
+    private string multipleTabsSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmTab OnTabChange=\"OnMultipleTabChanged\">...many panels...</PggmTab>");
+
+    private string multipleTabsBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private void OnMultipleTabChanged(int tabIndex) { /* handle tab change */ }");
+
+    private string anotherTabsSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmTab OnTabChange=\"OnAnotherTabChanged\">...two panels...</PggmTab>");
+
+    private string anotherTabsBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private void OnAnotherTabChanged(int tabIndex) { /* handle tab change */ }");
+
+    private string demoTabsSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmTab OnTabChange=\"OnDemoTabChanged\">...panels...</PggmTab>");
+
+    private string demoTabsBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private void OnDemoTabChanged(int tabIndex) { /* handle tab change */ }");
+
+    // --- API data ---
+    private IEnumerable<ApiMember> tabProperties = new[] {
+        new ApiMember { Name = "ActiveIndex", Type = "int?", DefaultValue = "null", Description = "Index of the active tab." },
+        new ApiMember { Name = "OnTabChange", Type = "EventCallback<int>", Description = "Fired when the active tab changes." }
+    };
+
+    private IEnumerable<ApiMember> tabEvents = new[] {
+        new ApiMember { Name = "OnTabChange", Type = "EventCallback<int>", Description = "Fired with the new tab index." }
+    };
+
+    private IEnumerable<ApiMember> tabPanelProperties = new[] {
+        new ApiMember { Name = "Title", Type = "string", DefaultValue = "\"\"", Description = "Tab panel title shown in the tab list." },
+        new ApiMember { Name = "Active", Type = "bool", DefaultValue = "false", Description = "Whether this panel is active on initial render." }
+    };
 }

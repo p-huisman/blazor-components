@@ -1,5 +1,6 @@
 @page "/pggm-tooltip"
 @namespace Pggm.Components.Sample.Pages.Components
+@using Pggm.Components.Sample.Components.ApiDocumentation
 
 <PageTitle>PGGM Tooltip</PageTitle>
 
@@ -7,251 +8,231 @@
 
 <p>The <code>PggmTooltip</code> component provides accessible tooltip functionality with positioning options and various trigger mechanisms.</p>
 
-<div class="demo-section">
-    <PggmHeading Level="2">Basic Usage with Input Fields</PggmHeading>
-    <p>Basic tooltip functionality with form inputs:</p>
-    
-    <div class="form-field">
-        <PggmLabel For="basic-input">Basic Input with Tooltip</PggmLabel>
-        <PggmInput Id="basic-input" @bind-Value="basicValue" />
-        <PggmTooltip For="basic-input">
-            This is a basic tooltip providing additional context for the input field.
-        </PggmTooltip>
-    </div>
-</div>
-
-<div class="demo-section">
-    <PggmHeading Level="2">Position Options</PggmHeading>
-    <p>The tooltip can be positioned in four directions: above, below, before, or after the target element.</p>
-    
-    <div class="position-examples">
-        <div class="position-row">
-            <div class="form-field">
-                <PggmLabel For="above-input">Above Position</PggmLabel>
-                <PggmInput Id="above-input" @bind-Value="aboveValue" />
-                <PggmTooltip For="above-input" Position="above">
-                    This tooltip appears above the input field.
-                </PggmTooltip>
-            </div>
-            
-            <div class="form-field">
-                <PggmLabel For="below-input">Below Position</PggmLabel>
-                <PggmInput Id="below-input" @bind-Value="belowValue" />
-                <PggmTooltip For="below-input" Position="below">
-                    This tooltip appears below the input field.
-                </PggmTooltip>
-            </div>
-        </div>
-        
-        <div class="position-row">
-            <div class="form-field">
-                <PggmLabel For="before-input">Before Position</PggmLabel>
-                <PggmInput Id="before-input" @bind-Value="beforeValue" />
-                <PggmTooltip For="before-input" Position="before">
-                    This tooltip appears before (left of) the input field.
-                </PggmTooltip>
-            </div>
-            
-            <div class="form-field">
-                <PggmLabel For="after-input">After Position</PggmLabel>
-                <PggmInput Id="after-input" @bind-Value="afterValue" />
-                <PggmTooltip For="after-input" Position="after">
-                    This tooltip appears after (right of) the input field.
-                </PggmTooltip>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="demo-section">
-    <PggmHeading Level="2">Button Tooltips</PggmHeading>
-    <p>Tooltips with various button interactions:</p>
-    
-    <div class="button-group">
-        <PggmButton Id="save-button" OnClick="HandleSave">Save</PggmButton>
-        <PggmTooltip For="save-button" Position="above">
-            Save your changes (Ctrl+S)
-        </PggmTooltip>
-        
-        <PggmButton Id="cancel-button" OnClick="HandleCancel">Cancel</PggmButton>
-        <PggmTooltip For="cancel-button" Position="above">
-            Discard changes and return
-        </PggmTooltip>
-        
-        <PggmButton Id="help-button" OnClick="HandleHelp">Help</PggmButton>
-        <PggmTooltip For="help-button" Position="below">
-            Get help and documentation
-        </PggmTooltip>
-    </div>
-</div>
-
-<div class="demo-section">
-    <PggmHeading Level="2">Complex Content Tooltips</PggmHeading>
-    <p>Tooltips can contain rich HTML content including lists and formatting:</p>
-    
-    <div class="form-field">
-        <PggmLabel For="complex-input">Field with Complex Help</PggmLabel>
-        <PggmInput Id="complex-input" @bind-Value="complexValue" />
-        <PggmTooltip For="complex-input" Position="below">
-            <div>
-                <strong>Input Requirements:</strong>
-                <ul>
-                    <li>Must start with a letter</li>
-                    <li>Can contain letters, numbers, and hyphens</li>
-                    <li>Maximum length: 50 characters</li>
-                    <li>No special characters except hyphens</li>
-                </ul>
-                <em>Example: my-valid-input-123</em>
-            </div>
-        </PggmTooltip>
-    </div>
-</div>
-
-<div class="demo-section">
-    <PggmHeading Level="2">Basic Tooltip with Button Trigger</PggmHeading>
-    
-    <PggmButton Id="LumpsumButton" is="pggm-button" Appearance="@ButtonAppearance.Primary">
-        Lumpsum
-    </PggmButton>
-
-    <PggmTooltip For="LumpsumButton" Id="LumpsumTooltip">
-        <p>
-            <strong>Lumpsum</strong> is een bedrag ineens.
-        </p>
-        <p>De financieel gevolgen voor deze pensioenkeuze kunnen nadelig zijn.</p>
-    </PggmTooltip>
-</div>
-
-<div class="demo-section">
-    <PggmHeading Level="2">Tooltip with Span Trigger</PggmHeading>
-    <p>Hover over the <span id="SpanTrigger" tabindex="0"  class="text-decoration-underline text-primary">underlined text</span> to see the tooltip.</p>
-
-    <PggmTooltip For="SpanTrigger" Id="SpanTooltip">
-        <p>This tooltip is triggered by a span element!</p>
-    </PggmTooltip>
-</div>
-
-<div class="demo-section">
-    <PggmHeading Level="2">Multiple Tooltips</PggmHeading>
-    <p>This section demonstrates multiple tooltips on the same page:</p>
-    
-    <div class="mb-3">
-        <PggmButton Id="InfoButton1">
-            Information 1
-        </PggmButton>
-        
-        <PggmButton Id="InfoButton2">
-            Information 2
-        </PggmButton>
-    </div>
-
-    <PggmTooltip For="InfoButton1" Id="InfoTooltip1">
-        <p>This is the first tooltip with some useful information.</p>
-    </PggmTooltip>
-
-    <PggmTooltip For="InfoButton2" Id="InfoTooltip2">
-        <p>This is the second tooltip with different information.</p>
-        <p>It can contain multiple paragraphs and even <strong>formatted text</strong>.</p>
-    </PggmTooltip>
-</div>
-
-<div class="demo-section">
-    <PggmHeading Level="2">Tooltip with Link Trigger</PggmHeading>
-    <p>Click on this <a href="#" is="pggm-link" Id="LinkTrigger">link</a> to see the tooltip.</p>
-
-    <PggmTooltip For="LinkTrigger" Id="LinkTooltip">
-        <p>This tooltip is triggered by a link element.</p>
-        <p>Perfect for providing additional context for links.</p>
-    </PggmTooltip>
-</div>
-
-<div class="demo-section">
-    <PggmHeading Level="2">Toggletip vs Tooltip Comparison</PggmHeading>
-    <p>Toggletips appear only on click and use dialog elements, while tooltips appear on hover/focus using the popover API:</p>
-    
-    <div class="comparison-container">
-        <div class="comparison-item">
-            <h3>Tooltip (Hover/Focus)</h3>
-            <p>Hover or focus on this button to see the tooltip:</p>
-            <PggmButton Id="hover-button">Hover Me</PggmButton>
-            <PggmTooltip For="hover-button" Position="above">
-                This tooltip appears on hover/focus and uses the popover API.
+<DemoSection Title="Basic Usage with Input Fields" Code="@basicSource" CodeBehind="@basicBehind">
+    <Description>
+        <p>Basic tooltip functionality with form inputs.</p>
+    </Description>
+    <Content>
+        <div class="form-field">
+            <PggmLabel For="basic-input">Basic Input with Tooltip</PggmLabel>
+            <PggmInput Id="basic-input" @bind-Value="basicValue" />
+            <PggmTooltip For="basic-input">
+                This is a basic tooltip providing additional context for the input field.
             </PggmTooltip>
         </div>
-        
-        <div class="comparison-item">
-            <h3>Toggletip (Click Only)</h3>
-            <p>Click this button to toggle the toggletip:</p>
-            
-            <PggmButton Id="click-button">Click Me</PggmButton>
-            <PggmToggletip For="click-button" Id="ClickToggletip" Position="above">
-                This toggletip appears only on click and uses a dialog element. Click again to close.
-            </PggmToggletip>
-        </div>
-    </div>
-    
-    <div class="behavior-explanation">
-        <h4>Key Differences:</h4>
-        <ul>
-            <li><strong>Tooltip:</strong> Shows on hover/focus, hides when mouse leaves or focus lost</li>
-            <li><strong>Toggletip:</strong> Shows/hides only on click, stays visible until clicked again or dismissed</li>
-            <li><strong>Implementation:</strong> Tooltip uses <code>&lt;div popover="auto"&gt;</code>, Toggletip uses <code>&lt;dialog&gt;</code> element</li>
-            <li><strong>Use case:</strong> Tooltips for quick help text, Toggletips for interactive content that needs to stay visible</li>
-            <li><strong>Accessibility:</strong> Both provide proper ARIA attributes and keyboard navigation</li>
-        </ul>
-        
-    </div>
-</div>
+    </Content>
+</DemoSection>
 
-<div class="demo-section">
-    <PggmHeading Level="2">Form Integration</PggmHeading>
-    <p>Comprehensive form example with tooltips for all fields:</p>
-    
-    <EditForm Model="formModel" OnValidSubmit="HandleSubmit">
-        <div class="form-row">
-            <div class="form-field">
-                <PggmLabel For="username">Username</PggmLabel>
-                <PggmInput Id="username" @bind-Value="formModel.Username" />
-                <PggmTooltip For="username" Position="after" Id="username-help">
-                    Username must be 3-20 characters and contain only letters, numbers, and underscores.
-                </PggmTooltip>
+<DemoSection Title="Position Options" Code="@positionSource" CodeBehind="@positionBehind">
+    <Description>
+        <p>The tooltip can be positioned in four directions: above, below, before, or after the target element.</p>
+    </Description>
+    <Content>
+        <div class="position-examples">
+            <div class="position-row">
+                <div class="form-field">
+                    <PggmLabel For="above-input">Above Position</PggmLabel>
+                    <PggmInput Id="above-input" @bind-Value="aboveValue" />
+                    <PggmTooltip For="above-input" Position="above">
+                        This tooltip appears above the input field.
+                    </PggmTooltip>
+                </div>
+                
+                <div class="form-field">
+                    <PggmLabel For="below-input">Below Position</PggmLabel>
+                    <PggmInput Id="below-input" @bind-Value="belowValue" />
+                    <PggmTooltip For="below-input" Position="below">
+                        This tooltip appears below the input field.
+                    </PggmTooltip>
+                </div>
             </div>
             
-            <div class="form-field">
-                <PggmLabel For="email">Email Address</PggmLabel>
-                <PggmInput Id="email" Type="email" @bind-Value="formModel.Email" />
-                <PggmTooltip For="email" Position="after" Id="email-help">
-                    Please enter a valid email address (e.g., user@example.com)
-                </PggmTooltip>
+            <div class="position-row">
+                <div class="form-field">
+                    <PggmLabel For="before-input">Before Position</PggmLabel>
+                    <PggmInput Id="before-input" @bind-Value="beforeValue" />
+                    <PggmTooltip For="before-input" Position="before">
+                        This tooltip appears before (left of) the input field.
+                    </PggmTooltip>
+                </div>
+                
+                <div class="form-field">
+                    <PggmLabel For="after-input">After Position</PggmLabel>
+                    <PggmInput Id="after-input" @bind-Value="afterValue" />
+                    <PggmTooltip For="after-input" Position="after">
+                        This tooltip appears after (right of) the input field.
+                    </PggmTooltip>
+                </div>
             </div>
         </div>
-        
-        <div class="form-row">
-            <div class="form-field">
-                <PggmLabel For="password">Password</PggmLabel>
-                <PggmInput Id="password" Type="password" @bind-Value="formModel.Password" />
-                <PggmTooltip For="password" Position="below" Id="password-help">
-                    Password must be at least 8 characters long and contain uppercase, lowercase, and numbers.
-                </PggmTooltip>
-            </div>
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Button Tooltips" Code="@buttonSource" CodeBehind="@buttonBehind">
+    <Description>
+        <p>Tooltips with various button interactions.</p>
+    </Description>
+    <Content>
+        <div class="button-group">
+            <PggmButton Id="save-button" OnClick="HandleSave">Save</PggmButton>
+            <PggmTooltip For="save-button" Position="above">Save your changes (Ctrl+S)</PggmTooltip>
             
-            <div class="form-field">
-                <PggmLabel For="age">Age</PggmLabel>
-                <PggmInput Id="age" Type="number" @bind-Value="formModel.Age" />
-                <PggmTooltip For="age" Position="above" Id="age-help">
-                    Please enter your age in years (must be 18 or older)
-                </PggmTooltip>
-            </div>
+            <PggmButton Id="cancel-button" OnClick="HandleCancel">Cancel</PggmButton>
+            <PggmTooltip For="cancel-button" Position="above">Discard changes and return</PggmTooltip>
+            
+            <PggmButton Id="help-button" OnClick="HandleHelp">Help</PggmButton>
+            <PggmTooltip For="help-button" Position="below">Get help and documentation</PggmTooltip>
         </div>
-        
-        <div class="form-actions">
-            <PggmButton Type="@ButtonType.Submit" Id="submit-form">Create Account</PggmButton>
-            <PggmTooltip For="submit-form" Position="above">
-                All fields must be completed before submission
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Complex Content Tooltips" Code="@complexSource" CodeBehind="@complexBehind">
+    <Description>
+        <p>Tooltips can contain rich HTML content including lists and formatting.</p>
+    </Description>
+    <Content>
+        <div class="form-field">
+            <PggmLabel For="complex-input">Field with Complex Help</PggmLabel>
+            <PggmInput Id="complex-input" @bind-Value="complexValue" />
+            <PggmTooltip For="complex-input" Position="below">
+                <div>
+                    <strong>Input Requirements:</strong>
+                    <ul>
+                        <li>Must start with a letter</li>
+                        <li>Can contain letters, numbers, and hyphens</li>
+                        <li>Maximum length: 50 characters</li>
+                        <li>No special characters except hyphens</li>
+                    </ul>
+                    <em>Example: my-valid-input-123</em>
+                </div>
             </PggmTooltip>
         </div>
-    </EditForm>
-</div>
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Basic Tooltip with Button Trigger" Code="@basicButtonSource" CodeBehind="@basicButtonBehind">
+    <Description>
+        <p>Tooltips can be attached to buttons to explain actions.</p>
+    </Description>
+    <Content>
+        <PggmButton Id="LumpsumButton" is="pggm-button" Appearance="@ButtonAppearance.Primary">Lumpsum</PggmButton>
+        <PggmTooltip For="LumpsumButton" Id="LumpsumTooltip">
+            <p><strong>Lumpsum</strong> is een bedrag ineens.</p>
+            <p>De financieel gevolgen voor deze pensioenkeuze kunnen nadelig zijn.</p>
+        </PggmTooltip>
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Tooltip with Span Trigger" Code="@spanSource" CodeBehind="@spanBehind">
+    <Description>
+        <p>Tooltips can be triggered by any element with an Id, including spans.</p>
+    </Description>
+    <Content>
+        <p>Hover over the <span id="SpanTrigger" tabindex="0"  class="text-decoration-underline text-primary">underlined text</span> to see the tooltip.</p>
+        <PggmTooltip For="SpanTrigger" Id="SpanTooltip"><p>This tooltip is triggered by a span element!</p></PggmTooltip>
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Multiple Tooltips" Code="@multipleSource" CodeBehind="@multipleBehind">
+    <Description>
+        <p>Multiple independent tooltips can coexist on the same page.</p>
+    </Description>
+    <Content>
+        <div class="mb-3">
+            <PggmButton Id="InfoButton1">Information 1</PggmButton>
+            <PggmButton Id="InfoButton2">Information 2</PggmButton>
+        </div>
+
+        <PggmTooltip For="InfoButton1" Id="InfoTooltip1"><p>This is the first tooltip with some useful information.</p></PggmTooltip>
+        <PggmTooltip For="InfoButton2" Id="InfoTooltip2"><p>This is the second tooltip with different information.</p><p>It can contain multiple paragraphs and even <strong>formatted text</strong>.</p></PggmTooltip>
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Tooltip with Link Trigger" Code="@linkSource" CodeBehind="@linkBehind">
+    <Description>
+        <p>Tooltips can be attached to links, useful for inline contextual help.</p>
+    </Description>
+    <Content>
+        <p>Click on this <a href="#" is="pggm-link" Id="LinkTrigger">link</a> to see the tooltip.</p>
+        <PggmTooltip For="LinkTrigger" Id="LinkTooltip"><p>This tooltip is triggered by a link element.</p><p>Perfect for providing additional context for links.</p></PggmTooltip>
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Toggletip vs Tooltip Comparison" Code="@comparisonSource" CodeBehind="@comparisonBehind">
+    <Description>
+        <p>Toggletips appear on click (dialog), tooltips appear on hover/focus (popover).</p>
+    </Description>
+    <Content>
+        <div class="comparison-container">
+            <div class="comparison-item">
+                <h3>Tooltip (Hover/Focus)</h3>
+                <p>Hover or focus on this button to see the tooltip:</p>
+                <PggmButton Id="hover-button">Hover Me</PggmButton>
+                <PggmTooltip For="hover-button" Position="above">This tooltip appears on hover/focus and uses the popover API.</PggmTooltip>
+            </div>
+            
+            <div class="comparison-item">
+                <h3>Toggletip (Click Only)</h3>
+                <p>Click this button to toggle the toggletip:</p>
+                <PggmButton Id="click-button">Click Me</PggmButton>
+                <PggmToggletip For="click-button" Id="ClickToggletip" Position="above">This toggletip appears only on click and uses a dialog element. Click again to close.</PggmToggletip>
+            </div>
+        </div>
+
+        <div class="behavior-explanation">
+            <h4>Key Differences:</h4>
+            <ul>
+                <li><strong>Tooltip:</strong> Shows on hover/focus, hides when mouse leaves or focus lost</li>
+                <li><strong>Toggletip:</strong> Shows/hides only on click, stays visible until clicked again or dismissed</li>
+                <li><strong>Implementation:</strong> Tooltip uses <code>&lt;div popover="auto"&gt;</code>, Toggletip uses <code>&lt;dialog&gt;</code> element</li>
+                <li><strong>Use case:</strong> Tooltips for quick help text, Toggletips for interactive content that needs to stay visible</li>
+                <li><strong>Accessibility:</strong> Both provide proper ARIA attributes and keyboard navigation</li>
+            </ul>
+        </div>
+    </Content>
+</DemoSection>
+
+<DemoSection Title="Form Integration" Code="@formSource" CodeBehind="@formBehind">
+    <Description>
+        <p>Comprehensive form example with tooltips for all fields. Useful reference for integrating tooltips into forms.</p>
+    </Description>
+    <Content>
+        <EditForm Model="formModel" OnValidSubmit="HandleSubmit">
+            <div class="form-row">
+                <div class="form-field">
+                    <PggmLabel For="username">Username</PggmLabel>
+                    <PggmInput Id="username" @bind-Value="formModel.Username" />
+                    <PggmTooltip For="username" Position="after" Id="username-help">Username must be 3-20 characters and contain only letters, numbers, and underscores.</PggmTooltip>
+                </div>
+                
+                <div class="form-field">
+                    <PggmLabel For="email">Email Address</PggmLabel>
+                    <PggmInput Id="email" Type="email" @bind-Value="formModel.Email" />
+                    <PggmTooltip For="email" Position="after" Id="email-help">Please enter a valid email address (e.g., user@example.com)</PggmTooltip>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-field">
+                    <PggmLabel For="password">Password</PggmLabel>
+                    <PggmInput Id="password" Type="password" @bind-Value="formModel.Password" />
+                    <PggmTooltip For="password" Position="below" Id="password-help">Password must be at least 8 characters long and contain uppercase, lowercase, and numbers.</PggmTooltip>
+                </div>
+                
+                <div class="form-field">
+                    <PggmLabel For="age">Age</PggmLabel>
+                    <PggmInput Id="age" Type="number" @bind-Value="formModel.Age" />
+                    <PggmTooltip For="age" Position="above" Id="age-help">Please enter your age in years (must be 18 or older)</PggmTooltip>
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <PggmButton Type="@ButtonType.Submit" Id="submit-form">Create Account</PggmButton>
+                <PggmTooltip For="submit-form" Position="above">All fields must be completed before submission</PggmTooltip>
+            </div>
+        </EditForm>
+    </Content>
+</DemoSection>
 
 <style>
     .demo-section {
@@ -359,6 +340,14 @@
     }
 </style>
 
+<PggmHeading Level="2">API</PggmHeading>
+
+<PggmHeading Level="3">PggmTooltip</PggmHeading>
+<ApiDocumentation Properties="tooltipProperties" Events="tooltipEvents" />
+
+<PggmHeading Level="3">PggmToggletip</PggmHeading>
+<ApiDocumentation Properties="toggletipProperties" Events="toggletipEvents" />
+
 @code {
     // Basic input field values
     private string basicValue = "";
@@ -405,4 +394,103 @@
         public string Password { get; set; } = "";
         public string Age { get; set; } = "";
     }
+
+    // --- Demo code snippets used by DemoSection Code/CodeBehind ---
+    private string basicSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmLabel For=\"basic-input\">Basic Input with Tooltip</PggmLabel>",
+        "<PggmInput Id=\"basic-input\" @bind-Value=\"basicValue\" />",
+        "<PggmTooltip For=\"basic-input\">This is a basic tooltip providing additional context for the input field.</PggmTooltip>");
+
+    private string basicBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private string basicValue = \"\";",
+        "// Bind a PggmInput to a property and attach PggmTooltip via Id");
+
+    private string positionSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmTooltip For=\"above-input\" Position=\"above\">This tooltip appears above the input field.</PggmTooltip>",
+        "<PggmTooltip For=\"below-input\" Position=\"below\">This tooltip appears below the input field.</PggmTooltip>");
+
+    private string positionBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private string aboveValue = \"\";",
+        "private string belowValue = \"\";",
+        "// Use Position attribute to control placement: above|below|before|after");
+
+    private string buttonSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmButton Id=\"save-button\">Save</PggmButton>",
+        "<PggmTooltip For=\"save-button\">Save your changes (Ctrl+S)</PggmTooltip>");
+
+    private string buttonBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private void HandleSave() { /* handle save */ }");
+
+    private string complexSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmTooltip For=\"complex-input\">",
+        "  <div><strong>Input Requirements:</strong><ul><li>Must start with a letter</li></ul></div>",
+        "</PggmTooltip>");
+
+    private string complexBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "private string complexValue = \"\";",
+        "// Tooltips accept RenderFragment with arbitrary markup.");
+
+    private string basicButtonSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmButton Id=\"LumpsumButton\">Lumpsum</PggmButton>",
+        "<PggmTooltip For=\"LumpsumButton\">...markup...</PggmTooltip>");
+
+    private string basicButtonBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "// Attach tooltip to any element by Id");
+
+    private string spanSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<span id=\"SpanTrigger\">underlined text</span>",
+        "<PggmTooltip For=\"SpanTrigger\">This tooltip is triggered by a span element!</PggmTooltip>");
+
+    private string spanBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "// Any element with an Id can be targeted by PggmTooltip");
+
+    private string multipleSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmButton Id=\"InfoButton1\">Information 1</PggmButton>",
+        "<PggmButton Id=\"InfoButton2\">Information 2</PggmButton>");
+
+    private string multipleBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "// Multiple tooltips can exist independently");
+
+    private string linkSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<a href=\"#\" is=\"pggm-link\" Id=\"LinkTrigger\">link</a>",
+        "<PggmTooltip For=\"LinkTrigger\">Inline help for links</PggmTooltip>");
+
+    private string linkBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "// Attach tooltip to anchors for contextual help");
+
+    private string comparisonSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<PggmTooltip For=\"hover-button\">Tooltip (hover)</PggmTooltip>",
+        "<PggmToggletip For=\"click-button\">Toggletip (click)</PggmToggletip>");
+
+    private string comparisonBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "// Tooltip: hover/focus. Toggletip: click/dialog.");
+
+    private string formSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "<EditForm Model=\"formModel\">...form markup with PggmTooltip...</EditForm>");
+
+    private string formBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
+        "public class FormModel { public string Username { get; set; } = \"\"; }");
+
+    // --- API documentation data ---
+    private IEnumerable<ApiMember> tooltipProperties = new[] {
+        new ApiMember { Name = "For", Type = "string", DefaultValue = "\"\"", Description = "Id of the target element." },
+        new ApiMember { Name = "Position", Type = "string", DefaultValue = "\"above\"", Description = "Placement: above|below|before|after." },
+        new ApiMember { Name = "Id", Type = "string?", DefaultValue = "null", Description = "Optional Id for the tooltip element." }
+    };
+
+    private IEnumerable<ApiMember> tooltipEvents = new[] {
+        new ApiMember { Name = "OnShow", Type = "EventCallback", Description = "Fired when tooltip becomes visible." },
+        new ApiMember { Name = "OnHide", Type = "EventCallback", Description = "Fired when tooltip is hidden." }
+    };
+
+    private IEnumerable<ApiMember> toggletipProperties = new[] {
+        new ApiMember { Name = "For", Type = "string", DefaultValue = "\"\"", Description = "Id of the target element for toggletip." },
+        new ApiMember { Name = "Position", Type = "string", DefaultValue = "\"above\"", Description = "Placement for toggletip." }
+    };
+
+    private IEnumerable<ApiMember> toggletipEvents = new[] {
+        new ApiMember { Name = "OnOpen", Type = "EventCallback", Description = "Fired when toggletip opens." },
+        new ApiMember { Name = "OnClose", Type = "EventCallback", Description = "Fired when toggletip closes." }
+    };
 }
+
