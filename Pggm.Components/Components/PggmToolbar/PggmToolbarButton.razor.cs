@@ -17,11 +17,12 @@ public partial class PggmToolbarButton : ComponentBase
         get
         {
             var isIconOnly = IconOnly || (Button?.IconOnly ?? false);
-            return isIconOnly
-                ? new Dictionary<string, object> { ["icon-only"] = string.Empty }
-                : null;
+            return isIconOnly ? s_iconOnlyAttributes : null;
         }
     }
+
+    private static readonly IReadOnlyDictionary<string, object> s_iconOnlyAttributes =
+        new Dictionary<string, object> { ["icon-only"] = string.Empty };
 
     private async Task HandleClick()
     {

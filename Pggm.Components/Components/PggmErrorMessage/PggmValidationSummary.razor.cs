@@ -17,6 +17,7 @@ public partial class PggmValidationSummary : ComponentBase, IAsyncDisposable
     private bool _submitted;
     private List<MessageInfo> _visibleMessages { get; set; } = new();
     private sealed record MessageInfo(string? For, string Text);
+    private readonly Dictionary<string, object> _attributeCache = new();
 
     protected override void OnInitialized()
     {
@@ -51,10 +52,10 @@ public partial class PggmValidationSummary : ComponentBase, IAsyncDisposable
 
     protected Dictionary<string, object> GetAttributes()
     {
-        var attrs = new Dictionary<string, object>();
+        _attributeCache.Clear();
         // Only mark visible after the user attempted to submit the form.
-        if (_submitted && _messages.Any()) attrs["visible"] = "visible";
-        return attrs;
+        if (_submitted && _messages.Any()) _attributeCache["visible"] = "visible";
+        return _attributeCache;
     }
 
     public async ValueTask DisposeAsync()

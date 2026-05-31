@@ -43,6 +43,9 @@ public abstract class PggmComponentBase : ComponentBase, IPggmComponent
     /// </summary>
     public ElementReference ElementRef { get; protected set; }
 
+    // Reuse a single dictionary instance to reduce allocations during rendering.
+    private readonly Dictionary<string, object> _attributeCache = new();
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -70,28 +73,28 @@ public abstract class PggmComponentBase : ComponentBase, IPggmComponent
     /// </summary>
     protected virtual Dictionary<string, object> GetAttributes()
     {
-        var attributes = new Dictionary<string, object>();
+        _attributeCache.Clear();
 
         // Add CSS classes
         var cssClasses = AttributeHelper.MergeCssClasses(CssClass, GetDefaultCssClasses());
         if (!string.IsNullOrEmpty(cssClasses))
         {
-            attributes["class"] = cssClasses;
+            _attributeCache["class"] = cssClasses;
         }
 
         // Add component-specific attributes
-        AddComponentAttributes(attributes);
+        AddComponentAttributes(_attributeCache);
 
         // Add additional attributes (these take precedence)
         if (AdditionalAttributes != null)
         {
             foreach (var attr in AdditionalAttributes)
             {
-                attributes[attr.Key] = attr.Value;
+                _attributeCache[attr.Key] = attr.Value;
             }
         }
 
-        return attributes;
+        return _attributeCache;
     }
 
     /// <summary>

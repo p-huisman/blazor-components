@@ -10,16 +10,10 @@ public partial class PggmToolbarDropdown : ComponentBase
     public Pggm.Components.Components.PggmToolbar.PggmToolbarDropdownState? Dropdown { get; set; }
 
     private bool IsIconOnly => Dropdown?.IconOnly ?? false;
+    private static readonly IReadOnlyDictionary<string, object> s_iconOnlyAttributes =
+        new Dictionary<string, object> { ["icon-only"] = string.Empty };
 
-    private IReadOnlyDictionary<string, object>? IconOnlyAttributes
-    {
-        get
-        {
-            return IsIconOnly
-                ? new Dictionary<string, object> { ["icon-only"] = string.Empty }
-                : null;
-        }
-    }
+    private IReadOnlyDictionary<string, object>? IconOnlyAttributes => IsIconOnly ? s_iconOnlyAttributes : null;
 
     private async Task HandleItemClick(Pggm.Components.Components.PggmToolbar.PggmToolbarDropdownItemState item)
     {

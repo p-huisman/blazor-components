@@ -32,17 +32,24 @@ namespace Pggm.Components.Base
         /// Returns the attributes to be rendered on the element (override in derived classes)
         /// Merges captured AdditionalAttributes by default so unmatched attributes are rendered.
         /// </summary>
+        // Reuse a dictionary instance to avoid per-render allocations.
+        private readonly Dictionary<string, object> _attributeCache = new();
+
         protected virtual Dictionary<string, object> GetAttributes()
         {
-            var attrs = new Dictionary<string, object>();
+            _attributeCache.Clear();
             if (AdditionalAttributes != null)
             {
                 foreach (var kv in AdditionalAttributes)
                 {
-                    attrs[kv.Key] = kv.Value!;
+                    // AdditionalAttributes values are allowed to be null; ensure non-null reference
+                    if (kv.Value != null)
+                        _attributeCache[kv.Key] = kv.Value!;
+                    else
+                        _attributeCache[kv.Key] = string.Empty;
                 }
             }
-            return attrs;
+            return _attributeCache;
         }
 
         /// <summary>

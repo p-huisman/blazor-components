@@ -211,6 +211,8 @@ public partial class PggmWizard : PggmEventComponentBase
             return await JSRuntime.InvokeAsync<Dictionary<string, object>>("eval",
                 $"Object.fromEntries(document.getElementById('{ElementRef.Id}').formData)");
         }
-        return new Dictionary<string, object>();
+        return s_emptyDict;
     }
+
+    private static readonly Dictionary<string, object> s_emptyDict = new();
 }

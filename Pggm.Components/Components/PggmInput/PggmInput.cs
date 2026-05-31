@@ -10,6 +10,8 @@ namespace Pggm.Components
 
     public class PggmInput : PggmEventComponentInputBase<string>
     {
+        // Reuse a dictionary to avoid allocating on every render.
+        private readonly Dictionary<string, object> _attributeCache = new(StringComparer.OrdinalIgnoreCase);
         private readonly string _dummyValueBacking = string.Empty;
         private string _internalValueBacking = string.Empty;
         private string? _lastValueParameter;
@@ -109,13 +111,13 @@ namespace Pggm.Components
 
         private IDictionary<string, object> BuildAttributes(bool inEditForm)
         {
-            var attrs = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
-            AddAdditionalAttributes(attrs);
-            AddIdentityAttributes(attrs);
-            AddValidationAttributes(attrs, inEditForm);
-            AddStateAttributes(attrs);
-            AddInputHandler(attrs);
-            return attrs;
+            _attributeCache.Clear();
+            AddAdditionalAttributes(_attributeCache);
+            AddIdentityAttributes(_attributeCache);
+            AddValidationAttributes(_attributeCache, inEditForm);
+            AddStateAttributes(_attributeCache);
+            AddInputHandler(_attributeCache);
+            return _attributeCache;
         }
 
         private void AddAdditionalAttributes(IDictionary<string, object> attrs)
