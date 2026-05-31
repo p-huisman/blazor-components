@@ -2,16 +2,15 @@ using System.Linq.Expressions;
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using Microsoft.Extensions.Logging;
+using Pggm.Components.Base;
 
 namespace Pggm.Components;
 
-public partial class PggmCheckbox : Microsoft.AspNetCore.Components.Forms.InputBase<bool>, IAsyncDisposable
+public partial class PggmCheckbox : PggmEventComponentInputBase<bool>
 {
     private DotNetObjectReference<PggmCheckbox>? _dotNetRef;
-
-    [Inject] private IJSRuntime JSRuntime { get; set; } = default!;
-
-    public ElementReference ElementRef { get; set; }
+    // ElementRef, JSRuntime and Logger are provided by the base class.
 
     [Parameter] public string? Name { get; set; }
     [Parameter] public bool Disabled { get; set; }
@@ -41,7 +40,7 @@ public partial class PggmCheckbox : Microsoft.AspNetCore.Components.Forms.InputB
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Failed to add event listeners: {ex.Message}");
+                Logger?.LogError(ex, "Failed to add event listeners.");
             }
 
             if (EditContext is not null)
@@ -69,7 +68,7 @@ public partial class PggmCheckbox : Microsoft.AspNetCore.Components.Forms.InputB
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Failed to read checked property: {ex.Message}");
+            Logger?.LogError(ex, "Failed to read checked property.");
             return;
         }
         CurrentValue = isChecked;
@@ -84,7 +83,7 @@ public partial class PggmCheckbox : Microsoft.AspNetCore.Components.Forms.InputB
         return Task.CompletedTask;
     }
 
-    public async ValueTask DisposeAsync()
+    public override async ValueTask DisposeAsync()
     {
         if (_dotNetRef is not null)
         {
@@ -100,6 +99,8 @@ public partial class PggmCheckbox : Microsoft.AspNetCore.Components.Forms.InputB
             _dotNetRef.Dispose();
             _dotNetRef = null;
         }
+
+        await base.DisposeAsync();
     }
 
     protected override bool TryParseValueFromString(string? value, out bool result, out string validationErrorMessage)

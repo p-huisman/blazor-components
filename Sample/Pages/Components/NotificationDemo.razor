@@ -9,25 +9,25 @@
 <DemoSection Title="Notification Types" Code="@notificationTypesSource" CodeBehind="@notificationTypesBehind">
   
   <div class="notification-examples">
-    <PggmNotification Open=true Type="@PggmNotification.NotificationTypes.Informative">
+    <PggmNotification Open=true Type="@PggmNotification.NotificationTypes.Informative" CloseLabel="Close">
       <PggmNotificationTitle>This is an Informative Notification</PggmNotificationTitle>
       This is an informative notification message with useful information for the user.
       <a slot="action" href="#">Learn more</a>
     </PggmNotification>
 
-    <PggmNotification Open=true Type="@PggmNotification.NotificationTypes.Warning">
+    <PggmNotification Open=true Type="@PggmNotification.NotificationTypes.Warning" CloseLabel="Close">
       <PggmNotificationTitle>This is a Warning Notification</PggmNotificationTitle>
       This is a warning notification message that requires attention.
       <a slot="action" href="#">Learn more</a>
     </PggmNotification>
 
-    <PggmNotification Open=true Type="@PggmNotification.NotificationTypes.Error">
+    <PggmNotification Open=true Type="@PggmNotification.NotificationTypes.Error" CloseLabel="Close">
       <PggmNotificationTitle>This is an Error Notification</PggmNotificationTitle>
       This is an error notification message indicating something went wrong.
       <a slot="action" href="#">Learn more</a>
     </PggmNotification>
 
-    <PggmNotification Open=true Type="@PggmNotification.NotificationTypes.Success">
+    <PggmNotification Open=true Type="@PggmNotification.NotificationTypes.Success" CloseLabel="Close">
       <PggmNotificationTitle>This is a Success Notification</PggmNotificationTitle>
       This is a success notification message confirming a successful action.
       <a slot="action" href="#">Learn more</a>

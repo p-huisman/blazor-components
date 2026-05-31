@@ -16,7 +16,7 @@ public partial class PggmAvatarGroup : PggmComponentBase
     /// <summary>
     /// Accessible label for the avatar group
     /// </summary>
-    [Parameter] public string? Label { get; set; }
+    [Parameter, EditorRequired] public string? Label { get; set; }
 
     protected override async Task InitializeWebComponentAsync()
     {

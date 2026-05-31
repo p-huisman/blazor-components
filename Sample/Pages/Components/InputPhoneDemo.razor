@@ -16,7 +16,7 @@
     <Content>
         <PggmFieldset>
             <PggmLabel slot="label" For="phone1">Basic Phone Input:</PggmLabel>
-            <PggmInputPhone @bind-Value="@phoneValue1" InitialCountry="NL" Name="phone1" Id="phone1" />
+            <PggmInputPhone @bind-Value="@phoneValue1" InitialCountry="NL" Name="phone1" Id="phone1" CountryLabel="Land" />
             <p slot="description">Current value: @phoneValue1</p>
         </PggmFieldset>
 
@@ -24,7 +24,7 @@
             <PggmLabel slot="label" For="phone2">Mobile Numbers Only:</PggmLabel>
             <PggmErrorMessage slot="error" For="phone2" Validity="@PggmErrorMessage.ValidityStates.TypeMismatch">Vul een geldig mobiel nummer in</PggmErrorMessage>  
             <PggmInputPhone @bind-Value="@phoneValue2" InitialCountry="NL" PhoneNumberType="@PggmInputPhone.PhoneNumberTypes.Mobile" 
-                Name="phone2" Id="phone2" />
+                Name="phone2" Id="phone2" CountryLabel="Land" />
             <p slot="description">Current value: @phoneValue2</p>
             <small slot="description">Only mobile numbers are valid</small>
         </PggmFieldset>
@@ -33,21 +33,21 @@
             <PggmLabel slot="label" For="phone3">Fixed Line or Mobile:</PggmLabel>
             <PggmErrorMessage slot="error" For="phone3" Validity="@PggmErrorMessage.ValidityStates.TypeMismatch">Vul een geldig vast of mobiel nummer in</PggmErrorMessage>
             <PggmInputPhone @bind-Value="@phoneValue3" InitialCountry="NL" PhoneNumberType="@PggmInputPhone.PhoneNumberTypes.FixedLineOrMobile"
-                TopCountries="NL,BE,DE,FR" Name="phone3" Id="phone3" />
+                TopCountries="NL,BE,DE,FR" Name="phone3" Id="phone3" CountryLabel="Land" />
             <p slot="description">Current value: @phoneValue3</p>
             <small slot="description">Both fixed line and mobile numbers are valid</small>
         </PggmFieldset>
 
         <PggmFieldset>
             <PggmLabel slot="label" For="phone4">Disabled Phone Input:</PggmLabel>
-            <PggmInputPhone Value="+31 6 12345678" InitialCountry="NL" Disabled="true" Name="phone4" Id="phone4" />
+            <PggmInputPhone Value="+31 6 12345678" InitialCountry="NL" Disabled="true" Name="phone4" Id="phone4" CountryLabel="Land" />
         </PggmFieldset>
 
         <PggmFieldset>
             <PggmLabel slot="label" For="phone5">Phone with Event Handling:</PggmLabel>
             <PggmInputPhone @bind-Value="@phoneValue5" InitialCountry="NL" 
                 OnInput="@OnPhoneInput" OnChange="@OnPhoneChange" OnFocus="@OnPhoneFocus" OnBlur="@OnPhoneBlur"
-                Name="phone5" Id="phone5" />
+                Name="phone5" Id="phone5" CountryLabel="Land" />
             <p slot="description">Current value: @phoneValue5</p>
             @if (!string.IsNullOrEmpty(eventMessage))
             {
@@ -69,13 +69,13 @@
             </PggmValidationSummary>
             <PggmFieldset>
                 <PggmLabel slot="label" For="phoneForm">Phone Number:</PggmLabel>
-                <PggmInputPhone @bind-Value="@formModel.Phone" InitialCountry="NL" Required Name="phoneForm" Id="phoneForm" />
+                <PggmInputPhone @bind-Value="@formModel.Phone" InitialCountry="NL" Required Name="phoneForm" Id="phoneForm" CountryLabel="Land" />
                 <PggmValidationMessage slot="error"  For="() => formModel.Phone" />
             </PggmFieldset>
             <PggmFieldset>
                 <PggmLabel slot="label" For="mobileForm">Mobile Number Only:</PggmLabel>
                 <PggmInputPhone @bind-Value="@formModel.Mobile" InitialCountry="NL" 
-                    PhoneNumberType="@PggmInputPhone.PhoneNumberTypes.Mobile" Required Name="mobileForm" Id="mobileForm" />
+                    PhoneNumberType="@PggmInputPhone.PhoneNumberTypes.Mobile" Required Name="mobileForm" Id="mobileForm" CountryLabel="Land" />
                 <PggmValidationMessage slot="error"  For="() => formModel.Mobile" />
             </PggmFieldset>
             <PggmButton Type="@ButtonType.Submit">Submit</PggmButton>

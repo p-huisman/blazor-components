@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
+using Microsoft.Extensions.Logging;
 
 using Pggm.Components.Base;
 using Pggm.Components.Constants;
@@ -24,7 +25,7 @@ public partial class PggmInputBsn : PggmEventComponentInputBase<string>
     /// <summary>
     /// Placeholder text for the BSN input
     /// </summary>
-    [Parameter] public string? Placeholder { get; set; }
+    [Parameter, EditorRequired] public string? Placeholder { get; set; }
 
     /// <summary>
     /// Optional child content to render inside the web component
@@ -246,8 +247,9 @@ public partial class PggmInputBsn : PggmEventComponentInputBase<string>
         {
             return await JSRuntime.InvokeAsync<bool>("PggmComponents.getValidity", ElementRef, "customError");
         }
-        catch
+        catch (Exception ex)
         {
+            Logger?.LogDebug(ex, "Non-fatal JS interop error getting BSN validity");
             return false;
         }
     }
@@ -258,8 +260,9 @@ public partial class PggmInputBsn : PggmEventComponentInputBase<string>
         {
             return await JSRuntime.InvokeAsync<string>("PggmComponents.getProperty", ElementRef, "value");
         }
-        catch
+        catch (Exception ex)
         {
+            Logger?.LogDebug(ex, "Non-fatal JS interop error reading BSN value");
             return CurrentValue;
         }
     }
@@ -310,7 +313,10 @@ public partial class PggmInputBsn : PggmEventComponentInputBase<string>
             {
                 await JSRuntime.InvokeVoidAsync("PggmComponents.disableNativeFormValidation", ElementRef);
             }
-            catch { /* JS not ready — non-fatal */ }
+            catch (Exception ex)
+            {
+                Logger?.LogDebug(ex, "Non-fatal JS interop error disabling native form validation in PggmInputBsn");
+            }
         }
 
         if (CurrentValue != _lastSyncedValue)
@@ -323,9 +329,9 @@ public partial class PggmInputBsn : PggmEventComponentInputBase<string>
                     _lastSyncedValue = CurrentValue;
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                // Ignore errors during sync
+                Logger?.LogDebug(ex, "Non-fatal JS interop error syncing BSN value");
             }
         }
     }

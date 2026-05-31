@@ -11,7 +11,7 @@ public partial class PggmAvatar : PggmComponentBase
     /// <summary>
     /// Accessible label for the avatar (maps to the aria-label via the web component)
     /// </summary>
-    [Parameter] public string? Label { get; set; }
+    [Parameter, EditorRequired] public string? Label { get; set; }
 
     /// <summary>
     /// Alternative text for the avatar image

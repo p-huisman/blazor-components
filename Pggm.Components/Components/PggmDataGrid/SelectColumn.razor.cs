@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.Logging;
 
 namespace Pggm.Components.Components.PggmDataGrid
 {
@@ -24,20 +25,34 @@ namespace Pggm.Components.Components.PggmDataGrid
         // Prevents SelectionChanged from echoing back to the parent when we ourselves caused the change.
         private bool _updatingFromParent;
 
-        private async void OnInternalSelectionChanged()
+        [Inject]
+        private ILogger<SelectColumn<TGridItem>> Logger { get; set; } = null!;
+
+        private void OnInternalSelectionChanged()
         {
             if (_updatingFromParent) return;
+            _ = HandleInternalSelectionChangedAsync();
+        }
 
-            var snapshot = InternalGridContext.SelectedItems.ToList();
+        private async Task HandleInternalSelectionChangedAsync()
+        {
+            try
+            {
+                var snapshot = InternalGridContext.SelectedItems.ToList();
 
-            // Pre-record the snapshot so OnParametersSet (triggered by the @bind callback re-render)
-            // recognises the reference and skips a redundant SetSelectedItems call.
-            _appliedSelectedItems = snapshot;
+                // Pre-record the snapshot so OnParametersSet (triggered by the @bind callback re-render)
+                // recognises the reference and skips a redundant SetSelectedItems call.
+                _appliedSelectedItems = snapshot;
 
-            if (SelectedItemsChanged.HasDelegate)
-                await SelectedItemsChanged.InvokeAsync(snapshot);
+                if (SelectedItemsChanged.HasDelegate)
+                    await SelectedItemsChanged.InvokeAsync(snapshot);
 
-            await InvokeAsync(StateHasChanged);
+                await InvokeAsync(StateHasChanged);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Error handling internal selection change.");
+            }
         }
 
         public override IGridSort<TGridItem>? SortBy { get; set; }

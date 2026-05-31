@@ -23,7 +23,7 @@ public partial class PggmDrawer : PggmEventComponentBase
     /// <summary>
     /// The label shown in the drawer header.
     /// </summary>
-    [Parameter] public string? Label { get; set; }
+    [Parameter, EditorRequired] public string? Label { get; set; }
 
     /// <summary>
     /// The placement of the drawer panel.

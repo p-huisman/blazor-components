@@ -62,7 +62,7 @@ public partial class PggmCombobox<TOption> : PggmEventComponentInputBase<string>
     [Parameter] public string? Id { get; set; }
 
     /// <summary>Placeholder text shown when nothing is selected.</summary>
-    [Parameter] public string? Placeholder { get; set; }
+    [Parameter, EditorRequired] public string? Placeholder { get; set; }
 
     /// <summary>When true the dropdown panel is open.</summary>
     [Parameter] public bool Open { get; set; }

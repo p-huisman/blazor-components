@@ -17,7 +17,7 @@ public sealed record PaginatorSummaryContext(int FirstItem, int LastItem, int To
 /// </code>
 /// where <c>_pagination</c> is also passed to the grid as <c>Pagination="@_pagination"</c>.
 /// </summary>
-public partial class PggmPaginator : ComponentBase, IDisposable
+public partial class PggmPaginator : ComponentBase, IAsyncDisposable
 {
     private readonly string _pageSizeSelectId = $"pggm-paginator-ps-{Guid.NewGuid():N}";
     private PaginationState? _subscribedState;
@@ -157,5 +157,9 @@ public partial class PggmPaginator : ComponentBase, IDisposable
         }
     }
 
-    public void Dispose() => Unsubscribe();
+    public ValueTask DisposeAsync()
+    {
+        Unsubscribe();
+        return ValueTask.CompletedTask;
+    }
 }

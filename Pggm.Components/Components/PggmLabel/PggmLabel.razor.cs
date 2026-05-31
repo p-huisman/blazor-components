@@ -11,7 +11,7 @@ public partial class PggmLabel : PggmComponentBase
     /// <summary>
     /// The for attribute - associates the label with a form control
     /// </summary>
-    [Parameter] public string? For { get; set; }
+    [Parameter, EditorRequired] public string? For { get; set; }
 
     /// <summary>
     /// Override to prevent CSS classes from being applied

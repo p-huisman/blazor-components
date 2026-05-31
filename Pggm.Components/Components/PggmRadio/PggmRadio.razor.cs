@@ -2,17 +2,17 @@ using System.Linq.Expressions;
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using Microsoft.Extensions.Logging;
+using Pggm.Components.Base;
 
 namespace Pggm.Components;
 
-public partial class PggmRadio : Microsoft.AspNetCore.Components.Forms.InputBase<string>, IAsyncDisposable
+public partial class PggmRadio : PggmEventComponentInputBase<string>
 {
     private DotNetObjectReference<PggmRadio>? _dotNetRef;
+    // ElementRef, JSRuntime and Logger are provided by the base class.
 
-    [Inject] private IJSRuntime JSRuntime { get; set; } = default!;
-
-    public ElementReference ElementRef { get; set; }
-
+    [EditorRequired]
     [Parameter] public string? RadioValue { get; set; }
     [Parameter] public string? Name { get; set; }
     [Parameter] public bool Disabled { get; set; }
@@ -43,7 +43,7 @@ public partial class PggmRadio : Microsoft.AspNetCore.Components.Forms.InputBase
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Failed to add event listeners: {ex.Message}");
+                Logger?.LogError(ex, "Failed to add event listeners.");
             }
 
             if (EditContext is not null)
@@ -71,7 +71,7 @@ public partial class PggmRadio : Microsoft.AspNetCore.Components.Forms.InputBase
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Failed to read checked property: {ex.Message}");
+            Logger?.LogError(ex, "Failed to read checked property.");
             return;
         }
         if (isChecked)
@@ -89,7 +89,7 @@ public partial class PggmRadio : Microsoft.AspNetCore.Components.Forms.InputBase
         return Task.CompletedTask;
     }
 
-    public async ValueTask DisposeAsync()
+    public override async ValueTask DisposeAsync()
     {
         if (_dotNetRef is not null)
         {
@@ -105,6 +105,8 @@ public partial class PggmRadio : Microsoft.AspNetCore.Components.Forms.InputBase
             _dotNetRef.Dispose();
             _dotNetRef = null;
         }
+
+        await base.DisposeAsync();
     }
 
     protected override bool TryParseValueFromString(string? value, out string result, out string validationErrorMessage)

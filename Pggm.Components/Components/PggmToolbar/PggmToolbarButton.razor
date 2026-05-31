@@ -2,18 +2,21 @@
 @using Pggm.Components.Components.PggmToolbar
 @using Pggm.Components.Constants
 
-@if (Button?.Visible == true)
+@{
+    var button = Button;
+}
+@if (button is { Visible: true } b)
 {
     <button is="pggm-button" 
         type="button" 
         appearance="secondary" 
         size="medium" 
-        disabled="@Button.Disabled" @onclick="HandleClick" @attributes="IconOnlyAttributes">
-        @if (!string.IsNullOrEmpty(Button.Icon))
-        {
-            @if (Button.Icon == "circle-plus")
+        disabled="@button.Disabled" @onclick="HandleClick" @attributes="IconOnlyAttributes">
+            @if (!string.IsNullOrEmpty(b.Icon))
             {
-                <PggmIcon Size="@ComponentValues.IconSize.Small">
+                @if (b.Icon == "circle-plus")
+                {
+                    <PggmIcon Icon="@b.Icon" Size="@ComponentValues.IconSize.Small">
                     <svg slot="svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                          stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
                          class="icon icon-tabler icons-tabler-outline icon-tabler-circle-plus">
@@ -24,9 +27,9 @@
                     </svg>
                 </PggmIcon>
             }
-            else if (Button.Icon == "circle-minus")
+                else if (b.Icon == "circle-minus")
             {
-                <PggmIcon Size="@ComponentValues.IconSize.Small">
+                <PggmIcon Icon="@b.Icon" Size="@ComponentValues.IconSize.Small">
                     <svg slot="svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                          stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
                          class="icon icon-tabler icons-tabler-outline icon-tabler-circle-minus">
@@ -37,16 +40,16 @@
                 </PggmIcon>
             }
            
-            else if (Button.Icon == "circle-check")
+            else if (b.Icon == "circle-check")
             {
-                <PggmIcon Size="@ComponentValues.IconSize.Small">
+                <PggmIcon Icon="@b.Icon" Size="@ComponentValues.IconSize.Small">
                     <svg slot="svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-circle-check"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M9 12l2 2l4 -4" />
                     </svg>
                 </PggmIcon>
             }
-            else if (Button.Icon == "circle-x")
+            else if (b.Icon == "circle-x")
             {
-                <PggmIcon Size="@ComponentValues.IconSize.Small">
+                <PggmIcon Icon="@b.Icon" Size="@ComponentValues.IconSize.Small">
                     <svg slot="svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-circle-x">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                         <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
@@ -54,9 +57,9 @@
                     </svg>
                 </PggmIcon>
             }
-            else if (Button.Icon == "pencil")
+            else if (b.Icon == "pencil")
             {
-                <PggmIcon Size="@ComponentValues.IconSize.Small">
+                <PggmIcon Icon="@b.Icon" Size="@ComponentValues.IconSize.Small">
                     <svg slot="svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                          stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
                          class="icon icon-tabler icons-tabler-outline icon-tabler-pencil">
@@ -66,9 +69,9 @@
                     </svg>
                 </PggmIcon>
             }
-            else if (Button.Icon == "plus")
+            else if (b.Icon == "plus")
             {
-                <PggmIcon Size="@ComponentValues.IconSize.Small">
+                <PggmIcon Icon="@b.Icon" Size="@ComponentValues.IconSize.Small">
                     <svg slot="svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                          stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
                          class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
@@ -78,9 +81,9 @@
                     </svg>
                 </PggmIcon>
             }
-            else if (Button.Icon == "trash")
+            else if (b.Icon == "trash")
             {
-                <PggmIcon Size="@ComponentValues.IconSize.Small">
+                <PggmIcon Icon="@b.Icon" Size="@ComponentValues.IconSize.Small">
                     <svg slot="svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                          stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
                          class="icon icon-tabler icons-tabler-outline icon-tabler-trash">
@@ -93,9 +96,9 @@
                     </svg>
                 </PggmIcon>
             }
-            else if (Button.Icon == "flopy")
+            else if (b.Icon == "flopy")
             {
-                <PggmIcon Size="@ComponentValues.IconSize.Small">
+                <PggmIcon Icon="@b.Icon" Size="@ComponentValues.IconSize.Small">
                     <svg slot="svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                          stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
                          class="icon icon-tabler icons-tabler-outline icon-tabler-device-floppy">
@@ -106,9 +109,9 @@
                     </svg>
                 </PggmIcon>
             }
-            else if (Button.Icon == "export")
+            else if (b.Icon == "export")
             {
-                <PggmIcon Size="@ComponentValues.IconSize.Small">
+                <PggmIcon Icon="@b.Icon" Size="@ComponentValues.IconSize.Small">
                     <svg slot="svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                          stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
                          class="icon icon-tabler icons-tabler-outline icon-tabler-package-export">
@@ -122,9 +125,9 @@
                     </svg>
                 </PggmIcon>
             }
-            else if (Button.Icon == "settings")
+            else if (b.Icon == "settings")
             {
-                <PggmIcon Size="@ComponentValues.IconSize.Small">
+                <PggmIcon Icon="@b.Icon" Size="@ComponentValues.IconSize.Small">
                     <svg slot="svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                          stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
                          class="icon icon-tabler icons-tabler-outline icon-tabler-settings">
@@ -136,7 +139,7 @@
                 </PggmIcon>
             }
         }
-        <span class="pggm-toolbar-button__label@(IconOnly || (Button?.IconOnly ?? false) ? " pggm-toolbar-button__label--hidden" : "")">@Button.Label</span>
+        <span class="pggm-toolbar-button__label@(IconOnly || b.IconOnly ? " pggm-toolbar-button__label--hidden" : "")">@b.Label</span>
     </button>
 }
 

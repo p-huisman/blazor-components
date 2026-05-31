@@ -119,7 +119,8 @@ public partial class PggmDialog : PggmEventComponentBase
         Open = true;
         if (OpenChanged.HasDelegate) await OpenChanged.InvokeAsync(Open);
         if (OnOpen.HasDelegate) await OnOpen.InvokeAsync();
-        StateHasChanged();
+        if (!OpenChanged.HasDelegate)
+            StateHasChanged();
     }
 
     private async Task HandleCloseDialog()
@@ -128,7 +129,8 @@ public partial class PggmDialog : PggmEventComponentBase
         Open = false;
         if (OpenChanged.HasDelegate) await OpenChanged.InvokeAsync(Open);
         if (OnClose.HasDelegate) await OnClose.InvokeAsync();
-        StateHasChanged();
+        if (!OpenChanged.HasDelegate)
+            StateHasChanged();
     }
 
     private async Task HandleCancelDialog(CancelDialogPayload? payload = null)
@@ -136,7 +138,8 @@ public partial class PggmDialog : PggmEventComponentBase
         Open = false;
         if (OpenChanged.HasDelegate) await OpenChanged.InvokeAsync(Open);
         if (OnCancel.HasDelegate) await OnCancel.InvokeAsync();
-        StateHasChanged();
+        if (!OpenChanged.HasDelegate)
+            StateHasChanged();
     }
 
     /// <summary>

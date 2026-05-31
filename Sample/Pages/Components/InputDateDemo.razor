@@ -212,12 +212,13 @@
         private DateFormModel dateFormModel = new();
         private DateTime? submittedDate;
 
-        private async Task HandleDateFormSubmit(EditContext editContext)
+        private Task HandleDateFormSubmit(EditContext editContext)
         {
             if (editContext.Validate())
             {
                 HandleDateSubmit();
             }
+            return Task.CompletedTask;
         }
 
         private void HandleDateSubmit()

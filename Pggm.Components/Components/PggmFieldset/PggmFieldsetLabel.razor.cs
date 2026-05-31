@@ -6,7 +6,7 @@ public partial class PggmFieldsetLabel : ComponentBase
 {
     [CascadingParameter] private object? FieldsetToken { get; set; }
 
-    [Parameter] public string? For { get; set; }
+    [Parameter, EditorRequired] public string? For { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? AdditionalAttributes { get; set; }
 

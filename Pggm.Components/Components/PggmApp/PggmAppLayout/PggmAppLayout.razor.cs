@@ -4,9 +4,10 @@ using Microsoft.JSInterop;
 
 namespace Pggm.Components.Components.PggmApp.PggmAppLayout;
 
-public partial class PggmAppLayout : IDisposable
+public partial class PggmAppLayout : IAsyncDisposable
 {
     private bool _isSidebarOpen;
+    private EventHandler<LocationChangedEventArgs>? _locationChangedHandler;
 
     [Inject]
     private IJSRuntime JSRuntime { get; set; } = null!;
@@ -26,16 +27,20 @@ public partial class PggmAppLayout : IDisposable
 
     protected override void OnInitialized()
     {
-        NavigationManager.LocationChanged += OnLocationChanged;
+        _locationChangedHandler = (s, e) => _ = OnLocationChangedAsync(e);
+        NavigationManager.LocationChanged += _locationChangedHandler;
     }
 
-    private async void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    private async Task OnLocationChangedAsync(LocationChangedEventArgs e)
     {
         await JSRuntime.InvokeVoidAsync("PggmComponents.scrollToTop");
     }
 
-    public void Dispose()
+    public ValueTask DisposeAsync()
     {
-        NavigationManager.LocationChanged -= OnLocationChanged;
+        if (_locationChangedHandler is not null)
+            NavigationManager.LocationChanged -= _locationChangedHandler;
+
+        return ValueTask.CompletedTask;
     }
 }

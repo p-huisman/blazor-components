@@ -5,7 +5,7 @@ using Pggm.Components.Models;
 
 namespace Pggm.Components.Sample.Services
 {
-    public class NavMenuService : IDisposable
+    public class NavMenuService : IDisposable, IAsyncDisposable
     {
         private readonly List<NavMenuItem> _items = new List<NavMenuItem>();
         public IReadOnlyList<NavMenuItem> Items => _items.AsReadOnly();
@@ -90,6 +90,13 @@ namespace Pggm.Components.Sample.Services
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public ValueTask DisposeAsync()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+            return ValueTask.CompletedTask;
         }
     }
 }

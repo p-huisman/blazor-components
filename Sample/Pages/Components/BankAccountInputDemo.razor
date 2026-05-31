@@ -118,7 +118,7 @@
         @if (formSubmitted)
         {
             <div class="success-message">
-                <PggmNotification Type="success" Open="true">
+                <PggmNotification Type="success" Open="true" CloseLabel="Close">
                     <h3 slot="header">Form Submitted Successfully!</h3>
                     <p><strong>Primary Account:</strong> @formModel.PrimaryAccount</p>
                     @if (!string.IsNullOrEmpty(formModel.SavingsAccount)) { <p><strong>Savings Account:</strong> @formModel.SavingsAccount</p> }

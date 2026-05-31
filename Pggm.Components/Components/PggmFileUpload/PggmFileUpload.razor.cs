@@ -34,7 +34,7 @@ public partial class PggmFileUpload : PggmComponentBase
     /// <summary>
     /// Dropzone label text
     /// </summary>
-    [Parameter] public string? DropzoneLabel { get; set; }
+    [Parameter, EditorRequired] public string? DropzoneLabel { get; set; }
 
     /// <summary>
     /// Maximum file size allowed

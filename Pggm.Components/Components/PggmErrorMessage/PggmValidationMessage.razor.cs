@@ -17,7 +17,7 @@ public partial class PggmValidationMessage<TField> : PggmComponentBase
     /// Expression that identifies the model field to associate with this validation message.
     /// Usage: &lt;PggmValidationMessage For="() => model.Property" /&gt;
     /// </summary>
-    [Parameter] public Expression<Func<TField>>? For { get; set; }
+    [Parameter, EditorRequired] public Expression<Func<TField>>? For { get; set; }
 
     private FieldIdentifier _fieldIdentifier;
     private IReadOnlyCollection<string> _messages = Array.Empty<string>();

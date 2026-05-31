@@ -40,15 +40,15 @@
     </Description>
     <Content>
         <PggmFieldset>
-            <PggmLabel slot="label">Uitgeschakeld</PggmLabel>
-            <PggmCombobox TOption="object" Disabled="true" Value="nl" Placeholder="Niet beschikbaar">
+            <PggmLabel slot="label" For="disabled-combo">Uitgeschakeld</PggmLabel>
+            <PggmCombobox TOption="object" Id="disabled-combo" Disabled="true" Value="nl" Placeholder="Niet beschikbaar">
                 <PggmComboboxItem Value="nl">Nederland</PggmComboboxItem>
             </PggmCombobox>
         </PggmFieldset>
 
         <PggmFieldset>
-            <PggmLabel slot="label">Alleen-lezen</PggmLabel>
-            <PggmCombobox TOption="object" ReadOnly="true" Value="de" Placeholder="Alleen lezen">
+            <PggmLabel slot="label" For="readonly-combo">Alleen-lezen</PggmLabel>
+            <PggmCombobox TOption="object" Id="readonly-combo" ReadOnly="true" Value="de" Placeholder="Alleen lezen">
                 <PggmComboboxItem Value="de">Duitsland</PggmComboboxItem>
             </PggmCombobox>
         </PggmFieldset>

@@ -2,6 +2,7 @@ using System.Text.Json;
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using Microsoft.Extensions.Logging;
 
 using Pggm.Components.Base;
 
@@ -99,7 +100,7 @@ public partial class PggmTab : PggmEventComponentBase
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Failed to set overflowX style: {ex.Message}");
+                Logger?.LogError(ex, "Failed to set overflowX style.");
             }
         }
     }

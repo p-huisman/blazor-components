@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using Microsoft.Extensions.Logging;
 
 using Pggm.Components.Base;
 using Pggm.Components.Constants;
@@ -81,6 +82,7 @@ public partial class PggmSlider : PggmEventComponentBase
     /// </summary>
     [Parameter] public EventCallback<double> OnInput { get; set; }
 
+
     protected override IEnumerable<string> GetEventNames()
     {
         yield return EventNames.Change;
@@ -127,7 +129,7 @@ public partial class PggmSlider : PggmEventComponentBase
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error getting slider value: {ex.Message}");
+            Logger?.LogError(ex, "Error getting slider value.");
             return Value;
         }
     }

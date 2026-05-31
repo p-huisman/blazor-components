@@ -12,7 +12,7 @@ public partial class PggmIcon : PggmComponentBase
     /// <summary>
     /// The icon name to display
     /// </summary>
-    [Parameter] public string Icon { get; set; } = string.Empty;
+    [Parameter, EditorRequired] public string Icon { get; set; } = string.Empty;
 
     /// <summary>
     /// Optional URL to an external SVG file to render inside the web component

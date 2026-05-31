@@ -8,7 +8,7 @@ using Pggm.Components.Components.PggmDialog.Services;
 
 namespace Pggm.Components.Components.PggmDialog
 {
-    public partial class DialogProvider : ComponentBase, IDisposable
+    public partial class DialogProvider : ComponentBase, IAsyncDisposable
     {
         [Inject] public IDialogService DialogService { get; set; } = null!;
 
@@ -94,9 +94,10 @@ namespace Pggm.Components.Components.PggmDialog
             await reference.DismissAsync();
         }
 
-        public void Dispose()
+        public ValueTask DisposeAsync()
         {
             DialogService.OnShow -= HandleShow;
+            return ValueTask.CompletedTask;
         }
     }
 }

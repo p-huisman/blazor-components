@@ -12,7 +12,7 @@ using Microsoft.JSInterop;
 
 namespace Pggm.Components.Sample.Components.DemoSection;
 
-public partial class DemoSection : ComponentBase
+public partial class DemoSection : ComponentBase, IAsyncDisposable
 {
     private string? _ariaId;
 
@@ -112,6 +112,16 @@ public partial class DemoSection : ComponentBase
             NavigationManager.LocationChanged -= OnLocationChanged;
             _subscribedToLocation = false;
         }
+    }
+
+    public ValueTask DisposeAsync()
+    {
+        if (_subscribedToLocation)
+        {
+            NavigationManager.LocationChanged -= OnLocationChanged;
+            _subscribedToLocation = false;
+        }
+        return ValueTask.CompletedTask;
     }
 
 }

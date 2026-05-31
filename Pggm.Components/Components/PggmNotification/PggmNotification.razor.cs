@@ -22,7 +22,7 @@ public partial class PggmNotification : PggmEventComponentBase
     /// <summary>
     /// The close button label for accessibility
     /// </summary>
-    [Parameter] public string CloseLabel { get; set; } = "";
+    [Parameter, EditorRequired] public string CloseLabel { get; set; } = "";
 
     /// <summary>
     /// Whether the notification is open/visible

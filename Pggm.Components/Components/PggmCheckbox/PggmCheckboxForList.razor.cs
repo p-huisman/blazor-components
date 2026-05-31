@@ -37,6 +37,7 @@ public partial class PggmCheckboxForList<TItem> : ComponentBase where TItem : cl
         }
 
         await SelectedItemsChanged.InvokeAsync(SelectedItems);
-        StateHasChanged();
+        if (!SelectedItemsChanged.HasDelegate)
+            StateHasChanged();
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
+using Microsoft.Extensions.Logging;
 
 using Pggm.Components.Base;
 using Pggm.Components.Constants;
@@ -59,7 +60,7 @@ public partial class PggmInputPhone : PggmEventComponentInputBase<string>
     /// <summary>
     /// Placeholder text for the country select dropdown
     /// </summary>
-    [Parameter] public string? CountryLabel { get; set; }
+    [Parameter, EditorRequired] public string? CountryLabel { get; set; }
 
     /// <summary>
     /// The initial country code to select (e.g., "NL", "BE", "DE")
@@ -222,8 +223,9 @@ public partial class PggmInputPhone : PggmEventComponentInputBase<string>
         {
             return await JSRuntime.InvokeAsync<bool>("PggmComponents.getValidity", ElementRef, "typeMismatch");
         }
-        catch
+        catch (Exception ex)
         {
+            Logger?.LogDebug(ex, "Non-fatal JS interop error getting phone type mismatch");
             return false;
         }
     }
@@ -235,8 +237,9 @@ public partial class PggmInputPhone : PggmEventComponentInputBase<string>
         {
             return await JSRuntime.InvokeAsync<string>("PggmComponents.getProperty", ElementRef, "value");
         }
-        catch
+        catch (Exception ex)
         {
+            Logger?.LogDebug(ex, "Non-fatal JS interop error reading phone value");
             return CurrentValue;
         }
     }
@@ -287,23 +290,26 @@ public partial class PggmInputPhone : PggmEventComponentInputBase<string>
             {
                 await JSRuntime.InvokeVoidAsync("PggmComponents.disableNativeFormValidation", ElementRef);
             }
-            catch { /* JS not ready — non-fatal */ }
+            catch (Exception ex)
+            {
+                Logger?.LogDebug(ex, "Non-fatal JS interop error disabling native form validation in PggmInputPhone");
+            }
         }
 
         if (CurrentValue != _lastSyncedValue)
         {
-            try
-            {
-                if (!string.IsNullOrEmpty(ElementRef.Id))
+                try
                 {
-                    await JSRuntime.InvokeVoidAsync("PggmComponents.setProperty", ElementRef, "value", CurrentValue ?? "");
-                    _lastSyncedValue = CurrentValue;
+                    if (!string.IsNullOrEmpty(ElementRef.Id))
+                    {
+                        await JSRuntime.InvokeVoidAsync("PggmComponents.setProperty", ElementRef, "value", CurrentValue ?? "");
+                        _lastSyncedValue = CurrentValue;
+                    }
                 }
-            }
-            catch
-            {
-                // Ignore errors during sync
-            }
+                catch (Exception ex)
+                {
+                    Logger?.LogDebug(ex, "Non-fatal JS interop error syncing phone value");
+                }
         }
     }
 

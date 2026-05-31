@@ -34,7 +34,7 @@ public partial class PggmTextarea : PggmEventComponentBase
     /// <summary>
     /// Placeholder text for the textarea
     /// </summary>
-    [Parameter] public string? Placeholder { get; set; }
+    [Parameter, EditorRequired] public string? Placeholder { get; set; }
 
     /// <summary>
     /// Whether the textarea is disabled

@@ -15,12 +15,12 @@ public partial class PggmTable : PggmComponentBase
     /// <summary>
     /// Label for the filter functionality
     /// </summary>
-    [Parameter] public string? FilterLabel { get; set; }
+    [Parameter, EditorRequired] public string? FilterLabel { get; set; }
 
     /// <summary>
     /// Label for clearing filters
     /// </summary>
-    [Parameter] public string? ClearLabel { get; set; }
+    [Parameter, EditorRequired] public string? ClearLabel { get; set; }
 
     /// <summary>
     /// Language setting for the table

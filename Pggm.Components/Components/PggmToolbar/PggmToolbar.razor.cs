@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Pggm.Components;
 
-public partial class PggmToolbar : ComponentBase, IDisposable
+public partial class PggmToolbar : ComponentBase, IAsyncDisposable
 {
     private Pggm.Components.Components.PggmToolbar.PggmToolbarState? _subscribedState;
 
@@ -43,5 +43,9 @@ public partial class PggmToolbar : ComponentBase, IDisposable
         _ = InvokeAsync(StateHasChanged);
     }
 
-    public void Dispose() => Unsubscribe();
+    public ValueTask DisposeAsync()
+    {
+        Unsubscribe();
+        return ValueTask.CompletedTask;
+    }
 }

@@ -11,7 +11,7 @@ public partial class PggmErrorMessage : PggmComponentBase
     /// <summary>
     /// The ID of the form element this error message is associated with
     /// </summary>
-    [Parameter] public string? For { get; set; }
+    [Parameter, EditorRequired] public string? For { get; set; }
 
     /// <summary>
     /// Space-separated list of validity states (badInput, customError, patternMismatch, etc.)

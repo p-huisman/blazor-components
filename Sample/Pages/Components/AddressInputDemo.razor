@@ -126,7 +126,7 @@
         @if (formSubmitted)
         {
             <div class="success-message">
-                <PggmNotification Type="success" Open="true">
+                <PggmNotification Type="success" Open="true" CloseLabel="Close">
                     <h3 slot="header">Form Submitted Successfully!</h3>
                     <p><strong>Billing Address:</strong> @formModel.BillingAddress</p>
                     <p><strong>Shipping Address:</strong> @formModel.ShippingAddress</p>

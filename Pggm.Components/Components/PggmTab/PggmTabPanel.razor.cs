@@ -11,7 +11,7 @@ public partial class PggmTabPanel : PggmComponentBase
     /// <summary>
     /// The tab title/header text
     /// </summary>
-    [Parameter] public string? Title { get; set; }
+    [Parameter, EditorRequired] public string? Title { get; set; }
 
     /// <summary>
     /// Whether this tab panel is active/selected

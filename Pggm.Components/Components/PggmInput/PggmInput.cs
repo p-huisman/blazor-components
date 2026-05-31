@@ -6,14 +6,15 @@ using Microsoft.AspNetCore.Components.Rendering;
 
 namespace Pggm.Components
 {
-    public class PggmInput : ComponentBase
+    using Pggm.Components.Base;
+
+    public class PggmInput : PggmEventComponentInputBase<string>
     {
         private readonly string _dummyValueBacking = string.Empty;
         private string _internalValueBacking = string.Empty;
         private string? _lastValueParameter;
         private InputText? _inputTextRef;
-
-        public ElementReference ElementRef => _inputTextRef?.Element ?? default;
+        public new ElementReference ElementRef => _inputTextRef?.Element ?? default;
 
         protected override void OnParametersSet()
         {
@@ -39,10 +40,7 @@ namespace Pggm.Components
             base.OnParametersSet();
         }
 
-        [CascadingParameter] private EditContext? CascadedEditContext { get; set; }
-        [Parameter] public string? Value { get; set; }
-        [Parameter] public EventCallback<string> ValueChanged { get; set; }
-        [Parameter] public Expression<Func<string>>? ValueExpression { get; set; }
+        [CascadingParameter] private EditContext? LocalCascadedEditContext { get; set; }
 
         [Parameter] public string Type { get; set; } = "text";
         [Parameter] public string? Placeholder { get; set; }
@@ -57,8 +55,7 @@ namespace Pggm.Components
         [Parameter] public string? Min { get; set; }
         [Parameter] public string? Max { get; set; }
         [Parameter] public string? Step { get; set; }
-        [Parameter(CaptureUnmatchedValues = true)]
-        public IDictionary<string, object>? AdditionalAttributes { get; set; }
+        // Use AdditionalAttributes from the base InputBase<string>
 
         [Parameter] public EventCallback<ChangeEventArgs> OnChange { get; set; }
         [Parameter] public EventCallback<ChangeEventArgs> OnInput { get; set; }
@@ -70,7 +67,7 @@ namespace Pggm.Components
 
             RenderInputComponent(builder, isTwoWayBound, valueExpressionToPass);
 
-            var attrs = BuildAttributes(CascadedEditContext != null);
+            var attrs = BuildAttributes(LocalCascadedEditContext != null);
             builder.AddMultipleAttributes(4, attrs);
             builder.AddComponentReferenceCapture(5, r => _inputTextRef = (InputText)r);
             builder.CloseComponent();
@@ -123,8 +120,8 @@ namespace Pggm.Components
 
         private void AddAdditionalAttributes(IDictionary<string, object> attrs)
         {
-            if (AdditionalAttributes == null) return;
-            foreach (var kv in AdditionalAttributes)
+            if (base.AdditionalAttributes == null) return;
+            foreach (var kv in base.AdditionalAttributes)
                 attrs[kv.Key] = kv.Value!;
         }
 

@@ -35,7 +35,7 @@
     <p>Icons can be provided as custom SVGs by placing an <code>&lt;svg slot="svg"&gt;</code> inside the component.</p>
     <div class="icon-demo-grid">
         <div class="icon-demo-item">
-            <PggmIcon Size="@ComponentValues.IconSize.Large">
+            <PggmIcon Icon="custom-svg" Size="@ComponentValues.IconSize.Large">
                 <svg slot="svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                     <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
@@ -65,7 +65,7 @@
     <p>You can also provide an external SVG via the <code>src</code> attribute.</p>
     <div class="icon-demo-grid">
         <div class="icon-demo-item">
-            <PggmIcon Size="@ComponentValues.IconSize.Medium" Src="data:image/svg+xml;utf8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='currentColor'%20stroke-width='2'%3E%3Cpath%20d='M9%2012a3%203%200%201%200%206%200a3%203%200%200%200-6%200'/%3E%3C/svg%3E" />
+            <PggmIcon Icon="src" Size="@ComponentValues.IconSize.Medium" Src="data:image/svg+xml;utf8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='currentColor'%20stroke-width='2'%3E%3Cpath%20d='M9%2012a3%203%200%201%200%206%200a3%203%200%200%200-6%200'/%3E%3C/svg%3E" />
             <span>External SVG via src</span>
         </div>
     </div>
@@ -176,7 +176,7 @@
         <div class="controls">
             <div class="control-group">
                 <PggmLabel For="icon-select">Select Icon:</PggmLabel>
-                <PggmSelect TOption="string" @bind-Value="selectedIcon" Id="icon-select">
+                <PggmSelect TOption="string" @bind-Value="selectedIcon" Id="icon-select" Placeholder="Choose an icon..." AriaLabel="Icon select">
                     <option value="@ComponentValues.IconName.Alert">Alert</option>
                     <option value="@ComponentValues.IconName.AlertFilled">Alert Filled</option>
                     <option value="@ComponentValues.IconName.Apple">Apple</option>
@@ -198,7 +198,7 @@
             
             <div class="control-group">
                 <PggmLabel For="size-select">Select Size:</PggmLabel>
-                <PggmSelect TOption="string" @bind-Value="selectedSize" Id="size-select">
+                <PggmSelect TOption="string" @bind-Value="selectedSize" Id="size-select" Placeholder="Choose a size..." AriaLabel="Size select">
                     <option value="@ComponentValues.IconSize.Small">Small (small)</option>
                     <option value="@ComponentValues.IconSize.Medium">Medium (medium)</option>
                     <option value="@ComponentValues.IconSize.Large">Large (large)</option>

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using Microsoft.Extensions.Logging;
 
 using Pggm.Components.Base;
 using Pggm.Components.Models.Wizard;
@@ -76,6 +77,7 @@ public partial class PggmWizard : PggmEventComponentBase
     {
         return new[] { "beforeSubmit", "beforeNavigate", "afterNavigate", "wizardFinished", "wizardFormInvalid" };
     }
+
 
     protected override async Task SetupEventListenersAsync()
     {
@@ -187,14 +189,14 @@ public partial class PggmWizard : PggmEventComponentBase
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error calling finish on wizard: {ex.Message}");
+            Logger?.LogError(ex, "Error calling finish on wizard.");
             try
             {
                 await JSRuntime.InvokeVoidAsync("PggmComponents.setProperty", ElementRef, "finished", success);
             }
             catch (Exception fallbackEx)
             {
-                Console.WriteLine($"Fallback error: {fallbackEx.Message}");
+                Logger?.LogError(fallbackEx, "Fallback error setting finished property on wizard.");
             }
         }
     }

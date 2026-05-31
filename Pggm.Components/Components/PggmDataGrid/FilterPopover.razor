@@ -1,10 +1,12 @@
 @using Pggm.Components.Components.PggmDataGrid
 @typeparam TGridItem
 @inject IJSRuntime JSRuntime
+@inject Microsoft.Extensions.Logging.ILogger<FilterPopover<TGridItem>>? Logger
+@using Microsoft.Extensions.Logging
 
     <PggmStack Class="filter-dialog-container" Orientation='Pggm.Components.Orientation.Vertical' VerticalGap='8'>
         <PggmStack Orientation='Pggm.Components.Orientation.Horizontal' HorizontalAlignment='Pggm.Components.HorizontalAlignment.Left' HorizontalGap='8'>
-            <PggmSelect TOption="string" @bind-Value="_operator" @onkeydown="HandleInputKeyDown">
+            <PggmSelect TOption="string" @bind-Value="_operator" @onkeydown="HandleInputKeyDown" Placeholder="Select operator..." AriaLabel="Filter operator">
                 @if (FilterType == FilterType.Number)
                 {
                     <option value="@FilterOperators.EqualsOperator">equals</option>
@@ -157,7 +159,10 @@
                 else if (_inputRef is not null)
                     await _inputRef.ElementRef.FocusAsync();
             }
-            catch { /* ignore focus errors */ }
+            catch (Exception ex)
+            {
+                Logger?.LogDebug(ex, "Non-fatal focus error in FilterPopover");
+            }
         }
     }
 

@@ -13,7 +13,7 @@ public partial class PggmWizardForm : PggmEventComponentBase
     /// <summary>
     /// The label for this wizard form step
     /// </summary>
-    [Parameter] public string Label { get; set; } = "";
+    [Parameter, EditorRequired] public string Label { get; set; } = "";
 
     /// <summary>
     /// Whether this form is the currently active step

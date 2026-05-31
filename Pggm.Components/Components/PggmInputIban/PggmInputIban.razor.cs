@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
+using Microsoft.Extensions.Logging;
 
 using Pggm.Components.Base;
 using Pggm.Components.Constants;
@@ -24,7 +25,7 @@ public partial class PggmInputIban : PggmEventComponentInputBase<string>
     /// <summary>
     /// Placeholder text for the IBAN input
     /// </summary>
-    [Parameter] public string? Placeholder { get; set; }
+    [Parameter, EditorRequired] public string? Placeholder { get; set; }
 
     /// <summary>
     /// Optional child content to render inside the web component
@@ -247,8 +248,9 @@ public partial class PggmInputIban : PggmEventComponentInputBase<string>
         {
             return await JSRuntime.InvokeAsync<bool>("PggmComponents.getValidity", ElementRef, "customError");
         }
-        catch
+        catch (Exception ex)
         {
+            Logger?.LogDebug(ex, "Non-fatal JS interop error getting IBAN validity");
             return false;
         }
     }
@@ -259,8 +261,9 @@ public partial class PggmInputIban : PggmEventComponentInputBase<string>
         {
             return await JSRuntime.InvokeAsync<string>("PggmComponents.getProperty", ElementRef, "value");
         }
-        catch
+        catch (Exception ex)
         {
+            Logger?.LogDebug(ex, "Non-fatal JS interop error reading IBAN value");
             return CurrentValue;
         }
     }
@@ -311,23 +314,26 @@ public partial class PggmInputIban : PggmEventComponentInputBase<string>
             {
                 await JSRuntime.InvokeVoidAsync("PggmComponents.disableNativeFormValidation", ElementRef);
             }
-            catch { /* JS not ready — non-fatal */ }
+            catch (Exception ex)
+            {
+                Logger?.LogDebug(ex, "Non-fatal JS interop error disabling native form validation in PggmInputIban");
+            }
         }
 
         if (CurrentValue != _lastSyncedValue)
         {
-            try
-            {
-                if (!string.IsNullOrEmpty(ElementRef.Id))
+                try
                 {
-                    await JSRuntime.InvokeVoidAsync("PggmComponents.setProperty", ElementRef, "value", CurrentValue ?? "");
-                    _lastSyncedValue = CurrentValue;
+                    if (!string.IsNullOrEmpty(ElementRef.Id))
+                    {
+                        await JSRuntime.InvokeVoidAsync("PggmComponents.setProperty", ElementRef, "value", CurrentValue ?? "");
+                        _lastSyncedValue = CurrentValue;
+                    }
                 }
-            }
-            catch
-            {
-                // Ignore errors during sync
-            }
+                catch (Exception ex)
+                {
+                    Logger?.LogDebug(ex, "Non-fatal JS interop error syncing IBAN value");
+                }
         }
     }
 

@@ -1,6 +1,6 @@
 @using Pggm.Components.Components.PggmApp.PggmAsideMenu.Services
 @using Pggm.Components.Components.PggmApp.PggmAsideMenu.Models
-@implements IDisposable
+@implements IAsyncDisposable
 @inject IPggmAsideMenuService AsideMenuService
 
 <nav id="AppSideBarMenu" class="nav aside-menu" aria-label="Navigation">
@@ -40,8 +40,9 @@
         InvokeAsync(StateHasChanged);
     }
 
-    public void Dispose()
+    public ValueTask DisposeAsync()
     {
         AsideMenuService.OnChanged -= OnMenuChanged;
+        return ValueTask.CompletedTask;
     }
 }

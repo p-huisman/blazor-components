@@ -82,7 +82,7 @@
             Open No-Header Drawer
         </PggmButton>
 
-        <PggmDrawer @bind-Open="_noHeaderOpen" NoHeader="true">
+        <PggmDrawer @bind-Open="_noHeaderOpen" NoHeader="true" Label="No header">
             <div style="padding: 1rem;">
                 <p>This drawer has no header. Close it programmatically or via Escape / overlay click.</p>
                 <PggmButton Appearance="@ButtonAppearance.Secondary" @onclick="() => _noHeaderOpen = false">

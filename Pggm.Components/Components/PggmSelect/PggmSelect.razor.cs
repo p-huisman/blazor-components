@@ -82,10 +82,10 @@ public partial class PggmSelect<TOption> : PggmEventComponentBase
     // ── HTML attributes ───────────────────────────────────────────────────────
 
     /// <summary>Placeholder text shown as the first disabled hidden option.</summary>
-    [Parameter] public string? Placeholder { get; set; }
+    [Parameter, EditorRequired] public string? Placeholder { get; set; }
 
     /// <summary>aria-label attribute value.</summary>
-    [Parameter] public string? AriaLabel { get; set; }
+    [Parameter, EditorRequired] public string? AriaLabel { get; set; }
 
     /// <summary>CSS min-width of the select element.</summary>
     [Parameter] public string? Width { get; set; }

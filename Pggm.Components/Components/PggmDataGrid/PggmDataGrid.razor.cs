@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
+using Microsoft.Extensions.Logging;
 
 using Pggm.Components.Base;
 
@@ -18,6 +19,7 @@ namespace Pggm.Components.Components.PggmDataGrid
     [CascadingTypeParameter(nameof(TGridItem))]
     public partial class PggmDataGrid<TGridItem> : PggmComponentBase, IAsyncDisposable
     {
+        [Inject] protected Microsoft.Extensions.Logging.ILogger<PggmDataGrid<TGridItem>>? Logger { get; set; }
         private readonly Pggm.Components.Utilities.FocusManager _focusManager = new();
         /// <summary>
         /// Raised when the selected items change.
@@ -365,7 +367,10 @@ namespace Pggm.Components.Components.PggmDataGrid
                 {
                     await JSRuntime.InvokeVoidAsync("pggmDataGrid.enableColumnResizing", _rootElement);
                 }
-                catch { /* suppress interop errors during pre-render */ }
+                catch (Exception ex)
+                {
+                    Logger?.LogDebug(ex, "Non-fatal JS interop error enabling column resizing in PggmDataGrid");
+                }
             }
 
             if (_columnsRendered && AutoItemsPerPage && Pagination is not null && !_autoItemsPerPageInitialized)
@@ -380,7 +385,10 @@ namespace Pggm.Components.Components.PggmDataGrid
                         _autoItemsDotNetRef,
                         AutoItemsPerPageRowHeight);
                 }
-                catch { /* suppress interop errors during pre-render */ }
+                catch (Exception ex)
+                {
+                    Logger?.LogDebug(ex, "Non-fatal JS interop error enabling auto items per page in PggmDataGrid");
+                }
             }
 
             // Set virtualized height (via CSS variable) and apply per-row indents via JS
@@ -392,25 +400,37 @@ namespace Pggm.Components.Components.PggmDataGrid
                     {
                         await JSRuntime.InvokeVoidAsync("pggmDataGrid.setVirtualizedHeight", _rootElement, Height ?? "400px");
                     }
-                    catch { /* Suppress interop errors; not critical for UX */ }
+                    catch (Exception ex)
+                    {
+                        Logger?.LogDebug(ex, "Non-fatal JS interop error setting virtualized height in PggmDataGrid");
+                    }
                 }
 
                 try
                 {
                     await JSRuntime.InvokeVoidAsync("pggmDataGrid.applyRowIndents", _rootElement);
                 }
-                catch { /* Suppress interop errors; not critical for UX */ }
+                catch (Exception ex)
+                {
+                    Logger?.LogDebug(ex, "Non-fatal JS interop error applying row indents in PggmDataGrid");
+                }
 
                 try
                 {
                     await JSRuntime.InvokeVoidAsync("pggmDataGrid.syncColumnWidths", _rootElement);
                 }
-                catch { /* Suppress interop errors; not critical for UX */ }
+                catch (Exception ex)
+                {
+                    Logger?.LogDebug(ex, "Non-fatal JS interop error syncing column widths in PggmDataGrid");
+                }
                 try
                 {
                     await JSRuntime.InvokeVoidAsync("pggmDataGrid.syncStickyOffsets", _rootElement);
                 }
-                catch { /* Suppress interop errors; not critical for UX */ }
+                catch (Exception ex)
+                {
+                    Logger?.LogDebug(ex, "Non-fatal JS interop error syncing sticky offsets in PggmDataGrid");
+                }
             }
 
             // Ensure the first cell has tabindex=0 (roving-tabindex pattern) so users can
@@ -442,7 +462,10 @@ namespace Pggm.Components.Components.PggmDataGrid
                     {
                         await JSRuntime.InvokeVoidAsync("pggmDataGrid.disableKeyboardNav", _rootElement);
                     }
-                    catch { /* Suppress interop errors; not critical for UX */ }
+                    catch (Exception ex)
+                    {
+                        Logger?.LogDebug(ex, "Non-fatal JS interop error disabling keyboard nav in PggmDataGrid");
+                    }
                 }
                 else if (!_keyboardNavEnabled && !Virtualize)
                 {
@@ -451,18 +474,13 @@ namespace Pggm.Components.Components.PggmDataGrid
                     {
                         await JSRuntime.InvokeVoidAsync("pggmDataGrid.enableKeyboardNav", _rootElement);
                     }
-                    catch { /* Suppress interop errors; not critical for UX */ }
+                    catch (Exception ex)
+                    {
+                        Logger?.LogDebug(ex, "Non-fatal JS interop error enabling keyboard nav in PggmDataGrid");
+                    }
                 }
             }
         }
-
-        // Sticky header behavior is now static (handled via CSS); parameter removed.
-
-        /// <summary>
-        /// When <c>true</c>, the first column (or the first two columns when the table has a
-        /// <see cref="SelectColumn{TGridItem}"/>) will be horizontally sticky so they remain
-        /// visible while the user scrolls the grid to the right.
-        /// </summary>
         [Parameter]
         public bool StickyFirstColumn { get; set; }
 
@@ -591,7 +609,10 @@ namespace Pggm.Components.Components.PggmDataGrid
                     await JSRuntime.InvokeVoidAsync("pggmDataGrid.focusCellById", id);
                 }
             }
-            catch { /* Suppress interop errors; not critical for UX */ }
+            catch (Exception ex)
+            {
+                Logger?.LogDebug(ex, "Non-fatal JS interop error focusing cell in PggmDataGrid");
+            }
         }
         /// <summary>
         /// Programmatically set the current sort column by index and refresh the grid.
@@ -616,7 +637,10 @@ namespace Pggm.Components.Components.PggmDataGrid
                 {
                     await JSRuntime.InvokeVoidAsync("pggmDataGrid.scrollToTop", _rootElement);
                 }
-                catch { /* Suppress interop errors; not critical for UX */ }
+                catch (Exception ex)
+                {
+                    Logger?.LogDebug(ex, "Non-fatal JS interop error scrolling to top in PggmDataGrid");
+                }
                 if (_tableVirtualizeRef is not null)
                 {
                     await _tableVirtualizeRef.RefreshDataAsync();
@@ -885,13 +909,13 @@ namespace Pggm.Components.Components.PggmDataGrid
             _totalItemCount = res.TotalItemCount;
         }
 
-        private async Task LoadFromItemsCollectionAsync()
+        private Task LoadFromItemsCollectionAsync()
         {
             if (Items is null)
             {
                 _itemsToRender = Array.Empty<TGridItem>();
                 _totalItemCount = 0;
-                return;
+                return Task.CompletedTask;
             }
 
             var query = _currentSortColumn?.SortBy is not null
@@ -909,6 +933,7 @@ namespace Pggm.Components.Components.PggmDataGrid
             }
 
             _itemsToRender = query.ToList();
+            return Task.CompletedTask;
         }
 
         private IQueryable<TGridItem> ApplyFiltersToQuery(IQueryable<TGridItem> query)
@@ -1096,7 +1121,10 @@ namespace Pggm.Components.Components.PggmDataGrid
                 {
                     await JSRuntime.InvokeVoidAsync("pggmDataGrid.disableAutoItemsPerPage", _rootElement);
                 }
-                catch { /* Suppress interop errors; not critical for UX */ }
+                catch (Exception ex)
+                {
+                    Logger?.LogDebug(ex, "Non-fatal JS interop error disabling auto items per page in PggmDataGrid.DisposeAsync");
+                }
             }
 
             _autoItemsDotNetRef?.Dispose();
