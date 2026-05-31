@@ -15,22 +15,22 @@ public partial class PggmDropdownItem : PggmEventComponentBase
     [Parameter] public bool Checked { get; set; }
     [Parameter] public string? Value { get; set; }
 
-    [Parameter] public EventCallback<object?> OnItemSelect { get; set; }
+    [Parameter] public EventCallback<object?> OnSelect { get; set; }
 
     protected override IEnumerable<string> GetEventNames()
     {
-        if (OnItemSelect.HasDelegate) yield return "itemSelect";
+        if (OnSelect.HasDelegate) yield return "itemSelect";
     }
 
     protected override Task OnParametersSetAsync()
     {
-        if (OnItemSelect.HasDelegate)
+        if (OnSelect.HasDelegate)
         {
             RegisterEventHandler("itemSelect", async (eventData) =>
             {
-                if (OnItemSelect.HasDelegate)
+                if (OnSelect.HasDelegate)
                 {
-                    await OnItemSelect.InvokeAsync(eventData);
+                    await OnSelect.InvokeAsync(eventData);
                 }
             });
         }

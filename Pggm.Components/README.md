@@ -216,7 +216,7 @@ Automatic loading of PGGM Design System styles and tokens:
 ### Multi-Step Wizard
 
 ```razor
-<PggmWizard OnWizardFinished="HandleWizardComplete"
+<PggmWizard OnFinished="HandleWizardComplete"
             OnBeforeSubmit="ValidateWizard">
 
     <PggmWizardForm Label="Personal Details" Active="true">

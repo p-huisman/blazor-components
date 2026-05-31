@@ -20,12 +20,12 @@ public partial class PggmTab : PggmEventComponentBase
     /// <summary>
     /// Event callback fired when a tab is selected
     /// </summary>
-    [Parameter] public EventCallback<int> OnTabChange { get; set; }
+    [Parameter] public EventCallback<int> OnChange { get; set; }
 
     /// <summary>
     /// Event callback fired when a tab is clicked
     /// </summary>
-    [Parameter] public EventCallback<int> OnTabClick { get; set; }
+    [Parameter] public EventCallback<int> OnClick { get; set; }
 
     protected override IEnumerable<string> GetEventNames()
     {
@@ -42,7 +42,7 @@ public partial class PggmTab : PggmEventComponentBase
 
     private async Task HandleTabChange(object? eventData)
     {
-        if (eventData != null && OnTabChange.HasDelegate)
+        if (eventData != null && OnChange.HasDelegate)
         {
             // Try to extract tab index from event data
             if (eventData is JsonElement element && element.TryGetProperty("detail", out var detail))
@@ -51,21 +51,21 @@ public partial class PggmTab : PggmEventComponentBase
                     indexProperty.TryGetInt32(out var tabIndex))
                 {
                     ActiveTabIndex = tabIndex;
-                    await OnTabChange.InvokeAsync(tabIndex);
+                    await OnChange.InvokeAsync(tabIndex);
                 }
             }
             // Fallback: try to parse directly as int
             else if (int.TryParse(eventData.ToString(), out var index))
             {
                 ActiveTabIndex = index;
-                await OnTabChange.InvokeAsync(index);
+                await OnChange.InvokeAsync(index);
             }
         }
     }
 
     private async Task HandleTabClick(object? eventData)
     {
-        if (eventData != null && OnTabClick.HasDelegate)
+        if (eventData != null && OnClick.HasDelegate)
         {
             // Try to extract tab index from event data
             if (eventData is JsonElement element && element.TryGetProperty("detail", out var detail))
@@ -73,13 +73,13 @@ public partial class PggmTab : PggmEventComponentBase
                 if (detail.TryGetProperty("tabIndex", out var indexProperty) &&
                     indexProperty.TryGetInt32(out var tabIndex))
                 {
-                    await OnTabClick.InvokeAsync(tabIndex);
+                    await OnClick.InvokeAsync(tabIndex);
                 }
             }
             // Fallback: try to parse directly as int
             else if (int.TryParse(eventData.ToString(), out var index))
             {
-                await OnTabClick.InvokeAsync(index);
+                await OnClick.InvokeAsync(index);
             }
         }
     }

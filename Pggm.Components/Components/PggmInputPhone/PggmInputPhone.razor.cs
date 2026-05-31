@@ -298,18 +298,18 @@ public partial class PggmInputPhone : PggmEventComponentInputBase<string>
 
         if (CurrentValue != _lastSyncedValue)
         {
-                try
+            try
+            {
+                if (!string.IsNullOrEmpty(ElementRef.Id))
                 {
-                    if (!string.IsNullOrEmpty(ElementRef.Id))
-                    {
-                        await JSRuntime.InvokeVoidAsync("PggmComponents.setProperty", ElementRef, "value", CurrentValue ?? "");
-                        _lastSyncedValue = CurrentValue;
-                    }
+                    await JSRuntime.InvokeVoidAsync("PggmComponents.setProperty", ElementRef, "value", CurrentValue ?? "");
+                    _lastSyncedValue = CurrentValue;
                 }
-                catch (Exception ex)
-                {
-                    Logger?.LogDebug(ex, "Non-fatal JS interop error syncing phone value");
-                }
+            }
+            catch (Exception ex)
+            {
+                Logger?.LogDebug(ex, "Non-fatal JS interop error syncing phone value");
+            }
         }
     }
 

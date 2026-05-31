@@ -33,7 +33,7 @@ public partial class PggmWizardForm : PggmEventComponentBase
     /// <summary>
     /// Event callback fired when the form changes (active, disabled, etc.)
     /// </summary>
-    [Parameter] public EventCallback OnWizardFormChanged { get; set; }
+    [Parameter] public EventCallback OnChanged { get; set; }
 
     /// <summary>
     /// Event callback fired after navigation to this form
@@ -51,9 +51,9 @@ public partial class PggmWizardForm : PggmEventComponentBase
 
         RegisterEventHandler("wizardFormChanged", async () =>
         {
-            if (OnWizardFormChanged.HasDelegate)
+            if (OnChanged.HasDelegate)
             {
-                await OnWizardFormChanged.InvokeAsync();
+                await OnChanged.InvokeAsync();
             }
         });
 

@@ -32,7 +32,7 @@
     <Content>
         <PggmWizard @ref="wizardRef" Method="POST" Action="/api/submit-wizard"
             OnBeforeNavigate="HandleBeforeNavigate" OnBeforeSubmit="HandleBeforeSubmit"
-            OnWizardFinished="HandleWizardFinished">
+            OnFinished="HandleWizardFinished">
 
             <ChildContent>
                 <PggmWizardForm Label="Personal Information" Active="true">
@@ -249,8 +249,8 @@
         new ApiMember { Name = "OnBeforeNavigate", Type = "EventCallback<BeforeNavigateEventArgs>", Description = "Fired before navigation. Set Cancel = true to abort." },
         new ApiMember { Name = "OnAfterNavigate", Type = "EventCallback<AfterNavigateEventArgs>", Description = "Fired after navigation." },
         new ApiMember { Name = "OnBeforeSubmit", Type = "EventCallback<BeforeSubmitEventArgs>", Description = "Fired before submit. Set Cancel = true to abort." },
-        new ApiMember { Name = "OnWizardFinished", Type = "EventCallback", Description = "Fired when the wizard finishes." },
-        new ApiMember { Name = "OnWizardFormInvalid", Type = "EventCallback<WizardFormInvalidEventArgs>", Description = "Fired when a form is invalid." }
+        new ApiMember { Name = "OnFinished", Type = "EventCallback", Description = "Fired when the wizard finishes. (formerly OnWizardFinished)" },
+        new ApiMember { Name = "OnFormInvalid", Type = "EventCallback<WizardFormInvalidEventArgs>", Description = "Fired when a form is invalid. (formerly OnWizardFormInvalid)" }
     };
 
     private IEnumerable<ApiMember> wizardFormProperties = new[] {

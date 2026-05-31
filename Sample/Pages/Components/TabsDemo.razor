@@ -19,7 +19,7 @@
         <p>Simple three-tab example demonstrating content containers inside <code>&lt;PggmTabPanel&gt;</code>.</p>
     </Description>
     <Content>
-        <PggmTab OnTabChange="OnTabChanged">
+        <PggmTab OnChange="OnTabChanged">
             <PggmTabPanel Title="Tab 1" Active="true">
                 <PggmHeading Level="3">Content for Tab 1</PggmHeading>
                 <p>This is the content for the first tab. It can contain any HTML or Blazor components.</p>
@@ -43,7 +43,7 @@
         <p>Shows many tabs in a single tabset to demonstrate overflow, wrapping and UI behaviour.</p>
     </Description>
     <Content>
-        <PggmTab OnTabChange="OnMultipleTabChanged">
+        <PggmTab OnChange="OnMultipleTabChanged">
             <PggmTabPanel Title="First Tab" Active="true"><p>Content for the first tab.</p></PggmTabPanel>
             <PggmTabPanel Title="Second Tab"><p>Content for the second tab.</p></PggmTabPanel>
             <PggmTabPanel Title="Third Tab"><p>Content for the third tab.</p></PggmTabPanel>
@@ -59,7 +59,7 @@
         <p>Compact two-tab example used for simple switches or short flows.</p>
     </Description>
     <Content>
-        <PggmTab OnTabChange="OnAnotherTabChanged">
+        <PggmTab OnChange="OnAnotherTabChanged">
             <PggmTabPanel Title="Example 1" Active="true"><p>Example tab content 1.</p></PggmTabPanel>
             <PggmTabPanel Title="Example 2"><p>Example tab content 2.</p></PggmTabPanel>
         </PggmTab>
@@ -71,7 +71,7 @@
         <p>Another three-panel demo showing basic panel content and tab change events.</p>
     </Description>
     <Content>
-        <PggmTab OnTabChange="OnDemoTabChanged">
+        <PggmTab OnChange="OnDemoTabChanged">
             <PggmTabPanel Title="Demo Tab 1" Active="true"><p>This is a demo tab with content.</p></PggmTabPanel>
             <PggmTabPanel Title="Demo Tab 2"><p>This is another demo tab.</p></PggmTabPanel>
             <PggmTabPanel Title="Demo Tab 3"><p>This is the third demo tab.</p></PggmTabPanel>
@@ -133,7 +133,7 @@
 
     // --- Demo code snippets ---
     private string basicTabsSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<PggmTab OnTabChange=\"OnTabChanged\">",
+        "<PggmTab OnChange=\"OnTabChanged\">",
         "  <PggmTabPanel Title=\"Tab 1\" Active=\"true\">...</PggmTabPanel>",
         "  <PggmTabPanel Title=\"Tab 2\">...</PggmTabPanel>",
         "  <PggmTabPanel Title=\"Tab 3\">...</PggmTabPanel>",
@@ -143,19 +143,19 @@
         "private void OnTabChanged(int tabIndex) { /* handle tab change */ }");
 
     private string multipleTabsSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<PggmTab OnTabChange=\"OnMultipleTabChanged\">...many panels...</PggmTab>");
+        "<PggmTab OnChange=\"OnMultipleTabChanged\">...many panels...</PggmTab>");
 
     private string multipleTabsBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
         "private void OnMultipleTabChanged(int tabIndex) { /* handle tab change */ }");
 
     private string anotherTabsSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<PggmTab OnTabChange=\"OnAnotherTabChanged\">...two panels...</PggmTab>");
+        "<PggmTab OnChange=\"OnAnotherTabChanged\">...two panels...</PggmTab>");
 
     private string anotherTabsBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
         "private void OnAnotherTabChanged(int tabIndex) { /* handle tab change */ }");
 
     private string demoTabsSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<PggmTab OnTabChange=\"OnDemoTabChanged\">...panels...</PggmTab>");
+        "<PggmTab OnChange=\"OnDemoTabChanged\">...panels...</PggmTab>");
 
     private string demoTabsBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
         "private void OnDemoTabChanged(int tabIndex) { /* handle tab change */ }");
@@ -163,11 +163,12 @@
     // --- API data ---
     private IEnumerable<ApiMember> tabProperties = new[] {
         new ApiMember { Name = "ActiveIndex", Type = "int?", DefaultValue = "null", Description = "Index of the active tab." },
-        new ApiMember { Name = "OnTabChange", Type = "EventCallback<int>", Description = "Fired when the active tab changes." }
+        new ApiMember { Name = "OnChange", Type = "EventCallback<int>", Description = "Fired when the active tab changes. (formerly OnTabChange)" }
     };
 
     private IEnumerable<ApiMember> tabEvents = new[] {
-        new ApiMember { Name = "OnTabChange", Type = "EventCallback<int>", Description = "Fired with the new tab index." }
+        new ApiMember { Name = "OnChange", Type = "EventCallback<int>", Description = "Fired with the new tab index. (formerly OnTabChange)" },
+        new ApiMember { Name = "OnClick", Type = "EventCallback<int>", Description = "Fired when a tab is clicked. (formerly OnTabClick)" }
     };
 
     private IEnumerable<ApiMember> tabPanelProperties = new[] {

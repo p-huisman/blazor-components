@@ -103,11 +103,11 @@
 
 <DemoSection Title="Event Handling" Code="@eventSource" CodeBehind="@eventBehind">
     <Description>
-        <p>Listen to the <code>OnSplitterResize</code> event to react to position changes.</p>
+        <p>Listen to the <code>OnResize</code> event to react to position changes (formerly <code>OnSplitterResize</code>).</p>
     </Description>
     <Content>
         <div style="height: 200px; border: 1px solid var(--color-border, #ccc); border-radius: 4px; overflow: hidden;">
-            <PggmSplitter @bind-Position="eventPosition" OnSplitterResize="HandleResize" style="height: 100%;">
+            <PggmSplitter @bind-Position="eventPosition" OnResize="HandleResize" style="height: 100%;">
                 <StartContent>
                     <div style="padding: 1rem; height: 100%; box-sizing: border-box;">
                         <p>Resize count: <strong>@resizeCount</strong></p>
@@ -168,7 +168,7 @@
         """;
 
     private string eventSource = """
-        <PggmSplitter @bind-Position="position" OnSplitterResize="HandleResize" style="height: 200px;">
+        <PggmSplitter @bind-Position="position" OnResize="HandleResize" style="height: 200px;">
             <StartContent><div>Start panel</div></StartContent>
             <EndContent><div>End panel</div></EndContent>
         </PggmSplitter>

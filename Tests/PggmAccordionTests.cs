@@ -224,7 +224,7 @@ namespace Pggm.Components.Tests
             // Arrange
             bool toggleTriggered = false;
             var component = RenderComponent<PggmAccordionItem>(parameters => parameters
-                .Add(p => p.OnAccordionItemToggle, EventCallback.Factory.Create<EventArgs>(this, () => toggleTriggered = true))
+                .Add(p => p.OnToggle, EventCallback.Factory.Create<EventArgs>(this, () => toggleTriggered = true))
                 .AddChildContent("<div>Item Content</div>"));
 
             // Act
@@ -488,7 +488,7 @@ namespace Pggm.Components.Tests
                 {
                     // First accordion item
                     builder.OpenComponent<PggmAccordionItem>(0);
-                    builder.AddAttribute(1, "OnAccordionItemToggle",
+                    builder.AddAttribute(1, "OnToggle",
                         EventCallback.Factory.Create<EventArgs>(this, () => firstItemToggleCount++));
                     builder.AddAttribute(2, "ChildContent", (RenderFragment)(itemBuilder =>
                     {
@@ -503,7 +503,7 @@ namespace Pggm.Components.Tests
 
                     // Second accordion item
                     builder.OpenComponent<PggmAccordionItem>(10);
-                    builder.AddAttribute(11, "OnAccordionItemToggle",
+                    builder.AddAttribute(11, "OnToggle",
                         EventCallback.Factory.Create<EventArgs>(this, () => secondItemToggleCount++));
                     builder.AddAttribute(12, "ChildContent", (RenderFragment)(itemBuilder =>
                     {

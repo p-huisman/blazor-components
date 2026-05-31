@@ -52,7 +52,7 @@ public partial class PggmSplitter : PggmEventComponentBase
     /// <summary>
     /// Event callback fired on every <c>splitterResize</c> event.
     /// </summary>
-    [Parameter] public EventCallback OnSplitterResize { get; set; }
+    [Parameter] public EventCallback OnResize { get; set; }
 
     /// <summary>
     /// Orientation of the splitter. Defaults to <see cref="SplitterOrientation.Horizontal"/>.
@@ -129,8 +129,8 @@ public partial class PggmSplitter : PggmEventComponentBase
                 if (PositionChanged.HasDelegate)
                     await PositionChanged.InvokeAsync(_position);
 
-                if (OnSplitterResize.HasDelegate)
-                    await OnSplitterResize.InvokeAsync();
+                if (OnResize.HasDelegate)
+                    await OnResize.InvokeAsync();
             });
         }
     }

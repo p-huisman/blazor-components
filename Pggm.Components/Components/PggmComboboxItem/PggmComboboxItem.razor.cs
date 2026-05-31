@@ -18,21 +18,21 @@ public partial class PggmComboboxItem : PggmEventComponentBase
     [Parameter] public bool Selected { get; set; }
 
     /// <summary>Fired when this item is selected.</summary>
-    [Parameter] public EventCallback<object?> OnItemSelect { get; set; }
+    [Parameter] public EventCallback<object?> OnSelect { get; set; }
 
     protected override IEnumerable<string> GetEventNames()
     {
-        if (OnItemSelect.HasDelegate) yield return "itemSelect";
+        if (OnSelect.HasDelegate) yield return "itemSelect";
     }
 
     protected override Task OnParametersSetAsync()
     {
-        if (OnItemSelect.HasDelegate)
+        if (OnSelect.HasDelegate)
         {
             RegisterEventHandler("itemSelect", async (eventData) =>
             {
-                if (OnItemSelect.HasDelegate)
-                    await OnItemSelect.InvokeAsync(eventData);
+                if (OnSelect.HasDelegate)
+                    await OnSelect.InvokeAsync(eventData);
             });
         }
         else

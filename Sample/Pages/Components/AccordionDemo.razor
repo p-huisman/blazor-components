@@ -127,13 +127,13 @@
 
 <DemoSection Title="Event Handling Demo" Code="@eventHandlingSource" CodeBehind="@eventHandlingBehind">
     <Description>
-        <p>This accordion item demonstrates the OnAccordionItemToggle event:</p>
+        <p>This accordion item demonstrates the OnToggle event:</p>
         <p><strong>Toggle Count:</strong> @toggleCount</p>
         <p><strong>Last Event Time:</strong> @lastToggleTime</p>
     </Description>
 
     <Content>
-        <PggmAccordionItem OnAccordionItemToggle="HandleAccordionToggle">
+        <PggmAccordionItem OnToggle="HandleAccordionToggle">
             <PggmAccordionItemTitle>Event Demo Accordion Item</PggmAccordionItemTitle>
             <p>Click the title to toggle this accordion item and trigger the event.</p>
             <p>The toggle count and timestamp will be updated above when you toggle this item.</p>
@@ -248,7 +248,7 @@
     <p>This accordion item is disabled and cannot be interacted with.</p>
 </PggmAccordionItem>";
 
-    private string eventHandlingSource = @"<PggmAccordionItem OnAccordionItemToggle=""HandleAccordionToggle"">
+    private string eventHandlingSource = @"<PggmAccordionItem OnToggle=""HandleAccordionToggle"">
     <PggmAccordionItemTitle>Event Demo Accordion Item</PggmAccordionItemTitle>
     <p>Click the title to toggle this accordion item and trigger the event.</p>
 </PggmAccordionItem>";
@@ -306,7 +306,7 @@
 
     private IEnumerable<ApiMember> accordionItemEvents = new[]
     {
-        new ApiMember { Name = "OnAccordionItemToggle", Type = "EventCallback<EventArgs>", Description = "Invoked when this item toggles open/closed." }
+        new ApiMember { Name = "OnToggle", Type = "EventCallback<EventArgs>", Description = "Invoked when this item toggles open/closed." }
     };
 
 }

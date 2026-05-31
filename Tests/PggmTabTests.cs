@@ -131,13 +131,13 @@ namespace Pggm.Components.Tests
 
             // Act
             var component = RenderComponent<PggmTab>(parameters => parameters
-                .Add(p => p.OnTabChange, onTabChange)
-                .Add(p => p.OnTabClick, onTabClick));
+                .Add(p => p.OnChange, onTabChange)
+                .Add(p => p.OnClick, onTabClick));
 
             // Assert
             var instance = component.Instance;
-            Assert.True(instance.OnTabChange.HasDelegate);
-            Assert.True(instance.OnTabClick.HasDelegate);
+            Assert.True(instance.OnChange.HasDelegate);
+            Assert.True(instance.OnClick.HasDelegate);
         }
 
         [Fact]

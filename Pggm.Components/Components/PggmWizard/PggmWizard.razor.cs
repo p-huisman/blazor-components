@@ -66,12 +66,12 @@ public partial class PggmWizard : PggmEventComponentBase
     /// <summary>
     /// Event callback fired when wizard is finished
     /// </summary>
-    [Parameter] public EventCallback OnWizardFinished { get; set; }
+    [Parameter] public EventCallback OnFinished { get; set; }
 
     /// <summary>
     /// Event callback fired when a wizard form is invalid
     /// </summary>
-    [Parameter] public EventCallback<WizardFormInvalidEventArgs> OnWizardFormInvalid { get; set; }
+    [Parameter] public EventCallback<WizardFormInvalidEventArgs> OnFormInvalid { get; set; }
 
     protected override IEnumerable<string> GetEventNames()
     {
@@ -111,17 +111,17 @@ public partial class PggmWizard : PggmEventComponentBase
 
         RegisterEventHandler("wizardFinished", async () =>
         {
-            if (OnWizardFinished.HasDelegate)
+            if (OnFinished.HasDelegate)
             {
-                await OnWizardFinished.InvokeAsync();
+                await OnFinished.InvokeAsync();
             }
         });
 
         RegisterEventHandler<WizardFormInvalidEventArgs>("wizardFormInvalid", async (args) =>
         {
-            if (OnWizardFormInvalid.HasDelegate)
+            if (OnFormInvalid.HasDelegate)
             {
-                await OnWizardFormInvalid.InvokeAsync(args);
+                await OnFormInvalid.InvokeAsync(args);
             }
         });
 

@@ -22,8 +22,8 @@ The main wizard component that orchestrates navigation between multiple forms.
 | `OnBeforeSubmit` | EventCallback<BeforeSubmitEventArgs> | Fired before form submission. Set `Cancel = true` in event args to prevent submission |
 | `OnBeforeNavigate` | EventCallback<BeforeNavigateEventArgs> | Fired before navigation. Set `Cancel = true` in event args to prevent navigation |
 | `OnAfterNavigate` | EventCallback<AfterNavigateEventArgs> | Fired after navigation |
-| `OnWizardFinished` | EventCallback | Fired when wizard is finished |
-| `OnWizardFormInvalid` | EventCallback<WizardFormInvalidEventArgs> | Fired when a wizard form is invalid |
+| `OnFinished` | EventCallback | Fired when wizard is finished (formerly `OnWizardFinished`) |
+| `OnFormInvalid` | EventCallback<WizardFormInvalidEventArgs> | Fired when a wizard form is invalid (formerly `OnWizardFormInvalid`) |
 
 ## Methods
 
@@ -43,7 +43,7 @@ The main wizard component that orchestrates navigation between multiple forms.
     Method="POST" 
     Action="/api/submit-wizard" 
     OnBeforeSubmit="HandleBeforeSubmit"
-    OnWizardFinished="HandleWizardFinished">
+    OnFinished="HandleWizardFinished">
     
     <ChildContent>
         <PggmWizardForm Label="Personal Information" Active="true">

@@ -16,7 +16,7 @@ Individual wizard step that contains form content within a PggmWizard component.
 
 | Event | Type | Description |
 |-------|------|-------------|
-| `OnWizardFormChanged` | EventCallback | Fired when the form changes (active, disabled, etc.) |
+| `OnChanged` | EventCallback | Fired when the form changes (active, disabled, etc.) (formerly `OnWizardFormChanged`) |
 | `OnAfterNavigate` | EventCallback<AfterNavigateEventArgs> | Fired after navigation to this form |
 
 ## Methods

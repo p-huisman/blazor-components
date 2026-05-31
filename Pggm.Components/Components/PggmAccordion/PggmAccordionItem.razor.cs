@@ -23,11 +23,11 @@ public partial class PggmAccordionItem : PggmEventComponentBase
     /// <summary>
     /// Event callback fired when the accordion item is toggled (opened or closed)
     /// </summary>
-    [Parameter] public EventCallback<EventArgs> OnAccordionItemToggle { get; set; }
+    [Parameter] public EventCallback<EventArgs> OnToggle { get; set; }
 
     protected override IEnumerable<string> GetEventNames()
     {
-        if (OnAccordionItemToggle.HasDelegate)
+        if (OnToggle.HasDelegate)
         {
             yield return "accordionItemToggle";
         }
@@ -35,13 +35,13 @@ public partial class PggmAccordionItem : PggmEventComponentBase
 
     protected override Task OnParametersSetAsync()
     {
-        if (OnAccordionItemToggle.HasDelegate)
+        if (OnToggle.HasDelegate)
         {
             RegisterEventHandler("accordionItemToggle", async (_) =>
             {
-                if (OnAccordionItemToggle.HasDelegate)
+                if (OnToggle.HasDelegate)
                 {
-                    await OnAccordionItemToggle.InvokeAsync(EventArgs.Empty);
+                    await OnToggle.InvokeAsync(EventArgs.Empty);
                 }
             });
         }

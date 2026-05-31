@@ -177,7 +177,7 @@ In your `_Imports.razor` file:
 ### Wizard
 
 ```razor
-<PggmWizard OnWizardFinished="HandleRegistrationComplete">
+<PggmWizard OnFinished="HandleRegistrationComplete">
     <ChildContent>
         <PggmWizardForm Label="Personal Information" Active="true">
             <form>

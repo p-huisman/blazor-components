@@ -167,8 +167,8 @@ Base class for PGGM components that handle events and require JavaScript interop
 - `OnBeforeSubmit` (EventCallback<BeforeSubmitEventArgs>) - Before submit event
 - `OnBeforeNavigate` (EventCallback<BeforeNavigateEventArgs>) - Before navigate event
 - `OnAfterNavigate` (EventCallback<AfterNavigateEventArgs>) - After navigate event
-- `OnWizardFinished` (EventCallback) - Wizard finished event
-- `OnWizardFormInvalid` (EventCallback<WizardFormInvalidEventArgs>) - Form invalid event
+- `OnFinished` (EventCallback) - Wizard finished event (formerly `OnWizardFinished`)
+- `OnFormInvalid` (EventCallback<WizardFormInvalidEventArgs>) - Form invalid event (formerly `OnWizardFormInvalid`)
 
 **Methods:**
 - `NavigateAsync(string direction)` - Navigate to next/previous step
@@ -186,7 +186,7 @@ Base class for PGGM components that handle events and require JavaScript interop
 - `NextDisabled` (bool) - Whether next button is disabled for this step
 
 **Events:**
-- `OnWizardFormChanged` (EventCallback) - Form change event
+- `OnChanged` (EventCallback) - Form change event (formerly `OnWizardFormChanged`)
 - `OnAfterNavigate` (EventCallback<AfterNavigateEventArgs>) - After navigate event
 
 **Methods:**

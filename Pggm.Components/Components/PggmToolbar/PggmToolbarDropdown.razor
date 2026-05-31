@@ -29,7 +29,7 @@
         {
             if (item.Visible)
             {
-                <PggmDropdownItem Value="@item.Value" Disabled="@item.Disabled" Checked="@item.Checked" OnItemSelect="async (_) => await HandleItemClick(item)">
+                <PggmDropdownItem Value="@item.Value" Disabled="@item.Disabled" Checked="@item.Checked" OnSelect="async (_) => await HandleItemClick(item)">
                     @item.Label
                 </PggmDropdownItem>
             }

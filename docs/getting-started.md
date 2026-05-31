@@ -187,7 +187,7 @@ Once you have completed the installation steps, you can start using PGGM compone
 
 <h3>User Registration</h3>
 
-<PggmWizard OnWizardFinished="HandleRegistrationComplete">
+<PggmWizard OnFinished="HandleRegistrationComplete">
     <ChildContent>
         <PggmWizardForm Label="Personal Information" Active="true">
             <form>
