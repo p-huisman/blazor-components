@@ -100,7 +100,7 @@ Refactor the PGGM Blazor Components library to follow Blazor and C# best practic
 - `PggmRadio.razor.cs`
 - `PggmInput.cs`
 
-**Dependencies**: None  
+**Dependencies**: Phase 1 completion  
 **Parallel**: No (sequential refactoring needed)
 
 ### 2.3 Add `[EditorRequired]` to Required Parameters
