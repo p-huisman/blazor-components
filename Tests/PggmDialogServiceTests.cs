@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
-using Xunit;
 using Microsoft.AspNetCore.Components;
 using Pggm.Components.Components.PggmDialog.Services;
+using Xunit;
 
 namespace Pggm.Components.Tests
 {

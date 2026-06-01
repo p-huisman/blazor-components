@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 using Microsoft.Extensions.Logging;
-
+using Microsoft.JSInterop;
 using Pggm.Components.Base;
 using Pggm.Components.Models.Wizard;
 

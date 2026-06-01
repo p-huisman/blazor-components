@@ -1,14 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
-
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
-
-using Pggm.Components.Utilities;
-
 using Pggm.Components.Interfaces;
 using Pggm.Components.Models.Wizard;
+using Pggm.Components.Utilities;
 
 namespace Pggm.Components.Base;
 

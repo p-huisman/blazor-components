@@ -145,72 +145,11 @@
     private string? _withClearValue;
     private string[]? _withClearMultiValues;
     private string? _visibleItemsValue;
-    private string? _eventValue;
-    private string _lastEvent = "Geen";
-    private string? _itemsDemoValue = "opt1";
+   
 
-    // ── TOption demo data ────────────────────────────────────────────────────────────
-    private EmployeeOption? _selectedEmployee;
-    private readonly List<EmployeeOption> _employees = new()
-    {
-        new EmployeeOption(1, "Anna de Vries",   false),
-        new EmployeeOption(2, "Bas Jansen",       false),
-        new EmployeeOption(3, "Carla Bakker",     false),
-        new EmployeeOption(4, "Dirk Smit",        true),
-        new EmployeeOption(5, "Eva van den Berg", false),
-    };
-
-    private record EmployeeOption(int Id, string Name, bool Inactive);
-
-    // ── EditForm models ────────────────────────────────────────────────────────
-    private RequiredFormModel _requiredModel = new();
-    private bool _requiredSubmitted;
-
-    private MinMaxFormModel _minMaxModel = new();
-    private bool _minMaxSubmitted;
-
-    private void HandleRequiredSubmit()
-    {
-        _requiredSubmitted = true;
-    }
-
-    private void HandleMinMaxSubmit()
-    {
-        _minMaxSubmitted = true;
-    }
-
-    private void HandleSkillsChanged(string[]? values)
-    {
-        _minMaxModel.Skills = values;
-        _minMaxModel.SkillsJoined = values is { Length: > 0 } ? string.Join(",", values) : null;
-    }
-
+   
     // ── Event handlers ─────────────────────────────────────────────────────────
-    private void HandleChange(ChangeEventArgs args) =>
-        _lastEvent = $"change → \"{args.Value}\" om {DateTime.Now:HH:mm:ss}";
-
-    private void HandleFocus(FocusEventArgs _) =>
-        _lastEvent = $"focus om {DateTime.Now:HH:mm:ss}";
-
-    private void HandleBlur(FocusEventArgs _) =>
-        _lastEvent = $"blur om {DateTime.Now:HH:mm:ss}";
-
-    private void HandleOpen() =>
-        _lastEvent = $"open om {DateTime.Now:HH:mm:ss}";
-
-    private void HandleClose() =>
-        _lastEvent = $"close om {DateTime.Now:HH:mm:ss}";
-
-    // ── Form models ────────────────────────────────────────────────────────────
-    private class RequiredFormModel
-    {
-        [Required(ErrorMessage = "Land is verplicht.")]
-        public string? Country { get; set; }
-
-        [Required(ErrorMessage = "Afdeling is verplicht.")]
-        public string? Department { get; set; }
-    }
-
+   
     private class MinMaxFormModel
     {
         // Joined string used by InputBase/[Required]; updated automatically by PggmCombobox.
@@ -248,42 +187,8 @@
 </PggmCombobox>
 """;
 
-    private string _eventsSource = """
-<PggmCombobox @bind-Value="_value"
-              OnChange="HandleChange"
-              OnFocus="HandleFocus"
-              OnBlur="HandleBlur"
-              OnOpen="HandleOpen"
-              OnClose="HandleClose">
-    <PggmComboboxItem Value="hr">Human Resources</PggmComboboxItem>
-</PggmCombobox>
-""";
-
-    private string _editFormSource = """
-<EditForm Model="_model" OnValidSubmit="HandleSubmit">
-    <DataAnnotationsValidator />
-    <PggmFieldset>
-        <PggmLabel slot="label">Land *</PggmLabel>
-        <PggmValidationMessage slot="error" For="() => _model.Country" />
-        <PggmCombobox @bind-Value="_model.Country" Required="true"
-                      Placeholder="Kies een land...">
-            <PggmComboboxItem Value="nl">Nederland</PggmComboboxItem>
-        </PggmCombobox>
-    </PggmFieldset>
-    <PggmButton Type="@ButtonType.Submit">Verzenden</PggmButton>
-</EditForm>
-""";
-
-    private string _minMaxSource = """
-<PggmCombobox Multiple="true" Min="2" Max="4"
-              MinValidationMessage="Selecteer minimaal 2 vaardigheden."
-              MaxValidationMessage="Selecteer maximaal 4 vaardigheden."
-              @bind-Values="_model.Skills"
-              @bind-Value="_model.SkillsJoined">
-    <PggmComboboxItem Value="blazor">Blazor</PggmComboboxItem>
-    ...
-</PggmCombobox>
-""";
+    
+    
 
     private string _withClearSource = """
 <PggmCombobox @bind-Value="_value" WithClear="true" Placeholder="Kies een land...">
@@ -305,25 +210,6 @@
 </PggmCombobox>
 """;
 
-    private string _tOptionSource = """
-<PggmCombobox TOption="EmployeeOption"
-              Items="@_employees"
-              OptionValue="@(e => e.Id.ToString())"
-              OptionText="@(e => e.Name)"
-              OptionDisabled="@(e => e.Inactive)"
-              Value="@(_selectedEmployee?.Id.ToString())"
-              @bind-SelectedOption="_selectedEmployee"
-              WithClear="true">
-</PggmCombobox>
-""";
-
-    private string _itemsSource = """
-<PggmCombobox @bind-Value="_value">
-    <PggmComboboxItem Value="opt1" Selected="true">Optie 1 (voorgeselecteerd)</PggmComboboxItem>
-    <PggmComboboxItem Value="opt2">Optie 2</PggmComboboxItem>
-    <PggmComboboxItem Value="opt3" Disabled="true">Optie 3 (uitgeschakeld)</PggmComboboxItem>
-</PggmCombobox>
-""";
 
     private string _basicBehind = """
 @code {
@@ -350,135 +236,9 @@
 }
 """;
 
-    private string _eventsBehind = """
-@code {
-    private string? _value;
-    private string _lastEvent = "Geen";
-
-    private void HandleChange(ChangeEventArgs args) =>
-        _lastEvent = $"change → \"{args.Value}\" om {DateTime.Now:HH:mm:ss}";
-
-    private void HandleFocus(FocusEventArgs _) =>
-        _lastEvent = $"focus om {DateTime.Now:HH:mm:ss}";
-
-    private void HandleBlur(FocusEventArgs _) =>
-        _lastEvent = $"blur om {DateTime.Now:HH:mm:ss}";
-
-    private void HandleOpen() =>
-        _lastEvent = $"open om {DateTime.Now:HH:mm:ss}";
-
-    private void HandleClose() =>
-        _lastEvent = $"close om {DateTime.Now:HH:mm:ss}";
-}
-""";
-
-    private string _editFormBehind = """
-@code {
-    private RequiredFormModel _model = new();
-    private bool _submitted;
-
-    private void HandleSubmit()
-    {
-        _submitted = true;
-    }
-
-    private class RequiredFormModel
-    {
-        [Required(ErrorMessage = "Land is verplicht.")]
-        public string? Country { get; set; }
-
-        [Required(ErrorMessage = "Afdeling is verplicht.")]
-        public string? Department { get; set; }
-    }
-}
-""";
-
-    private string _minMaxBehind = """
-@code {
-    private MinMaxFormModel _model = new();
-    private bool _submitted;
-
-    private void HandleSubmit()
-    {
-        _submitted = true;
-    }
-
-    private void HandleSkillsChanged(string[]? values)
-    {
-        _model.Skills = values;
-        _model.SkillsJoined = values is { Length: > 0 } ? string.Join(",", values) : null;
-    }
-
-    private class MinMaxFormModel
-    {
-        [Required(ErrorMessage = "Selecteer minimaal één vaardigheid.")]
-        public string? SkillsJoined { get; set; }
-
-        public string[]? Skills { get; set; }
-    }
-}
-""";
-
-    private string _itemsBehind = """
-@code {
-    private string? _value = "opt1";
-}
-""";
-
-    private string _tOptionBehind = """
-@code {
-    private EmployeeOption? _selectedEmployee;
-    private readonly List<EmployeeOption> _employees = new()
-    {
-        new EmployeeOption(1, "Anna de Vries", false),
-        new EmployeeOption(2, "Bas Jansen", false),
-        new EmployeeOption(3, "Carla Bakker", false),
-        new EmployeeOption(4, "Dirk Smit", true),
-        new EmployeeOption(5, "Eva van den Berg", false),
-    };
-
-    private record EmployeeOption(int Id, string Name, bool Inactive);
-}
-""";
 
     // ── API metadata ───────────────────────────────────────────────────────────
-    private IEnumerable<ApiMember> _comboboxProperties = new[]
-    {
-        new ApiMember { Name = "Value",                 Type = "string?",            DefaultValue = "",        Description = "Currently selected value (single-select). Use with @@bind-Value." },
-        new ApiMember { Name = "Values",                Type = "string[]?",          DefaultValue = "",        Description = "Currently selected values (multi-select). Use with @@bind-Values." },
-        new ApiMember { Name = "ValueExpression",       Type = "Expression<Func<string>>?", DefaultValue = "", Description = "Field identity expression for EditForm integration." },
-        new ApiMember { Name = "Name",                  Type = "string?",            DefaultValue = "",        Description = "Name attribute for form submission." },
-        new ApiMember { Name = "Id",                    Type = "string?",            DefaultValue = "auto",    Description = "Element id. Auto-generated when omitted." },
-        new ApiMember { Name = "Placeholder",           Type = "string?",            DefaultValue = "",        Description = "Placeholder text shown when nothing is selected." },
-        new ApiMember { Name = "Disabled",              Type = "bool",               DefaultValue = "false",   Description = "Disables the combobox." },
-        new ApiMember { Name = "ReadOnly",              Type = "bool",               DefaultValue = "false",   Description = "Makes the combobox read-only." },
-        new ApiMember { Name = "Required",              Type = "bool",               DefaultValue = "false",   Description = "Marks the field as required. Suppressed inside EditForm." },
-        new ApiMember { Name = "Multiple",              Type = "bool",               DefaultValue = "false",   Description = "Enables multi-select mode." },
-        new ApiMember { Name = "WithClear",              Type = "bool",               DefaultValue = "false",   Description = "Renders a clear button inside the combobox. Clicking it clears the selection." },
-        new ApiMember { Name = "VisibleItems",           Type = "int?",               DefaultValue = "",        Description = "Maximum number of items visible in the dropdown before scrolling. Maps to the visible-items attribute." },
-        new ApiMember { Name = "Open",                  Type = "bool",               DefaultValue = "false",   Description = "Controls whether the dropdown panel is open." },
-        new ApiMember { Name = "Min",                   Type = "int?",               DefaultValue = "",        Description = "Minimum number of selected items (multi-select). Validated on blur inside EditForm." },
-        new ApiMember { Name = "Max",                   Type = "int?",               DefaultValue = "",        Description = "Maximum number of selected items (multi-select). Validated on blur inside EditForm." },
-        new ApiMember { Name = "MinValidationMessage",  Type = "string?",            DefaultValue = "",        Description = "Custom error message for the Min constraint." },
-        new ApiMember { Name = "MaxValidationMessage",  Type = "string?",            DefaultValue = "",        Description = "Custom error message for the Max constraint." },
-        new ApiMember { Name = "ChildContent",          Type = "RenderFragment?",    DefaultValue = "",        Description = "PggmComboboxItem elements rendered inside the combobox." },
-        new ApiMember { Name = "Items",                 Type = "IEnumerable<TOption>?",   DefaultValue = "",    Description = "Data collection rendered as pggm-combobox-item elements. Requires OptionValue." },
-        new ApiMember { Name = "OptionValue",           Type = "Func<TOption, string?>?", DefaultValue = "",    Description = "Selector for the item value string." },
-        new ApiMember { Name = "OptionText",            Type = "Func<TOption, string?>?", DefaultValue = "",    Description = "Selector for the item display text." },
-        new ApiMember { Name = "OptionDisabled",        Type = "Func<TOption, bool>?",    DefaultValue = "",    Description = "Selector to disable individual items." },
-        new ApiMember { Name = "OptionTemplate",        Type = "RenderFragment<TOption>?",DefaultValue = "",    Description = "Custom render fragment per item. Overrides OptionText/OptionDisabled." },
-        new ApiMember { Name = "SelectedOption",        Type = "TOption?",           DefaultValue = "",        Description = "Currently selected item object (single-select). Use with @@bind-SelectedOption." },
-        new ApiMember { Name = "SelectedOptionChanged", Type = "EventCallback<TOption?>", DefaultValue = "",    Description = "Fired when the selected item object changes." },
-    };
 
-    private IEnumerable<ApiMember> _comboboxEvents = new[]
-    {
-        new ApiMember { Name = "OnChange",  Type = "EventCallback<ChangeEventArgs>", Description = "Fired when the selected value changes." },
-        new ApiMember { Name = "OnFocus",   Type = "EventCallback<FocusEventArgs>",  Description = "Fired when the combobox receives focus." },
-        new ApiMember { Name = "OnBlur",    Type = "EventCallback<FocusEventArgs>",  Description = "Fired when the combobox loses focus." },
-        new ApiMember { Name = "OnOpen",    Type = "EventCallback",                  Description = "Fired when the dropdown panel opens." },
-        new ApiMember { Name = "OnClose",   Type = "EventCallback",                  Description = "Fired when the dropdown panel closes." },
-    };
 
     private IEnumerable<ApiMember> _itemProperties = new[]
     {

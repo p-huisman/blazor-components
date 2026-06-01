@@ -6,12 +6,10 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using Microsoft.JSInterop;
 using Microsoft.Extensions.Logging;
-
+using Microsoft.JSInterop;
 using Pggm.Components.Base;
 
 namespace Pggm.Components.Components.PggmDataGrid

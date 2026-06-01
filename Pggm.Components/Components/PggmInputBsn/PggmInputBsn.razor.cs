@@ -1,11 +1,9 @@
 using System.Reflection;
-
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
-using Microsoft.JSInterop;
 using Microsoft.Extensions.Logging;
-
+using Microsoft.JSInterop;
 using Pggm.Components.Base;
 using Pggm.Components.Constants;
 
