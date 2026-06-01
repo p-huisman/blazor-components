@@ -138,26 +138,6 @@ globalThis.PggmComponents.loadScript = function (id: string): Promise<void> {
   return designSystem.loadScript(id);
 };
 
-globalThis.PggmComponents.setProperty = function (
-  element: HTMLElement | null,
-  property: string,
-  value: unknown,
-): void {
-  const el = element as (HTMLElement & Record<string, unknown>) | null;
-  if (el?.[property] !== undefined) {
-    el[property] = value;
-  }
-};
-
-globalThis.PggmComponents.getProperty = function (
-  element: HTMLElement | null,
-  property: string,
-): unknown {
-  return element
-    ? (element as unknown as Record<string, unknown>)[property]
-    : undefined;
-};
-
 globalThis.PggmComponents.getValidity = function (
   element: HTMLElement | null,
   validityState: string,
