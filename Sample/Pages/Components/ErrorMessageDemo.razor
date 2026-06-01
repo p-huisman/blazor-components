@@ -42,21 +42,23 @@
   private string multiInputValue = "";
 
   // CodeSnippet sources (use SnippetBuilder for consistent formatting)
-  private string basicErrorSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-    "<PggmLabel For=\"sample-input\">Sample Input:</PggmLabel>",
-    "<PggmErrorMessage For=\"sample-input\" Validity=\"@($\"{PggmErrorMessage.ValidityStates.ValueMissing}\")\">This field is required.</PggmErrorMessage>",
-    "<PggmInput Required=\"true\" Id=\"sample-input\" @bind-Value=\"sampleInputValue\" />",
-    "@code {",
-    "  private string sampleInputValue = \"\";",
-    "}");
+  private string basicErrorSource = """
+<PggmLabel For="sample-input">Sample Input:</PggmLabel>
+<PggmErrorMessage For="sample-input" Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing}")">This field is required.</PggmErrorMessage>
+<PggmInput Required="true" Id="sample-input" @bind-Value="sampleInputValue" />
+@code {
+  private string sampleInputValue = "";
+}
+""";
 
-  private string multipleValiditySource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-    "<PggmLabel For=\"multi-input\">Multi-validation Input:</PggmLabel>",
-    "<PggmErrorMessage For=\"multi-input\" Validity=\"@($\"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.PatternMismatch}\")\">This field is required and must match the specified pattern. (Starts with 'P')</PggmErrorMessage>",
-    "<PggmInput Required=\"true\" Pattern=\"^P.*\" Id=\"multi-input\" @bind-Value=\"multiInputValue\" />",
-    "@code {",
-    "  private string multiInputValue = \"\";",
-    "}");
+  private string multipleValiditySource = """
+<PggmLabel For="multi-input">Multi-validation Input:</PggmLabel>
+<PggmErrorMessage For="multi-input" Validity="@($"{PggmErrorMessage.ValidityStates.ValueMissing} {PggmErrorMessage.ValidityStates.PatternMismatch}")">This field is required and must match the specified pattern. (Starts with 'P')</PggmErrorMessage>
+<PggmInput Required="true" Pattern="^P.*" Id="multi-input" @bind-Value="multiInputValue" />
+@code {
+  private string multiInputValue = "";
+}
+""";
 
   // API table for docs
   private IEnumerable<ApiMember> _properties = new[]

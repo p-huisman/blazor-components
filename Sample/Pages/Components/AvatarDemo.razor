@@ -96,42 +96,47 @@
         new ApiMember { Name = "AdditionalAttributes", Type = "Dictionary<string, object>?", DefaultValue = "null", Description = "Attributes splatted onto the underlying web component element." },
     };
 
-    private string charactersSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<PggmStack Orientation=\"Orientation.Horizontal\" HorizontalGap=\"16\" Wrap=\"true\">",
-        "    <PggmAvatar Characters=\"AB\" Label=\"Anne de Boer\" />",
-        "    <PggmAvatar Characters=\"JW\" Label=\"Jan de Wit\" />",
-        "    <PggmAvatar Characters=\"PGGM\" Label=\"PGGM\" />",
-        "</PggmStack>");
+    private string charactersSource = """
+<PggmStack Orientation="Orientation.Horizontal" HorizontalGap="16" Wrap="true">
+    <PggmAvatar Characters="AB" Label="Anne de Boer" />
+    <PggmAvatar Characters="JW" Label="Jan de Wit" />
+    <PggmAvatar Characters="PGGM" Label="PGGM" />
+</PggmStack>
+""";
 
-    private string imageSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<PggmStack Orientation=\"Orientation.Horizontal\" HorizontalGap=\"16\" Wrap=\"true\">",
-        "    <PggmAvatar Src=\"https://i.pravatar.cc/150?img=1\" Label=\"Person 1\" />",
-        "    <PggmAvatar Src=\"https://i.pravatar.cc/150?img=2\" Label=\"Person 2\" />",
-        "    <PggmAvatar Src=\"broken-url.jpg\" Label=\"Fallback avatar\" />",
-        "</PggmStack>");
+    private string imageSource = """
+<PggmStack Orientation="Orientation.Horizontal" HorizontalGap="16" Wrap="true">
+    <PggmAvatar Src="https://i.pravatar.cc/150?img=1" Label="Person 1" />
+    <PggmAvatar Src="https://i.pravatar.cc/150?img=2" Label="Person 2" />
+    <PggmAvatar Src="broken-url.jpg" Label="Fallback avatar" />
+</PggmStack>
+""";
 
-    private string defaultIconSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<PggmAvatar Label=\"Unknown user\" />");
+    private string defaultIconSource = """
+<PggmAvatar Label="Unknown user" />
+""";
 
-    private string colorsSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<PggmStack Orientation=\"Orientation.Horizontal\" HorizontalGap=\"16\" Wrap=\"true\">",
-        "    <PggmAvatar Characters=\"AB\" Label=\"Anne de Boer\" Color=\"#ffffff\" Background=\"#005b8e\" />",
-        "    <PggmAvatar Characters=\"JW\" Label=\"Jan de Wit\" Color=\"#ffffff\" Background=\"#2e7d32\" />",
-        "    <PggmAvatar Characters=\"MK\" Label=\"Maria Koster\" Color=\"#1a1a1a\" Background=\"#ffd600\" />",
-        "</PggmStack>");
+    private string colorsSource = """
+<PggmStack Orientation="Orientation.Horizontal" HorizontalGap="16" Wrap="true">
+    <PggmAvatar Characters="AB" Label="Anne de Boer" Color="#ffffff" Background="#005b8e" />
+    <PggmAvatar Characters="JW" Label="Jan de Wit" Color="#ffffff" Background="#2e7d32" />
+    <PggmAvatar Characters="MK" Label="Maria Koster" Color="#1a1a1a" Background="#ffd600" />
+</PggmStack>
+""";
 
-    private string groupSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<PggmAvatarGroup Label=\"Team members\">",
-        "    <PggmAvatar Characters=\"AB\" Label=\"Anne de Boer\" />",
-        "    <PggmAvatar Characters=\"JW\" Label=\"Jan de Wit\" />",
-        "    <PggmAvatar Characters=\"MK\" Label=\"Maria Koster\" />",
-        "</PggmAvatarGroup>",
-        "",
-        "<PggmAvatarGroup Label=\"Large team\" MaxAvatars=\"3\">",
-        "    <PggmAvatar Characters=\"AB\" Label=\"Anne de Boer\" />",
-        "    <PggmAvatar Characters=\"JW\" Label=\"Jan de Wit\" />",
-        "    <PggmAvatar Characters=\"MK\" Label=\"Maria Koster\" />",
-        "    <PggmAvatar Characters=\"RV\" Label=\"Rob van Dijk\" />",
-        "    <PggmAvatar Characters=\"SL\" Label=\"Sara de Leeuw\" />",
-        "</PggmAvatarGroup>");
+    private string groupSource = """
+<PggmAvatarGroup Label="Team members">
+    <PggmAvatar Characters="AB" Label="Anne de Boer" />
+    <PggmAvatar Characters="JW" Label="Jan de Wit" />
+    <PggmAvatar Characters="MK" Label="Maria Koster" />
+</PggmAvatarGroup>
+
+<PggmAvatarGroup Label="Large team" MaxAvatars="3">
+    <PggmAvatar Characters="AB" Label="Anne de Boer" />
+    <PggmAvatar Characters="JW" Label="Jan de Wit" />
+    <PggmAvatar Characters="MK" Label="Maria Koster" />
+    <PggmAvatar Characters="RV" Label="Rob van Dijk" />
+    <PggmAvatar Characters="SL" Label="Sara de Leeuw" />
+</PggmAvatarGroup>
+""";
 }

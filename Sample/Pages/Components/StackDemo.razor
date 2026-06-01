@@ -38,28 +38,31 @@
 </DemoSection>
 
 @code {
-    private string verticalStackSource =
-        "<PggmStack>\n" +
-        "  <div class='pggm-box'>Item 1</div>\n" +
-        "  <div class='pggm-box'>Item 2</div>\n" +
-        "  <div class='pggm-box'>Item 3</div>\n" +
-        "</PggmStack>";
+        private string verticalStackSource = """
+<PggmStack>
+    <div class='pggm-box'>Item 1</div>
+    <div class='pggm-box'>Item 2</div>
+    <div class='pggm-box'>Item 3</div>
+</PggmStack>
+""";
 
-    private string horizontalStackSource =
-        "<PggmStack Orientation='Pggm.Components.Orientation.Horizontal' HorizontalAlignment='Pggm.Components.HorizontalAlignment.Center' HorizontalGap='16'>\n" +
-        "  <div class='pggm-box'>First</div>\n" +
-        "  <div class='pggm-box'>Second</div>\n" +
-        "  <div class='pggm-box'>Third</div>\n" +
-        "</PggmStack>";
+        private string horizontalStackSource = """
+<PggmStack Orientation='Pggm.Components.Orientation.Horizontal' HorizontalAlignment='Pggm.Components.HorizontalAlignment.Center' HorizontalGap='16'>
+    <div class='pggm-box'>First</div>
+    <div class='pggm-box'>Second</div>
+    <div class='pggm-box'>Third</div>
+</PggmStack>
+""";
 
-    private string wrappingStackSource =
-        "<PggmStack Wrap='true' Reversed='true' HorizontalGap='20'>\n" +
-        "  <!-- multiple items -->\n" +
-        "  <div class='pggm-box'>Item 1</div>\n" +
-        "  <div class='pggm-box'>Item 2</div>\n" +
-        "  <div class='pggm-box'>Item 3</div>\n" +
-        "  <div class='pggm-box'>Item 4</div>\n" +
-        "</PggmStack>";
+        private string wrappingStackSource = """
+<PggmStack Wrap='true' Reversed='true' HorizontalGap='20'>
+    <!-- multiple items -->
+    <div class='pggm-box'>Item 1</div>
+    <div class='pggm-box'>Item 2</div>
+    <div class='pggm-box'>Item 3</div>
+    <div class='pggm-box'>Item 4</div>
+</PggmStack>
+""";
 }
 
 <style>

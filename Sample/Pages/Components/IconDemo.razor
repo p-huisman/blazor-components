@@ -233,12 +233,14 @@
     private string selectedSize = ComponentValues.IconSize.Medium;
     private bool isOutlined = false;
 
-    private string interactiveBehind =
-        "@code {\n" +
-        "    private string selectedIcon = ComponentValues.IconName.User;\n" +
-        "    private string selectedSize = ComponentValues.IconSize.Medium;\n" +
-        "    private bool isOutlined = false;\n" +
-        "}";
+    private string interactiveBehind = """
+@code {
+    private string selectedIcon = ComponentValues.IconName.User;
+    private string selectedSize = ComponentValues.IconSize.Medium;
+    private bool isOutlined = false;
+}
+""";
+
     
     // API table for docs
     private IEnumerable<ApiMember> _properties = new[]
@@ -254,199 +256,206 @@
         new ApiMember { Name = "AdditionalAttributes", Type = "Dictionary<string, object>?", DefaultValue = "null", Description = "Attributes splatted onto the underlying element." },
     };
 
-    private string iconSizesSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<p>Icons are available in three different sizes: Small, Medium, and Large.</p>",
-        "<div class=\"icon-demo-grid\">",
-        "  <div class=\"icon-demo-item\">",
-        "    <PggmIcon Icon=\"@ComponentValues.IconName.User\" Size=\"@ComponentValues.IconSize.Small\" />",
-        "    <span>Small (small)</span>",
-        "  </div>",
-        "  <div class=\"icon-demo-item\">",
-        "    <PggmIcon Icon=\"@ComponentValues.IconName.User\" Size=\"@ComponentValues.IconSize.Medium\" />",
-        "    <span>Medium (medium) - Default</span>",
-        "  </div>",
-        "  <div class=\"icon-demo-item\">",
-        "    <PggmIcon Icon=\"@ComponentValues.IconName.User\" Size=\"@ComponentValues.IconSize.Large\" />",
-        "    <span>Large (large)</span>",
-        "  </div>",
-        "</div>");
+        private string iconSizesSource = """
+<p>Icons are available in three different sizes: Small, Medium, and Large.</p>
+<div class="icon-demo-grid">
+    <div class="icon-demo-item">
+        <PggmIcon Icon="@ComponentValues.IconName.User" Size="@ComponentValues.IconSize.Small" />
+        <span>Small (small)</span>
+    </div>
+    <div class="icon-demo-item">
+        <PggmIcon Icon="@ComponentValues.IconName.User" Size="@ComponentValues.IconSize.Medium" />
+        <span>Medium (medium) - Default</span>
+    </div>
+    <div class="icon-demo-item">
+        <PggmIcon Icon="@ComponentValues.IconName.User" Size="@ComponentValues.IconSize.Large" />
+        <span>Large (large)</span>
+    </div>
+</div>
+""";
 
-    private string dimensionsSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<p>You can control rendered size by providing <code>width</code> and <code>height</code>. A plain number is treated as pixels; include a unit for CSS units (e.g. .8em).</p>",
-        "<div class=\"icon-demo-grid\">",
-        "  <div class=\"icon-demo-item\">",
-        "    <PggmIcon Icon=\"@ComponentValues.IconName.AlertFilled\" Width=\"64\" Height=\"64\" />",
-        "    <span>64 x 64 (pixels)</span>",
-        "  </div>",
-        "  <div class=\"icon-demo-item\">",
-        "    <PggmIcon Icon=\"@ComponentValues.IconName.Alert\" Width=\".8em\" Height=\".8em\" />",
-        "    <span>.8em x .8em</span>",
-        "  </div>",
-        "</div>");
+        private string dimensionsSource = """
+<p>You can control rendered size by providing <code>width</code> and <code>height</code>. A plain number is treated as pixels; include a unit for CSS units (e.g. .8em).</p>
+<div class="icon-demo-grid">
+    <div class="icon-demo-item">
+        <PggmIcon Icon="@ComponentValues.IconName.AlertFilled" Width="64" Height="64" />
+        <span>64 x 64 (pixels)</span>
+    </div>
+    <div class="icon-demo-item">
+        <PggmIcon Icon="@ComponentValues.IconName.Alert" Width=".8em" Height=".8em" />
+        <span>.8em x .8em</span>
+    </div>
+</div>
+""";
 
-    private string availableIconsSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<p>Here are all the available icons in the PGGM design system:</p>",
-        "<div class=\"icon-catalog\">",
-        "  <div class=\"icon-catalog-item\">",
-        "    <PggmIcon Icon=\"@ComponentValues.IconName.Alert\" Size=\"@ComponentValues.IconSize.Large\" />",
-        "    <span>alert</span>",
-        "  </div>",
-        "  <div class=\"icon-catalog-item\">",
-        "    <PggmIcon Icon=\"@ComponentValues.IconName.AlertFilled\" Size=\"@ComponentValues.IconSize.Large\" />",
-        "    <span>alert-filled</span>",
-        "  </div>",
-        "  <div class=\"icon-catalog-item\">",
-        "    <PggmIcon Icon=\"@ComponentValues.IconName.Apple\" Size=\"@ComponentValues.IconSize.Large\" />",
-        "    <span>apple</span>",
-        "  </div>",
-        "  <div class=\"icon-catalog-item\">",
-        "    <PggmIcon Icon=\"@ComponentValues.IconName.Calendar\" Size=\"@ComponentValues.IconSize.Large\" />",
-        "    <span>calendar</span>",
-        "  </div>",
-        "  <div class=\"icon-catalog-item\">",
-        "    <PggmIcon Icon=\"@ComponentValues.IconName.ChartBars\" Size=\"@ComponentValues.IconSize.Large\" />",
-        "    <span>chart-bars</span>",
-        "  </div>",
-        "  <div class=\"icon-catalog-item\">",
-        "    <PggmIcon Icon=\"@ComponentValues.IconName.ChevronDown\" Size=\"@ComponentValues.IconSize.Large\" />",
-        "    <span>chevron-down</span>",
-        "  </div>",
-        "  <div class=\"icon-catalog-item\">",
-        "    <PggmIcon Icon=\"@ComponentValues.IconName.ChevronLeft\" Size=\"@ComponentValues.IconSize.Large\" />",
-        "    <span>chevron-left</span>",
-        "  </div>",
-        "  <div class=\"icon-catalog-item\">",
-        "    <PggmIcon Icon=\"@ComponentValues.IconName.ChevronRight\" Size=\"@ComponentValues.IconSize.Large\" />",
-        "    <span>chevron-right</span>",
-        "  </div>",
-        "  <div class=\"icon-catalog-item\">",
-        "    <PggmIcon Icon=\"@ComponentValues.IconName.ChevronUp\" Size=\"@ComponentValues.IconSize.Large\" />",
-        "    <span>chevron-up</span>",
-        "  </div>",
-        "  <div class=\"icon-catalog-item\">",
-        "    <PggmIcon Icon=\"@ComponentValues.IconName.Copy\" Size=\"@ComponentValues.IconSize.Large\" />",
-        "    <span>copy</span>",
-        "  </div>",
-        "  <div class=\"icon-catalog-item\">",
-        "    <PggmIcon Icon=\"@ComponentValues.IconName.Heart\" Size=\"@ComponentValues.IconSize.Large\" />",
-        "    <span>heart</span>",
-        "  </div>",
-        "  <div class=\"icon-catalog-item\">",
-        "    <PggmIcon Icon=\"@ComponentValues.IconName.Info\" Size=\"@ComponentValues.IconSize.Large\" />",
-        "    <span>info</span>",
-        "  </div>",
-        "  <div class=\"icon-catalog-item\">",
-        "    <PggmIcon Icon=\"@ComponentValues.IconName.MoodSmile\" Size=\"@ComponentValues.IconSize.Large\" />",
-        "    <span>mood-smile</span>",
-        "  </div>",
-        "  <div class=\"icon-catalog-item\">",
-        "    <PggmIcon Icon=\"@ComponentValues.IconName.Pencil\" Size=\"@ComponentValues.IconSize.Large\" />",
-        "    <span>pencil</span>",
-        "  </div>",
-        "  <div class=\"icon-catalog-item\">",
-        "    <PggmIcon Icon=\"@ComponentValues.IconName.User\" Size=\"@ComponentValues.IconSize.Large\" />",
-        "    <span>user</span>",
-        "  </div>",
-        "  <div class=\"icon-catalog-item\">",
-        "    <PggmIcon Icon=\"@ComponentValues.IconName.Users\" Size=\"@ComponentValues.IconSize.Large\" />",
-        "    <span>users</span>",
-        "  </div>",
-        "</div>");
+        private string availableIconsSource = """
+<p>Here are all the available icons in the PGGM design system:</p>
+<div class="icon-catalog">
+    <div class="icon-catalog-item">
+        <PggmIcon Icon="@ComponentValues.IconName.Alert" Size="@ComponentValues.IconSize.Large" />
+        <span>alert</span>
+    </div>
+    <div class="icon-catalog-item">
+        <PggmIcon Icon="@ComponentValues.IconName.AlertFilled" Size="@ComponentValues.IconSize.Large" />
+        <span>alert-filled</span>
+    </div>
+    <div class="icon-catalog-item">
+        <PggmIcon Icon="@ComponentValues.IconName.Apple" Size="@ComponentValues.IconSize.Large" />
+        <span>apple</span>
+    </div>
+    <div class="icon-catalog-item">
+        <PggmIcon Icon="@ComponentValues.IconName.Calendar" Size="@ComponentValues.IconSize.Large" />
+        <span>calendar</span>
+    </div>
+    <div class="icon-catalog-item">
+        <PggmIcon Icon="@ComponentValues.IconName.ChartBars" Size="@ComponentValues.IconSize.Large" />
+        <span>chart-bars</span>
+    </div>
+    <div class="icon-catalog-item">
+        <PggmIcon Icon="@ComponentValues.IconName.ChevronDown" Size="@ComponentValues.IconSize.Large" />
+        <span>chevron-down</span>
+    </div>
+    <div class="icon-catalog-item">
+        <PggmIcon Icon="@ComponentValues.IconName.ChevronLeft" Size="@ComponentValues.IconSize.Large" />
+        <span>chevron-left</span>
+    </div>
+    <div class="icon-catalog-item">
+        <PggmIcon Icon="@ComponentValues.IconName.ChevronRight" Size="@ComponentValues.IconSize.Large" />
+        <span>chevron-right</span>
+    </div>
+    <div class="icon-catalog-item">
+        <PggmIcon Icon="@ComponentValues.IconName.ChevronUp" Size="@ComponentValues.IconSize.Large" />
+        <span>chevron-up</span>
+    </div>
+    <div class="icon-catalog-item">
+        <PggmIcon Icon="@ComponentValues.IconName.Copy" Size="@ComponentValues.IconSize.Large" />
+        <span>copy</span>
+    </div>
+    <div class="icon-catalog-item">
+        <PggmIcon Icon="@ComponentValues.IconName.Heart" Size="@ComponentValues.IconSize.Large" />
+        <span>heart</span>
+    </div>
+    <div class="icon-catalog-item">
+        <PggmIcon Icon="@ComponentValues.IconName.Info" Size="@ComponentValues.IconSize.Large" />
+        <span>info</span>
+    </div>
+    <div class="icon-catalog-item">
+        <PggmIcon Icon="@ComponentValues.IconName.MoodSmile" Size="@ComponentValues.IconSize.Large" />
+        <span>mood-smile</span>
+    </div>
+    <div class="icon-catalog-item">
+        <PggmIcon Icon="@ComponentValues.IconName.Pencil" Size="@ComponentValues.IconSize.Large" />
+        <span>pencil</span>
+    </div>
+    <div class="icon-catalog-item">
+        <PggmIcon Icon="@ComponentValues.IconName.User" Size="@ComponentValues.IconSize.Large" />
+        <span>user</span>
+    </div>
+    <div class="icon-catalog-item">
+        <PggmIcon Icon="@ComponentValues.IconName.Users" Size="@ComponentValues.IconSize.Large" />
+        <span>users</span>
+    </div>
+</div>
+""";
 
-    private string customSvgSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<p>Icons can be provided as custom SVGs by placing an <code>&lt;svg slot=\"svg\"&gt;</code> inside the component.</p>",
-        "<div class=\"icon-demo-grid\">",
-        "  <div class=\"icon-demo-item\">",
-        "    <PggmIcon Size=\"@ComponentValues.IconSize.Large\">",
-        "      <svg slot=\"svg\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\">",
-        "        <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\" />",
-        "        <path d=\"M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0\" />",
-        "      </svg>",
-        "    </PggmIcon>",
-        "    <span>Custom SVG (slot)</span>",
-        "  </div>",
-        "</div>");
+        private string customSvgSource = """
+<p>Icons can be provided as custom SVGs by placing an <code>&lt;svg slot="svg"&gt;</code> inside the component.</p>
+<div class="icon-demo-grid">
+    <div class="icon-demo-item">
+        <PggmIcon Size="@ComponentValues.IconSize.Large">
+            <svg slot="svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+            </svg>
+        </PggmIcon>
+        <span>Custom SVG (slot)</span>
+    </div>
+</div>
+""";
 
-    private string customSrcSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<p>You can also provide an external SVG via the <code>src</code> attribute.</p>",
-        "<div class=\"icon-demo-grid\">",
-        "  <div class=\"icon-demo-item\">",
-        "    <PggmIcon Size=\"@ComponentValues.IconSize.Medium\" Src=\"./myicon.svg\" />",
-        "    <span>External SVG via src</span>",
-        "  </div>",
-        "</div>");
+        private string customSrcSource = """
+<p>You can also provide an external SVG via the <code>src</code> attribute.</p>
+<div class="icon-demo-grid">
+    <div class="icon-demo-item">
+        <PggmIcon Size="@ComponentValues.IconSize.Medium" Src="./myicon.svg" />
+        <span>External SVG via src</span>
+    </div>
+</div>
+""";
 
-    private string outlinedIconsSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<p>Icons can be displayed in an outlined style by setting the <code>Outline</code> parameter to <code>true</code>.</p>",
-        "<div class=\"icon-comparison\">",
-        "  <div class=\"icon-comparison-section\">",
-        "    <h4>Regular Icons</h4>",
-        "    <div class=\"icon-demo-row\">",
-        "      <PggmIcon Icon=\"@ComponentValues.IconName.Alert\" Size=\"@ComponentValues.IconSize.Large\" />",
-        "      <PggmIcon Icon=\"@ComponentValues.IconName.Calendar\" Size=\"@ComponentValues.IconSize.Large\" />",
-        "      <PggmIcon Icon=\"@ComponentValues.IconName.Heart\" Size=\"@ComponentValues.IconSize.Large\" />",
-        "      <PggmIcon Icon=\"@ComponentValues.IconName.Info\" Size=\"@ComponentValues.IconSize.Large\" />",
-        "      <PggmIcon Icon=\"@ComponentValues.IconName.User\" Size=\"@ComponentValues.IconSize.Large\" />",
-        "    </div>",
-        "  </div>",
-        "  <div class=\"icon-comparison-section\">",
-        "    <h4>Outlined Icons</h4>",
-        "    <div class=\"icon-demo-row\">",
-        "      <PggmIcon Icon=\"@ComponentValues.IconName.Alert\" Size=\"@ComponentValues.IconSize.Large\" Outline=\"true\" />",
-        "      <PggmIcon Icon=\"@ComponentValues.IconName.Calendar\" Size=\"@ComponentValues.IconSize.Large\" Outline=\"true\" />",
-        "      <PggmIcon Icon=\"@ComponentValues.IconName.Heart\" Size=\"@ComponentValues.IconSize.Large\" Outline=\"true\" />",
-        "      <PggmIcon Icon=\"@ComponentValues.IconName.Info\" Size=\"@ComponentValues.IconSize.Large\" Outline=\"true\" />",
-        "      <PggmIcon Icon=\"@ComponentValues.IconName.User\" Size=\"@ComponentValues.IconSize.Large\" Outline=\"true\" />",
-        "    </div>",
-        "  </div>",
-        "</div>");
+        private string outlinedIconsSource = """
+<p>Icons can be displayed in an outlined style by setting the <code>Outline</code> parameter to <code>true</code>.</p>
+<div class="icon-comparison">
+    <div class="icon-comparison-section">
+        <h4>Regular Icons</h4>
+        <div class="icon-demo-row">
+            <PggmIcon Icon="@ComponentValues.IconName.Alert" Size="@ComponentValues.IconSize.Large" />
+            <PggmIcon Icon="@ComponentValues.IconName.Calendar" Size="@ComponentValues.IconSize.Large" />
+            <PggmIcon Icon="@ComponentValues.IconName.Heart" Size="@ComponentValues.IconSize.Large" />
+            <PggmIcon Icon="@ComponentValues.IconName.Info" Size="@ComponentValues.IconSize.Large" />
+            <PggmIcon Icon="@ComponentValues.IconName.User" Size="@ComponentValues.IconSize.Large" />
+        </div>
+    </div>
+    <div class="icon-comparison-section">
+        <h4>Outlined Icons</h4>
+        <div class="icon-demo-row">
+            <PggmIcon Icon="@ComponentValues.IconName.Alert" Size="@ComponentValues.IconSize.Large" Outline="true" />
+            <PggmIcon Icon="@ComponentValues.IconName.Calendar" Size="@ComponentValues.IconSize.Large" Outline="true" />
+            <PggmIcon Icon="@ComponentValues.IconName.Heart" Size="@ComponentValues.IconSize.Large" Outline="true" />
+            <PggmIcon Icon="@ComponentValues.IconName.Info" Size="@ComponentValues.IconSize.Large" Outline="true" />
+            <PggmIcon Icon="@ComponentValues.IconName.User" Size="@ComponentValues.IconSize.Large" Outline="true" />
+        </div>
+    </div>
+</div>
+""";
 
-    private string interactiveSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<div class=\"controls\">",
-        "  <div class=\"control-group\">",
-        "    <PggmLabel For=\"icon-select\">Select Icon:</PggmLabel>",
-        "    <PggmSelect @bind-Value=\"selectedIcon\" Id=\"icon-select\">",
-        "      <option value=\"@ComponentValues.IconName.Alert\">Alert</option>",
-        "      <option value=\"@ComponentValues.IconName.AlertFilled\">Alert Filled</option>",
-        "      <option value=\"@ComponentValues.IconName.Apple\">Apple</option>",
-        "      <option value=\"@ComponentValues.IconName.Calendar\">Calendar</option>",
-        "      <option value=\"@ComponentValues.IconName.ChartBars\">Chart Bars</option>",
-        "      <option value=\"@ComponentValues.IconName.ChevronDown\">Chevron Down</option>",
-        "      <option value=\"@ComponentValues.IconName.ChevronLeft\">Chevron Left</option>",
-        "      <option value=\"@ComponentValues.IconName.ChevronRight\">Chevron Right</option>",
-        "      <option value=\"@ComponentValues.IconName.ChevronUp\">Chevron Up</option>",
-        "      <option value=\"@ComponentValues.IconName.Copy\">Copy</option>",
-        "      <option value=\"@ComponentValues.IconName.Heart\">Heart</option>",
-        "      <option value=\"@ComponentValues.IconName.Info\">Info</option>",
-        "      <option value=\"@ComponentValues.IconName.MoodSmile\">Mood Smile</option>",
-        "      <option value=\"@ComponentValues.IconName.Pencil\">Pencil</option>",
-        "      <option value=\"@ComponentValues.IconName.User\">User</option>",
-        "      <option value=\"@ComponentValues.IconName.Users\">Users</option>",
-        "    </PggmSelect>",
-        "  </div>",
-        "  <div class=\"control-group\">",
-        "    <PggmLabel For=\"size-select\">Select Size:</PggmLabel>",
-        "    <PggmSelect @bind-Value=\"selectedSize\" Id=\"size-select\">",
-        "      <option value=\"@ComponentValues.IconSize.Small\">Small (small)</option>",
-        "      <option value=\"@ComponentValues.IconSize.Medium\">Medium (medium)</option>",
-        "      <option value=\"@ComponentValues.IconSize.Large\">Large (large)</option>",
-        "    </PggmSelect>",
-        "  </div>",
-        "  <div class=\"control-group\">",
-        "    <PggmCheckbox @bind-Value=\"isOutlined\" Id=\"outline-checkbox\" />",
-        "    <PggmLabel For=\"outline-checkbox\">Outlined</PggmLabel>",
-        "  </div>",
-        "</div>",
-        "<div class=\"preview\">",
-        "  <PggmHeading Level=\"4\">Preview:</PggmHeading>",
-        "  <div class=\"icon-preview\">",
-        "    <PggmIcon Icon=\"@selectedIcon\" Size=\"@selectedSize\" Outline=\"@isOutlined\" />",
-        "  </div>",
-        "  <div class=\"code-preview\">",
-        "    <strong>Code:</strong>",
-        "    <code>&lt;PggmIcon Icon=\"@selectedIcon\" Size=\"@selectedSize\"@(isOutlined ? \" Outline=\\\"true\\\"\" : \"\") /&gt;</code>",
-        "  </div>",
-        "</div>");
+        private string interactiveSource = """
+<div class="controls">
+    <div class="control-group">
+        <PggmLabel For="icon-select">Select Icon:</PggmLabel>
+        <PggmSelect @bind-Value="selectedIcon" Id="icon-select">
+            <option value="@ComponentValues.IconName.Alert">Alert</option>
+            <option value="@ComponentValues.IconName.AlertFilled">Alert Filled</option>
+            <option value="@ComponentValues.IconName.Apple">Apple</option>
+            <option value="@ComponentValues.IconName.Calendar">Calendar</option>
+            <option value="@ComponentValues.IconName.ChartBars">Chart Bars</option>
+            <option value="@ComponentValues.IconName.ChevronDown">Chevron Down</option>
+            <option value="@ComponentValues.IconName.ChevronLeft">Chevron Left</option>
+            <option value="@ComponentValues.IconName.ChevronRight">Chevron Right</option>
+            <option value="@ComponentValues.IconName.ChevronUp">Chevron Up</option>
+            <option value="@ComponentValues.IconName.Copy">Copy</option>
+            <option value="@ComponentValues.IconName.Heart">Heart</option>
+            <option value="@ComponentValues.IconName.Info">Info</option>
+            <option value="@ComponentValues.IconName.MoodSmile">Mood Smile</option>
+            <option value="@ComponentValues.IconName.Pencil">Pencil</option>
+            <option value="@ComponentValues.IconName.User">User</option>
+            <option value="@ComponentValues.IconName.Users">Users</option>
+        </PggmSelect>
+    </div>
+    <div class="control-group">
+        <PggmLabel For="size-select">Select Size:</PggmLabel>
+        <PggmSelect @bind-Value="selectedSize" Id="size-select">
+            <option value="@ComponentValues.IconSize.Small">Small (small)</option>
+            <option value="@ComponentValues.IconSize.Medium">Medium (medium)</option>
+            <option value="@ComponentValues.IconSize.Large">Large (large)</option>
+        </PggmSelect>
+    </div>
+    <div class="control-group">
+        <PggmCheckbox @bind-Value="isOutlined" Id="outline-checkbox" />
+        <PggmLabel For="outline-checkbox">Outlined</PggmLabel>
+    </div>
+</div>
+<div class="preview">
+    <PggmHeading Level="4">Preview:</PggmHeading>
+    <div class="icon-preview">
+        <PggmIcon Icon="@selectedIcon" Size="@selectedSize" Outline="@isOutlined" />
+    </div>
+    <div class="code-preview">
+        <strong>Code:</strong>
+        <code>&lt;PggmIcon Icon="@selectedIcon" Size="@selectedSize"@(isOutlined ? " Outline=\"true\"" : "") /&gt;</code>
+    </div>
+</div>
+""";
 }
 
 <style>

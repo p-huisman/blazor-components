@@ -170,83 +170,90 @@
 
     // ── Code snippets ────────────────────────────────────────────────────────
 
-    private string basicCardSource = SnippetBuilder.Build(
-        "<PggmCard>",
-        "  <HeaderContent>",
-        "    <strong>Card Title</strong>",
-        "  </HeaderContent>",
-        "  <ChildContent>",
-        "    <p>This is the main body content of the card.</p>",
-        "  </ChildContent>",
-        "</PggmCard>");
+        private string basicCardSource = """
+<PggmCard>
+    <HeaderContent>
+        <strong>Card Title</strong>
+    </HeaderContent>
+    <ChildContent>
+        <p>This is the main body content of the card.</p>
+    </ChildContent>
+</PggmCard>
+""";
 
-    private string borderedCardSource = SnippetBuilder.Build(
-        "<PggmCard Border=\"true\">",
-        "  <HeaderContent>",
-        "    <strong>Bordered Card</strong>",
-        "  </HeaderContent>",
-        "  <ChildContent>",
-        "    <p>This card has a border applied using the PGGM design token.</p>",
-        "  </ChildContent>",
-        "</PggmCard>");
+        private string borderedCardSource = """
+<PggmCard Border="true">
+    <HeaderContent>
+        <strong>Bordered Card</strong>
+    </HeaderContent>
+    <ChildContent>
+        <p>This card has a border applied using the PGGM design token.</p>
+    </ChildContent>
+</PggmCard>
+""";
 
-    private string headerSlotsSource = SnippetBuilder.Build(
-        "<PggmCard Border=\"true\">",
-        "  <HeaderIconContent>",
-        "    <PggmIcon Icon=\"pencil\" Size=\"m\" />",
-        "  </HeaderIconContent>",
-        "  <HeaderContent>",
-        "    <strong>Notifications</strong>",
-        "  </HeaderContent>",
-        "  <HeaderActionContent>",
-        "    <PggmLink Href=\"#\">View all</PggmLink>",
-        "  </HeaderActionContent>",
-        "  <ChildContent>",
-        "    <p>You have 3 unread notifications.</p>",
-        "  </ChildContent>",
-        "</PggmCard>");
+        private string headerSlotsSource = """
+<PggmCard Border="true">
+    <HeaderIconContent>
+        <PggmIcon Icon="pencil" Size="m" />
+    </HeaderIconContent>
+    <HeaderContent>
+        <strong>Notifications</strong>
+    </HeaderContent>
+    <HeaderActionContent>
+        <PggmLink Href="#">View all</PggmLink>
+    </HeaderActionContent>
+    <ChildContent>
+        <p>You have 3 unread notifications.</p>
+    </ChildContent>
+</PggmCard>
+""";
 
-    private string footerSource = SnippetBuilder.Build(
-        "<PggmCard Border=\"true\">",
-        "  <HeaderContent><strong>Card with Footer</strong></HeaderContent>",
-        "  <ChildContent>",
-        "    <p>This card has a footer area with action buttons.</p>",
-        "  </ChildContent>",
-        "  <FooterContent>",
-        "    <PggmStack Orientation=\"Orientation.Horizontal\" HorizontalGap=\"8\">",
-        "      <PggmButton Appearance=\"@ButtonAppearance.Primary\">Confirm</PggmButton>",
-        "      <PggmButton Appearance=\"@ButtonAppearance.Secondary\">Cancel</PggmButton>",
-        "    </PggmStack>",
-        "  </FooterContent>",
-        "</PggmCard>");
+        private string footerSource = """
+<PggmCard Border="true">
+    <HeaderContent><strong>Card with Footer</strong></HeaderContent>
+    <ChildContent>
+        <p>This card has a footer area with action buttons.</p>
+    </ChildContent>
+    <FooterContent>
+        <PggmStack Orientation="Orientation.Horizontal" HorizontalGap="8">
+            <PggmButton Appearance="@ButtonAppearance.Primary">Confirm</PggmButton>
+            <PggmButton Appearance="@ButtonAppearance.Secondary">Cancel</PggmButton>
+        </PggmStack>
+    </FooterContent>
+</PggmCard>
+""";
 
-    private string horizontalSource = SnippetBuilder.Build(
-        "<PggmCard Orientation=\"Orientation.Horizontal\" Border=\"true\">",
-        "  <ChildContent>",
-        "    <strong>Horizontal Card</strong>",
-        "    <p>Content flows in a row with optional action at the end.</p>",
-        "  </ChildContent>",
-        "  <ActionContent>",
-        "    <PggmButton Appearance=\"@ButtonAppearance.Primary\">Action</PggmButton>",
-        "  </ActionContent>",
-        "</PggmCard>");
+        private string horizontalSource = """
+<PggmCard Orientation="Orientation.Horizontal" Border="true">
+    <ChildContent>
+        <strong>Horizontal Card</strong>
+        <p>Content flows in a row with optional action at the end.</p>
+    </ChildContent>
+    <ActionContent>
+        <PggmButton Appearance="@ButtonAppearance.Primary">Action</PggmButton>
+    </ActionContent>
+</PggmCard>
+""";
 
-    private string mediaSource = SnippetBuilder.Build(
-        "<PggmCard Border=\"true\">",
-        "  <ChildContent>",
-        "    <img slot=\"media\" src=\"...\" alt=\"Card media\" />",
-        "    <p>Card content below the media image.</p>",
-        "  </ChildContent>",
-        "</PggmCard>");
+        private string mediaSource = """
+<PggmCard Border="true">
+    <ChildContent>
+        <img slot="media" src="..." alt="Card media" />
+        <p>Card content below the media image.</p>
+    </ChildContent>
+</PggmCard>
+""";
 
-    private string cardGridSource = SnippetBuilder.Build(
-        "<div style=\"display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem;\">",
-        "  <PggmCard Border=\"true\">",
-        "    <HeaderContent><strong>Title</strong></HeaderContent>",
-        "    <ChildContent><p>Description text.</p></ChildContent>",
-        "    <FooterContent><PggmLink Href=\"#\">Read more</PggmLink></FooterContent>",
-        "  </PggmCard>",
-        "</div>");
+        private string cardGridSource = """
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem;">
+    <PggmCard Border="true">
+        <HeaderContent><strong>Title</strong></HeaderContent>
+        <ChildContent><p>Description text.</p></ChildContent>
+        <FooterContent><PggmLink Href="#">Read more</PggmLink></FooterContent>
+    </PggmCard>
+</div>
+""";
 
     private string cardGridBehind = @"@code {
     private readonly IEnumerable<(string Title, string Description)> _sampleItems =

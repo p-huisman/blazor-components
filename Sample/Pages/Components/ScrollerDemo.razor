@@ -90,36 +90,41 @@
 </DemoSection>
 
 @code {
-    private string verticalSource =
-        "<PggmScroller Orientation=\"Orientation.Vertical\" style=\"height: 150px;\">\n" +
-        "    @for (int i = 1; i <= 12; i++)\n" +
-        "    {\n" +
-        "        <div style=\"padding: 8px 12px;\">Item @i</div>\n" +
-        "    }\n" +
-        "</PggmScroller>";
+    private string verticalSource = """
+<PggmScroller Orientation="Orientation.Vertical" style="height: 150px;">
+    @for (int i = 1; i <= 12; i++)
+    {
+        <div style="padding: 8px 12px;">Item @i</div>
+    }
+</PggmScroller>
+""";
 
-    private string horizontalSource =
-        "<PggmScroller Orientation=\"Orientation.Horizontal\">\n" +
-        "    <div style=\"display: flex; gap: 12px; padding: 8px;\">\n" +
-        "        @for (int i = 1; i <= 12; i++)\n" +
-        "        {\n" +
-        "            <div style=\"min-width: 120px; padding: 16px;\">Card @i</div>\n" +
-        "        }\n" +
-        "    </div>\n" +
-        "</PggmScroller>";
+    private string horizontalSource = """
+<PggmScroller Orientation="Orientation.Horizontal">
+    <div style="display: flex; gap: 12px; padding: 8px;">
+        @for (int i = 1; i <= 12; i++)
+        {
+            <div style="min-width: 120px; padding: 16px;">Card @i</div>
+        }
+    </div>
+</PggmScroller>
+""";
 
-    private string withoutScrollbarSource =
-        "<PggmScroller WithoutScrollbar=\"true\" style=\"height: 150px;\">\n" +
-        "    ...\n" +
-        "</PggmScroller>";
+    private string withoutScrollbarSource = """
+<PggmScroller WithoutScrollbar="true" style="height: 150px;">
+    ...
+</PggmScroller>
+""";
 
-    private string withoutShadowSource =
-        "<PggmScroller WithoutShadow=\"true\" style=\"height: 150px;\">\n" +
-        "    ...\n" +
-        "</PggmScroller>";
+    private string withoutShadowSource = """
+<PggmScroller WithoutShadow="true" style="height: 150px;">
+    ...
+</PggmScroller>
+""";
 
-    private string withoutBothSource =
-        "<PggmScroller WithoutScrollbar=\"true\" WithoutShadow=\"true\" style=\"height: 150px;\">\n" +
-        "    ...\n" +
-        "</PggmScroller>";
+    private string withoutBothSource = """
+<PggmScroller WithoutScrollbar="true" WithoutShadow="true" style="height: 150px;">
+    ...
+</PggmScroller>
+""";
 }

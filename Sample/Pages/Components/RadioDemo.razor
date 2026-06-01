@@ -179,42 +179,36 @@
         "    <PggmRadio RadioValue=\"cherry\" @bind-Value=\"selectedBound\">Cherry</PggmRadio>",
         "</PggmStack>");
 
-    private string bindExampleBehind =
-        "@code {\n" +
-        "    private string? selectedBound = \"banana\";\n" +
-        "}";
+    private string bindExampleBehind = @"@code {
+    private string? selectedBound = ""banana"";
+}";
 
-    private string editFormBehind =
-        "@code {\n" +
-        "    private FormModel formModel = new FormModel();\n" +
-        "    private void HandleValidSubmit() { /* submit */ }\n" +
-        "\n" +
-        "    private class FormModel\n" +
-        "    {\n" +
-        "        [Required]\n" +
-        "        public string? Fruit { get; set; }\n" +
-        "    }\n" +
-        "}";
+    private string editFormBehind = @"@code {
+    private FormModel formModel = new FormModel();
+    private void HandleValidSubmit() { /* submit */ }
 
-    private string basicRadioBehind =
-        "@code {\n" +
-        "    private string? selectedOption1 = \"option-a\";\n" +
-        "}";
+    private class FormModel
+    {
+        [Required]
+        public string? Fruit { get; set; }
+    }
+}";
 
-    private string planRadioBehind =
-        "@code {\n" +
-        "    private string? selectedPlan = \"basic\";\n" +
-        "}";
+    private string basicRadioBehind = @"@code {
+    private string? selectedOption1 = ""option-a"";
+}";
 
-    private string disabledRadioBehind =
-        "@code {\n" +
-        "    private string? selectedTheme = \"light\";\n" +
-        "}";
+    private string planRadioBehind = @"@code {
+    private string? selectedPlan = ""basic"";
+}";
 
-    private string requiredRadioBehind =
-        "@code {\n" +
-        "    private string? selectedPriority;\n" +
-        "}";
+    private string disabledRadioBehind = @"@code {
+    private string? selectedTheme = ""light"";
+}";
+
+    private string requiredRadioBehind = @"@code {
+    private string? selectedPriority;
+}";
 
     private IEnumerable<ApiMember> _properties = new[]
     {

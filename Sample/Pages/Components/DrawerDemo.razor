@@ -277,140 +277,160 @@
     private void OnProgAfterHide() => LogEvent("afterHide");
 
     // Code snippets for DemoSection
-    private string _defaultSource =
-        "<PggmDrawer @bind-Open=\"isOpen\" Label=\"Default Drawer\">\n" +
-        "    <p>Drawer body content.</p>\n" +
-        "</PggmDrawer>";
+    private string _defaultSource = """
+<PggmDrawer @bind-Open="isOpen" Label="Default Drawer">
+    <p>Drawer body content.</p>
+</PggmDrawer>
+""";
 
-    private string _startSource =
-        "<PggmDrawer @bind-Open=\"isOpen\" Label=\"Start Drawer\" Placement=\"start\">\n" +
-        "    <p>Slides in from the start.</p>\n" +
-        "</PggmDrawer>";
+    private string _startSource = """
+<PggmDrawer @bind-Open="isOpen" Label="Start Drawer" Placement="start">
+    <p>Slides in from the start.</p>
+</PggmDrawer>
+""";
 
-    private string _topSource =
-        "<PggmDrawer @bind-Open=\"isOpen\" Label=\"Top Drawer\" Placement=\"top\">\n" +
-        "    <p>Slides in from the top.</p>\n" +
-        "</PggmDrawer>";
+    private string _topSource = """
+<PggmDrawer @bind-Open="isOpen" Label="Top Drawer" Placement="top">
+    <p>Slides in from the top.</p>
+</PggmDrawer>
+""";
 
-    private string _bottomSource =
-        "<PggmDrawer @bind-Open=\"isOpen\" Label=\"Bottom Drawer\" Placement=\"bottom\">\n" +
-        "    <p>Slides in from the bottom.</p>\n" +
-        "</PggmDrawer>";
+    private string _bottomSource = """
+<PggmDrawer @bind-Open="isOpen" Label="Bottom Drawer" Placement="bottom">
+    <p>Slides in from the bottom.</p>
+</PggmDrawer>
+""";
 
-    private string _noHeaderSource =
-        "<PggmDrawer @bind-Open=\"isOpen\" NoHeader=\"true\">\n" +
-        "    <p>No header — fully custom layout.</p>\n" +
-        "</PggmDrawer>";
+    private string _noHeaderSource = """
+<PggmDrawer @bind-Open="isOpen" NoHeader="true">
+    <p>No header — fully custom layout.</p>
+</PggmDrawer>
+""";
 
-    private string _customSizeSource =
-        "<PggmDrawer @bind-Open=\"isOpen\" Label=\"Wide Drawer\" Size=\"50vw\">\n" +
-        "    <p>Panel is 50vw wide.</p>\n" +
-        "</PggmDrawer>";
+    private string _customSizeSource = """
+<PggmDrawer @bind-Open="isOpen" Label="Wide Drawer" Size="50vw">
+    <p>Panel is 50vw wide.</p>
+</PggmDrawer>
+""";
 
-    private string _scrollSource =
-        "<PggmDrawer @bind-Open=\"isOpen\" Label=\"Scrolling Content\">\n" +
-        "    <Footer>\n" +
-        "        <PggmButton Appearance=\"primary\" @onclick=\"Close\">Close</PggmButton>\n" +
-        "    </Footer>\n" +
-        "    @for (var i = 1; i <= 20; i++) { <p>Paragraph @i</p> }\n" +
-        "</PggmDrawer>";
+    private string _scrollSource = """
+<PggmDrawer @bind-Open="isOpen" Label="Scrolling Content">
+    <Footer>
+        <PggmButton Appearance="primary" @onclick="Close">Close</PggmButton>
+    </Footer>
+    @for (var i = 1; i <= 20; i++) { <p>Paragraph @i</p> }
+</PggmDrawer>
+""";
 
-    private string _preventCloseSource =
-        "<PggmDrawer @bind-Open=\"isOpen\" Label=\"...\" OnRequestClose=\"HandleRequestClose\">\n" +
-        "    ...\n" +
-        "</PggmDrawer>";
+    private string _preventCloseSource = """
+<PggmDrawer @bind-Open="isOpen" Label="..." OnRequestClose="HandleRequestClose">
+    ...
+</PggmDrawer>
+""";
 
-    private string _containedSource =
-        "<div style=\"position: relative; overflow: hidden; height: 300px;\">\n" +
-        "    <PggmDrawer @bind-Open=\"isOpen\" Label=\"Contained\" Contained=\"true\">\n" +
-        "        <p>Contained to the parent element.</p>\n" +
-        "    </PggmDrawer>\n" +
-        "</div>";
+    private string _containedSource = """
+<div style="position: relative; overflow: hidden; height: 300px;">
+    <PggmDrawer @bind-Open="isOpen" Label="Contained" Contained="true">
+        <p>Contained to the parent element.</p>
+    </PggmDrawer>
+</div>
+""";
 
-    private string _programmaticSource =
-        "<PggmDrawer @ref=\"_drawer\" @bind-Open=\"isOpen\" Label=\"...\">\n" +
-        "    ...\n" +
-        "</PggmDrawer>";
+    private string _programmaticSource = """
+<PggmDrawer @ref="_drawer" @bind-Open="isOpen" Label="...">
+    ...
+</PggmDrawer>
+""";
 
-    private string _defaultBehind =
-        "@code {\n" +
-        "    private bool isOpen;\n" +
-        "}";
+    private string _defaultBehind = """
+@code {
+    private bool isOpen;
+}
+""";
 
-    private string _startBehind =
-        "@code {\n" +
-        "    private bool isOpen;\n" +
-        "}";
+    private string _startBehind = """
+@code {
+    private bool isOpen;
+}
+""";
 
-    private string _topBehind =
-        "@code {\n" +
-        "    private bool isOpen;\n" +
-        "}";
+    private string _topBehind = """
+@code {
+    private bool isOpen;
+}
+""";
 
-    private string _bottomBehind =
-        "@code {\n" +
-        "    private bool isOpen;\n" +
-        "}";
+    private string _bottomBehind = """
+@code {
+    private bool isOpen;
+}
+""";
 
-    private string _noHeaderBehind =
-        "@code {\n" +
-        "    private bool isOpen;\n" +
-        "}";
+    private string _noHeaderBehind = """
+@code {
+    private bool isOpen;
+}
+""";
 
-    private string _customSizeBehind =
-        "@code {\n" +
-        "    private bool isOpen;\n" +
-        "}";
+    private string _customSizeBehind = """
+@code {
+    private bool isOpen;
+}
+""";
 
-    private string _scrollBehind =
-        "@code {\n" +
-        "    private bool isOpen;\n" +
-        "}";
+    private string _scrollBehind = """
+@code {
+    private bool isOpen;
+}
+""";
 
-    private string _preventCloseBehind =
-        "@code {\n" +
-        "    private bool isOpen;\n" +
-        "    private string requestCloseMessage = \"\";\n" +
-        "\n" +
-        "    private void HandleRequestClose(DrawerRequestCloseEventArgs args)\n" +
-        "    {\n" +
-        "        if (args.Source == \"overlay\")\n" +
-        "        {\n" +
-        "            args.Cancel = true;\n" +
-        "            requestCloseMessage = $\"Blocked close from: {args.Source}\";\n" +
-        "        }\n" +
-        "        else\n" +
-        "        {\n" +
-        "            requestCloseMessage = $\"Allowed close from: {args.Source}\";\n" +
-        "        }\n" +
-        "    }\n" +
-        "}";
+    private string _preventCloseBehind = """
+@code {
+    private bool isOpen;
+    private string requestCloseMessage = "";
 
-    private string _containedBehind =
-        "@code {\n" +
-        "    private bool isOpen;\n" +
-        "}";
+    private void HandleRequestClose(DrawerRequestCloseEventArgs args)
+    {
+        if (args.Source == "overlay")
+        {
+            args.Cancel = true;
+            requestCloseMessage = $"Blocked close from: {args.Source}";
+        }
+        else
+        {
+            requestCloseMessage = $"Allowed close from: {args.Source}";
+        }
+    }
+}
+""";
 
-    private string _programmaticBehind =
-        "@code {\n" +
-        "    private bool isOpen;\n" +
-        "    private PggmDrawer? _drawer;\n" +
-        "    private List<string> _events = new();\n" +
-        "\n" +
-        "    private async Task Open() => await _drawer!.ShowAsync();\n" +
-        "    private async Task Close() => await _drawer!.HideAsync();\n" +
-        "\n" +
-        "    private void LogEvent(string name)\n" +
-        "    {\n" +
-        "        _events.Add($\"{DateTime.Now:HH:mm:ss.fff} — {name}\");\n" +
-        "        StateHasChanged();\n" +
-        "    }\n" +
-        "\n" +
-        "    private void OnShow() => LogEvent(\"show\");\n" +
-        "    private void OnAfterShow() => LogEvent(\"afterShow\");\n" +
-        "    private void OnHide() => LogEvent(\"hide\");\n" +
-        "    private void OnAfterHide() => LogEvent(\"afterHide\");\n" +
-        "}";
+    private string _containedBehind = """
+@code {
+    private bool isOpen;
+}
+""";
+
+    private string _programmaticBehind = """
+@code {
+    private bool isOpen;
+    private PggmDrawer? _drawer;
+    private List<string> _events = new();
+
+    private async Task Open() => await _drawer!.ShowAsync();
+    private async Task Close() => await _drawer!.HideAsync();
+
+    private void LogEvent(string name)
+    {
+        _events.Add($"{DateTime.Now:HH:mm:ss.fff} — {name}");
+        StateHasChanged();
+    }
+
+    private void OnShow() => LogEvent("show");
+    private void OnProgAfterShow() => LogEvent("afterShow");
+    private void OnProgHide() => LogEvent("hide");
+    private void OnProgAfterHide() => LogEvent("afterHide");
+}
+""";
 
     // API documentation
     private IEnumerable<ApiMember> _properties = new[]

@@ -75,65 +75,70 @@
 
 @code 
 {
-    private string basicLinkSource =
-        "<p>\n" +
-        "    This is a paragraph with an \n" +
-        "    <PggmLink Href=\"https://www.pggm.nl\" Target=\"_blank\">inline link</PggmLink>\n" +
-        "    that doesn't use the standalone attribute.\n" +
-        "</p>";
+    private string basicLinkSource = """
+<p>
+    This is a paragraph with an 
+    <PggmLink Href="https://www.pggm.nl" Target="_blank">inline link</PggmLink>
+    that doesn't use the standalone attribute.
+</p>
+""";
 
-    private string standaloneLinkSource =
-        "<PggmLink Href=\"https://www.pggm.nl\" Target=\"_blank\" Standalone=\"true\">\n" +
-        "    Visit PGGM Website\n" +
-        "</PggmLink>";
+    private string standaloneLinkSource = """
+<PggmLink Href="https://www.pggm.nl" Target="_blank" Standalone="true">
+    Visit PGGM Website
+</PggmLink>
+""";
 
-    private string differentTargetsSource =
-        "<PggmStack>\n" +
-        "    <PggmLink Href=\"https://www.pggm.nl\" Target=\"_blank\" Standalone=\"true\">\n" +
-        "        External Link (New Tab)\n" +
-        "    </PggmLink>\n" +
-        "    \n" +
-        "    <PggmLink Href=\"/components\" Standalone=\"true\">\n" +
-        "        Internal Link (Same Tab)\n" +
-        "    </PggmLink>\n" +
-        "    \n" +
-        "    <PggmLink Href=\"mailto:contact@pggm.nl\" Standalone=\"true\">\n" +
-        "        Email Link\n" +
-        "    </PggmLink>\n" +
-        "    \n" +
-        "    <PggmLink Href=\"tel:+31123456789\" Standalone=\"true\">\n" +
-        "        Phone Link\n" +
-        "    </PggmLink>\n" +
-        "</PggmStack>"; 
+    private string differentTargetsSource = """
+<PggmStack>
+    <PggmLink Href="https://www.pggm.nl" Target="_blank" Standalone="true">
+        External Link (New Tab)
+    </PggmLink>
+    
+    <PggmLink Href="/components" Standalone="true">
+        Internal Link (Same Tab)
+    </PggmLink>
+    
+    <PggmLink Href="mailto:contact@pggm.nl" Standalone="true">
+        Email Link
+    </PggmLink>
+    
+    <PggmLink Href="tel:+31123456789" Standalone="true">
+        Phone Link
+    </PggmLink>
+</PggmStack>
+"""; 
 
-    private string additionalAttributesSource =
-        "<PggmStack>\n" +
-        "    <PggmLink Href=\"https://www.pggm.nl\" \n" +
-        "              Target=\"_blank\" \n" +
-        "              Rel=\"noopener noreferrer\"\n" +
-        "              Standalone=\"true\">\n" +
-        "        Secure External Link\n" +
-        "    </PggmLink>\n" +
-        "    \n" +
-        "    <PggmLink Href=\"/downloads/document.pdf\" \n" +
-        "              Type=\"application/pdf\"\n" +
-        "              Standalone=\"true\">\n" +
-        "        PDF Download\n" +
-        "    </PggmLink>\n" +
-        "</PggmStack>";
+    private string additionalAttributesSource = """
+<PggmStack>
+    <PggmLink Href="https://www.pggm.nl" 
+              Target="_blank" 
+              Rel="noopener noreferrer"
+              Standalone="true">
+        Secure External Link
+    </PggmLink>
+    
+    <PggmLink Href="/downloads/document.pdf" 
+              Type="application/pdf"
+              Standalone="true">
+        PDF Download
+    </PggmLink>
+</PggmStack>
+""";
 
-    private string mixedContentSource =
-        "<p>\n" +   
-        "    You can use both inline links like <PggmLink Href=\"/components\">this one</PggmLink> \n" +
-        "    and standalone links in the same content area:\n" +
-        "</p>\n" +
-        "\n" +  
-        "<PggmLink Href=\"https://docs.microsoft.com/en-us/aspnet/core/blazor/\" \n" +
-        "          Target=\"_blank\" \n" +  
-        "          Rel=\"noopener noreferrer\"\n" +
-        "          Standalone=\"true\">\n" +
-        "    Learn More About Blazor\n" +
-        "</PggmLink>";
+    private string mixedContentSource = """
+<p>
+    You can use both inline links like <PggmLink Href="/components">this one</PggmLink> 
+    and standalone links in the same content area:
+</p>
+
+<PggmLink Href="https://docs.microsoft.com/en-us/aspnet/core/blazor/" 
+          Target="_blank" 
+          Rel="noopener noreferrer"
+          Standalone="true">
+    Learn More About Blazor
+</PggmLink>
+""";
     
     // API table for docs
     private IEnumerable<ApiMember> _properties = new[]

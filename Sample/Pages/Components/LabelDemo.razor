@@ -47,19 +47,21 @@ providing additional styling for form labels.</p>
 
 @code {
    
-    private string basicLabelSource =
-        "<PggmFieldset>\n" +
-        "    <PggmLabel slot=\"label\" For=\"basic-text-input\">Basic text</PggmLabel>\n" +
-        "    <PggmErrorMessage slot=\"error\" For=\"basic-text-input\" Validity=\"@PggmErrorMessage.ValidityStates.ValueMissing\">\n" +
-        "        This field is required.\n" +
-        "    </PggmErrorMessage>\n" +
-        "    <PggmInput id=\"basic-text-input\" Type=\"text\" Required=\"true\" Placeholder=\"Enter some text...\" />\n" +
-        "</PggmFieldset>\n" +
-        "\n" +
-        "<PggmFieldset>\n" +
-        "    <PggmLabel slot=\"label\" For=\"basic-email-input\">Email address <span class=\"pggm-label__optional\">Optioneel</span></PggmLabel>\n" +
-        "    <PggmInput id=\"basic-email-input\" Type=\"email\" Placeholder=\"user@example.com\" />\n" +
-        "</PggmFieldset>";
+    private string basicLabelSource = """
+<PggmFieldset>
+    <PggmLabel slot="label" For="basic-text-input">Basic text</PggmLabel>
+    <PggmErrorMessage slot="error" For="basic-text-input" Validity="@PggmErrorMessage.ValidityStates.ValueMissing">
+        This field is required.
+    </PggmErrorMessage>
+    <PggmInput id="basic-text-input" Type="text" Required="true" Placeholder="Enter some text..." />
+</PggmFieldset>
+
+<PggmFieldset>
+    <PggmLabel slot="label" For="basic-email-input">Email address <span class="pggm-label__optional">Optioneel</span></PggmLabel>
+    <PggmInput id="basic-email-input" Type="email" Placeholder="user@example.com" />
+</PggmFieldset>
+""";
+
 
     private IEnumerable<ApiMember> labelProperties = new[]
     {

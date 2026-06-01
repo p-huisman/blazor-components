@@ -332,63 +332,67 @@
         "  <PggmTh Field=\"company.name\" Type=\"string\" Filterable=\"true\" Width=\"200\">Company</PggmTh>",
         "</PggmTable>");
 
-        private string _singleSelectBehind =
-            "@code {\n" +
-            "    private string? _selectedEmployeeId = null;\n" +
-            "    private object[] employeeData = new object[]\n" +
-            "    {\n" +
-            "        new { id = 1, firstName = \"John\", lastName = \"Doe\", department = \"Engineering\", hireDate = \"2020-01-15\", salary = 75000.00, isActive = true },\n" +
-            "        new { id = 2, firstName = \"Jane\", lastName = \"Smith\", department = \"Product Management\", hireDate = \"2019-03-22\", salary = 85000.00, isActive = true },\n" +
-            "        new { id = 3, firstName = \"Bob\", lastName = \"Johnson\", department = \"Design\", hireDate = \"2021-07-08\", salary = 65000.00, isActive = true },\n" +
-            "        new { id = 4, firstName = \"Alice\", lastName = \"Brown\", department = \"Engineering\", hireDate = \"2018-05-30\", salary = 95000.00, isActive = false },\n" +
-            "        new { id = 5, firstName = \"Charlie\", lastName = \"Wilson\", department = \"Marketing\", hireDate = \"2022-01-12\", salary = 55000.00, isActive = true },\n" +
-            "        new { id = 6, firstName = \"Diana\", lastName = \"Davis\", department = \"Sales\", hireDate = \"2019-11-25\", salary = 70000.00, isActive = true }\n" +
-            "    };\n" +
-            "}";
+        private string _singleSelectBehind = """
+@code {
+    private string? _selectedEmployeeId = null;
+    private object[] employeeData = new object[]
+    {
+        new { id = 1, firstName = "John", lastName = "Doe", department = "Engineering", hireDate = "2020-01-15", salary = 75000.00, isActive = true },
+        new { id = 2, firstName = "Jane", lastName = "Smith", department = "Product Management", hireDate = "2019-03-22", salary = 85000.00, isActive = true },
+        new { id = 3, firstName = "Bob", lastName = "Johnson", department = "Design", hireDate = "2021-07-08", salary = 65000.00, isActive = true },
+        new { id = 4, firstName = "Alice", lastName = "Brown", department = "Engineering", hireDate = "2018-05-30", salary = 95000.00, isActive = false },
+        new { id = 5, firstName = "Charlie", lastName = "Wilson", department = "Marketing", hireDate = "2022-01-12", salary = 55000.00, isActive = true },
+        new { id = 6, firstName = "Diana", lastName = "Davis", department = "Sales", hireDate = "2019-11-25", salary = 70000.00, isActive = true }
+    };
+}
+""";
 
-        private string _multiSelectBehind =
-            "@code {\n" +
-            "    private string[] _selectedProjectIds = [];\n" +
-            "    private object[] projectData = new object[]\n" +
-            "    {\n" +
-            "        new { projectId = 101, projectName = \"Website Redesign\", client = \"ACME Corp\", startDate = \"2024-01-15\", endDate = \"2024-06-30\", budget = 150000.00, status = \"In Progress\" },\n" +
-            "        new { projectId = 102, projectName = \"Mobile App Development\", client = \"TechStart\", startDate = \"2024-02-01\", endDate = \"2024-09-15\", budget = 250000.00, status = \"Planning\" },\n" +
-            "        new { projectId = 103, projectName = \"Data Migration\", client = \"BigBank\", startDate = \"2023-08-10\", endDate = \"2024-01-31\", budget = 180000.00, status = \"Completed\" },\n" +
-            "        new { projectId = 104, projectName = \"E-commerce Platform\", client = \"ShopMore\", startDate = \"2024-03-01\", endDate = \"2024-12-31\", budget = 300000.00, status = \"In Progress\" },\n" +
-            "        new { projectId = 105, projectName = \"Analytics Dashboard\", client = \"DataCorp\", startDate = \"2024-04-15\", endDate = \"2024-08-30\", budget = 120000.00, status = \"Planning\" }\n" +
-            "    };\n" +
-            "}";
+        private string _multiSelectBehind = """
+@code {
+    private string[] _selectedProjectIds = [];
+    private object[] projectData = new object[]
+    {
+        new { projectId = 101, projectName = "Website Redesign", client = "ACME Corp", startDate = "2024-01-15", endDate = "2024-06-30", budget = 150000.00, status = "In Progress" },
+        new { projectId = 102, projectName = "Mobile App Development", client = "TechStart", startDate = "2024-02-01", endDate = "2024-09-15", budget = 250000.00, status = "Planning" },
+        new { projectId = 103, projectName = "Data Migration", client = "BigBank", startDate = "2023-08-10", endDate = "2024-01-31", budget = 180000.00, status = "Completed" },
+        new { projectId = 104, projectName = "E-commerce Platform", client = "ShopMore", startDate = "2024-03-01", endDate = "2024-12-31", budget = 300000.00, status = "In Progress" },
+        new { projectId = 105, projectName = "Analytics Dashboard", client = "DataCorp", startDate = "2024-04-15", endDate = "2024-08-30", budget = 120000.00, status = "Planning" }
+    };
+}
+""";
 
-        private string _twoWayBehind =
-            "@code {\n" +
-            "    private string[] _twoWaySelected = [\"1\", \"3\", \"5\"];\n" +
-            "    private object[] employeeData = new object[]\n" +
-            "    {\n" +
-            "        new { id = 1, firstName = \"John\", lastName = \"Doe\", department = \"Engineering\", salary = 75000.00 },\n" +
-            "        new { id = 2, firstName = \"Jane\", lastName = \"Smith\", department = \"Product Management\", salary = 85000.00 },\n" +
-            "        new { id = 3, firstName = \"Bob\", lastName = \"Johnson\", department = \"Design\", salary = 65000.00 },\n" +
-            "        new { id = 4, firstName = \"Alice\", lastName = \"Brown\", department = \"Engineering\", salary = 95000.00 },\n" +
-            "        new { id = 5, firstName = \"Charlie\", lastName = \"Wilson\", department = \"Marketing\", salary = 55000.00 },\n" +
-            "        new { id = 6, firstName = \"Diana\", lastName = \"Davis\", department = \"Sales\", salary = 70000.00 }\n" +
-            "    };\n" +
-            "}";
+        private string _twoWayBehind = """
+@code {
+    private string[] _twoWaySelected = ["1", "3", "5"];
+    private object[] employeeData = new object[]
+    {
+        new { id = 1, firstName = "John", lastName = "Doe", department = "Engineering", salary = 75000.00 },
+        new { id = 2, firstName = "Jane", lastName = "Smith", department = "Product Management", salary = 85000.00 },
+        new { id = 3, firstName = "Bob", lastName = "Johnson", department = "Design", salary = 65000.00 },
+        new { id = 4, firstName = "Alice", lastName = "Brown", department = "Engineering", salary = 95000.00 },
+        new { id = 5, firstName = "Charlie", lastName = "Wilson", department = "Marketing", salary = 55000.00 },
+        new { id = 6, firstName = "Diana", lastName = "Davis", department = "Sales", salary = 70000.00 }
+    };
+}
+""";
 
-        private string _twoWaySingleBehind =
-            "@code {\n" +
-            "    private string[] _twoWaySingleSelected = [\"2\"];\n" +
-            "\n" +
-            "    private string[] SelectEmployee(int id) =\u003e new[] { id.ToString() };\n" +
-            "\n" +
-            "    private object[] employeeData = new object[]\n" +
-            "    {\n" +
-            "        new { id = 1, firstName = \"John\", lastName = \"Doe\", department = \"Engineering\", salary = 75000.00 },\n" +
-            "        new { id = 2, firstName = \"Jane\", lastName = \"Smith\", department = \"Product Management\", salary = 85000.00 },\n" +
-            "        new { id = 3, firstName = \"Bob\", lastName = \"Johnson\", department = \"Design\", salary = 65000.00 },\n" +
-            "        new { id = 4, firstName = \"Alice\", lastName = \"Brown\", department = \"Engineering\", salary = 95000.00 },\n" +
-            "        new { id = 5, firstName = \"Charlie\", lastName = \"Wilson\", department = \"Marketing\", salary = 55000.00 },\n" +
-            "        new { id = 6, firstName = \"Diana\", lastName = \"Davis\", department = \"Sales\", salary = 70000.00 }\n" +
-            "    };\n" +
-            "}";
+        private string _twoWaySingleBehind = """
+@code {
+    private string[] _twoWaySingleSelected = ["2"];
+
+    private string[] SelectEmployee(int id) => new[] { id.ToString() };
+
+    private object[] employeeData = new object[]
+    {
+        new { id = 1, firstName = "John", lastName = "Doe", department = "Engineering", salary = 75000.00 },
+        new { id = 2, firstName = "Jane", lastName = "Smith", department = "Product Management", salary = 85000.00 },
+        new { id = 3, firstName = "Bob", lastName = "Johnson", department = "Design", salary = 65000.00 },
+        new { id = 4, firstName = "Alice", lastName = "Brown", department = "Engineering", salary = 95000.00 },
+        new { id = 5, firstName = "Charlie", lastName = "Wilson", department = "Marketing", salary = 55000.00 },
+        new { id = 6, firstName = "Diana", lastName = "Davis", department = "Sales", salary = 70000.00 }
+    };
+}
+""";
 
         private string[] _selectedProjectIds = [];
         private string? _selectedEmployeeId = null;

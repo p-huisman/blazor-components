@@ -55,20 +55,21 @@
 @code {
     private string? Selected;
 
-    private string _basicSource =
-        "<PggmDropdown OnSelect=\"HandleSelect\">\n" +
-        "  <PggmButton slot=\"trigger\" Appearance=\"@ButtonAppearance.Primary\">Open Dropdown</PggmButton>\n" +
-        "  <PggmDropdownItem Value=\"open-file\">Open file</PggmDropdownItem>\n" +
-        "  <PggmDropdownItem Value=\"option-2\">Option 2</PggmDropdownItem>\n" +
-        "  <PggmDropdownItem Value=\"option-3\">Option 3</PggmDropdownItem>\n" +
-        "  <PggmDropdownItem Value=\"option-4\">\n" +
-        "    Option 4\n" +
-        "    <div slot=\"submenu\">\n" +
-        "      <PggmDropdownItem Value=\"sub-1\">Sub-option 1</PggmDropdownItem>\n" +
-        "      <PggmDropdownItem Value=\"sub-2\">Sub-option 2</PggmDropdownItem>\n" +
-        "    </div>\n" +
-        "  </PggmDropdownItem>\n" +
-        "</PggmDropdown>";
+        private string _basicSource = """
+<PggmDropdown OnSelect="HandleSelect">
+    <PggmButton slot="trigger" Appearance="@ButtonAppearance.Primary">Open Dropdown</PggmButton>
+    <PggmDropdownItem Value="open-file">Open file</PggmDropdownItem>
+    <PggmDropdownItem Value="option-2">Option 2</PggmDropdownItem>
+    <PggmDropdownItem Value="option-3">Option 3</PggmDropdownItem>
+    <PggmDropdownItem Value="option-4">
+        Option 4
+        <div slot="submenu">
+            <PggmDropdownItem Value="sub-1">Sub-option 1</PggmDropdownItem>
+            <PggmDropdownItem Value="sub-2">Sub-option 2</PggmDropdownItem>
+        </div>
+    </PggmDropdownItem>
+</PggmDropdown>
+""";
 
     private Task HandleSelect(object? detail)
     {
@@ -102,19 +103,20 @@
     private Task HandleOpen() => Task.CompletedTask;
     private Task HandleClose() => Task.CompletedTask;
 
-    private string _basicBehind =
-        "@code {\n" +
-        "    private string? Selected;\n" +
-        "\n" +
-        "    private Task HandleSelect(object? detail)\n" +
-        "    {\n" +
-        "        Selected = detail?.ToString();\n" +
-        "        return Task.CompletedTask;\n" +
-        "    }\n" +
-        "\n" +
-        "    private Task HandleOpen() => Task.CompletedTask;\n" +
-        "    private Task HandleClose() => Task.CompletedTask;\n" +
-        "}";
+    private string _basicBehind = """
+@code {
+    private string? Selected;
+
+    private Task HandleSelect(object? detail)
+    {
+        Selected = detail?.ToString();
+        return Task.CompletedTask;
+    }
+
+    private Task HandleOpen() => Task.CompletedTask;
+    private Task HandleClose() => Task.CompletedTask;
+}
+""";
 
     private IEnumerable<ApiMember> _properties = Array.Empty<ApiMember>();
     private IEnumerable<ApiMember> _events = Array.Empty<ApiMember>();

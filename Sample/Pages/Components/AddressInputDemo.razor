@@ -339,41 +339,51 @@
     }
     
     // --- Code snippets used in the demo sections ---
-    private string dutchSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<PggmAddressInput @bind-Value=\"addressValue1\" Name=\"address1\" Id=\"address1\" />",
-        "<PggmAddressInput @bind-Value=\"addressValue3\" Autocomplete=\"true\" />");
+    private string dutchSource = """
+<PggmAddressInput @bind-Value="addressValue1" Name="address1" Id="address1" />
+<PggmAddressInput @bind-Value="addressValue3" Autocomplete="true" />
+""";
 
-    private string dutchBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "private string? addressValue1;",
-        "private string? addressValue3;",
-        "private string? addressValue4 = \"{\"postalCode\":\"1011AA\",\"houseNumber\":\"1\",\"street\":\"Dam\",\"city\":\"Amsterdam\"}\";");
+    private string dutchBehind = """
+private string? addressValue1;
+private string? addressValue3;
+private string? addressValue4 = "{\"postalCode\":\"1011AA\",\"houseNumber\":\"1\",\"street\":\"Dam\",\"city\":\"Amsterdam\"}";
+""";
 
-    private string foreignSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<PggmAddressInput Foreign=\"true\" />",
-        "<PggmAddressInput Foreign=\"true\" Autocomplete=\"true\" />");
+    private string foreignSource = """
+<PggmAddressInput Foreign="true" />
+<PggmAddressInput Foreign="true" Autocomplete="true" />
+""";
 
-    private string foreignBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "private string? addressValue5;",
-        "private string? addressValue6;");
+    private string foreignBehind = """
+private string? addressValue5;
+private string? addressValue6;
+""";
 
-    private string eventsSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<PggmAddressInput OnInput=\"OnAddressInput\" OnChange=\"OnAddressChange\" OnValidationChanged=\"OnValidationChanged\" />");
+    private string eventsSource = """
+<PggmAddressInput OnInput="OnAddressInput" OnChange="OnAddressChange" OnValidationChanged="OnValidationChanged" />
+""";
 
-    private string eventsBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "private void OnAddressInput(ChangeEventArgs args) { /* ... */ }",
-        "private void OnValidationChanged(bool isValid) { /* ... */ }");
+    private string eventsBehind = """
+private void OnAddressInput(ChangeEventArgs args) { /* ... */ }
+private void OnValidationChanged(bool isValid) { /* ... */ }
+""";
 
-    private string formExampleSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<EditForm Model=\"formModel\">...<PggmAddressInput @bind-Value=\"formModel.BillingAddress\" />...</EditForm>");
+    private string formExampleSource = """
+<EditForm Model="formModel">...<PggmAddressInput @bind-Value="formModel.BillingAddress" />...</EditForm>
+""";
 
-    private string formExampleBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "public class AddressFormModel { public string? BillingAddress { get; set; } }");
+    private string formExampleBehind = """
+public class AddressFormModel { public string? BillingAddress { get; set; } }
+""";
 
-    private string parsedSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<PggmAddressInput @bind-Value=\"addressValue8\" OnChange=\"ParseAddress\" />");
+    private string parsedSource = """
+<PggmAddressInput @bind-Value="addressValue8" OnChange="ParseAddress" />
+""";
 
-    private string parsedBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "private void ParseAddress(ChangeEventArgs args) { /* parse json */ }");
+    private string parsedBehind = """
+private void ParseAddress(ChangeEventArgs args) { /* parse json */ }
+""";
 
     // --- API documentation ---
     private IEnumerable<ApiMember> addressInputProperties = new[] {

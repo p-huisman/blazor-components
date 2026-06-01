@@ -63,57 +63,65 @@
         // no-op for demo
     }
 
-    private string basicCheckboxSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<PggmCheckbox @bind-Value=\"basicChecked\">Basic option</PggmCheckbox>",
-        "<p>Checked: <strong>@basicChecked</strong></p>");
+    private string basicCheckboxSource = """
+<PggmCheckbox @bind-Value="basicChecked">Basic option</PggmCheckbox>
+<p>Checked: <strong>@basicChecked</strong></p>
+""";
 
-    private string basicCheckboxBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "private bool basicChecked = false;");
+    private string basicCheckboxBehind = """
+private bool basicChecked = false;
+""";
 
-    private string listCheckboxSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<PggmStack Orientation=\"Orientation.Horizontal\" HorizontalGap=\"16\">",
-        "  @foreach (var opt in options)",
-        "  {",
-        "    <PggmCheckboxForList TItem=\"string\" Item=\"@opt\"",
-        "        SelectedItems=\"@selectedItems\"",
-        "        SelectedItemsChanged=\"@(items => selectedItems = items ?? new List<string>())\">",
-        "      @opt",
-        "    </PggmCheckboxForList>",
-        "  }",
-        "</PggmStack>");
+    private string listCheckboxSource = """
+<PggmStack Orientation="Orientation.Horizontal" HorizontalGap="16">
+  @foreach (var opt in options)
+  {
+    <PggmCheckboxForList TItem="string" Item="@opt"
+        SelectedItems="@selectedItems"
+        SelectedItemsChanged="@(items => selectedItems = items ?? new List<string>())">
+      @opt
+    </PggmCheckboxForList>
+  }
+</PggmStack>
+""";
 
-    private string listCheckboxBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "private List<string> options = new() { \"Option A\", \"Option B\", \"Option C\" };",
-        "private IList<string> selectedItems = new List<string> { \"Option B\" };");
+    private string listCheckboxBehind = """
+private List<string> options = new() { "Option A", "Option B", "Option C" };
+private IList<string> selectedItems = new List<string> { "Option B" };
+""";
 
-    private string descriptionCheckboxSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<PggmCheckbox @bind-Value=\"boundValue\"",
-        "    Description=\"This option enables the advanced feature set, which includes additional settings and capabilities.\">",
-        "  Accept terms",
-        "</PggmCheckbox>");
+    private string descriptionCheckboxSource = """
+<PggmCheckbox @bind-Value="boundValue"
+    Description="This option enables the advanced feature set, which includes additional settings and capabilities.">
+  Accept terms
+</PggmCheckbox>
+""";
 
-    private string descriptionCheckboxBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "private bool boundValue = true;");
+    private string descriptionCheckboxBehind = """
+private bool boundValue = true;
+""";
 
-    private string editFormCheckboxSource = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "<EditForm Model=\"formModel\" OnValidSubmit=\"HandleSubmit\">",
-        "    <DataAnnotationsValidator />",
-        "    <PggmValidationSummary />",
-        "    <PggmCheckbox @bind-Value=\"formModel.AcceptTerms\">Accept terms</PggmCheckbox>",
-        "    <PggmValidationMessage For=\"() => formModel.AcceptTerms\" />",
-        "    <PggmButton Type=\"@ButtonType.Submit\" Appearance=\"@ButtonAppearance.Primary\">Submit</PggmButton>",
-        "</EditForm>");
+    private string editFormCheckboxSource = """
+<EditForm Model="formModel" OnValidSubmit="HandleSubmit">
+    <DataAnnotationsValidator />
+    <PggmValidationSummary />
+    <PggmCheckbox @bind-Value="formModel.AcceptTerms">Accept terms</PggmCheckbox>
+    <PggmValidationMessage For="() => formModel.AcceptTerms" />
+    <PggmButton Type="@ButtonType.Submit" Appearance="@ButtonAppearance.Primary">Submit</PggmButton>
+</EditForm>
+""";
 
-    private string editFormCheckboxBehind = Pggm.Components.Sample.Utilities.SnippetBuilder.Build(
-        "private FormModel formModel = new();",
-        "private void HandleSubmit() { }",
-        "",
-        "// [Required] does NOT work on bool — use [MustBeTrue] instead",
-        "private class FormModel",
-        "{",
-        "    [MustBeTrue(ErrorMessage = \"U moet akkoord gaan met de voorwaarden\")]",
-        "    public bool AcceptTerms { get; set; }",
-        "}");
+    private string editFormCheckboxBehind = """
+private FormModel formModel = new();
+private void HandleSubmit() { }
+
+// [Required] does NOT work on bool — use [MustBeTrue] instead
+private class FormModel
+{
+    [MustBeTrue(ErrorMessage = "U moet akkoord gaan met de voorwaarden")]
+    public bool AcceptTerms { get; set; }
+}
+""";
 
     private class FormModel
     {

@@ -213,50 +213,55 @@
         StateHasChanged();
     }
 
-    private string basicButtonSource =
-        "<PggmStack Orientation='Orientation.Horizontal' HorizontalGap='16' Wrap='true'>\n" +
-        "    <PggmButton Appearance='@ButtonAppearance.Primary'>Primary</PggmButton>\n" +
-        "    <PggmButton Appearance='@ButtonAppearance.Secondary'>Secondary</PggmButton>\n" +
-        "    <PggmButton Appearance='@ButtonAppearance.Tertiary'>Tertiary</PggmButton>\n" +
-        "    <PggmButton Appearance='@ButtonAppearance.Quaternary'>Quaternary</PggmButton>\n" +
-        "    <PggmButton Appearance='@ButtonAppearance.SignIn'><PggmIcon Icon='user' Size='m' />Sign In</PggmButton>\n" +
-        "</PggmStack>";
+        private string basicButtonSource = """
+<PggmStack Orientation='Orientation.Horizontal' HorizontalGap='16' Wrap='true'>
+        <PggmButton Appearance='@ButtonAppearance.Primary'>Primary</PggmButton>
+        <PggmButton Appearance='@ButtonAppearance.Secondary'>Secondary</PggmButton>
+        <PggmButton Appearance='@ButtonAppearance.Tertiary'>Tertiary</PggmButton>
+        <PggmButton Appearance='@ButtonAppearance.Quaternary'>Quaternary</PggmButton>
+        <PggmButton Appearance='@ButtonAppearance.SignIn'><PggmIcon Icon='user' Size='m' />Sign In</PggmButton>
+</PggmStack>
+""";
 
-    private string statesSource =
-        "<div class='PggmButton-group'>\n" +
-        "    <PggmButton Appearance='@ButtonAppearance.Primary'>Enabled</PggmButton>\n" +
-        "    <PggmButton Appearance='@ButtonAppearance.Primary' Disabled='true'>Disabled</PggmButton>\n" +
-        "    <PggmButton Appearance='@ButtonAppearance.Secondary' Disabled='true'>Disabled Secondary</PggmButton>\n" +
-        "</div>";
+        private string statesSource = """
+<div class='PggmButton-group'>
+        <PggmButton Appearance='@ButtonAppearance.Primary'>Enabled</PggmButton>
+        <PggmButton Appearance='@ButtonAppearance.Primary' Disabled='true'>Disabled</PggmButton>
+        <PggmButton Appearance='@ButtonAppearance.Secondary' Disabled='true'>Disabled Secondary</PggmButton>
+</div>
+""";
 
-    private string typesSource =
-        "<div class='form-example'>\n" +
-        "  <div class='PggmButton-group'>\n" +
-        "    <PggmButton Type='@ButtonType.Button' Appearance='@ButtonAppearance.Primary'>Regular</PggmButton>\n" +
-        "    <PggmButton Type='@ButtonType.Submit' Appearance='@ButtonAppearance.Primary'>Submit</PggmButton>\n" +
-        "    <PggmButton Type='@ButtonType.Reset' Appearance='@ButtonAppearance.Secondary'>Reset</PggmButton>\n" +
-        "  </div>\n" +
-        "</div>";
+        private string typesSource = """
+<div class='form-example'>
+    <div class='PggmButton-group'>
+        <PggmButton Type='@ButtonType.Button' Appearance='@ButtonAppearance.Primary'>Regular</PggmButton>
+        <PggmButton Type='@ButtonType.Submit' Appearance='@ButtonAppearance.Primary'>Submit</PggmButton>
+        <PggmButton Type='@ButtonType.Reset' Appearance='@ButtonAppearance.Secondary'>Reset</PggmButton>
+    </div>
+</div>
+""";
 
-    private string interactiveSource =
-        "<div class='interactive-section'>\n" +
-        "  <div class='counter-example'>\n" +
-        "    <PggmHeading Level='3'>Counter Example</PggmHeading>\n" +
-        "    <p>Current count: <strong>@counter</strong></p>\n" +
-        "    <PggmButton Appearance='@ButtonAppearance.Primary' OnClick='IncrementCounter'>Increment (+1)</PggmButton>\n" +
-        "  </div>\n" +
-        "  <div class='toggle-example'>\n" +
-        "    <PggmHeading Level='3'>Toggle Example</PggmHeading>\n" +
-        "    <PggmButton Appearance='@ButtonAppearance.Primary' OnClick='ToggleState'>Toggle</PggmButton>\n" +
-        "  </div>\n" +
-        "</div>";
+        private string interactiveSource = """
+<div class='interactive-section'>
+    <div class='counter-example'>
+        <PggmHeading Level='3'>Counter Example</PggmHeading>
+        <p>Current count: <strong>@counter</strong></p>
+        <PggmButton Appearance='@ButtonAppearance.Primary' OnClick='IncrementCounter'>Increment (+1)</PggmButton>
+    </div>
+    <div class='toggle-example'>
+        <PggmHeading Level='3'>Toggle Example</PggmHeading>
+        <PggmButton Appearance='@ButtonAppearance.Primary' OnClick='ToggleState'>Toggle</PggmButton>
+    </div>
+</div>
+""";
 
-            private string sizesSource =
-                "<PggmStack Orientation='Orientation.Horizontal' HorizontalGap='16' Wrap='true'>\n" +
-                "  <PggmButton Size='@ButtonSize.Small' Appearance='@ButtonAppearance.Primary'>Small</PggmButton>\n" +
-                "  <PggmButton Size='@ButtonSize.Medium' Appearance='@ButtonAppearance.Primary'>Medium</PggmButton>\n" +
-                "  <PggmButton Size='@ButtonSize.Large' Appearance='@ButtonAppearance.Primary'>Large</PggmButton>\n" +
-                "</PggmStack>";
+                        private string sizesSource = """
+<PggmStack Orientation='Orientation.Horizontal' HorizontalGap='16' Wrap='true'>
+    <PggmButton Size='@ButtonSize.Small' Appearance='@ButtonAppearance.Primary'>Small</PggmButton>
+    <PggmButton Size='@ButtonSize.Medium' Appearance='@ButtonAppearance.Primary'>Medium</PggmButton>
+    <PggmButton Size='@ButtonSize.Large' Appearance='@ButtonAppearance.Primary'>Large</PggmButton>
+</PggmStack>
+""";
 
         private IEnumerable<ApiMember> buttonProperties = new[]
     {
