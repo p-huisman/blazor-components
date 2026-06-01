@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
+using Pggm.Components.Utilities;
 
 namespace Pggm.Components.Base
 {
@@ -43,8 +44,9 @@ namespace Pggm.Components.Base
                 foreach (var kv in AdditionalAttributes)
                 {
                     // AdditionalAttributes values are allowed to be null; ensure non-null reference
-                    if (kv.Value != null)
-                        _attributeCache[kv.Key] = kv.Value!;
+                    var val = kv.Value;
+                    if (val != null)
+                        _attributeCache[kv.Key] = val;
                     else
                         _attributeCache[kv.Key] = string.Empty;
                 }
@@ -66,8 +68,8 @@ namespace Pggm.Components.Base
                 // which silently passes [Required] validation because it is non-null and non-empty.
                 var normalized = (value == "null" || value == "undefined") ? null : value;
 
-                result = (T)(object?)(normalized ?? string.Empty)!;
-                validationErrorMessage = null!;
+                result = (T)(object)(normalized ?? string.Empty);
+                validationErrorMessage = string.Empty;
                 return true;
             }
             throw new NotSupportedException($"TryParseValueFromString not implemented for type {typeof(T)}");
@@ -139,6 +141,7 @@ namespace Pggm.Components.Base
             await base.OnAfterRenderAsync(firstRender);
             if (firstRender && !_eventsInitialized)
             {
+                Guard.NotNull(JSRuntime);
                 _eventManager = new PggmEventListenerManager<PggmEventComponentInputBase<T>>(JSRuntime, Logger, ElementRef, this);
                 await SetupEventListenersAsync();
                 _eventsInitialized = true;
@@ -172,7 +175,10 @@ namespace Pggm.Components.Base
             {
                 if (_handlerRegistry.TryGetHandler(eventName, out var handler))
                 {
-                    await handler!(eventData);
+                    if (handler != null)
+                    {
+                        await handler(eventData);
+                    }
                 }
             }
             catch (Exception ex)

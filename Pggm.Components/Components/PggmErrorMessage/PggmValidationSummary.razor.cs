@@ -8,7 +8,7 @@ public partial class PggmValidationSummary : ComponentBase, IAsyncDisposable
 {
     [CascadingParameter] private EditContext? CurrentEditContext { get; set; }
 
-    [Inject] private IJSRuntime JSRuntime { get; set; } = default!;
+    [Inject] private IJSRuntime? JSRuntime { get; set; }
 
     [Parameter] public bool ShowSummary { get; set; } = true;
     [Parameter] public RenderFragment? ChildContent { get; set; }

@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Pggm.Components.Utilities;
 
@@ -10,7 +11,7 @@ public static class Guard
     /// <summary>
     /// Throws an ArgumentNullException if the value is null
     /// </summary>
-    public static T NotNull<T>(T? value, [CallerArgumentExpression(nameof(value))] string? paramName = null)
+    public static T NotNull<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>([NotNull] T? value, [CallerArgumentExpression(nameof(value))] string? paramName = null)
         where T : class
     {
         if (value is null)
@@ -23,7 +24,7 @@ public static class Guard
     /// <summary>
     /// Throws an ArgumentException if the string is null or empty
     /// </summary>
-    public static string NotNullOrEmpty(string? value, [CallerArgumentExpression(nameof(value))] string? paramName = null)
+    public static string NotNullOrEmpty([NotNull] string? value, [CallerArgumentExpression(nameof(value))] string? paramName = null)
     {
         if (string.IsNullOrEmpty(value))
         {
@@ -35,7 +36,7 @@ public static class Guard
     /// <summary>
     /// Throws an ArgumentException if the string is null, empty, or whitespace
     /// </summary>
-    public static string NotNullOrWhiteSpace(string? value, [CallerArgumentExpression(nameof(value))] string? paramName = null)
+    public static string NotNullOrWhiteSpace([NotNull] string? value, [CallerArgumentExpression(nameof(value))] string? paramName = null)
     {
         if (string.IsNullOrWhiteSpace(value))
         {

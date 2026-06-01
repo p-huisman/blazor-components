@@ -124,22 +124,33 @@ namespace Pggm.Components
         {
             if (base.AdditionalAttributes == null) return;
             foreach (var kv in base.AdditionalAttributes)
-                attrs[kv.Key] = kv.Value!;
+            {
+                var val = kv.Value;
+                if (val != null)
+                    attrs[kv.Key] = val;
+            }
         }
 
         private void AddIdentityAttributes(IDictionary<string, object> attrs)
         {
-            if (!string.IsNullOrEmpty(Placeholder)) attrs["placeholder"] = Placeholder!;
-            if (!string.IsNullOrEmpty(Name)) attrs["name"] = Name!;
-            if (!string.IsNullOrEmpty(Id)) attrs["id"] = Id!;
+            var placeholder = Placeholder;
+            if (!string.IsNullOrEmpty(placeholder)) attrs["placeholder"] = placeholder;
+            var name = Name;
+            if (!string.IsNullOrEmpty(name)) attrs["name"] = name;
+            var id = Id;
+            if (!string.IsNullOrEmpty(id)) attrs["id"] = id;
         }
 
         private void AddValidationAttributes(IDictionary<string, object> attrs, bool inEditForm)
         {
-            if (!inEditForm && !string.IsNullOrEmpty(Pattern)) attrs["pattern"] = Pattern!;
-            if (!string.IsNullOrEmpty(Min) && !inEditForm) attrs["min"] = Min!;
-            if (!string.IsNullOrEmpty(Max) && !inEditForm) attrs["max"] = Max!;
-            if (!string.IsNullOrEmpty(Step)) attrs["step"] = Step!;
+            var pattern = Pattern;
+            if (!inEditForm && !string.IsNullOrEmpty(pattern)) attrs["pattern"] = pattern;
+            var min = Min;
+            if (!string.IsNullOrEmpty(min) && !inEditForm) attrs["min"] = min;
+            var max = Max;
+            if (!string.IsNullOrEmpty(max) && !inEditForm) attrs["max"] = max;
+            var step = Step;
+            if (!string.IsNullOrEmpty(step)) attrs["step"] = step;
             if (MaxLength.HasValue) attrs["maxlength"] = MaxLength.Value;
             if (MinLength.HasValue && !inEditForm) attrs["minlength"] = MinLength.Value;
             if (!string.Equals(Type, "text", StringComparison.OrdinalIgnoreCase)) attrs["type"] = Type;

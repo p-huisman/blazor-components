@@ -18,6 +18,12 @@ public abstract class PggmComponentBase : ComponentBase, IPggmComponent
     [Inject] protected PggmDesignSystemService DesignSystemService { get; set; } = default!;
 
     /// <summary>
+    /// Convenience accessor that throws if JS runtime was not provided. Use to avoid
+    /// widespread nullability checks at call sites that expect JS to be available.
+    /// </summary>
+    protected IJSRuntime Js => Guard.NotNull(JSRuntime);
+
+    /// <summary>
     /// The HTML tag name for the web component
     /// </summary>
     public abstract string TagName { get; }

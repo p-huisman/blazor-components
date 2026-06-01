@@ -26,7 +26,7 @@ public partial class PggmRadio : PggmEventComponentInputBase<string>
     {
         if (!parameters.TryGetValue<Expression<Func<string>>>(nameof(ValueExpression), out var expr) || expr is null)
         {
-            ValueExpression = () => CurrentValue!;
+            ValueExpression = () => CurrentValue ?? string.Empty;
         }
         return base.SetParametersAsync(parameters);
     }
@@ -112,7 +112,7 @@ public partial class PggmRadio : PggmEventComponentInputBase<string>
     protected override bool TryParseValueFromString(string? value, out string result, out string validationErrorMessage)
     {
         result = value ?? string.Empty;
-        validationErrorMessage = null!;
+        validationErrorMessage = string.Empty;
         return true;
     }
 }

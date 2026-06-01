@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 
+using Pggm.Components.Utilities;
+
 using Pggm.Components.Interfaces;
 using Pggm.Components.Models.Wizard;
 
@@ -30,6 +32,7 @@ public abstract class PggmEventComponentBase : PggmComponentBase, IPggmEventComp
         if (!_eventsInitialized)
         {
             // Create helper to manage event listeners and object reference
+            Guard.NotNull(JSRuntime);
             _eventManager = new PggmEventListenerManager<PggmEventComponentBase>(JSRuntime, Logger, ElementRef, this);
             await SetupEventListenersAsync();
             _eventsInitialized = true;
@@ -114,9 +117,9 @@ public abstract class PggmEventComponentBase : PggmComponentBase, IPggmEventComp
         try
         {
             // Dispatch via central registry (overridden virtual dictionaries are migrated into registry at init)
-            if (_handlerRegistry.TryGetHandler(eventName, out var handler))
+            if (_handlerRegistry.TryGetHandler(eventName, out var handler) && handler != null)
             {
-                await handler!(eventData);
+                await handler(eventData);
                 return;
             }
 
@@ -144,9 +147,9 @@ public abstract class PggmEventComponentBase : PggmComponentBase, IPggmEventComp
         try
         {
             // Dispatch via central registry for cancelable handlers
-            if (_handlerRegistry.TryGetCancelableHandler(eventName, out var handler))
+            if (_handlerRegistry.TryGetCancelableHandler(eventName, out var handler) && handler != null)
             {
-                return await handler!(eventData);
+                return await handler(eventData);
             }
 
             await OnUnhandledEventAsync(eventName, eventData);

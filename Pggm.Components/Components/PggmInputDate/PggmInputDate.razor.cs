@@ -203,7 +203,7 @@ public partial class PggmInputDate<TValue> : PggmEventComponentInputBase<TValue>
         if (!EqualityComparer<TValue>.Default.Equals(Value, newValue))
         {
             _lastSyncedValue = newValue;
-            CurrentValue = newValue ?? default!;
+            CurrentValue = newValue is null ? default : newValue;
         }
         return Task.CompletedTask;
     }
@@ -351,10 +351,11 @@ public partial class PggmInputDate<TValue> : PggmEventComponentInputBase<TValue>
             return true;
         }
 
-        var parts = value.Split(new[] { ',', '|', '/' }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-        if (value.Contains(" - "))
+        var nonNullValue = value ?? string.Empty;
+        var parts = nonNullValue.Split(new[] { ',', '|', '/' }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        if (nonNullValue.Contains(" - "))
         {
-            parts = value.Split(new[] { " - " }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            parts = nonNullValue.Split(new[] { " - " }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         }
 
         var t = typeof(TValue);
@@ -386,6 +387,7 @@ public partial class PggmInputDate<TValue> : PggmEventComponentInputBase<TValue>
             }
             else
             {
+                // Build an array of nullable DateTime and cast via object to the generic result type.
                 result = (TValue)(object)dates.Cast<DateTime?>().ToArray();
                 return true;
             }
@@ -410,7 +412,7 @@ public partial class PggmInputDate<TValue> : PggmEventComponentInputBase<TValue>
         }
         if (value is DateTime?[] nullableDates)
         {
-            return string.Join(",", nullableDates.Where(d => d.HasValue).Select(d => d!.Value.ToString(format)));
+            return string.Join(",", nullableDates.Where(d => d.HasValue).Select(d => d.GetValueOrDefault().ToString(format)));
         }
 
         return value.ToString() ?? string.Empty;

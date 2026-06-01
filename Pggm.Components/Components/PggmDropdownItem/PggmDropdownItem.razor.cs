@@ -52,6 +52,7 @@ public partial class PggmDropdownItem : PggmEventComponentBase
     {
         if (Disabled) attributes["disabled"] = true; else attributes.Remove("disabled");
         if (Checked) attributes["checked"] = true; else attributes.Remove("checked");
-        if (!string.IsNullOrEmpty(Value)) attributes["value"] = Value!;
+        var val = Value;
+        if (!string.IsNullOrEmpty(val)) attributes["value"] = val;
     }
 }

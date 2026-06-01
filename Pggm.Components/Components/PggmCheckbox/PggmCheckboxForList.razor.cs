@@ -23,16 +23,18 @@ public partial class PggmCheckboxForList<TItem> : ComponentBase where TItem : cl
 
         if (isChecked)
         {
-            if (!SelectedItems.Contains(Item!))
+            var item = Item;
+            if (item != null && !SelectedItems.Contains(item))
             {
-                SelectedItems.Add(Item!);
+                SelectedItems.Add(item);
             }
         }
         else
         {
-            if (SelectedItems.Contains(Item!))
+            var item = Item;
+            if (item != null && SelectedItems.Contains(item))
             {
-                SelectedItems.Remove(Item!);
+                SelectedItems.Remove(item);
             }
         }
 

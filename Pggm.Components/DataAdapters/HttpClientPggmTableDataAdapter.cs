@@ -86,7 +86,7 @@ public class HttpClientPggmTableDataAdapter<TItem> : IPggmTableDataAdapter<TItem
 
         var queryString = string.Join("&", queryParams
             .Where(p => p.Value is not null)
-            .Select(p => $"{Uri.EscapeDataString(p.Key)}={Uri.EscapeDataString(p.Value!)}"));
+            .Select(p => $"{Uri.EscapeDataString(p.Key)}={Uri.EscapeDataString(p.Value ?? string.Empty)}"));
 
         var separator = _options.BaseUrl.Contains('?') ? "&" : "?";
         return string.IsNullOrEmpty(queryString)
