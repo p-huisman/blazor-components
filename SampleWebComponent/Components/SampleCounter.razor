@@ -1,0 +1,28 @@
+@* SampleCounter is exposed as the custom HTML element <pggm-sample-counter>. *@
+
+<PggmHeading Level="2">@Title</PggmHeading>
+
+<p role="status">Current count: @currentCount</p>
+
+<PggmButton Variant="primary" OnClick="IncrementCount">Click me</PggmButton>
+
+@code {
+    private int currentCount;
+
+    /// <summary>
+    /// Heading text. Set from HTML via the <c>title</c> attribute on the custom element.
+    /// </summary>
+    [Parameter] public string Title { get; set; } = "Counter web component";
+
+    /// <summary>
+    /// Initial count value. Set from HTML via the <c>start</c> attribute on the custom element.
+    /// </summary>
+    [Parameter] public int Start { get; set; }
+
+    protected override void OnInitialized()
+    {
+        currentCount = Start;
+    }
+
+    private void IncrementCount() => currentCount++;
+}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Site - PGGM Blazor Web Components</title>
+
+
+    <!--
+      Blazor loads its JS initializer modules (e.g. *.lib.module.js under
+      _content/...) and dotnet.js via dynamic import(), resolved against the
+      <base href> above. Those would hit this origin (localhost:9090) and 404.
+      An import map remaps the resolved "_content/" and "_framework/" URL
+      prefixes to the published app on localhost:4000, so dynamic imports
+      load cross-origin correctly.
+    -->
+    <script type="importmap">
+    {
+      "imports": {
+        "/mysite/_content/": "http://localhost:4000/SampleWebComponent/wwwroot/_content/",
+        "/mysite/_framework/": "http://localhost:4000/SampleWebComponent/wwwroot/_framework/"
+      }
+    }
+    </script>
+
+    <!--
+      The PGGM Design System loader (pggm-components.js) now resolves its own
+      asset base from the URL it was loaded from (document.currentScript.src),
+      so all of its CSS/JS assets are requested from the published app on
+      localhost:4000 automatically — no createElement/fetch patching needed.
+    -->
+
+    <!-- PGGM Design System styles + scripts (served by the published app) -->
+    <link rel="stylesheet" href="http://localhost:4000/SampleWebComponent/wwwroot/app.css" />
+    <link rel="stylesheet" href="http://localhost:4000/SampleWebComponent/wwwroot/SampleWebComponent.styles.css" />
+    <script src="http://localhost:4000/SampleWebComponent/wwwroot/_content/Pggm.Components/js/pggm-components.js?v1"></script>
+</head>
+<body>
+    <h1 is="pggm-heading">My Site</h1>
+    <p>Welcome to my site! Below are Blazor web components loaded cross-origin.</p>
+
+    <!-- Blazor components used as custom HTML elements -->
+    <pggm-sample-counter title="My counter" start="5"></pggm-sample-counter>
+
+    <pggm-sample-form title="Contact form"></pggm-sample-form>
+
+    <div id="blazor-error-ui" style="display:none;">
+        An unhandled error has occurred.
+        <a href="." class="reload">Reload</a>
+        <span class="dismiss">🗙</span>
+    </div>
+
+    <!--
+      Load the Blazor WebAssembly loader from the published host with autostart disabled,
+      then start it manually so we can rewrite all framework/asset URLs to the
+      published origin via loadBootResource. This is required because the page is
+      served from a different origin (localhost:9090) than the Blazor app (localhost:4000).
+    -->
+    <script
+        src="http://localhost:4000/SampleWebComponent/wwwroot/_framework/blazor.webassembly.js"
+        autostart="false"></script>
+
+    <script>
+        // Framework base where the published Blazor app's _framework assets live.
+        const blazorFrameworkBase = "http://localhost:4000/SampleWebComponent/wwwroot/_framework/";
+
+        // Manually start Blazor (autostart was disabled above) and rewrite every
+        // boot resource (dotnet.js, .wasm, .dat, etc.) to the published origin.
+        // The fetch + createElement patches in <head> handle the JS initializer
+        // modules and the PGGM Design System assets.
+        Blazor.start({
+            loadBootResource: function (type, name, defaultUri, integrity) {
+                return blazorFrameworkBase + name;
+            }
+        });
+    </script>
+</body>
+</html>

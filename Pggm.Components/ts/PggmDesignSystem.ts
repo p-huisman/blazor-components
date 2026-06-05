@@ -2,20 +2,54 @@ import type { ScriptFile } from "./types";
 
 let bundleLoaded = false;
 
+/**
+ * The published location of the Pggm.Components static assets, ending with a
+ * trailing slash, e.g. "https://host/app/_content/Pggm.Components/".
+ *
+ * This is resolved from the URL this very script (pggm-components.js) was loaded
+ * from, so that all CSS/JS assets are requested from the same origin/path as the
+ * loader itself — even when the host page is served from a different origin
+ * (cross-origin web component usage). Falls back to a base-relative path when
+ * the script URL cannot be determined.
+ *
+ * NOTE: `document.currentScript` is only valid while the script is being
+ * evaluated synchronously at load time, so this is captured at module scope.
+ */
+const ASSET_BASE: string = (() => {
+  const marker = "_content/Pggm.Components/";
+  const scriptSrc = (document.currentScript as HTMLScriptElement | null)?.src;
+  if (scriptSrc) {
+    const index = scriptSrc.indexOf(marker);
+    if (index !== -1) {
+      return scriptSrc.substring(0, index + marker.length);
+    }
+  }
+  // Fallback: resolve relative to the document base (legacy behavior).
+  return new URL(`./${marker}`, document.baseURI).href;
+})();
+
+/**
+ * Build an absolute URL for a Pggm.Components asset given a path relative to the
+ * "_content/Pggm.Components/" root (e.g. "js/card.js" or "css/tokens.css").
+ */
+function assetUrl(relativePath: string): string {
+  return ASSET_BASE + relativePath.replace(/^\/+/, "");
+}
+
 const _lazyScripts: Record<string, string> = {
-  "pggm-card": "./_content/Pggm.Components/js/card.js",
-  "pggm-slider": "./_content/Pggm.Components/js/slider.js",
-  "pggm-wizard": "./_content/Pggm.Components/js/wizard.js",
-  "pggm-table": "./_content/Pggm.Components/js/table.js",
-  "pggm-signature-pad": "./_content/Pggm.Components/js/signature-pad.js",
-  "pggm-address-input": "./_content/Pggm.Components/js/address-input.js",
-  "pggm-bank-account-input": "./_content/Pggm.Components/js/bank-account-input.js",
-  "pggm-dropdown": "./_content/Pggm.Components/js/dropdown.js",
-  "pggm-combobox": "./_content/Pggm.Components/js/combobox.js",
-  "pggm-drawer": "./_content/Pggm.Components/js/drawer.js",
-  "pggm-avatar": "./_content/Pggm.Components/js/avatar.js",
-  "pggm-splitter": "./_content/Pggm.Components/js/splitter.js",
-  "pggm-scroller": "./_content/Pggm.Components/js/scroller.js", 
+  "pggm-card": "js/card.js",
+  "pggm-slider": "js/slider.js",
+  "pggm-wizard": "js/wizard.js",
+  "pggm-table": "js/table.js",
+  "pggm-signature-pad": "js/signature-pad.js",
+  "pggm-address-input": "js/address-input.js",
+  "pggm-bank-account-input": "js/bank-account-input.js",
+  "pggm-dropdown": "js/dropdown.js",
+  "pggm-combobox": "js/combobox.js",
+  "pggm-drawer": "js/drawer.js",
+  "pggm-avatar": "js/avatar.js",
+  "pggm-splitter": "js/splitter.js",
+  "pggm-scroller": "js/scroller.js",
 };
 
 const _scriptPromises = new Map<string, Promise<void>>();
@@ -75,18 +109,17 @@ export class PggmDesignSystem {
       const link = document.createElement("link");
       link.id = cssId;
       link.rel = "stylesheet";
-      link.href = "./_content/Pggm.Components/css/tokens.css";
+      link.href = assetUrl("css/tokens.css");
       document.head.appendChild(link);
 
       const fontLink = document.createElement("link");
       fontLink.rel = "stylesheet";
-      fontLink.href = "./_content/Pggm.Components/css/fonts.css";
+      fontLink.href = assetUrl("css/fonts.css");
       document.head.appendChild(fontLink);
 
       const pggmComponentsStyles = document.createElement("link");
       pggmComponentsStyles.rel = "stylesheet";
-      pggmComponentsStyles.href =
-        "./_content/Pggm.Components/css/pggm-components.css";
+      pggmComponentsStyles.href = assetUrl("css/pggm-components.css");
       document.head.appendChild(pggmComponentsStyles);
     }
   }
@@ -100,12 +133,12 @@ export class PggmDesignSystem {
 
     const jsFiles: ScriptFile[] = [
       {
-        src: "./_content/Pggm.Components/js/p-elements-core-modern.js",
+        src: assetUrl("js/p-elements-core-modern.js"),
         id: "p-elements-core",
         isModule: true,
       },
       {
-        src: "./_content/Pggm.Components/js/bundle.js",
+        src: assetUrl("js/bundle.js"),
         id: "pggm-bundle",
         isModule: true,
       },
@@ -149,12 +182,12 @@ export class PggmDesignSystem {
       return existing;
     }
 
-    const src = _lazyScripts[id];
-    if (!src) {
+    const relativeSrc = _lazyScripts[id];
+    if (!relativeSrc) {
       return Promise.reject(new Error(`Unknown lazy script id: ${id}`));
     }
 
-    const promise = this._loadScript(src, id, true);
+    const promise = this._loadScript(assetUrl(relativeSrc), id, true);
     _scriptPromises.set(id, promise);
     return promise;
   }

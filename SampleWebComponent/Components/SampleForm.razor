@@ -1,0 +1,40 @@
+@* SampleForm is exposed as the custom HTML element <pggm-sample-form>. *@
+
+<PggmHeading Level="2">@Title</PggmHeading>
+
+<PggmFieldset>
+    <PggmFieldsetLabel For="TextInput1">Naam</PggmFieldsetLabel>
+    <PggmFieldsetDescription>
+        <p>Vul uw naam in.</p>
+    </PggmFieldsetDescription>
+    <PggmFieldsetError>
+        <PggmErrorMessage slot="error" For="TextInput1" Validity="valueMissing">
+            Naam is een verplicht veld. Vul uw naam in.
+        </PggmErrorMessage>
+        <PggmErrorMessage slot="error" For="TextInput1" Validity="tooShort">
+            De naam is te kort. De naam moet tenminste 2 tekens lang zijn. Vul uw naam in.
+        </PggmErrorMessage>
+    </PggmFieldsetError>
+    <PggmInput Type="text" id="TextInput1" Required="true" MinLength="2" />
+</PggmFieldset>
+
+<PggmFieldset>
+    <PggmFieldsetLabel For="CountryInput">Land</PggmFieldsetLabel>
+    <PggmFieldsetDescription>
+        <p>Kies een land.</p>
+    </PggmFieldsetDescription>
+    <PggmCombobox TOption="object" Id="CountryInput" Name="country-combo" Placeholder="Kies een land...">
+        <PggmComboboxItem Value="nl">Nederland</PggmComboboxItem>
+        <PggmComboboxItem Value="de">Duitsland</PggmComboboxItem>
+        <PggmComboboxItem Value="be">België</PggmComboboxItem>
+        <PggmComboboxItem Value="fr">Frankrijk</PggmComboboxItem>
+        <PggmComboboxItem Value="uk">Verenigd Koninkrijk</PggmComboboxItem>
+    </PggmCombobox>
+</PggmFieldset>
+
+@code {
+    /// <summary>
+    /// Heading text. Set from HTML via the <c>title</c> attribute on the custom element.
+    /// </summary>
+    [Parameter] public string Title { get; set; } = "Sample form web component";
+}

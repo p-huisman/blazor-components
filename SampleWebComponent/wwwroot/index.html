@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PGGM Blazor Web Components</title>
+    <base href="/" />
+    <link rel="stylesheet" href="app.css" />
+    <link rel="stylesheet" href="SampleWebComponent.styles.css" />
+
+    <!-- start load pggm-components -->
+    <script src="_content/Pggm.Components/js/pggm-components.js?v1"></script>
+    <!-- end load pggm-components -->
+
+    <link rel="icon" type="image/png" href="favicon.png" />
+</head>
+
+<body>
+    <h1 is="pggm-heading">PGGM Blazor Web Components</h1>
+    <p>
+        The components below are Blazor components rendered as standard custom HTML elements
+        (web components). They are registered in <code>Program.cs</code> and can be dropped
+        into any HTML page.
+    </p>
+
+    <!-- Blazor components used as custom HTML elements -->
+    <pggm-sample-counter title="My counter" start="5"></pggm-sample-counter>
+
+    <pggm-sample-form title="Contact form"></pggm-sample-form>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="." class="reload">Reload</a>
+        <span class="dismiss">🗙</span>
+    </div>
+
+    <script src="_framework/blazor.webassembly.js"></script>
+</body>
+
+</html>
