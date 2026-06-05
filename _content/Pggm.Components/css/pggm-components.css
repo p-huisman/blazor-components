@@ -1,0 +1,830 @@
+/** Blasor defaults */
+#blazor-error-ui {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+#blazor-error-ui .dismiss {
+    cursor: pointer;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
+}
+
+/* Common styles */
+.screen-reader-only{
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Visible utilities */
+.button-without-style {
+  appearance: none;
+  border: none;
+  padding: 0;
+  background: none;
+  margin: 0;
+}
+
+/* When body contains AppLayout */
+
+html:has(#AppLayout),
+body:has(#AppLayout) {
+  margin: 0;
+  padding: 0;
+  font-size: var(--pggm-typography-base-font-size, 1em);
+  line-height: var(--pggm-typography-line-height, 1.5);
+  font-family: var(--pggm-typography-font-family, 'Open Sans', Arial, NantesWeb Tahoma, Verdana, sans-serif);
+}
+
+/* style issues solved but should be moved to web components*/
+:root {
+    --pggm-responsive-components-icons-large-width: 24px;
+    --pggm-responsive-components-icons-large-height: 24px;
+    --pggm-responsive-components-icons-medium-width: 20px;
+    --pggm-responsive-components-icons-medium-height: 20px;
+    --pggm-responsive-components-icons-small-width: 16px;
+    --pggm-responsive-components-icons-small-height: 16px;
+}
+
+/* these styles should not be needed, for now they solve some design issues  */
+pggm-fieldset [slot="label"],
+pggm-fieldset [slot="description"] {
+  margin: 0;
+  display: inline-block;
+}
+pggm-fieldset [slot="label"] > *:first-child,
+pggm-fieldset [slot="description"] > *:first-child {
+  margin-top: 0;
+}
+pggm-fieldset [slot="label"] > *:last-child,
+pggm-fieldset [slot="description"] > *:last-child {
+  margin-bottom: 0; 
+}
+
+pggm-dialog{
+  z-index: 4000;
+}
+/* */
+
+/* Responsive column span utilities */
+@media (max-width: 575.98px) {
+  [class*="pggm-grid-item-col-xs-"] {
+    grid-column: auto;
+  }
+
+  .pggm-grid-item-col-xs-1 {
+    grid-column: span 1;
+  }
+
+  .pggm-grid-item-col-xs-2 {
+    grid-column: span 2;
+  }
+
+  .pggm-grid-item-col-xs-3 {
+    grid-column: span 3;
+  }
+
+  .pggm-grid-item-col-xs-4 {
+    grid-column: span 4;
+  }
+
+  .pggm-grid-item-col-xs-5 {
+    grid-column: span 5;
+  }
+
+  .pggm-grid-item-col-xs-6 {
+    grid-column: span 6;
+  }
+
+  .pggm-grid-item-col-xs-7 {
+    grid-column: span 7;
+  }
+
+  .pggm-grid-item-col-xs-8 {
+    grid-column: span 8;
+  }
+
+  .pggm-grid-item-col-xs-9 {
+    grid-column: span 9;
+  }
+
+  .pggm-grid-item-col-xs-10 {
+    grid-column: span 10;
+  }
+
+  .pggm-grid-item-col-xs-11 {
+    grid-column: span 11;
+  }
+
+  .pggm-grid-item-col-xs-12 {
+    grid-column: span 12;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  [class*="pggm-grid-item-col-sm-"] {
+    grid-column: auto;
+  }
+
+  .pggm-grid-item-col-sm-1 {
+    grid-column: span 1;
+  }
+
+  .pggm-grid-item-col-sm-2 {
+    grid-column: span 2;
+  }
+
+  .pggm-grid-item-col-sm-3 {
+    grid-column: span 3;
+  }
+
+  .pggm-grid-item-col-sm-4 {
+    grid-column: span 4;
+  }
+
+  .pggm-grid-item-col-sm-5 {
+    grid-column: span 5;
+  }
+
+  .pggm-grid-item-col-sm-6 {
+    grid-column: span 6;
+  }
+
+  .pggm-grid-item-col-sm-7 {
+    grid-column: span 7;
+  }
+
+  .pggm-grid-item-col-sm-8 {
+    grid-column: span 8;
+  }
+
+  .pggm-grid-item-col-sm-9 {
+    grid-column: span 9;
+  }
+
+  .pggm-grid-item-col-sm-10 {
+    grid-column: span 10;
+  }
+
+  .pggm-grid-item-col-sm-11 {
+    grid-column: span 11;
+  }
+
+  .pggm-grid-item-col-sm-12 {
+    grid-column: span 12;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  [class*="pggm-grid-item-col-md-"] {
+    grid-column: auto;
+  }
+
+  .pggm-grid-item-col-md-1 {
+    grid-column: span 1;
+  }
+
+  .pggm-grid-item-col-md-2 {
+    grid-column: span 2;
+  }
+
+  .pggm-grid-item-col-md-3 {
+    grid-column: span 3;
+  }
+
+  .pggm-grid-item-col-md-4 {
+    grid-column: span 4;
+  }
+
+  .pggm-grid-item-col-md-5 {
+    grid-column: span 5;
+  }
+
+  .pggm-grid-item-col-md-6 {
+    grid-column: span 6;
+  }
+
+  .pggm-grid-item-col-md-7 {
+    grid-column: span 7;
+  }
+
+  .pggm-grid-item-col-md-8 {
+    grid-column: span 8;
+  }
+
+  .pggm-grid-item-col-md-9 {
+    grid-column: span 9;
+  }
+
+  .pggm-grid-item-col-md-10 {
+    grid-column: span 10;
+  }
+
+  .pggm-grid-item-col-md-11 {
+    grid-column: span 11;
+  }
+
+  .pggm-grid-item-col-md-12 {
+    grid-column: span 12;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  [class*="pggm-grid-item-col-lg-"] {
+    grid-column: auto;
+  }
+
+  .pggm-grid-item-col-lg-1 {
+    grid-column: span 1;
+  }
+
+  .pggm-grid-item-col-lg-2 {
+    grid-column: span 2;
+  }
+
+  .pggm-grid-item-col-lg-3 {
+    grid-column: span 3;
+  }
+
+  .pggm-grid-item-col-lg-4 {
+    grid-column: span 4;
+  }
+
+  .pggm-grid-item-col-lg-5 {
+    grid-column: span 5;
+  }
+
+  .pggm-grid-item-col-lg-6 {
+    grid-column: span 6;
+  }
+
+  .pggm-grid-item-col-lg-7 {
+    grid-column: span 7;
+  }
+
+  .pggm-grid-item-col-lg-8 {
+    grid-column: span 8;
+  }
+
+  .pggm-grid-item-col-lg-9 {
+    grid-column: span 9;
+  }
+
+  .pggm-grid-item-col-lg-10 {
+    grid-column: span 10;
+  }
+
+  .pggm-grid-item-col-lg-11 {
+    grid-column: span 11;
+  }
+
+  .pggm-grid-item-col-lg-12 {
+    grid-column: span 12;
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1399.98px) {
+  [class*="pggm-grid-item-col-xl-"] {
+    grid-column: auto;
+  }
+
+  .pggm-grid-item-col-xl-1 {
+    grid-column: span 1;
+  }
+
+  .pggm-grid-item-col-xl-2 {
+    grid-column: span 2;
+  }
+
+  .pggm-grid-item-col-xl-3 {
+    grid-column: span 3;
+  }
+
+  .pggm-grid-item-col-xl-4 {
+    grid-column: span 4;
+  }
+
+  .pggm-grid-item-col-xl-5 {
+    grid-column: span 5;
+  }
+
+  .pggm-grid-item-col-xl-6 {
+    grid-column: span 6;
+  }
+
+  .pggm-grid-item-col-xl-7 {
+    grid-column: span 7;
+  }
+
+  .pggm-grid-item-col-xl-8 {
+    grid-column: span 8;
+  }
+
+  .pggm-grid-item-col-xl-9 {
+    grid-column: span 9;
+  }
+
+  .pggm-grid-item-col-xl-10 {
+    grid-column: span 10;
+  }
+
+  .pggm-grid-item-col-xl-11 {
+    grid-column: span 11;
+  }
+
+  .pggm-grid-item-col-xl-12 {
+    grid-column: span 12;
+  }
+}
+
+@media (min-width: 1400px) {
+  [class*="pggm-grid-item-col-xxl-"] {
+    grid-column: auto;
+  }
+
+  .pggm-grid-item-col-xxl-1 {
+    grid-column: span 1;
+  }
+
+  .pggm-grid-item-col-xxl-2 {
+    grid-column: span 2;
+  }
+
+  .pggm-grid-item-col-xxl-3 {
+    grid-column: span 3;
+  }
+
+  .pggm-grid-item-col-xxl-4 {
+    grid-column: span 4;
+  }
+
+  .pggm-grid-item-col-xxl-5 {
+    grid-column: span 5;
+  }
+
+  .pggm-grid-item-col-xxl-6 {
+    grid-column: span 6;
+  }
+
+  .pggm-grid-item-col-xxl-7 {
+    grid-column: span 7;
+  }
+
+  .pggm-grid-item-col-xxl-8 {
+    grid-column: span 8;
+  }
+
+  .pggm-grid-item-col-xxl-9 {
+    grid-column: span 9;
+  }
+
+  .pggm-grid-item-col-xxl-10 {
+    grid-column: span 10;
+  }
+
+  .pggm-grid-item-col-xxl-11 {
+    grid-column: span 11;
+  }
+
+  .pggm-grid-item-col-xxl-12 {
+    grid-column: span 12;
+  }
+}
+
+/* Grid */
+/* Hidden utilities */
+@media (max-width: 575.98px) {
+  .pggm-grid-item-hidden-xs {
+    display: none !important;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .pggm-grid-item-hidden-sm {
+    display: none !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .pggm-grid-item-hidden-md {
+    display: none !important;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .pggm-grid-item-hidden-lg {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1399.98px) {
+  .pggm-grid-item-hidden-xl {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1400px) {
+  .pggm-grid-item-hidden-xxl {
+    display: none !important;
+  }
+}
+
+
+
+/* ── DataGrid ────────────────────────────────────────────── */
+
+
+.pggm-data-grid {
+  --pggm-dialog-max-width: 400px;
+  overflow-x: auto;
+  --pggm-checkbox-size: 16px;
+  --pggm-radio-size: 16px;
+}
+
+.pggm-data-grid-table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  /* Allow the table to size to the sum of its column widths so fixed
+     column widths (px) are respected. The outer `.pggm-data-grid` wrapper
+     already provides `overflow-x: auto` for scrolling when needed. */
+  width: auto;
+}
+
+.pggm-data-grid-table th,
+.pggm-data-grid-table td{
+  padding: 8px 12px;
+  border-bottom: 1px solid #e6e6e6;
+  text-align: left;
+}
+
+.pggm-data-grid-table th,
+.pggm-data-grid-table td.pggm-data-grid-cell--property-column {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pggm-data-grid-table th:focus-visible,
+.pggm-data-grid-table td:focus-visible {
+  outline: var(--pggm-focus-outline-width, 2px) var(--pggm-focus-outline-style, solid) var(--pggm-focus-outline-color, blue);
+  outline-offset: -2px;
+}
+
+/* Selected data-grid row */
+.pggm-data-grid--single-selectable .pggm-data-grid-row--selected td {
+    background-color: var(--pggm-data-grid-selected-row-bg, #e8f0ff);
+}
+
+/* When grid has selectable column(s) */
+/* .pggm-data-grid--selectable — no visual changes by default */
+
+/* Single-select mode */
+/* .pggm-data-grid--single-selectable — no visual changes by default */
+
+/* Column header base — needed for absolute-positioned resize handle */
+.pggm-data-grid-table th.column-header {
+  position: relative;
+  overflow: clip; /* clip the full-height resize-handle so it doesn't overlay tbody rows */
+}
+
+/* ── No wrap and overflow ─ellipses ──────────────────────────────── */
+
+
+.pggm-sticky-col,
+.pggm-data-grid--auto-height .pggm-data-grid-table th,
+.pggm-data-grid--auto-height .pggm-data-grid-table td.pggm-data-grid-cell--property-column {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Alignment utility classes used by the grid when avoiding inline styles */
+.pggm-align-left { text-align: left; }
+.pggm-align-center { text-align: center; }
+.pggm-align-right { text-align: right; }
+
+/* ── Column resize handle ──────────────────────────────── */
+
+/* The persistent visual indicator: a thin line on the right edge of the header */
+.pggm-data-grid-table th.resizable .resize-handle {
+  position: absolute;
+  right: 0;
+  top: 4px;
+  bottom: 4px;
+  width: 4px;
+  cursor: col-resize;
+  border-inline-end: 1px solid var(--pggm-resize-handle-color, #bbb);
+  opacity: 0.6;
+  pointer-events: none; /* the actual-resize-handle (injected by JS) captures events */
+}
+
+[dir=rtl] .pggm-data-grid-table th.resizable .resize-handle {
+  right: unset;
+  left: 0;
+}
+
+/* When virtualization is enabled the grid div is its own scroll container
+   (overflow-y: auto + explicit height set as inline style via the Height parameter).
+   Sticky th cells stick at top: 0 of that container — no dependency on outer padding. */
+.pggm-data-grid--virtualized .pggm-data-grid-table {
+  border-collapse: collapse;
+  /* For virtualized mode we also allow the table to size to its columns
+     and rely on the virtualized container's scroll for overflow. */
+  width: auto;
+}
+
+/* Virtualized grid container height controlled via JS-set CSS variable */
+.pggm-data-grid--virtualized {
+  height: var(--pggm-data-grid-height, 400px);
+  overflow-y: auto;
+}
+
+/* sticky: specificity (0,2,2) beats th.column-header's position:relative (0,2,1) */
+.pggm-data-grid-table thead th,
+.pggm-data-grid-table thead th.column-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: white;
+}
+
+/* ── Sticky first column(s) ──────────────────────────────── */
+
+/* Body cells that are pinned horizontally */
+.pggm-data-grid-table td.pggm-sticky-col {
+  position: sticky;
+  z-index: 1;
+  background: var(--pggm-sticky-col-bg, white);
+}
+
+/* Header cells that are ALSO pinned horizontally sit above both
+   regular sticky headers (z-index:2) and sticky body cells (z-index:1) */
+.pggm-data-grid-table thead th.pggm-sticky-col {
+  z-index: 3;
+}
+
+/* Visual separator — a subtle shadow on the right edge of the last sticky column */
+.pggm-data-grid-table td.pggm-sticky-col:last-of-type,
+.pggm-data-grid-table thead th.pggm-sticky-col:last-of-type {
+  box-shadow: inset -4px 0 4px -4px rgba(0, 0, 0, 0.15);
+}
+.pggm-grid-header-button {
+  display: flex;
+  gap: 16px;
+  white-space: nowrap;
+}
+
+.pggm-grid-header-button > button {
+  background: transparent;
+  border: none;
+}
+.pggm-header-filter-button svg {
+  fill: none;
+  stroke: currentColor;
+}
+
+.pggm-column-filtered .pggm-header-filter-button svg {
+  fill: currentColor;
+}
+
+/* fixing weird border focus behaviour in current pfzw style */
+.filter-dialog-container {
+  width: calc(100% - 6px);
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+.pggm-grid-header-button > button:focus-visible {
+  outline: var(--pggm-focus-outline-width, 2px) var(--pggm-focus-outline-style, solid) var(--pggm-focus-outline-color, blue);
+}
+
+.pggm-grid-header-title {
+  font-weight: 600;
+}
+
+/* ── Checkboxes ──────────────────────────────── */
+input[type="checkbox"].pggm-data-grid-table-checkbox {
+    /* Compensate for changing border widths across states */
+    --border-width-max: max(var(--pggm-checkbox-border-width),
+            var(--pggm-checkbox-active-border-width),
+            var(--pggm-checkbox-invalid-border-width));
+    --border-width-difference: 0px;
+    appearance: none;
+    cursor: inherit;
+    margin: 0 .25em;
+    flex: 0 0 var(--pggm-checkbox-size);
+    border-radius: var(--pggm-checkbox-border-radius);
+    border-style: solid;
+    border-width: var(--pggm-checkbox-border-width);
+    border-color: var(--pggm-checkbox-border-color);
+    height: var(--pggm-checkbox-size);
+    width: var(--pggm-checkbox-size);
+    transition:
+        background-color var(--transition-duration),
+        border-color var(--transition-duration);
+    translate: 0 calc(var(--pggm-checkbox-size) / 4);
+    position: relative;
+    vertical-align: baseline;
+}
+
+
+input[type="checkbox"].pggm-data-grid-table-checkbox:not(:disabled):invalid {
+    border-color: var(--pggm-checkbox-invalid-border-color);
+    border-width: var(--pggm-checkbox-invalid-border-width,
+            var(--pggm-checkbox-border-width));
+}
+
+
+input[type="checkbox"].pggm-data-grid-table-checkbox:not(:disabled, :invalid):active {
+    background-color: var(--pggm-checkbox-active-background-color);
+    border-color: var(--pggm-checkbox-active-border-color);
+    border-width: var(--pggm-checkbox-active-border-width,
+            var(--pggm-checkbox-border-width));
+}
+
+input[type="checkbox"].pggm-data-grid-table-checkbox:hover {
+    background-color: var(--pggm-checkbox-hover-background-color);
+    border-color: var(--pggm-checkbox-hover-border-color);
+    border-width: var(--pggm-checkbox-hover-border-width,
+            var(--pggm-checkbox-border-width));
+}
+
+/* checked */
+input[type="checkbox"].pggm-data-grid-table-checkbox:checked {
+    background-color: var(--pggm-checkbox-checked-background-color);
+    box-shadow: inset 0 0 0 var(--distance) var(--background-color);
+    border-color: var(--pggm-checkbox-checked-border-color);
+    border-width: var(--pggm-checkbox-checked-border-width,
+            var(--pggm-checkbox-border-width));
+    /* Copied from @tabler/icons/outline/check.svg, recolored stroke  */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke='none' d='M0 0h24v24H0z' fill='none' /%3E%3Cpath d='M5 12l5 5l10 -10' /%3E%3C/svg%3E");
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+
+input[type="checkbox"].pggm-data-grid-table-checkbox:disabled:hover,
+input[type="checkbox"].pggm-data-grid-table-checkbox:disabled {
+    cursor: not-allowed;
+    color: var(--pggm-checkbox-option-label-disabled-color);
+    background-color: var(--pggm-checkbox-disabled-background-color);
+    border-color: var(--pggm-checkbox-disabled-border-color);
+}
+
+input[type="checkbox"].pggm-data-grid-table-checkbox:disabled:checked {
+    background-color: var(--pggm-checkbox-checked-disabled-background-color);
+    border-color: var(--pggm-checkbox-checked-disabled-border-color);
+    border-width: var(--pggm-checkbox-checked-disabled-border-width,
+            var(--pggm-checkbox-border-width));
+}
+
+/* ── radio buttons data grid ────────────────────────────── */
+input.pggm-data-grid-table-radio {
+    outline: none;
+    vertical-align: baseline;
+    translate: 0 calc(var(--pggm-radio-size) / 4);
+    position: relative;
+    --transition-duration: var(--pggm-motion-duration-xs);
+    --border-width-max: max(var(--pggm-radio-border-width), var(--pggm-radio-active-border-width), var(--pggm-radio-invalid-border-width));
+    --border-width-difference: 0;
+    --background-color: transparent;
+    --inset-distance: 0;
+    --border-width: var(--pggm-radio-border-width);
+    appearance: none;
+    cursor: inherit;
+    margin: 0px .25em;
+    -webkit-box-flex: 0;
+    border-color: var(--pggm-radio-border-color);
+    border-radius: var(--pggm-radio-border-radius);
+    border-style: solid;
+    border-width: var(--border-width);
+    box-shadow: inset 0 0 0 var(--inset-distance) var(--background-color);
+    flex: 0 0 var(--pggm-radio-size);
+    height: var(--pggm-radio-size);
+    transition: background-color var(--transition-duration), border-color var(--transition-duration), box-shadow calc(var(--transition-duration)*2), -webkit-box-shadow calc(var(--transition-duration)*2);
+    width: var(--pggm-radio-size);
+}
+
+input.pggm-data-grid-table-radio:checked {
+    --border-width: var(--pggm-radio-checked-border-width,
+            var(--pggm-radio-border-width));
+    --inset-distance: calc((var(--pggm-radio-size) - var(--pggm-radio-dot-size) - var(--border-width)) / 2);
+    --background-color: var(--pggm-radio-checked-background-color);
+    border-color: var(--pggm-radio-checked-border-color);
+}
+
+input.pggm-data-grid-table-radio:not(:disabled):hover {
+    --border-width: var(--pggm-radio-hover-border-width, var(--pggm-radio-border-width));
+    background-color: var(--pggm-radio-hover-background-color);
+    border-color: var(--pggm-radio-hover-border-color);
+}
+
+input.pggm-data-grid-table-radio:focus-visible {
+    outline: var(--pggm-focus-outline-width) var(--pggm-focus-outline-style, solid) var(--pggm-focus-outline-color, blue);
+    outline-offset: var(--pggm-focus-outline-offset);
+}
+
+input.pggm-data-grid-table-radio:invalid {
+    --border-width: var(--pggm-radio-invalid-border-width,
+            var(--pggm-radio-border-width));
+    border-color: var(--pggm-radio-invalid-border-color);
+}
+
+input.pggm-data-grid-table-radio:not(:disabled, :invalid):hover {
+    --border-width: var(--pggm-radio-hover-border-width,
+            var(--pggm-radio-border-width));
+    background-color: var(--pggm-radio-hover-background-color);
+    border-color: var(--pggm-radio-hover-border-color);
+}
+
+input.pggm-data-grid-table-radio:disabled {
+    cursor: not-allowed;
+    --border-width: var(--pggm-radio-disabled-border-width,
+            var(--pggm-radio-border-width));
+    background-color: var(--pggm-radio-disabled-background-color);
+    border-color: var(--pggm-radio-disabled-border-color);
+}
+
+
+/* ── Hierarchical data grid ────────────────────────────── */
+
+.pggm-hierarchical-toggle-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  vertical-align: middle;
+ /* Per-row indent applied by JS via --pggm-hier-indent variable */
+  margin-inline-start: var(--pggm-hier-indent, 0px);
+}
+
+.pggm-hierarchical-expander {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  flex-shrink: 0;
+} 
+
+.pggm-hierarchical-leaf {
+  display: inline-flex;
+  width: 20px;
+  flex-shrink: 0;
+}
+
+.pggm-hierarchical-expand-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: inherit;
+  border-radius: 3px;
+}
+
+.pggm-hierarchical-expand-button:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.pggm-hierarchical-expand-button:focus-visible {
+  outline: var(--pggm-focus-outline-width) var(--pggm-focus-outline-style, solid) var(--pggm-focus-outline-color, blue);
+  outline-offset: 1px;
+}
+
+.pggm-hierarchical-expand-button svg {
+  transition: transform 0.15s ease;
+  pointer-events: none;
+}
+
+.pggm-hierarchical-collapsed .pggm-hierarchical-expand-button svg {
+  transform: rotate(0deg);
+}
+
+.pggm-hierarchical-expanded .pggm-hierarchical-expand-button svg {
+  transform: rotate(90deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pggm-hierarchical-expand-button svg {
+    transition: none;
+  }
+}

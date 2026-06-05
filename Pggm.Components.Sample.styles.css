@@ -1,0 +1,65 @@
+@import '_content/Pggm.Components/Pggm.Components.qsee41rtdd.bundle.scp.css';
+
+/* /Components/CodeSnippet/CodeSnippet.razor.rz.scp.css */
+.code-snippet[b-6swzeprhgv] {
+  font-family: var(--bs-font-monospace, "SFMono-Regular", Menlo, Monaco, "Roboto Mono", monospace);
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.code-snippet .header[b-6swzeprhgv] {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.375rem 0.5rem;
+  background: rgba(0,0,0,0.03);
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+}
+.code-snippet .title[b-6swzeprhgv] {
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+.code-snippet .copy-button[b-6swzeprhgv] {
+  background: transparent;
+  border: 1px solid rgba(0,0,0,0.06);
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.code-snippet pre[b-6swzeprhgv] {
+  margin: 0;
+  padding: 0.75rem;
+  overflow: auto;
+  background: #f7f7f8;
+}
+/* /Components/DemoSection/DemoSection.razor.rz.scp.css */
+.demo-section[b-jrq0hqxj5g] {
+    margin: 2rem 0;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.demo-section__content[b-jrq0hqxj5g] {
+  overflow: visible !important;
+  max-height: none !important;
+  height: auto !important;
+}
+
+h1 a[b-jrq0hqxj5g], h2 a[b-jrq0hqxj5g], h3 a[b-jrq0hqxj5g], h4 a[b-jrq0hqxj5g], h5 a[b-jrq0hqxj5g], h6 a[b-jrq0hqxj5g],
+h1 a:hover[b-jrq0hqxj5g], h2 a:hover[b-jrq0hqxj5g], h3 a:hover[b-jrq0hqxj5g], h4 a:hover[b-jrq0hqxj5g], h5 a:hover[b-jrq0hqxj5g], h6 a:hover[b-jrq0hqxj5g],
+h1 a:focus[b-jrq0hqxj5g], h2 a:focus[b-jrq0hqxj5g], h3 a:focus[b-jrq0hqxj5g], h4 a:focus[b-jrq0hqxj5g], h5 a:focus[b-jrq0hqxj5g], h6 a:focus[b-jrq0hqxj5g],
+h1 a:active[b-jrq0hqxj5g], h2 a:active[b-jrq0hqxj5g], h3 a:active[b-jrq0hqxj5g], h4 a:active[b-jrq0hqxj5g], h5 a:active[b-jrq0hqxj5g], h6 a:active[b-jrq0hqxj5g],
+h1 a:visited[b-jrq0hqxj5g], h2 a:visited[b-jrq0hqxj5g], h3 a:visited[b-jrq0hqxj5g], h4 a:visited[b-jrq0hqxj5g], h5 a:visited[b-jrq0hqxj5g], h6 a:visited[b-jrq0hqxj5g] {
+  color: var(--pggm-heading-color, #393a3c);
+}
+/* /Pages/Home.razor.rz.scp.css */
+svg.home-illustration[b-yjgycsdtjf] {
+    width: 100%;
+    height: auto;
+    max-width: 700px;
+}
